@@ -13,21 +13,21 @@
     - 크로스 브라우징
     - STUN/TURN 서버 필요
     
-####ref.
+#### ref.
 - [WebRTC](https://gh402.tistory.com/38?category=935378)
 ---
 
 ## Signaling server
 ![signaling](https://lh6.googleusercontent.com/U7DErjrjC3k0cu2ZZHlTlj9siRtG8Dq6jcbs_O4LxgQkMJugmKfwvuanhkdiJW4LCr29hlkSRK5ZI7GRMBpvzKakxKDQomUgEw58FYIuq-yg_WKJV1Pu094wpDJy1s7KCs5kYqs7)
 
-###STUN
+### STUN
 ![STUN](https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Protocols/webrtc-stun.png)
 > 공개 주소를 발견하거나 Peer간의 직접 연결을 막는 등 라우터의 제한을 결정하며 ICE를 보완하는 프로토콜이다.\
 > 간단하게 말하면 STUN서버는 해당 Peer의 공인 IP주소를 보내는 역할을 한다.\
 > STUN 서버는 두 엔드 포인트 간의 연결을 확인하고 NAT 바인딩을 유지하기 위한 연결 유지 프로토콜로도 사용 가능하다.\
 > 하지만 STUN은 항상 효과적이지 않다. 두 단말이 같은 NAT환경에 있을 경우 또는 NAT 보안정책이 엄격하는 등 여러 이유에 따라 STUN이 완벽한 해결책이 되지 않는다.
 
-###TURN
+### TURN
 ![TURN](https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Protocols/webrtc-turn.png)
 > STUN의 확장으로 NAT환경에서 릴레이하여 통신을 하게 된다.\
 > NAT 보안 정책이 너무 엄격하거나 NAT순회를 하기 위해 필요한 NAT 바인딩을 성공적으로 생산할수 없는 경우에 TURN을 사용한다.\
@@ -35,7 +35,7 @@
 > 단점은, 클아이언트와의 연결을 거의 항상 제공하지만 STUN에 비해 리소스 낭비가 심하다.\
 > ICE Finding Candidate과정에서 local IP로 연결할 수 있는지, Public IP로 연결할 수 있는지 알아낸후 최후의 수단으로 사용해야 한다.
 
-####ref.
+#### ref.
 - [STUN/TURN](https://gh402.tistory.com/45?category=935378)
 
 
@@ -71,7 +71,7 @@
 > 2. signaling server를 통해 상대방의 정보를 얻는다.
 > 3. Peer to Peer Connection을 통해 통신한다.
 
-####ref.
+#### ref.
 - [Signaling Server](https://velog.io/@gojaegaebal/210307-%EA%B0%9C%EB%B0%9C%EC%9D%BC%EC%A7%8090%EC%9D%BC%EC%B0%A8-%EC%A0%95%EA%B8%80-%EB%82%98%EB%A7%8C%EC%9D%98-%EB%AC%B4%EA%B8%B0-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-WebRTC%EB%9E%80-%EB%AC%B4%EC%97%87%EC%9D%B8%EA%B0%802-ICE-SDP-Signalling)
 ---
 
@@ -102,5 +102,5 @@ Media server 오픈소스
 > MCU 방식은 중아에서 비디오를 인코딩 등과 같은 전처리를 하여 피어에게 다시 전달해주는 역할을 한다.\
 > 즉, 중간에서 믹싱을 해준다. 따라서 인코딩을 통해서 압축률을 좋게 하여 각 피어들에게 던져주면 네트워크 리소스 비용에서는 유리하나, 이를 처리하는 server에 CPU 리소스를 많이 잡아먹는 단점이 있다.
 
-####ref.
+#### ref.
 - [Mediaserver](https://andonekwon.tistory.com/71)
