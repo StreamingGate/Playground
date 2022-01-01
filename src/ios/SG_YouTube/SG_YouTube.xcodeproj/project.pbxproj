@@ -7,6 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4935FD35277BDA5D00760675 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4935FD30277BD97400760675 /* CategoryCell.swift */; };
+		4935FD36277BDA5D00760675 /* HomeListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4935FD2E277BD95200760675 /* HomeListViewController.swift */; };
+		4935FD37277BDA5D00760675 /* VideoListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4935FD31277BD97400760675 /* VideoListCell.swift */; };
+		4935FD39277BDAC300760675 /* PlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4935FD33277BD97F00760675 /* PlayViewController.swift */; };
+		4935FD3A277BDAD100760675 /* Play.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4935FD34277BD97F00760675 /* Play.storyboard */; };
+		4935FD3D277BDC6600760675 /* Home.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4935FD3C277BDC6600760675 /* Home.storyboard */; };
+		4935FD3F277BDF5F00760675 /* Chat.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4935FD3E277BDF5F00760675 /* Chat.storyboard */; };
+		4935FD42277C0E4D00760675 /* ChattingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4935FD41277C0E4D00760675 /* ChattingViewController.swift */; };
+		4935FD44277C0ED100760675 /* ChatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4935FD43277C0ED100760675 /* ChatCell.swift */; };
 		49B9C9BA277ACE9C006AE134 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B9C9B9277ACE9C006AE134 /* AppDelegate.swift */; };
 		49B9C9BC277ACE9C006AE134 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B9C9BB277ACE9C006AE134 /* SceneDelegate.swift */; };
 		49B9C9BE277ACE9C006AE134 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B9C9BD277ACE9C006AE134 /* ViewController.swift */; };
@@ -18,6 +27,15 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4935FD2E277BD95200760675 /* HomeListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeListViewController.swift; sourceTree = "<group>"; };
+		4935FD30277BD97400760675 /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
+		4935FD31277BD97400760675 /* VideoListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoListCell.swift; sourceTree = "<group>"; };
+		4935FD33277BD97F00760675 /* PlayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayViewController.swift; sourceTree = "<group>"; };
+		4935FD34277BD97F00760675 /* Play.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Play.storyboard; sourceTree = "<group>"; };
+		4935FD3C277BDC6600760675 /* Home.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Home.storyboard; sourceTree = "<group>"; };
+		4935FD3E277BDF5F00760675 /* Chat.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Chat.storyboard; sourceTree = "<group>"; };
+		4935FD41277C0E4D00760675 /* ChattingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChattingViewController.swift; sourceTree = "<group>"; };
+		4935FD43277C0ED100760675 /* ChatCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCell.swift; sourceTree = "<group>"; };
 		49B9C9B6277ACE9C006AE134 /* SG_YouTube.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SG_YouTube.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49B9C9B9277ACE9C006AE134 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		49B9C9BB277ACE9C006AE134 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -41,6 +59,36 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4935FD2D277BD95200760675 /* HomeList */ = {
+			isa = PBXGroup;
+			children = (
+				4935FD3C277BDC6600760675 /* Home.storyboard */,
+				4935FD2E277BD95200760675 /* HomeListViewController.swift */,
+				4935FD30277BD97400760675 /* CategoryCell.swift */,
+				4935FD31277BD97400760675 /* VideoListCell.swift */,
+			);
+			path = HomeList;
+			sourceTree = "<group>";
+		};
+		4935FD32277BD97F00760675 /* Play */ = {
+			isa = PBXGroup;
+			children = (
+				4935FD34277BD97F00760675 /* Play.storyboard */,
+				4935FD33277BD97F00760675 /* PlayViewController.swift */,
+			);
+			path = Play;
+			sourceTree = "<group>";
+		};
+		4935FD40277BDF6300760675 /* Chat */ = {
+			isa = PBXGroup;
+			children = (
+				4935FD3E277BDF5F00760675 /* Chat.storyboard */,
+				4935FD41277C0E4D00760675 /* ChattingViewController.swift */,
+				4935FD43277C0ED100760675 /* ChatCell.swift */,
+			);
+			path = Chat;
+			sourceTree = "<group>";
+		};
 		49B9C9AD277ACE9C006AE134 = {
 			isa = PBXGroup;
 			children = (
@@ -64,6 +112,9 @@
 				49B9C9BB277ACE9C006AE134 /* SceneDelegate.swift */,
 				49B9C9BD277ACE9C006AE134 /* ViewController.swift */,
 				49B9C9BF277ACE9C006AE134 /* Main.storyboard */,
+				4935FD2D277BD95200760675 /* HomeList */,
+				4935FD32277BD97F00760675 /* Play */,
+				4935FD40277BDF6300760675 /* Chat */,
 				49B9C9F3277AF0E5006AE134 /* Extensions */,
 				49B9C9C2277ACE9F006AE134 /* Assets.xcassets */,
 				49B9C9C4277ACE9F006AE134 /* LaunchScreen.storyboard */,
@@ -139,6 +190,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4935FD3F277BDF5F00760675 /* Chat.storyboard in Resources */,
+				4935FD3A277BDAD100760675 /* Play.storyboard in Resources */,
+				4935FD3D277BDC6600760675 /* Home.storyboard in Resources */,
 				49B9C9C6277ACE9F006AE134 /* LaunchScreen.storyboard in Resources */,
 				49B9C9C3277ACE9F006AE134 /* Assets.xcassets in Resources */,
 				49B9C9C1277ACE9C006AE134 /* Main.storyboard in Resources */,
@@ -153,10 +207,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				49B9C9BE277ACE9C006AE134 /* ViewController.swift in Sources */,
+				4935FD39277BDAC300760675 /* PlayViewController.swift in Sources */,
+				4935FD44277C0ED100760675 /* ChatCell.swift in Sources */,
+				4935FD37277BDA5D00760675 /* VideoListCell.swift in Sources */,
 				49B9C9F2277AF018006AE134 /* UIFont+CustomFont.swift in Sources */,
+				4935FD36277BDA5D00760675 /* HomeListViewController.swift in Sources */,
 				49B9C9BA277ACE9C006AE134 /* AppDelegate.swift in Sources */,
+				4935FD42277C0E4D00760675 /* ChattingViewController.swift in Sources */,
 				49B9C9F0277AEF4E006AE134 /* UIColor+CustomColor.swift in Sources */,
 				49B9C9BC277ACE9C006AE134 /* SceneDelegate.swift in Sources */,
+				4935FD35277BDA5D00760675 /* CategoryCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
