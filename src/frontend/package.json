@@ -8,7 +8,7 @@
     "storybook": "start-storybook",
     "build-storybook": "build-storybook",
     "build:dev": "webpack --mode=development --config ./webpack.config.js",
-    "build:prod": "webpack --mode=production --config ./webpack.config.js",
+    "build:prod": "webpack --mode=production --config ./webpack.config.js"
   },
   "author": "",
   "license": "ISC",
