@@ -4,9 +4,9 @@ name: "Frontend storybook Deployment"
 on:
   push:
     paths:
-      - src/frontend
-    branches: 
-      - chore/issue-8-jaeyun
+      - "src/frontend/src/**"
+    branches:
+      - develop-frontend
 
 jobs:
   test:
@@ -14,7 +14,10 @@ jobs:
     # Job steps
     steps:
       - uses: actions/checkout@v1
-      - run: npm install
+      - run: |
+          npm ci
+          npm run build
       - uses: chromaui/action@v1
         with:
+          workingDir: ./src/frontend
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
