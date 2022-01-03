@@ -6,7 +6,7 @@ on:
     paths:
       - src/frontend
     branches: 
-      -chore/issue-8-jaeyun
+      - chore/issue-8-jaeyun
 
 jobs:
   test:
