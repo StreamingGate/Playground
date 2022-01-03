@@ -14,9 +14,7 @@ jobs:
     # Job steps
     steps:
       - uses: actions/checkout@v1
-      - run: |
-          npm ci
-          npm run build
+      - run: npm install
         working-directory: ./src/frontend
       - uses: chromaui/action@v1
         with:
