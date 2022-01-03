@@ -6,8 +6,9 @@
   "scripts": {
     "start": "webpack serve --mode=development --config ./webpack.config.js",
     "storybook": "start-storybook",
+    "build-storybook": "build-storybook",
     "build:dev": "webpack --mode=development --config ./webpack.config.js",
-    "build:prod": "webpack --mode=production --config ./webpack.config.js"
+    "build:prod": "webpack --mode=production --config ./webpack.config.js",
   },
   "author": "",
   "license": "ISC",
@@ -22,6 +23,7 @@
     "babel-loader": "^8.2.3",
     "babel-plugin-styled-components": "^2.0.2",
     "babel-plugin-transform-remove-console": "^6.9.4",
+    "chromatic": "^6.3.3",
     "dotenv-webpack": "^7.0.3",
     "eslint": "^8.2.0",
     "eslint-config-airbnb": "^19.0.4",
