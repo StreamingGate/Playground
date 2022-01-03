@@ -1,15 +1,15 @@
-import React from "react";
+import React from 'react';
 
-import Button from "./Button";
+import Button from './Button';
 
 export default {
-  title: "Components/Forms",
+  title: 'Components/Forms',
   component: Button,
 };
 
-const Template = (args) => <Button {...args} />;
+const Template = args => <Button {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
-  label: "Test",
+  label: 'Sample',
 };
