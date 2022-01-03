@@ -20,6 +20,8 @@
 		496279D827829516005A2BDC /* MyPageNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496279D727829516005A2BDC /* MyPageNavigationController.swift */; };
 		496279DA278297C2005A2BDC /* VideoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496279D9278297C2005A2BDC /* VideoListViewController.swift */; };
 		496279DC27829CA5005A2BDC /* AccountInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496279DB27829CA5005A2BDC /* AccountInfoViewController.swift */; };
+		496279DE2782BB85005A2BDC /* AccountEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496279DD2782BB85005A2BDC /* AccountEditViewController.swift */; };
+		496279E02782C1AA005A2BDC /* LiveStreamingInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496279DF2782C1AA005A2BDC /* LiveStreamingInfoViewController.swift */; };
 		49818AC52780C63F00C0C956 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49818AC42780C63F00C0C956 /* MyPageViewController.swift */; };
 		49818AC82780C66100C0C956 /* MyPage.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49818AC72780C66100C0C956 /* MyPage.storyboard */; };
 		49B9C9BA277ACE9C006AE134 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B9C9B9277ACE9C006AE134 /* AppDelegate.swift */; };
@@ -50,6 +52,8 @@
 		496279D727829516005A2BDC /* MyPageNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageNavigationController.swift; sourceTree = "<group>"; };
 		496279D9278297C2005A2BDC /* VideoListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoListViewController.swift; sourceTree = "<group>"; };
 		496279DB27829CA5005A2BDC /* AccountInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInfoViewController.swift; sourceTree = "<group>"; };
+		496279DD2782BB85005A2BDC /* AccountEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountEditViewController.swift; sourceTree = "<group>"; };
+		496279DF2782C1AA005A2BDC /* LiveStreamingInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveStreamingInfoViewController.swift; sourceTree = "<group>"; };
 		49818AC42780C63F00C0C956 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 		49818AC72780C66100C0C956 /* MyPage.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MyPage.storyboard; sourceTree = "<group>"; };
 		49B9C9B6277ACE9C006AE134 /* SG_YouTube.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SG_YouTube.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -115,6 +119,7 @@
 			children = (
 				49818AC72780C66100C0C956 /* MyPage.storyboard */,
 				496279DB27829CA5005A2BDC /* AccountInfoViewController.swift */,
+				496279DD2782BB85005A2BDC /* AccountEditViewController.swift */,
 				496279D727829516005A2BDC /* MyPageNavigationController.swift */,
 				49818AC42780C63F00C0C956 /* MyPageViewController.swift */,
 				49EC99FC2782015A00DE4F79 /* RecentViewedCell.swift */,
@@ -173,6 +178,7 @@
 			isa = PBXGroup;
 			children = (
 				49EC99FF278201C600DE4F79 /* Create.storyboard */,
+				496279DF2782C1AA005A2BDC /* LiveStreamingInfoViewController.swift */,
 				49EC9A012782033E00DE4F79 /* CreatePopOverViewController.swift */,
 			);
 			path = Create;
@@ -254,11 +260,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				496279DE2782BB85005A2BDC /* AccountEditViewController.swift in Sources */,
 				496279DA278297C2005A2BDC /* VideoListViewController.swift in Sources */,
 				496279D627828BB3005A2BDC /* PlayExplainViewController.swift in Sources */,
 				4935FD39277BDAC300760675 /* PlayViewController.swift in Sources */,
 				4935FD44277C0ED100760675 /* ChatCell.swift in Sources */,
 				49EC9A042782039800DE4F79 /* TabBarController.swift in Sources */,
+				496279E02782C1AA005A2BDC /* LiveStreamingInfoViewController.swift in Sources */,
 				4935FD37277BDA5D00760675 /* VideoListCell.swift in Sources */,
 				49B9C9F2277AF018006AE134 /* UIFont+CustomFont.swift in Sources */,
 				4935FD36277BDA5D00760675 /* HomeListViewController.swift in Sources */,

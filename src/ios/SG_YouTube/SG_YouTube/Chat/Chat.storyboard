@@ -138,7 +138,7 @@
                             <constraint firstItem="1Xe-EY-7oi" firstAttribute="centerX" secondItem="vDu-zF-Fre" secondAttribute="centerX" id="h0z-i7-nV2"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="leading" secondItem="hQ0-xD-JfU" secondAttribute="leading" id="k1E-Dg-2bh"/>
                             <constraint firstItem="TlI-ST-bXZ" firstAttribute="top" secondItem="FJR-ZY-W8I" secondAttribute="bottom" constant="1" id="sBG-eM-oX8"/>
-                            <constraint firstItem="FJR-ZY-W8I" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="13" id="vXi-lI-ION"/>
+                            <constraint firstItem="FJR-ZY-W8I" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" priority="999" constant="13" id="vXi-lI-ION"/>
                         </constraints>
                     </view>
                     <connections>
@@ -149,7 +149,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-17.39130434782609" y="109.82142857142857"/>
+            <point key="canvasLocation" x="-54" y="155"/>
         </scene>
     </scenes>
     <resources>
