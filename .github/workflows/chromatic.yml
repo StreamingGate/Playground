@@ -4,8 +4,9 @@ name: "Frontend storybook Deployment"
 on:
   push:
     paths:
-      - ./src/frontend
-    branches: [chore/issue-8-jaeyun]
+      - src/frontend
+    branches: 
+      -chore/issue-8-jaeyun
 
 jobs:
   test:
