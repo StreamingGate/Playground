@@ -11,9 +11,23 @@ module.exports = {
       jsx: true,
     },
   },
-  extends: ['airbnb', 'airbnb/hooks', 'plugin:prettier/recommended'],
+  extends: [
+    'airbnb',
+    'airbnb/hooks',
+    'plugin:storybook/recommended',
+    'plugin:prettier/recommended',
+  ],
   rules: {
     'import/no-unresolved': 'off',
     'import/extensions': 'off',
   },
+  overrides: [
+    {
+      files: ['*.stories.@(js|jsx)'],
+      rules: {
+        'react/function-component-definition': 'off',
+        'react/jsx-props-no-spreading': 'off',
+      },
+    },
+  ],
 };
