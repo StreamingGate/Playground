@@ -6,7 +6,7 @@ on:
     paths:
       - "src/frontend/src/**"
     branches:
-      - develop-frontend
+      - develop-frontend-ui
 
 jobs:
   test:
