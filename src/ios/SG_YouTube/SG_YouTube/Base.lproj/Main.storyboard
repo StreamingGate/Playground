@@ -10,7 +10,7 @@
         <!--Tab Bar Controller-->
         <scene sceneID="6FB-v6-dP2">
             <objects>
-                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="qyu-BS-Ov5" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="TabBarController" automaticallyAdjustsScrollViewInsets="NO" id="qyu-BS-Ov5" customClass="TabBarController" customModule="SG_YouTube" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="yR5-jF-PZJ">
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
@@ -21,11 +21,13 @@
                     </tabBar>
                     <connections>
                         <segue destination="VB5-Pn-0ga" kind="relationship" relationship="viewControllers" id="dOx-9z-rwj"/>
+                        <segue destination="btk-bs-NL2" kind="relationship" relationship="viewControllers" id="Tnx-f7-3WX"/>
+                        <segue destination="TZ6-qe-qfj" kind="relationship" relationship="viewControllers" id="aRx-9a-ims"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="051-UT-8vq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-133.33333333333334" y="51.5625"/>
+            <point key="canvasLocation" x="-262" y="37"/>
         </scene>
         <!--HomeListViewController-->
         <scene sceneID="bpq-NN-2aH">
@@ -36,6 +38,26 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uj6-gJ-1Ak" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="580" y="-115"/>
+        </scene>
+        <!--MyPageNavigationController-->
+        <scene sceneID="alh-lu-cAh">
+            <objects>
+                <viewControllerPlaceholder storyboardName="MyPage" referencedIdentifier="MyPageNavigationController" id="TZ6-qe-qfj" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item" id="fnk-3q-jIC"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8Bf-bR-PJ3" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="569" y="224"/>
+        </scene>
+        <!--CreatePopOverViewController-->
+        <scene sceneID="uhH-5I-afr">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Create" referencedIdentifier="CreatePopOverViewController" id="btk-bs-NL2" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item" id="jee-GX-A4I"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7Ui-NU-VaH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="580" y="37"/>
         </scene>
     </scenes>
     <resources>
