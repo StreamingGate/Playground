@@ -1,0 +1,19 @@
+name: "Frontend storybook Deployment"
+
+# Event for the workflow
+on:
+  push:
+    paths:
+      - ./src/frontend
+    branches: [chore/issue-8-jaeyun]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    # Job steps
+    steps:
+      - uses: actions/checkout@v1
+      - run: npm install
+      - uses: chromaui/action@v1
+        with:
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
