@@ -14,12 +14,14 @@ class HomeListViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     var selectedIndex = 0
     
+    // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
     }
 }
 
+// MARK: - Category List (CollectionView)
 extension HomeListViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 10
@@ -46,6 +48,7 @@ extension HomeListViewController: UICollectionViewDataSource, UICollectionViewDe
     }
 }
 
+// MARK: - Video List (TableView)
 extension HomeListViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 5
