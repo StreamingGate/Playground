@@ -17,6 +17,7 @@ jobs:
       - run: |
           npm ci
           npm run build
+        working-directory: ./src/frontend
       - uses: chromaui/action@v1
         with:
           workingDir: ./src/frontend
