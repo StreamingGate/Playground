@@ -3,6 +3,7 @@ const path = require('path');
 module.exports = {
   stories: ['../src/**/*.stories.mdx', '../src/**/*.stories.@(js|jsx)'],
   addons: ['@storybook/addon-essentials', '@storybook/addon-a11y'],
+  framework: '@storybook/react',
   webpackFinal: async (config, { configType }) => {
     config.resolve.alias['@'] = path.resolve(__dirname, '../src');
     config.resolve.alias['@assets'] = path.resolve(__dirname, '../src/assets');
