@@ -72,7 +72,7 @@ class CreatePopOverViewController: UIViewController {
     @IBAction func liveStreamingButtonDidTap(_ sender: Any) {
         guard let liveInfoVC = UIStoryboard(name: "Create", bundle: nil).instantiateViewController(withIdentifier: "LiveStreamingInfoViewController") as? LiveStreamingInfoViewController else { return }
         liveInfoVC.modalPresentationStyle = .fullScreen
-        self.parent?.present(liveInfoVC, animated: true) {
+        self.present(liveInfoVC, animated: true) {
             self.view.removeFromSuperview()
         }
     }

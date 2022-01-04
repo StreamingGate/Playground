@@ -21,10 +21,6 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
         if (viewController as? CreatePopOverViewController)  != nil {
             guard let popOverVC = UIStoryboard(name: "Create", bundle: nil).instantiateViewController(withIdentifier: "CreatePopOverViewController") as? CreatePopOverViewController else { return false }
-//            self.addChild(popOverVC)
-//            popOverVC.view.frame = self.view.frame
-//            self.view.addSubview(popOverVC.view)
-//            popOverVC.didMove(toParent: self)
             popOverVC.modalPresentationStyle = .overFullScreen
             popOverVC.modalTransitionStyle = .crossDissolve
             self.present(popOverVC, animated: true, completion: nil)
