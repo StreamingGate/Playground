@@ -53,6 +53,19 @@ module.exports = (env, args) => {
           },
         },
         {
+          test: /\.(ttf)$/i,
+          type: 'asset/resource',
+        },
+        {
+          test: /\.(ttf)$/i,
+          type: 'asset',
+          parser: {
+            dataUrlCondition: {
+              maxSize: 4 * 1024,
+            },
+          },
+        },
+        {
           test: /\.(js|jsx)$/i,
           exclude: /node_modules/,
           use: {
