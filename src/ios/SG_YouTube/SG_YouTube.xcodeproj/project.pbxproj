@@ -31,6 +31,9 @@
 		49B9C9C6277ACE9F006AE134 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49B9C9C4277ACE9F006AE134 /* LaunchScreen.storyboard */; };
 		49B9C9F0277AEF4E006AE134 /* UIColor+CustomColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B9C9EF277AEF4E006AE134 /* UIColor+CustomColor.swift */; };
 		49B9C9F2277AF018006AE134 /* UIFont+CustomFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B9C9F1277AF018006AE134 /* UIFont+CustomFont.swift */; };
+		49D7A0A82783D73F001CAC60 /* Register.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49D7A0A72783D73F001CAC60 /* Register.storyboard */; };
+		49D7A0AA2783DBB9001CAC60 /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D7A0A92783DBB9001CAC60 /* LogInViewController.swift */; };
+		49D7A0AC2783ECAD001CAC60 /* AppUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D7A0AB2783ECAD001CAC60 /* AppUtility.swift */; };
 		49EC99FD2782015A00DE4F79 /* RecentViewedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EC99FC2782015A00DE4F79 /* RecentViewedCell.swift */; };
 		49EC9A00278201C600DE4F79 /* Create.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49EC99FF278201C600DE4F79 /* Create.storyboard */; };
 		49EC9A022782033E00DE4F79 /* CreatePopOverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EC9A012782033E00DE4F79 /* CreatePopOverViewController.swift */; };
@@ -65,6 +68,9 @@
 		49B9C9C7277ACE9F006AE134 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		49B9C9EF277AEF4E006AE134 /* UIColor+CustomColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+CustomColor.swift"; sourceTree = "<group>"; };
 		49B9C9F1277AF018006AE134 /* UIFont+CustomFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+CustomFont.swift"; sourceTree = "<group>"; };
+		49D7A0A72783D73F001CAC60 /* Register.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Register.storyboard; sourceTree = "<group>"; };
+		49D7A0A92783DBB9001CAC60 /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
+		49D7A0AB2783ECAD001CAC60 /* AppUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUtility.swift; sourceTree = "<group>"; };
 		49EC99FC2782015A00DE4F79 /* RecentViewedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentViewedCell.swift; sourceTree = "<group>"; };
 		49EC99FF278201C600DE4F79 /* Create.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Create.storyboard; sourceTree = "<group>"; };
 		49EC9A012782033E00DE4F79 /* CreatePopOverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePopOverViewController.swift; sourceTree = "<group>"; };
@@ -148,14 +154,17 @@
 			isa = PBXGroup;
 			children = (
 				49B9C9B9277ACE9C006AE134 /* AppDelegate.swift */,
+				49D7A0AB2783ECAD001CAC60 /* AppUtility.swift */,
 				49B9C9BB277ACE9C006AE134 /* SceneDelegate.swift */,
 				49B9C9BF277ACE9C006AE134 /* Main.storyboard */,
+				49D7A0A92783DBB9001CAC60 /* LogInViewController.swift */,
 				49EC9A032782039800DE4F79 /* TabBarController.swift */,
 				4935FD2D277BD95200760675 /* HomeList */,
 				4935FD32277BD97F00760675 /* Play */,
 				4935FD40277BDF6300760675 /* Chat */,
 				49EC99FE278201B500DE4F79 /* Create */,
 				49818AC62780C64300C0C956 /* MyPage */,
+				49D7A0A62783D730001CAC60 /* Register */,
 				49B9C9F3277AF0E5006AE134 /* Extensions */,
 				49B9C9C2277ACE9F006AE134 /* Assets.xcassets */,
 				49B9C9C4277ACE9F006AE134 /* LaunchScreen.storyboard */,
@@ -172,6 +181,14 @@
 				49B9C9F1277AF018006AE134 /* UIFont+CustomFont.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		49D7A0A62783D730001CAC60 /* Register */ = {
+			isa = PBXGroup;
+			children = (
+				49D7A0A72783D73F001CAC60 /* Register.storyboard */,
+			);
+			path = Register;
 			sourceTree = "<group>";
 		};
 		49EC99FE278201B500DE4F79 /* Create */ = {
@@ -249,6 +266,7 @@
 				49EC9A00278201C600DE4F79 /* Create.storyboard in Resources */,
 				49818AC82780C66100C0C956 /* MyPage.storyboard in Resources */,
 				49B9C9C3277ACE9F006AE134 /* Assets.xcassets in Resources */,
+				49D7A0A82783D73F001CAC60 /* Register.storyboard in Resources */,
 				49B9C9C1277ACE9C006AE134 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -262,9 +280,11 @@
 			files = (
 				496279DE2782BB85005A2BDC /* AccountEditViewController.swift in Sources */,
 				496279DA278297C2005A2BDC /* VideoListViewController.swift in Sources */,
+				49D7A0AA2783DBB9001CAC60 /* LogInViewController.swift in Sources */,
 				496279D627828BB3005A2BDC /* PlayExplainViewController.swift in Sources */,
 				4935FD39277BDAC300760675 /* PlayViewController.swift in Sources */,
 				4935FD44277C0ED100760675 /* ChatCell.swift in Sources */,
+				49D7A0AC2783ECAD001CAC60 /* AppUtility.swift in Sources */,
 				49EC9A042782039800DE4F79 /* TabBarController.swift in Sources */,
 				496279E02782C1AA005A2BDC /* LiveStreamingInfoViewController.swift in Sources */,
 				4935FD37277BDA5D00760675 /* VideoListCell.swift in Sources */,

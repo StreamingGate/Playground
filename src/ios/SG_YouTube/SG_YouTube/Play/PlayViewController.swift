@@ -41,6 +41,8 @@ class PlayViewController: UIViewController {
     
     var safeTop: CGFloat = 0
     
+    
+    
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,6 +51,33 @@ class PlayViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(adjustInputView), name: UIResponder.keyboardWillHideNotification, object: nil)
         setUI()
     }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        titleLabel.isHidden = UIDevice.current.orientation.isLandscape
+        viewLabel.isHidden = UIDevice.current.orientation.isLandscape
+        categoryLabel.isHidden = UIDevice.current.orientation.isLandscape
+        stackView.isHidden = UIDevice.current.orientation.isLandscape
+        
+        if UIDevice.current.orientation.isLandscape {
+            print("Landscape")
+            NSLayoutConstraint.deactivate(portraitLayout)
+            NSLayoutConstraint.deactivate(landscapeLayout)
+            landscapeLayout = [chatContainerView.topAnchor.constraint(equalTo: self.view.topAnchor),
+               playView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
+               playView.trailingAnchor.constraint(equalTo: self.chatContainerView.leadingAnchor),
+               chatContainerView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width > UIScreen.main.bounds.height ? UIScreen.main.bounds.height : UIScreen.main.bounds.width)]
+            self.view.backgroundColor = UIColor.black
+            NSLayoutConstraint.activate(landscapeLayout)
+        } else {
+            print("Portrait")
+            self.view.backgroundColor = UIColor.white
+            NSLayoutConstraint.deactivate(landscapeLayout)
+            NSLayoutConstraint.deactivate(portraitLayout)
+            NSLayoutConstraint.activate(portraitLayout)
+        }
+    }
+    
     
     // MARK: - UI Setting
     func setUI() {
@@ -64,6 +93,8 @@ class PlayViewController: UIViewController {
         chatProfileImageView.backgroundColor = UIColor.placeHolder
         chatTextView.font = UIFont.Content
         chatProfileImageView.layer.cornerRadius = 25 / 2
+        chatContainerView.translatesAutoresizingMaskIntoConstraints = false
+        playView.translatesAutoresizingMaskIntoConstraints = false
         connectChatView()
     }
     
@@ -92,29 +123,9 @@ class PlayViewController: UIViewController {
         if UIDevice.current.value(forKey: "orientation") as? Int == UIInterfaceOrientation.landscapeRight.rawValue {
             let value = UIInterfaceOrientation.portrait.rawValue
             UIDevice.current.setValue(value, forKey: "orientation")
-            titleLabel.isHidden = false
-            viewLabel.isHidden = false
-            categoryLabel.isHidden = false
-            stackView.isHidden = false
-            self.view.backgroundColor = UIColor.white
-            NSLayoutConstraint.deactivate(landscapeLayout)
-            NSLayoutConstraint.activate(portraitLayout)
         } else {
             let value = UIInterfaceOrientation.landscapeRight.rawValue
             UIDevice.current.setValue(value, forKey: "orientation")
-            chatContainerView.translatesAutoresizingMaskIntoConstraints = false
-            playView.translatesAutoresizingMaskIntoConstraints = false
-            titleLabel.isHidden = true
-            viewLabel.isHidden = true
-            categoryLabel.isHidden = true
-            stackView.isHidden = true
-            NSLayoutConstraint.deactivate(portraitLayout)
-            landscapeLayout = [chatContainerView.topAnchor.constraint(equalTo: self.view.topAnchor),
-               playView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
-               playView.trailingAnchor.constraint(equalTo: self.chatContainerView.leadingAnchor),
-               chatContainerView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width > UIScreen.main.bounds.height ? UIScreen.main.bounds.height : UIScreen.main.bounds.width)]
-            self.view.backgroundColor = UIColor.black
-            NSLayoutConstraint.activate(landscapeLayout)
         }
     }
     
