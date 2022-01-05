@@ -22,6 +22,16 @@ const fontWeights = {
   bottomTab: 'normal',
 };
 
-const theme = { fontSizes, fontWeights };
+const colors = {
+  youtubeRed: '#ED2123',
+  youtubeBlue: '#4286F5',
+  studioBlack: '#212121',
+  customDarkGray: '#5F5F5F',
+  placeHolder: '#999999',
+  separator: '#E5E5E5',
+  background: '#F3F3F3',
+};
+
+const theme = { fontSizes, fontWeights, colors };
 
 export default theme;
