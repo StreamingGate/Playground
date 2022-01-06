@@ -11,13 +11,16 @@ on:
   push:
     branches: 
       - 'develop-server'
-  pull_request: 
+      - 'feature/issue-11'
+  pull_request:
+    branches: 
       - 'develop-server'
+      - 'feature/issue-11'
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK 11
