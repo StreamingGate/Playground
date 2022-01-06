@@ -22,6 +22,11 @@ class LogInViewController: UIViewController {
         setUI()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        AppUtility.lockOrientation(.portrait)
+    }
+    
     func setUI() {
         forgotPwButton.titleLabel?.font = UIFont.caption
         forgotPwButton.setTitleColor(UIColor.placeHolder, for: .normal)
