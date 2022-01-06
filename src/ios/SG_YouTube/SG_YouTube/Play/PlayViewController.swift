@@ -116,6 +116,8 @@ class PlayViewController: UIViewController {
     }
     
     @IBAction func tempBackButtonDidTap(_ sender: Any) {
+        let value = UIInterfaceOrientation.portrait.rawValue
+        UIDevice.current.setValue(value, forKey: "orientation")
         self.dismiss(animated: true, completion: nil)
     }
     
