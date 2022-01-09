@@ -3,6 +3,8 @@ package com.example.userservice.service;
 import com.example.userservice.dto.UserDto;
 import com.example.userservice.entity.User.UserEntity;
 import com.example.userservice.entity.User.UserRepository;
+import com.example.userservice.exceptionhandler.customexception.CustomUserException;
+import com.example.userservice.exceptionhandler.customexception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -35,13 +37,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto createUser(UserDto userDto) {
+    public UserDto createUser(UserDto userDto) throws CustomUserException {
         if(userRepository.findByEmail(userDto.getEmail()) == null) {
             userDto.setEncryptedPwd(bCryptPasswordEncoder.encode(userDto.getPassword()));
             userRepository.save(UserEntity.createUser(userDto));
             return userDto;
         }
-        return null;
+        throw new CustomUserException(ErrorCode.U001, "이미 존재하는 회원입니다.");
+    }
+
+    @Override
+    public UserDto updateUser(UserDto userDto) throws CustomUserException{
+        if(userRepository.findByNickName(userDto.getNickName()) == null) {
+            userRepository.save(UserEntity.updateUser(userDto));
+        }
+        throw new CustomUserException(ErrorCode.U002,"이미 사용중인 닉네임 입니다.");
     }
 
     @Override
@@ -63,7 +73,6 @@ public class UserServiceImpl implements UserService {
         List<GrantedAuthority> authorities = new ArrayList<>();
         User user = new User(userEntity.getEmail(), userEntity.getEncryptedPwd(),
                 true, true, true, true,authorities);
-
         return user;
     }
 }

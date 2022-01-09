@@ -9,6 +9,8 @@ eureka:
       defaultZone: http://localhost:8761/eureka
 
 spring:
+  application:
+    name: gateway-service
   cloud:
     gateway:
       globalcors:
@@ -25,11 +27,11 @@ spring:
               - credential
               - X-AUTH-TOKEN
               - X-CSRF-TOKEN
-              allowedMethods:
-                - POST
-                - GET
-                - PUT
-                - DELETE
+            allowedMethods:
+              - POST
+              - GET
+              - PUT
+              - DELETE
       routes:
         - id: user-service
           uri: lb://USER-SERVICE

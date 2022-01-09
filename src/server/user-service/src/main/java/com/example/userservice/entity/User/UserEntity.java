@@ -10,7 +10,7 @@ import java.time.LocalDate;
 
 @NoArgsConstructor
 @Getter
-@Entity
+@Entity(name = "users")
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +26,7 @@ public class UserEntity {
     private String encryptedPwd;
 
     @Column
-    private String name;
+    private String userName;
 
     @Column
     private String nickName;
@@ -53,7 +53,7 @@ public class UserEntity {
         this.email = email;
         this.userId = userId;
         this.encryptedPwd = encryptedPwd;
-        this.name = name;
+        this.userName = name;
         this.nickName = nickName;
         this.profileImage = profileImage;
         this.state = state;
@@ -78,6 +78,4 @@ public class UserEntity {
                 .profileImage(userDto.getProfileImage())
                 .build();
     }
-
-
 }
