@@ -31,6 +31,8 @@
 		49B9C9C6277ACE9F006AE134 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49B9C9C4277ACE9F006AE134 /* LaunchScreen.storyboard */; };
 		49B9C9F0277AEF4E006AE134 /* UIColor+CustomColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B9C9EF277AEF4E006AE134 /* UIColor+CustomColor.swift */; };
 		49B9C9F2277AF018006AE134 /* UIFont+CustomFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B9C9F1277AF018006AE134 /* UIFont+CustomFont.swift */; };
+		49C52CE0278B4379009D6FBB /* ChannelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C52CDE278B4379009D6FBB /* ChannelViewController.swift */; };
+		49C52CE1278B4379009D6FBB /* Channel.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49C52CDF278B4379009D6FBB /* Channel.storyboard */; };
 		49D7A0AA2783DBB9001CAC60 /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D7A0A92783DBB9001CAC60 /* LogInViewController.swift */; };
 		49D7A0AC2783ECAD001CAC60 /* AppUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D7A0AB2783ECAD001CAC60 /* AppUtility.swift */; };
 		49D7A0B527840595001CAC60 /* Register.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49D7A0AD27840595001CAC60 /* Register.storyboard */; };
@@ -38,8 +40,6 @@
 		49D7A0B727840595001CAC60 /* IdInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D7A0B027840595001CAC60 /* IdInputViewController.swift */; };
 		49D7A0B827840595001CAC60 /* PwInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D7A0B127840595001CAC60 /* PwInputViewController.swift */; };
 		49D7A0B927840595001CAC60 /* RegisterNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D7A0B227840595001CAC60 /* RegisterNavigationController.swift */; };
-		49D7A0BA27840595001CAC60 /* RegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D7A0B427840595001CAC60 /* RegisterViewModel.swift */; };
-		49D7A0BD27840B8F001CAC60 /* Channel.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49D7A0BC27840B8F001CAC60 /* Channel.storyboard */; };
 		49EC99FD2782015A00DE4F79 /* RecentViewedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EC99FC2782015A00DE4F79 /* RecentViewedCell.swift */; };
 		49EC9A00278201C600DE4F79 /* Create.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49EC99FF278201C600DE4F79 /* Create.storyboard */; };
 		49EC9A022782033E00DE4F79 /* CreatePopOverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EC9A012782033E00DE4F79 /* CreatePopOverViewController.swift */; };
@@ -74,6 +74,8 @@
 		49B9C9C7277ACE9F006AE134 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		49B9C9EF277AEF4E006AE134 /* UIColor+CustomColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+CustomColor.swift"; sourceTree = "<group>"; };
 		49B9C9F1277AF018006AE134 /* UIFont+CustomFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+CustomFont.swift"; sourceTree = "<group>"; };
+		49C52CDE278B4379009D6FBB /* ChannelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChannelViewController.swift; sourceTree = "<group>"; };
+		49C52CDF278B4379009D6FBB /* Channel.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Channel.storyboard; sourceTree = "<group>"; };
 		49D7A0A92783DBB9001CAC60 /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		49D7A0AB2783ECAD001CAC60 /* AppUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUtility.swift; sourceTree = "<group>"; };
 		49D7A0AD27840595001CAC60 /* Register.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Register.storyboard; sourceTree = "<group>"; };
@@ -81,8 +83,6 @@
 		49D7A0B027840595001CAC60 /* IdInputViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdInputViewController.swift; sourceTree = "<group>"; };
 		49D7A0B127840595001CAC60 /* PwInputViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PwInputViewController.swift; sourceTree = "<group>"; };
 		49D7A0B227840595001CAC60 /* RegisterNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterNavigationController.swift; sourceTree = "<group>"; };
-		49D7A0B427840595001CAC60 /* RegisterViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterViewModel.swift; sourceTree = "<group>"; };
-		49D7A0BC27840B8F001CAC60 /* Channel.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Channel.storyboard; sourceTree = "<group>"; };
 		49EC99FC2782015A00DE4F79 /* RecentViewedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentViewedCell.swift; sourceTree = "<group>"; };
 		49EC99FF278201C600DE4F79 /* Create.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Create.storyboard; sourceTree = "<group>"; };
 		49EC9A012782033E00DE4F79 /* CreatePopOverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePopOverViewController.swift; sourceTree = "<group>"; };
@@ -173,7 +173,7 @@
 				49EC9A032782039800DE4F79 /* TabBarController.swift */,
 				4935FD2D277BD95200760675 /* HomeList */,
 				4935FD32277BD97F00760675 /* Play */,
-				49D7A0BB27840AA9001CAC60 /* Channel */,
+				49C52CDD278B4379009D6FBB /* Channel */,
 				4935FD40277BDF6300760675 /* Chat */,
 				49EC99FE278201B500DE4F79 /* Create */,
 				49818AC62780C64300C0C956 /* MyPage */,
@@ -196,12 +196,20 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		49C52CDD278B4379009D6FBB /* Channel */ = {
+			isa = PBXGroup;
+			children = (
+				49C52CDF278B4379009D6FBB /* Channel.storyboard */,
+				49C52CDE278B4379009D6FBB /* ChannelViewController.swift */,
+			);
+			path = Channel;
+			sourceTree = "<group>";
+		};
 		49D7A0A62783D730001CAC60 /* Register */ = {
 			isa = PBXGroup;
 			children = (
 				49D7A0AD27840595001CAC60 /* Register.storyboard */,
 				49D7A0AE27840595001CAC60 /* ViewControllers */,
-				49D7A0B327840595001CAC60 /* ViewModel */,
 			);
 			path = Register;
 			sourceTree = "<group>";
@@ -210,27 +218,11 @@
 			isa = PBXGroup;
 			children = (
 				49D7A0B227840595001CAC60 /* RegisterNavigationController.swift */,
-				49D7A0AF27840595001CAC60 /* NickNameInputViewController.swift */,
 				49D7A0B027840595001CAC60 /* IdInputViewController.swift */,
 				49D7A0B127840595001CAC60 /* PwInputViewController.swift */,
+				49D7A0AF27840595001CAC60 /* NickNameInputViewController.swift */,
 			);
 			path = ViewControllers;
-			sourceTree = "<group>";
-		};
-		49D7A0B327840595001CAC60 /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				49D7A0B427840595001CAC60 /* RegisterViewModel.swift */,
-			);
-			path = ViewModel;
-			sourceTree = "<group>";
-		};
-		49D7A0BB27840AA9001CAC60 /* Channel */ = {
-			isa = PBXGroup;
-			children = (
-				49D7A0BC27840B8F001CAC60 /* Channel.storyboard */,
-			);
-			path = Channel;
 			sourceTree = "<group>";
 		};
 		49EC99FE278201B500DE4F79 /* Create */ = {
@@ -309,7 +301,7 @@
 				49D7A0B527840595001CAC60 /* Register.storyboard in Resources */,
 				49818AC82780C66100C0C956 /* MyPage.storyboard in Resources */,
 				49B9C9C3277ACE9F006AE134 /* Assets.xcassets in Resources */,
-				49D7A0BD27840B8F001CAC60 /* Channel.storyboard in Resources */,
+				49C52CE1278B4379009D6FBB /* Channel.storyboard in Resources */,
 				49B9C9C1277ACE9C006AE134 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -344,10 +336,10 @@
 				49EC9A06278205D200DE4F79 /* UIView+RoundCorners.swift in Sources */,
 				49D7A0B627840595001CAC60 /* NickNameInputViewController.swift in Sources */,
 				49B9C9F0277AEF4E006AE134 /* UIColor+CustomColor.swift in Sources */,
-				49D7A0BA27840595001CAC60 /* RegisterViewModel.swift in Sources */,
 				49D7A0B827840595001CAC60 /* PwInputViewController.swift in Sources */,
 				496279DC27829CA5005A2BDC /* AccountInfoViewController.swift in Sources */,
 				49B9C9BC277ACE9C006AE134 /* SceneDelegate.swift in Sources */,
+				49C52CE0278B4379009D6FBB /* ChannelViewController.swift in Sources */,
 				4935FD35277BDA5D00760675 /* CategoryCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

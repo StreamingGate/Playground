@@ -55,10 +55,10 @@
         <!--CreatePopOverViewController-->
         <scene sceneID="uhH-5I-afr">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="7Ui-NU-VaH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <viewControllerPlaceholder storyboardName="Create" referencedIdentifier="CreatePopOverViewController" id="btk-bs-NL2" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Item" id="jee-GX-A4I"/>
                 </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7Ui-NU-VaH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="580" y="37"/>
         </scene>
