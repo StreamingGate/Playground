@@ -20,3 +20,11 @@ jobs:
         with:
           workingDir: ./src/frontend
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+      - uses: 8398a7/action-slack@v3
+        with:
+          status: ${{job.status}}
+          text: "Storybook deploy finish ${{secrets.STORYBOOK_URL}}"
+          author_name: "Lee Jaeyun"
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: always()
