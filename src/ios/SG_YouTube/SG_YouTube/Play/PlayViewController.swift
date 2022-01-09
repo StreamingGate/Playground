@@ -53,6 +53,11 @@ class PlayViewController: UIViewController {
         setUI()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        AppUtility.lockOrientation(.all)
+    }
+    
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         titleLabel.isHidden = UIDevice.current.orientation.isLandscape
@@ -67,7 +72,7 @@ class PlayViewController: UIViewController {
             landscapeLayout = [chatContainerView.topAnchor.constraint(equalTo: self.view.topAnchor),
                playView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
                playView.trailingAnchor.constraint(equalTo: self.chatContainerView.leadingAnchor),
-               chatContainerView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width > UIScreen.main.bounds.height ? UIScreen.main.bounds.height : UIScreen.main.bounds.width)]
+               chatContainerView.widthAnchor.constraint(equalToConstant: 350)]
             self.view.backgroundColor = UIColor.black
             NSLayoutConstraint.activate(landscapeLayout)
         } else {
