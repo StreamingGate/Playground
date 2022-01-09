@@ -463,6 +463,7 @@
                         <outlet property="playViewTop" destination="S62-GT-XAz" id="qIm-Mw-v25"/>
                         <outlet property="separatorView" destination="wpe-05-P7u" id="dQ7-EI-RxE"/>
                         <outlet property="stackView" destination="AsF-jZ-9Y1" id="mcp-4k-CRe"/>
+                        <outlet property="stretchButton" destination="ckV-PD-W2u" id="73b-7c-0jy"/>
                         <outlet property="titleLabel" destination="6Ub-wC-BPw" id="y2N-L4-eS2"/>
                         <outlet property="viewLabel" destination="TYG-q8-tSZ" id="NA9-Ez-2vm"/>
                     </connections>

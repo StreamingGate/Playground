@@ -17,6 +17,7 @@ class PlayViewController: UIViewController {
     @IBOutlet weak var categoryLabel: UILabel!
     @IBOutlet weak var channelProfileImageView: UIImageView!
     @IBOutlet weak var channelNicknameLabel: UILabel!
+    @IBOutlet weak var stretchButton: UIButton!
     @IBOutlet weak var channelView: UIView!
     @IBOutlet weak var separatorView: UIView!
     @IBOutlet weak var stackView: UIStackView!
@@ -58,7 +59,7 @@ class PlayViewController: UIViewController {
         viewLabel.isHidden = UIDevice.current.orientation.isLandscape
         categoryLabel.isHidden = UIDevice.current.orientation.isLandscape
         stackView.isHidden = UIDevice.current.orientation.isLandscape
-        
+        stretchButton.isHidden = UIDevice.current.orientation.isLandscape
         if UIDevice.current.orientation.isLandscape {
             print("Landscape")
             NSLayoutConstraint.deactivate(portraitLayout)
