@@ -6,13 +6,6 @@ import Button from './Button';
 export default {
   title: 'Components/Buttons/Button',
   component: Button,
-  decorators: [
-    story => (
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around' }}>
-        {story()}
-      </div>
-    ),
-  ],
   args: {
     children: <Typography type='content'>구독</Typography>,
   },
