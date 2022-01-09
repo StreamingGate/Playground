@@ -9,7 +9,7 @@ export default {
     type: 'text',
     placeholder: '아이디를 입력해 주세요.',
     fontSize: 'content',
-    FullWidth: false,
+    fullWidth: false,
   },
 };
 
