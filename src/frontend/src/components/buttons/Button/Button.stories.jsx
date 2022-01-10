@@ -7,6 +7,7 @@ export default {
   title: 'Components/Buttons/Button',
   component: Button,
   args: {
+    fullWidth: false,
     children: <Typography type='content'>구독</Typography>,
   },
   parameters: { controls: { exclude: ['children'] } },
