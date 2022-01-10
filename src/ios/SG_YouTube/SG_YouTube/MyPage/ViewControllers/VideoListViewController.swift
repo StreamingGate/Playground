@@ -56,20 +56,3 @@ extension VideoListViewController: UICollectionViewDataSource, UICollectionViewD
         return CGSize(width: UIScreen.main.bounds.width, height: 82)
     }
 }
-
-class HorizontalVideoListCell: UICollectionViewCell {
-    @IBOutlet weak var thumbnailImageView: UIImageView!
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var explainLabel1: UILabel!
-    @IBOutlet weak var explainLabel2: UILabel!
-    @IBOutlet weak var lastPositionWidth: NSLayoutConstraint!
-    
-    func setupUI() {
-        thumbnailImageView.backgroundColor = UIColor.placeHolder
-        titleLabel.font = UIFont.caption
-        explainLabel1.font = UIFont.caption
-        explainLabel1.textColor = UIColor.customDarkGray
-        explainLabel2.font = UIFont.caption
-        explainLabel2.textColor = UIColor.customDarkGray
-    }
-}
