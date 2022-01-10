@@ -3,15 +3,25 @@ import { Link } from 'react-router-dom';
 
 import { VerticalLogo } from '@assets/icon';
 
+import { breakPoint } from '@utils/constant';
+
+const { queries } = breakPoint;
+
 export default {
   Form: styled.form`
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 347px;
-    min-height: 381px;
+    height: fit-content;
     padding: 35px 25px 25px;
     border: 1px solid ${({ theme }) => theme.colors.placeHolder};
+    background-color: #ffffff;
+
+    @media (${queries.mobileMax}) {
+      width: 100%;
+      height: 100%;
+    }
   `,
   Logo: styled(VerticalLogo)`
     width: 172px;
