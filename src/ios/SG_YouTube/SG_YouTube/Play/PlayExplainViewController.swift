@@ -27,12 +27,12 @@ class PlayExplainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setUI()
+        setupUI()
         prepareAnimation()
         showAnimation()
     }
     
-    func setUI() {
+    func setupUI() {
         explainTitleLabel.font = UIFont.caption
         explainTitleLabel.textColor = UIColor.customDarkGray
         videoTitleLabel.font = UIFont.Component

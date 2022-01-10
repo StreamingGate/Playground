@@ -14,7 +14,7 @@ class ChatCell: UITableViewCell {
     @IBOutlet weak var nicknameLabel: UILabel!
     @IBOutlet weak var contentLabel: UILabel!
     
-    func setUI() {
+    func setupUI() {
         profileImageView.backgroundColor = UIColor.placeHolder
         profileImageView.layer.cornerRadius = 33 / 2
         timeLabel.font = UIFont.bottomTab

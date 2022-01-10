@@ -23,7 +23,7 @@ class CreatePopOverViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setUI()
+        setupUI()
         prepareAnimation()
     }
     
@@ -33,7 +33,7 @@ class CreatePopOverViewController: UIViewController {
     }
     
     // MARK: - UI Setting
-    func setUI() {
+    func setupUI() {
         createTitleLabel.font = UIFont.SubTitle
         shortsCreateLabel.font = UIFont.Component
         liveCreateLabel.font = UIFont.Component

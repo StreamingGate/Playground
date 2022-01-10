@@ -23,11 +23,11 @@ class IdInputViewController: UIViewController {
     // MARK: Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.setUI()
+        self.setupUI()
     }
     
     // MARK: UI Setting
-    func setUI() {
+    func setupUI() {
         sendVerifyMailButton.layer.cornerRadius = 5
         nextButton.layer.cornerRadius = 5
         idTextField.font = UIFont.Content

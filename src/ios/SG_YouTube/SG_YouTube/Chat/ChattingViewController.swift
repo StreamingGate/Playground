@@ -16,11 +16,11 @@ class ChattingViewController: UIViewController {
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        setUI()
+        setupUI()
     }
     
     // MARK: - UI Setting
-    func setUI() {
+    func setupUI() {
         titleLabel.font = UIFont.Component
         viewerLabel.font = UIFont.caption
         viewerLabel.textColor = UIColor.customDarkGray
@@ -35,7 +35,7 @@ extension ChattingViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "ChatCell", for: indexPath) as? ChatCell else { return UITableViewCell()}
-        cell.setUI()
+        cell.setupUI()
         return cell
     }
     

@@ -36,7 +36,7 @@ extension HomeListViewController: UICollectionViewDataSource, UICollectionViewDe
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CategoryCell", for: indexPath) as? CategoryCell else { return UICollectionViewCell() }
-        cell.setUI(selected: selectedIndex == indexPath.item)
+        cell.setupUI(selected: selectedIndex == indexPath.item)
         return cell
     }
     
@@ -63,7 +63,7 @@ extension HomeListViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "VideoListCell", for: indexPath) as? VideoListCell else { return UITableViewCell() }
-        cell.setUI()
+        cell.setupUI()
         return cell
     }
     

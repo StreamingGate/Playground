@@ -16,10 +16,10 @@ class AccountEditViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setUI()
+        setupUI()
     }
     
-    func setUI() {
+    func setupUI() {
         titleLabel.font = UIFont.SubTitle
         nicknameLabel.textColor = UIColor.placeHolder
         nicknameLabel.font = UIFont.caption

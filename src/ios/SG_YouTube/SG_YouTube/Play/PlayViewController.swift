@@ -50,7 +50,7 @@ class PlayViewController: UIViewController {
         portraitLayout = [chatContainerViewLeading, chatContainerViewCenterX, chatContainerViewTop, playViewTop, playViewCenterX]
         NotificationCenter.default.addObserver(self, selector: #selector(adjustInputView), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(adjustInputView), name: UIResponder.keyboardWillHideNotification, object: nil)
-        setUI()
+        setupUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -86,7 +86,7 @@ class PlayViewController: UIViewController {
     
     
     // MARK: - UI Setting
-    func setUI() {
+    func setupUI() {
         titleLabel.font = UIFont.Component
         viewLabel.font = UIFont.caption
         viewLabel.textColor = UIColor.customDarkGray

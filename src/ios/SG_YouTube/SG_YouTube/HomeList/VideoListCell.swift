@@ -15,7 +15,7 @@ class VideoListCell: UITableViewCell {
     @IBOutlet weak var viewLabel: UILabel!
     @IBOutlet weak var liveSign: UIImageView!
     
-    func setUI() {
+    func setupUI() {
         titleLabel.font = UIFont.Component
         nicknameLabel.font = UIFont.caption
         nicknameLabel.textColor = UIColor.customDarkGray

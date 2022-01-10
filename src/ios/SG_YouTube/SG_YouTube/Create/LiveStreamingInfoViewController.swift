@@ -29,10 +29,10 @@ class LiveStreamingInfoViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setUI()
+        setupUI()
     }
     
-    func setUI() {
+    func setupUI() {
         currentAccountLabel.font = UIFont.bottomTab
         currentAccountLabel.textColor = UIColor.background
         accountNicknameLabel.font = UIFont.Component

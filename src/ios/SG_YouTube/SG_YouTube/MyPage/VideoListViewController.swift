@@ -13,10 +13,10 @@ class VideoListViewController: UIViewController {
     var type = 0
     override func viewDidLoad() {
         super.viewDidLoad()
-        setUI()
+        setupUI()
     }
     
-    func setUI() {
+    func setupUI() {
         titleLabel.font = UIFont.SubTitle
         switch type {
         case 0:
@@ -42,7 +42,7 @@ extension VideoListViewController: UICollectionViewDataSource, UICollectionViewD
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HorizontalVideoListCell", for: indexPath) as? HorizontalVideoListCell else {
             return UICollectionViewCell()
         }
-        cell.setUI()
+        cell.setupUI()
         return cell
     }
     
@@ -64,7 +64,7 @@ class HorizontalVideoListCell: UICollectionViewCell {
     @IBOutlet weak var explainLabel2: UILabel!
     @IBOutlet weak var lastPositionWidth: NSLayoutConstraint!
     
-    func setUI() {
+    func setupUI() {
         thumbnailImageView.backgroundColor = UIColor.placeHolder
         titleLabel.font = UIFont.caption
         explainLabel1.font = UIFont.caption

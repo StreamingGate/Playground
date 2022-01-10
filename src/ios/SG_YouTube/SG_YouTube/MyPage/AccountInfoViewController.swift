@@ -17,10 +17,10 @@ class AccountInfoViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setUI()
+        setupUI()
     }
     
-    func setUI() {
+    func setupUI() {
         logOutLabel.font = UIFont.Component
         nicknameLabel.font = UIFont.Content
         editButton.titleLabel?.font = UIFont.caption

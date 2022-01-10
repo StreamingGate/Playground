@@ -18,7 +18,7 @@ class MyPageViewController: UIViewController {
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        setUI()
+        setupUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -27,7 +27,7 @@ class MyPageViewController: UIViewController {
     }
     
     // MARK: - UI Setting
-    func setUI() {
+    func setupUI() {
         recentVideoTitleLabel.font = UIFont.Content
         viewedVideoLabel.font = UIFont.Component
         likedVideoLabel.font = UIFont.Component
@@ -70,7 +70,7 @@ extension MyPageViewController: UICollectionViewDataSource, UICollectionViewDele
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RecentViewedCell", for: indexPath) as? RecentViewedCell else { return UICollectionViewCell() }
-        cell.setUI()
+        cell.setupUI()
         return cell
     }
     

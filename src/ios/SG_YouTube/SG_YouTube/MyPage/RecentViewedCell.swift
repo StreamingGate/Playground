@@ -15,7 +15,7 @@ class RecentViewedCell: UICollectionViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var channelNicknameLabel: UILabel!
     
-    func setUI() {
+    func setupUI() {
         thumbnailImageView.backgroundColor = UIColor.placeHolder
         titleLabel.font = UIFont.caption
         channelNicknameLabel.font = UIFont.caption

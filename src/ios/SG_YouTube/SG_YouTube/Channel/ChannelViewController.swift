@@ -20,7 +20,7 @@ class ChannelViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         videoTableView.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
-        setUI()
+        setupUI()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -39,7 +39,7 @@ class ChannelViewController: UIViewController {
         }
     }
     
-    func setUI() {
+    func setupUI() {
         profileImageView.layer.cornerRadius = 25
         profileImageView.backgroundColor = UIColor.placeHolder
         channelTitleLabel.font = UIFont.SubTitle
@@ -62,7 +62,7 @@ extension ChannelViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "VideoListCell", for: indexPath) as? VideoListCell else { return UITableViewCell() }
-        cell.setUI()
+        cell.setupUI()
         return cell
     }
     

@@ -12,7 +12,7 @@ class CategoryCell: UICollectionViewCell {
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var categoryLabel: UILabel!
     
-    func setUI(selected: Bool) {
+    func setupUI(selected: Bool) {
         if selected {
             backView.backgroundColor = UIColor.placeHolder
             backView.layer.borderColor = UIColor.placeHolder.cgColor
