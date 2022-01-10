@@ -24,6 +24,7 @@
 		496279E02782C1AA005A2BDC /* LiveStreamingInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496279DF2782C1AA005A2BDC /* LiveStreamingInfoViewController.swift */; };
 		49818AC52780C63F00C0C956 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49818AC42780C63F00C0C956 /* MyPageViewController.swift */; };
 		49818AC82780C66100C0C956 /* MyPage.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49818AC72780C66100C0C956 /* MyPage.storyboard */; };
+		49AB6FE9278C545100D4D1E9 /* LiveChatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49AB6FE8278C545100D4D1E9 /* LiveChatCell.swift */; };
 		49B9C9BA277ACE9C006AE134 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B9C9B9277ACE9C006AE134 /* AppDelegate.swift */; };
 		49B9C9BC277ACE9C006AE134 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B9C9BB277ACE9C006AE134 /* SceneDelegate.swift */; };
 		49B9C9C1277ACE9C006AE134 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49B9C9BF277ACE9C006AE134 /* Main.storyboard */; };
@@ -40,6 +41,10 @@
 		49D7A0B727840595001CAC60 /* IdInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D7A0B027840595001CAC60 /* IdInputViewController.swift */; };
 		49D7A0B827840595001CAC60 /* PwInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D7A0B127840595001CAC60 /* PwInputViewController.swift */; };
 		49D7A0B927840595001CAC60 /* RegisterNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D7A0B227840595001CAC60 /* RegisterNavigationController.swift */; };
+		49E8E899278BB4C2003AD1DF /* HorizontalVideoListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E8E898278BB4C2003AD1DF /* HorizontalVideoListCell.swift */; };
+		49E8E89C278BB528003AD1DF /* Broadcast.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49E8E89B278BB528003AD1DF /* Broadcast.storyboard */; };
+		49E8E89E278BB5B0003AD1DF /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E8E89D278BB5B0003AD1DF /* CameraView.swift */; };
+		49E8E8A0278BC264003AD1DF /* LiveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E8E89F278BC264003AD1DF /* LiveViewController.swift */; };
 		49EC99FD2782015A00DE4F79 /* RecentViewedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EC99FC2782015A00DE4F79 /* RecentViewedCell.swift */; };
 		49EC9A00278201C600DE4F79 /* Create.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49EC99FF278201C600DE4F79 /* Create.storyboard */; };
 		49EC9A022782033E00DE4F79 /* CreatePopOverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EC9A012782033E00DE4F79 /* CreatePopOverViewController.swift */; };
@@ -65,6 +70,7 @@
 		496279DF2782C1AA005A2BDC /* LiveStreamingInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveStreamingInfoViewController.swift; sourceTree = "<group>"; };
 		49818AC42780C63F00C0C956 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 		49818AC72780C66100C0C956 /* MyPage.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MyPage.storyboard; sourceTree = "<group>"; };
+		49AB6FE8278C545100D4D1E9 /* LiveChatCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveChatCell.swift; sourceTree = "<group>"; };
 		49B9C9B6277ACE9C006AE134 /* SG_YouTube.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SG_YouTube.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49B9C9B9277ACE9C006AE134 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		49B9C9BB277ACE9C006AE134 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -83,6 +89,10 @@
 		49D7A0B027840595001CAC60 /* IdInputViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdInputViewController.swift; sourceTree = "<group>"; };
 		49D7A0B127840595001CAC60 /* PwInputViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PwInputViewController.swift; sourceTree = "<group>"; };
 		49D7A0B227840595001CAC60 /* RegisterNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterNavigationController.swift; sourceTree = "<group>"; };
+		49E8E898278BB4C2003AD1DF /* HorizontalVideoListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalVideoListCell.swift; sourceTree = "<group>"; };
+		49E8E89B278BB528003AD1DF /* Broadcast.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Broadcast.storyboard; sourceTree = "<group>"; };
+		49E8E89D278BB5B0003AD1DF /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
+		49E8E89F278BC264003AD1DF /* LiveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveViewController.swift; sourceTree = "<group>"; };
 		49EC99FC2782015A00DE4F79 /* RecentViewedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentViewedCell.swift; sourceTree = "<group>"; };
 		49EC99FF278201C600DE4F79 /* Create.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Create.storyboard; sourceTree = "<group>"; };
 		49EC9A012782033E00DE4F79 /* CreatePopOverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePopOverViewController.swift; sourceTree = "<group>"; };
@@ -136,12 +146,7 @@
 			isa = PBXGroup;
 			children = (
 				49818AC72780C66100C0C956 /* MyPage.storyboard */,
-				496279DB27829CA5005A2BDC /* AccountInfoViewController.swift */,
-				496279DD2782BB85005A2BDC /* AccountEditViewController.swift */,
-				496279D727829516005A2BDC /* MyPageNavigationController.swift */,
-				49818AC42780C63F00C0C956 /* MyPageViewController.swift */,
-				49EC99FC2782015A00DE4F79 /* RecentViewedCell.swift */,
-				496279D9278297C2005A2BDC /* VideoListViewController.swift */,
+				49E8E89A278BB500003AD1DF /* ViewControllers */,
 			);
 			path = MyPage;
 			sourceTree = "<group>";
@@ -225,10 +230,28 @@
 			path = ViewControllers;
 			sourceTree = "<group>";
 		};
+		49E8E89A278BB500003AD1DF /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				496279DB27829CA5005A2BDC /* AccountInfoViewController.swift */,
+				496279DD2782BB85005A2BDC /* AccountEditViewController.swift */,
+				496279D727829516005A2BDC /* MyPageNavigationController.swift */,
+				49818AC42780C63F00C0C956 /* MyPageViewController.swift */,
+				496279D9278297C2005A2BDC /* VideoListViewController.swift */,
+				49EC99FC2782015A00DE4F79 /* RecentViewedCell.swift */,
+				49E8E898278BB4C2003AD1DF /* HorizontalVideoListCell.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
 		49EC99FE278201B500DE4F79 /* Create */ = {
 			isa = PBXGroup;
 			children = (
 				49EC99FF278201C600DE4F79 /* Create.storyboard */,
+				49E8E89B278BB528003AD1DF /* Broadcast.storyboard */,
+				49AB6FE8278C545100D4D1E9 /* LiveChatCell.swift */,
+				49E8E89F278BC264003AD1DF /* LiveViewController.swift */,
+				49E8E89D278BB5B0003AD1DF /* CameraView.swift */,
 				496279DF2782C1AA005A2BDC /* LiveStreamingInfoViewController.swift */,
 				49EC9A012782033E00DE4F79 /* CreatePopOverViewController.swift */,
 			);
@@ -300,6 +323,7 @@
 				49EC9A00278201C600DE4F79 /* Create.storyboard in Resources */,
 				49D7A0B527840595001CAC60 /* Register.storyboard in Resources */,
 				49818AC82780C66100C0C956 /* MyPage.storyboard in Resources */,
+				49E8E89C278BB528003AD1DF /* Broadcast.storyboard in Resources */,
 				49B9C9C3277ACE9F006AE134 /* Assets.xcassets in Resources */,
 				49C52CE1278B4379009D6FBB /* Channel.storyboard in Resources */,
 				49B9C9C1277ACE9C006AE134 /* Main.storyboard in Resources */,
@@ -316,17 +340,20 @@
 				496279DE2782BB85005A2BDC /* AccountEditViewController.swift in Sources */,
 				496279DA278297C2005A2BDC /* VideoListViewController.swift in Sources */,
 				49D7A0AA2783DBB9001CAC60 /* LogInViewController.swift in Sources */,
+				49E8E89E278BB5B0003AD1DF /* CameraView.swift in Sources */,
 				49D7A0B927840595001CAC60 /* RegisterNavigationController.swift in Sources */,
 				496279D627828BB3005A2BDC /* PlayExplainViewController.swift in Sources */,
 				49D7A0B727840595001CAC60 /* IdInputViewController.swift in Sources */,
 				4935FD39277BDAC300760675 /* PlayViewController.swift in Sources */,
 				4935FD44277C0ED100760675 /* ChatCell.swift in Sources */,
 				49D7A0AC2783ECAD001CAC60 /* AppUtility.swift in Sources */,
+				49E8E8A0278BC264003AD1DF /* LiveViewController.swift in Sources */,
 				49EC9A042782039800DE4F79 /* TabBarController.swift in Sources */,
 				496279E02782C1AA005A2BDC /* LiveStreamingInfoViewController.swift in Sources */,
 				4935FD37277BDA5D00760675 /* VideoListCell.swift in Sources */,
 				49B9C9F2277AF018006AE134 /* UIFont+CustomFont.swift in Sources */,
 				4935FD36277BDA5D00760675 /* HomeListViewController.swift in Sources */,
+				49E8E899278BB4C2003AD1DF /* HorizontalVideoListCell.swift in Sources */,
 				49EC99FD2782015A00DE4F79 /* RecentViewedCell.swift in Sources */,
 				496279D827829516005A2BDC /* MyPageNavigationController.swift in Sources */,
 				49B9C9BA277ACE9C006AE134 /* AppDelegate.swift in Sources */,
@@ -339,6 +366,7 @@
 				49D7A0B827840595001CAC60 /* PwInputViewController.swift in Sources */,
 				496279DC27829CA5005A2BDC /* AccountInfoViewController.swift in Sources */,
 				49B9C9BC277ACE9C006AE134 /* SceneDelegate.swift in Sources */,
+				49AB6FE9278C545100D4D1E9 /* LiveChatCell.swift in Sources */,
 				49C52CE0278B4379009D6FBB /* ChannelViewController.swift in Sources */,
 				4935FD35277BDA5D00760675 /* CategoryCell.swift in Sources */,
 			);

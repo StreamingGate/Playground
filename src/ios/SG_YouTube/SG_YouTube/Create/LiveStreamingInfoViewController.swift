@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import AVFoundation
 
 class LiveStreamingInfoViewController: UIViewController {
     @IBOutlet weak var currentAccountLabel: UILabel!
@@ -26,9 +27,37 @@ class LiveStreamingInfoViewController: UIViewController {
     @IBOutlet weak var loadingLabel: UILabel!
     @IBOutlet weak var loadingCancelButton: UIButton!
     
+    @IBOutlet weak var cameraView: CameraView!
+    @IBOutlet weak var cameraViewTopMargin: NSLayoutConstraint!
+    @IBOutlet weak var cameraViewBottomMargin: NSLayoutConstraint!
+    @IBOutlet weak var loadingViewTopMargin: NSLayoutConstraint!
+    @IBOutlet weak var loadingViewBottomMargin: NSLayoutConstraint!
+    
+    
+    let captureSession = AVCaptureSession()
+    var videoDeviceInput: AVCaptureDeviceInput!
+    let photoOutput = AVCapturePhotoOutput()
+    
+    let sessionQueue = DispatchQueue(label: "session queue")
+    let videoDeviceDiscoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInDualCamera, .builtInWideAngleCamera, .builtInTrueDepthCamera], mediaType: .video, position: .unspecified)
+    
+    
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        cameraViewTopMargin.constant = -(self.view.safeAreaInsets.top)
+        cameraViewBottomMargin.constant = -(self.view.safeAreaInsets.bottom)
+        loadingViewTopMargin.constant = -(self.view.safeAreaInsets.top)
+        loadingViewBottomMargin.constant = (self.view.safeAreaInsets.bottom)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        cameraView.session = captureSession
+        sessionQueue.async {
+            self.setupSession()
+            self.startSession()
+        }
         setupUI()
     }
     
@@ -96,5 +125,88 @@ class LiveStreamingInfoViewController: UIViewController {
     
     @IBAction func closeButtonDidTap(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    @IBAction func tempButtonDidTap(_ sender: Any) {
+        guard let vc = UIStoryboard(name: "Broadcast", bundle: nil).instantiateViewController(withIdentifier: "LiveViewController") as? LiveViewController else { return }
+        vc.modalPresentationStyle = .fullScreen
+        self.present(vc, animated: true, completion: nil)
+    }
+}
+
+
+
+extension LiveStreamingInfoViewController {
+    // MARK: - Setup session and preview
+    func setupSession() {
+        // TODO: captureSession 구성하기
+        // - presetSetting 하기
+        // - beginConfiguration
+        // - Add Video Input
+        // - Add Photo Output
+        // - commitConfiguration
+        
+        captureSession.sessionPreset = .photo
+        captureSession.beginConfiguration()
+        
+        // Add Video Input
+        do {
+            var defaultVideoDevice: AVCaptureDevice?
+            if let dualCameraDevice = AVCaptureDevice.default(.builtInDualCamera, for: .video, position: .back) {
+                defaultVideoDevice = dualCameraDevice
+            } else if let backCameraDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back) {
+                defaultVideoDevice = backCameraDevice
+            } else if let frontCameraDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front) {
+                defaultVideoDevice = frontCameraDevice
+            }
+            
+            guard let camera = defaultVideoDevice else {
+                captureSession.commitConfiguration()
+                return
+            }
+            
+            let videoDeviceInput = try AVCaptureDeviceInput(device: camera)
+            
+            if captureSession.canAddInput(videoDeviceInput) {
+                captureSession.addInput(videoDeviceInput)
+                self.videoDeviceInput = videoDeviceInput
+            } else {
+                captureSession.commitConfiguration()
+                return
+            }
+        } catch {
+            captureSession.commitConfiguration()
+            return
+        }
+        
+        
+        // Add photo output
+        photoOutput.setPreparedPhotoSettingsArray([AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.jpeg])], completionHandler: nil)
+        if captureSession.canAddOutput(photoOutput) {
+            captureSession.addOutput(photoOutput)
+        } else {
+            captureSession.commitConfiguration()
+            return
+        }
+        
+        captureSession.commitConfiguration()
+    }
+    
+    func startSession() {
+        // TODO: session Start
+        if !captureSession.isRunning {
+            sessionQueue.async {
+                self.captureSession.startRunning()
+            }
+        }
+    }
+    
+    func stopSession() {
+        // TODO: session Stop
+        if captureSession.isRunning {
+            sessionQueue.async {
+                self.captureSession.stopRunning()
+            }
+        }
     }
 }
