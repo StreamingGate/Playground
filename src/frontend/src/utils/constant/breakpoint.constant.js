@@ -1,11 +1,16 @@
 const screenSize = {
-  tablet: 1023.99,
-  mobile: 767.99,
+  laptop: 1023.99,
+  tablet: 767.99,
+  mobile: 450,
+  minSize: 350,
 };
 
 const queries = {
+  laptopMax: `max-width: ${screenSize.laptop / 16}rem`,
   tabletMax: `max-width: ${screenSize.tablet / 16}rem`,
   mobileMax: `max-width: ${screenSize.mobile / 16}rem`,
 };
 
-export default queries;
+const breakPoint = { queries, screenSize };
+
+export default breakPoint;
