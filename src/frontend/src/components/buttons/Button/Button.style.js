@@ -35,9 +35,10 @@ const getButtonColor = props => {
 
 export default {
   B: styled.button`
-    ${({ size }) => getButtonPadding(size)}
-    ${props => getButtonColor(props)}
     border-radius: 3px;
     cursor: pointer;
+    ${({ size }) => getButtonPadding(size)}
+    ${props => getButtonColor(props)}
+    width: ${({ fullWidth }) => (fullWidth ? '100%' : 'auto')};
   `,
 };
