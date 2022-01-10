@@ -40,17 +40,21 @@ module.exports = (env, args) => {
     module: {
       rules: [
         {
-          test: /\.(png|svg|jpg|jpeg|gif)$/i,
+          test: /\.(png|jpg|jpeg|gif)$/i,
           type: 'asset/resource',
         },
         {
-          test: /\.(png|svg|jpg|jpeg|gif)$/i,
+          test: /\.(png|jpg|jpeg|gif)$/i,
           type: 'asset',
           parser: {
             dataUrlCondition: {
               maxSize: 4 * 1024,
             },
           },
+        },
+        {
+          test: /\.svg$/i,
+          use: ['@svgr/webpack'],
         },
         {
           test: /\.(ttf)$/i,
