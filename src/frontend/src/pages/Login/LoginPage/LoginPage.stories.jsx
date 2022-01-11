@@ -10,3 +10,6 @@ export default {
 const Template = args => <LoginPage {...args} />;
 
 export const Login = Template.bind({});
+Login.parameters = {
+  layout: 'fullscreen',
+};

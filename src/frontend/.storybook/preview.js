@@ -24,5 +24,3 @@ export const decorators = [
     </Router>
   ),
 ];
-
-export const parameters = { layout: 'fullscreen' };
