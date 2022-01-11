@@ -2,7 +2,7 @@ const screenSize = {
   laptop: 1023.99,
   tablet: 767.99,
   mobile: 450,
-  minSize: 350,
+  minSize: 300,
 };
 
 const queries = {
