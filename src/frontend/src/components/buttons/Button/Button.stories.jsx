@@ -10,7 +10,7 @@ export default {
     fullWidth: false,
     children: <Typography type='content'>구독</Typography>,
   },
-  parameters: { controls: { exclude: ['children'] } },
+  parameters: { controls: { exclude: ['children', 'className'] } },
 };
 
 const SizeTemplate = args => (
