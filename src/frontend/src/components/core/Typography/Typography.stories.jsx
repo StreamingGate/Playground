@@ -5,6 +5,13 @@ import Typography from './Typography';
 export default {
   title: 'Components/Core/Typography',
   component: Typography,
+  decorators: [
+    Story => (
+      <div>
+        <Story />
+      </div>
+    ),
+  ],
   args: {
     children: 'Almost before we knew it, we had left the ground.',
     props: [
