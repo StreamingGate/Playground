@@ -1,4 +1,5 @@
 import React from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 
 import { GlobalStyle, NormalizeStyle } from '@components/styles';
@@ -16,5 +17,10 @@ export const decorators = [
     <div style={{ display: 'flex', alignItems: 'flex-end', gap: '10px' }}>
       <Story />
     </div>
+  ),
+  Story => (
+    <Router>
+      <Story />
+    </Router>
   ),
 ];
