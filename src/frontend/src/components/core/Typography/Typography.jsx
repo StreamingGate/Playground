@@ -15,11 +15,11 @@ Typography.propTypes = {
     'lightTitle',
     'component',
     'content',
-    'hightlightCaption',
+    'highlightCaption',
     'caption',
     'bottomTab',
   ]),
-  children: PropTypes.string,
+  children: PropTypes.node,
 };
 
 Typography.defaultProps = {
