@@ -20,6 +20,8 @@
     "@babel/preset-react": "^7.16.7",
     "@storybook/addon-a11y": "^6.4.9",
     "@storybook/addon-essentials": "^6.4.9",
+    "@storybook/builder-webpack5": "^6.4.9",
+    "@storybook/manager-webpack5": "^6.4.9",
     "@storybook/react": "^6.4.9",
     "@svgr/webpack": "^6.1.2",
     "babel-loader": "^8.2.3",
