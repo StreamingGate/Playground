@@ -25,6 +25,7 @@ export default {
   `,
   Logo: styled(VerticalLogo)`
     width: 172px;
+    height: 40px;
   `,
   InputContainer: styled.div`
     margin: 30px 0 40px;
