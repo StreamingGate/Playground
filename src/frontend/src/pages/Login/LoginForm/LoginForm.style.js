@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-import { VerticalLogo } from '@assets/icon';
+import { VerticalLogo } from '@components/core';
 
 import { breakPoint } from '@utils/constant';
 
