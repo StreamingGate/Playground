@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Typography from '@components/core/Typography/Typography';
+import { Typography } from '@components/cores';
 import Button from './Button';
 
 export default {

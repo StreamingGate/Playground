@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { AddEmptyCircle } from '@components/core';
+import { AddEmptyCircle } from '@components/cores';
 import IconButton from './IconButton';
 
 export default {

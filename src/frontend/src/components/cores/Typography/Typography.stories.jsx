@@ -3,7 +3,7 @@ import React, { Fragment } from 'react';
 import Typography from './Typography';
 
 export default {
-  title: 'Components/Core/Typography',
+  title: 'Components/Cores/Typography',
   component: Typography,
   decorators: [
     Story => (
