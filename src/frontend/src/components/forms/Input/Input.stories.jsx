@@ -11,6 +11,7 @@ export default {
     fontSize: 'content',
     fullWidth: false,
   },
+  parameters: { controls: { exclude: ['className'] } },
 };
 
 const VariantTemplate = args => (
