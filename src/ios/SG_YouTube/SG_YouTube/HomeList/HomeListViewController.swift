@@ -14,9 +14,20 @@ class HomeListViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     var selectedIndex = 0
     
+    let playerView = UIView()
+    var safeTop: CGFloat = 0
+    var safeBottom: CGFloat = 0
+    
     // MARK: - View Life Cycle
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        safeTop = self.view.safeAreaInsets.top
+        safeBottom = self.tabBarController?.tabBar.safeAreaInsets.bottom ?? 0
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.tabBarController?.tabBar.backgroundColor = UIColor.white
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -25,6 +36,19 @@ class HomeListViewController: UIViewController {
     }
     
     @IBAction func searchButtonDidTap(_ sender: Any) {
+        print(self.tabBarController!.tabBar.frame.height)
+        print(self.view.safeAreaInsets.bottom)
+    }
+    
+    func removeTopChildViewController(){
+        if self.children.count > 0{
+            let viewControllers:[UIViewController] = self.children
+            for i in viewControllers {
+                i.willMove(toParent: nil)
+                i.removeFromParent()
+                i.view.removeFromSuperview()
+            }
+        }
     }
 }
 
@@ -68,13 +92,25 @@ extension HomeListViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let playVC = UIStoryboard(name: "Play", bundle: nil).instantiateViewController(withIdentifier: "PlayViewController" ) as? PlayViewController else { return }
-        playVC.modalPresentationStyle = .fullScreen
-        self.present(playVC, animated: true, completion: nil)
+        if let playVC = self.children.last as? PlayViewController {
+            self.tabBarController?.setTabBar(hidden: true, animated: true, along: self.parent?.transitionCoordinator)
+            playVC.isMinimized = false
+            UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) {
+                playVC.playViewWidth.constant = UIScreen.main.bounds.width
+                playVC.view.backgroundColor = UIColor.black.withAlphaComponent(1)
+                playVC.view.center = CGPoint(x: playVC.view.frame.width / 2, y: playVC.view.frame.height / 2)
+            }
+        } else {
+            guard let playVC = UIStoryboard(name: "Play", bundle: nil).instantiateViewController(withIdentifier: "PlayViewController" ) as? PlayViewController else { return }
+            self.tabBarController?.setTabBar(hidden: true, animated: true, along: self.transitionCoordinator)
+            self.addChild(playVC)
+            self.view.addSubview((playVC.view)!)
+            playVC.view.frame = self.view.bounds
+            playVC.didMove(toParent: self)
+        }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }
-    
 }

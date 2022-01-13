@@ -131,13 +131,17 @@
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="M2E-lm-YzX"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="displayP3"/>
+                        <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="PjS-sX-3zX" firstAttribute="leading" secondItem="M2E-lm-YzX" secondAttribute="leading" id="E87-6V-rSh"/>
                             <constraint firstItem="PjS-sX-3zX" firstAttribute="bottom" secondItem="M2E-lm-YzX" secondAttribute="bottom" constant="34" id="ZvV-Ew-tpK"/>
                             <constraint firstItem="PjS-sX-3zX" firstAttribute="centerX" secondItem="M2E-lm-YzX" secondAttribute="centerX" id="sfi-md-LP0"/>
                         </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="9VP-D0-Hh2" appends="YES" id="JI0-0m-usR"/>
+                        </connections>
                     </view>
-                    <tabBarItem key="tabBarItem" title="" image="add_circle" id="5dH-hO-Plp"/>
+                    <navigationItem key="navigationItem" id="95u-Mu-fuh"/>
                     <connections>
                         <outlet property="backView" destination="PjS-sX-3zX" id="sDB-To-5Ek"/>
                         <outlet property="createTitleLabel" destination="k0K-w9-tGW" id="LTe-U0-hB7"/>
@@ -146,8 +150,14 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7q2-Wf-zaF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="9VP-D0-Hh2">
+                    <connections>
+                        <action selector="backgroundDidTap:" destination="Yfr-7I-XDK" id="Znz-Xv-7PT"/>
+                        <outlet property="delegate" destination="Yfr-7I-XDK" id="yzQ-NB-pr1"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1117" y="176"/>
+            <point key="canvasLocation" x="1756.521739130435" y="175.44642857142856"/>
         </scene>
         <!--Live Streaming Info View Controller-->
         <scene sceneID="Pzr-CU-ubN">
@@ -417,7 +427,25 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SvK-22-gOJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1815.9420289855075" y="175.44642857142856"/>
+            <point key="canvasLocation" x="2726.0869565217395" y="175.44642857142856"/>
+        </scene>
+        <!--Create Navigation Controller-->
+        <scene sceneID="vyy-Q2-DWE">
+            <objects>
+                <navigationController storyboardIdentifier="CreateNavigationController" automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="qEi-FL-Voz" customClass="CreateNavigationController" customModule="SG_YouTube" customModuleProvider="target" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="" image="add_circle" id="5dH-hO-Plp"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="0hy-27-hf3">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="Yfr-7I-XDK" kind="relationship" relationship="rootViewController" id="1vM-m7-rBj"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="JHP-vb-6cX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="844.92753623188412" y="174.77678571428569"/>
         </scene>
     </scenes>
     <resources>

@@ -141,7 +141,7 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="414" height="233"/>
                                                     <color key="backgroundColor" name="Separator"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" secondItem="J38-vs-nkq" secondAttribute="height" multiplier="16:9" id="IaP-Ma-zCt"/>
+                                                        <constraint firstAttribute="width" secondItem="J38-vs-nkq" secondAttribute="height" multiplier="16:9" priority="750" id="IaP-Ma-zCt"/>
                                                     </constraints>
                                                 </view>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="liveSign" translatesAutoresizingMaskIntoConstraints="NO" id="Suu-l4-YDW">

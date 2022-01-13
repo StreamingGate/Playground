@@ -128,9 +128,10 @@ class LiveStreamingInfoViewController: UIViewController {
     }
     
     @IBAction func tempButtonDidTap(_ sender: Any) {
-        guard let vc = UIStoryboard(name: "Broadcast", bundle: nil).instantiateViewController(withIdentifier: "LiveViewController") as? LiveViewController else { return }
-        vc.modalPresentationStyle = .fullScreen
-        self.present(vc, animated: true, completion: nil)
+        guard let vc = UIStoryboard(name: "Broadcast", bundle: nil).instantiateViewController(withIdentifier: "LiveViewController") as? LiveViewController, var viewControllers = self.navigationController?.viewControllers else { return }
+        viewControllers[viewControllers.count - 1] = vc
+        self.navigationController?.setViewControllers(viewControllers, animated: true)
+        
     }
 }
 
@@ -139,12 +140,6 @@ class LiveStreamingInfoViewController: UIViewController {
 extension LiveStreamingInfoViewController {
     // MARK: - Setup session and preview
     func setupSession() {
-        // TODO: captureSession 구성하기
-        // - presetSetting 하기
-        // - beginConfiguration
-        // - Add Video Input
-        // - Add Photo Output
-        // - commitConfiguration
         
         captureSession.sessionPreset = .photo
         captureSession.beginConfiguration()
@@ -193,7 +188,6 @@ extension LiveStreamingInfoViewController {
     }
     
     func startSession() {
-        // TODO: session Start
         if !captureSession.isRunning {
             sessionQueue.async {
                 self.captureSession.startRunning()
@@ -202,7 +196,6 @@ extension LiveStreamingInfoViewController {
     }
     
     func stopSession() {
-        // TODO: session Stop
         if captureSession.isRunning {
             sessionQueue.async {
                 self.captureSession.stopRunning()

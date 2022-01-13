@@ -13,7 +13,7 @@
         <!--Tab Bar Controller-->
         <scene sceneID="6FB-v6-dP2">
             <objects>
-                <tabBarController storyboardIdentifier="TabBarController" automaticallyAdjustsScrollViewInsets="NO" id="qyu-BS-Ov5" customClass="TabBarController" customModule="SG_YouTube" customModuleProvider="target" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="TabBarController" automaticallyAdjustsScrollViewInsets="NO" hidesBottomBarWhenPushed="YES" id="qyu-BS-Ov5" customClass="TabBarController" customModule="SG_YouTube" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="yR5-jF-PZJ">
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
@@ -52,10 +52,10 @@
             </objects>
             <point key="canvasLocation" x="569" y="224"/>
         </scene>
-        <!--CreatePopOverViewController-->
+        <!--CreateNavigationController-->
         <scene sceneID="uhH-5I-afr">
             <objects>
-                <viewControllerPlaceholder storyboardName="Create" referencedIdentifier="CreatePopOverViewController" id="btk-bs-NL2" sceneMemberID="viewController">
+                <viewControllerPlaceholder storyboardName="Create" referencedIdentifier="CreateNavigationController" id="btk-bs-NL2" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Item" id="jee-GX-A4I"/>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7Ui-NU-VaH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
