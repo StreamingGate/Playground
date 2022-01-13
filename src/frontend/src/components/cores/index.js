@@ -6,3 +6,5 @@ export { default as HamburgerBar } from './Icons/HamburgerBar';
 export { default as Alarm } from './Icons/Alarm';
 export { default as Search } from './Icons/Search';
 export { default as ArrowBack } from './Icons/ArrowBack';
+export { default as HomeEmpty } from './Icons/HomeEmpty';
+export { default as History } from './Icons/History';
