@@ -10,3 +10,4 @@ export { default as HomeEmpty } from './Icons/HomeEmpty';
 export { default as History } from './Icons/History';
 export { default as ThumbUp } from './Icons/ThumbUp';
 export { default as HighlightEmpty } from './Icons/HighlightEmpty';
+export { default as MyVideo } from './Icons/MyVideo';
