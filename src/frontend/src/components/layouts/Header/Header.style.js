@@ -24,6 +24,7 @@ export default {
   `,
   HambergurIconButton: styled(IconButton)`
     margin-left: -6px;
+    margin-right: 17px;
   `,
   VerticalLogo: styled(VerticalLogo)`
     width: 116px;
