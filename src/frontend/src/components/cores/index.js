@@ -9,3 +9,4 @@ export { default as ArrowBack } from './Icons/ArrowBack';
 export { default as HomeEmpty } from './Icons/HomeEmpty';
 export { default as History } from './Icons/History';
 export { default as ThumbUp } from './Icons/ThumbUp';
+export { default as HighlightEmpty } from './Icons/HighlightEmpty';
