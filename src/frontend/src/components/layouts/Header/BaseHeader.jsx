@@ -14,9 +14,9 @@ function BaseHeader() {
   return (
     <>
       <S.HeaderLeftDiv>
-        <IconButton>
+        <S.HambergurIconButton>
           <HamburgerBar />
-        </IconButton>
+        </S.HambergurIconButton>
         <S.VerticalLogo />
       </S.HeaderLeftDiv>
       <SearchSection />

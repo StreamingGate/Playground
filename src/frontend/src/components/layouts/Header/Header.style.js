@@ -22,6 +22,9 @@ export default {
     display: flex;
     align-items: center;
   `,
+  HambergurIconButton: styled(IconButton)`
+    margin-left: -6px;
+  `,
   VerticalLogo: styled(VerticalLogo)`
     width: 116px;
     height: 27px;
