@@ -139,12 +139,6 @@ class LiveStreamingInfoViewController: UIViewController {
 extension LiveStreamingInfoViewController {
     // MARK: - Setup session and preview
     func setupSession() {
-        // TODO: captureSession 구성하기
-        // - presetSetting 하기
-        // - beginConfiguration
-        // - Add Video Input
-        // - Add Photo Output
-        // - commitConfiguration
         
         captureSession.sessionPreset = .photo
         captureSession.beginConfiguration()
@@ -193,7 +187,6 @@ extension LiveStreamingInfoViewController {
     }
     
     func startSession() {
-        // TODO: session Start
         if !captureSession.isRunning {
             sessionQueue.async {
                 self.captureSession.startRunning()
@@ -202,7 +195,6 @@ extension LiveStreamingInfoViewController {
     }
     
     func stopSession() {
-        // TODO: session Stop
         if captureSession.isRunning {
             sessionQueue.async {
                 self.captureSession.stopRunning()
