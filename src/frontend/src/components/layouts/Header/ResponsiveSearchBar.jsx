@@ -5,7 +5,7 @@ import { HeaderContext } from '@utils/context';
 import { IconButton } from '@components/buttons';
 import { ArrowBack } from '@components/cores';
 import Profile from './Profile';
-import SearchSection from './SearchSection';
+import SearchForm from './SearchForm';
 
 function ResponsiveSearchBar() {
   const { onToggle } = useContext(HeaderContext);
@@ -15,7 +15,7 @@ function ResponsiveSearchBar() {
       <IconButton onClick={onToggle}>
         <ArrowBack />
       </IconButton>
-      <SearchSection />
+      <SearchForm />
       <Profile />
     </>
   );

@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 
 import { IconButton } from '@components/buttons';
 import { HamburgerBar, AddEmptyCircle, Alarm, Search } from '@components/cores';
-import SearchSection from './SearchSection';
+import SearchForm from './SearchForm';
 import Profile from './Profile';
 
 import { HeaderContext } from '@/utils/context';
@@ -19,7 +19,7 @@ function BaseHeader() {
         </S.HambergurIconButton>
         <S.VerticalLogo />
       </S.HeaderLeftDiv>
-      <SearchSection />
+      <SearchForm />
       <S.HeaderRightDiv>
         <S.TabletSearchIconButton onClick={onToggle}>
           <Search />
