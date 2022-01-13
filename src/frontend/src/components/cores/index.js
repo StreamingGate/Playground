@@ -5,3 +5,4 @@ export { default as AddEmptyCircle } from './Icons/AddEmptyCircle';
 export { default as HamburgerBar } from './Icons/HamburgerBar';
 export { default as Alarm } from './Icons/Alarm';
 export { default as Search } from './Icons/Search';
+export { default as ArrowBack } from './Icons/ArrowBack';
