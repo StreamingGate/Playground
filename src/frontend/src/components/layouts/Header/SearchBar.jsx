@@ -7,7 +7,7 @@ import { ArrowBack } from '@components/cores';
 import Profile from './Profile';
 import SearchForm from './SearchForm';
 
-function ResponsiveSearchBar() {
+function SearchBar() {
   const { onToggle } = useContext(HeaderContext);
 
   return (
@@ -21,4 +21,4 @@ function ResponsiveSearchBar() {
   );
 }
 
-export default ResponsiveSearchBar;
+export default SearchBar;

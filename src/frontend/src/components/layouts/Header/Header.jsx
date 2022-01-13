@@ -5,7 +5,7 @@ import { breakPoint } from '@utils/constant';
 import S from './Header.style';
 
 import BaseHeader from './BaseHeader';
-import ResponsiveSearchBar from './ResponsiveSearchBar';
+import SearchBar from './SearchBar';
 
 const { screenSize } = breakPoint;
 
@@ -41,7 +41,7 @@ function Header() {
 
   return (
     <HeaderContext.Provider value={headerContextValue}>
-      <S.Header>{showResponsiveSearchBar ? <ResponsiveSearchBar /> : <BaseHeader />}</S.Header>
+      <S.Header>{showResponsiveSearchBar ? <SearchBar /> : <BaseHeader />}</S.Header>
     </HeaderContext.Provider>
   );
 }
