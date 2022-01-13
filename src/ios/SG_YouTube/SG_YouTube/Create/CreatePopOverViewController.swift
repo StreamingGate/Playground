@@ -70,10 +70,21 @@ class CreatePopOverViewController: UIViewController {
     }
     
     @IBAction func liveStreamingButtonDidTap(_ sender: Any) {
-        guard let liveInfoVC = UIStoryboard(name: "Create", bundle: nil).instantiateViewController(withIdentifier: "LiveStreamingInfoViewController") as? LiveStreamingInfoViewController else { return }
-        liveInfoVC.modalPresentationStyle = .fullScreen
-        self.present(liveInfoVC, animated: true) {
-            self.view.removeFromSuperview()
+        guard let liveInfoVC = UIStoryboard(name: "Create", bundle: nil).instantiateViewController(withIdentifier: "LiveStreamingInfoViewController") as? LiveStreamingInfoViewController, var viewControllers = self.navigationController?.viewControllers else { return }
+        viewControllers[viewControllers.count - 1] = liveInfoVC
+        self.navigationController?.setViewControllers(viewControllers, animated: true)
+    }
+    
+    @IBAction func backgroundDidTap(_ sender: Any) {
+        disappearAnimation()
+    }
+}
+
+extension CreatePopOverViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if touch.view?.isDescendant(of: self.backView) == true {
+            return false
         }
+        return true
     }
 }
