@@ -66,25 +66,19 @@
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="오전 12:40" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MeX-58-tGG">
-                                                    <rect key="frame" x="58" y="18.5" width="77" height="11"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="11" id="Gsl-Wi-hBh"/>
-                                                    </constraints>
+                                                    <rect key="frame" x="58" y="14" width="77" height="20.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3BX-bp-beZ">
-                                                    <rect key="frame" x="145" y="17" width="42" height="14"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="14" id="2Tw-ct-Pgr"/>
-                                                    </constraints>
+                                                    <rect key="frame" x="145" y="14" width="42" height="20.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="채팅 내용" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kO7-A1-XNy">
-                                                    <rect key="frame" x="167" y="17" width="227" height="21.5"/>
+                                                    <rect key="frame" x="167" y="14" width="227" height="24.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -135,7 +129,7 @@
                             <constraint firstItem="TlI-ST-bXZ" firstAttribute="leading" secondItem="FJR-ZY-W8I" secondAttribute="leading" id="WTQ-0o-sOV"/>
                             <constraint firstItem="1Xe-EY-7oi" firstAttribute="top" secondItem="3uN-yT-dcl" secondAttribute="bottom" id="amt-OC-gT8"/>
                             <constraint firstItem="3uN-yT-dcl" firstAttribute="top" secondItem="hQ0-xD-JfU" secondAttribute="bottom" id="gpg-pi-2ai"/>
-                            <constraint firstItem="1Xe-EY-7oi" firstAttribute="centerX" secondItem="vDu-zF-Fre" secondAttribute="centerX" id="h0z-i7-nV2"/>
+                            <constraint firstItem="1Xe-EY-7oi" firstAttribute="centerX" secondItem="vDu-zF-Fre" secondAttribute="centerX" priority="750" id="h0z-i7-nV2"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="leading" secondItem="hQ0-xD-JfU" secondAttribute="leading" id="k1E-Dg-2bh"/>
                             <constraint firstItem="TlI-ST-bXZ" firstAttribute="top" secondItem="FJR-ZY-W8I" secondAttribute="bottom" constant="1" id="sBG-eM-oX8"/>
                             <constraint firstItem="FJR-ZY-W8I" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" priority="999" constant="13" id="vXi-lI-ION"/>

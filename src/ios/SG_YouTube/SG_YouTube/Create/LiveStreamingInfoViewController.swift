@@ -128,9 +128,10 @@ class LiveStreamingInfoViewController: UIViewController {
     }
     
     @IBAction func tempButtonDidTap(_ sender: Any) {
-        guard let vc = UIStoryboard(name: "Broadcast", bundle: nil).instantiateViewController(withIdentifier: "LiveViewController") as? LiveViewController else { return }
-        vc.modalPresentationStyle = .fullScreen
-        self.present(vc, animated: true, completion: nil)
+        guard let vc = UIStoryboard(name: "Broadcast", bundle: nil).instantiateViewController(withIdentifier: "LiveViewController") as? LiveViewController, var viewControllers = self.navigationController?.viewControllers else { return }
+        viewControllers[viewControllers.count - 1] = vc
+        self.navigationController?.setViewControllers(viewControllers, animated: true)
+        
     }
 }
 

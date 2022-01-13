@@ -23,6 +23,7 @@ struct AppUtility {
     
         UIDevice.current.setValue(rotateOrientation.rawValue, forKey: "orientation")
         UINavigationController.attemptRotationToDeviceOrientation()
+        UITabBarController.attemptRotationToDeviceOrientation()
     }
 
 }

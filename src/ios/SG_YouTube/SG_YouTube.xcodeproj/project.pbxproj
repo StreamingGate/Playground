@@ -10,7 +10,6 @@
 		4935FD35277BDA5D00760675 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4935FD30277BD97400760675 /* CategoryCell.swift */; };
 		4935FD36277BDA5D00760675 /* HomeListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4935FD2E277BD95200760675 /* HomeListViewController.swift */; };
 		4935FD37277BDA5D00760675 /* VideoListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4935FD31277BD97400760675 /* VideoListCell.swift */; };
-		4935FD39277BDAC300760675 /* PlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4935FD33277BD97F00760675 /* PlayViewController.swift */; };
 		4935FD3A277BDAD100760675 /* Play.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4935FD34277BD97F00760675 /* Play.storyboard */; };
 		4935FD3D277BDC6600760675 /* Home.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4935FD3C277BDC6600760675 /* Home.storyboard */; };
 		4935FD3F277BDF5F00760675 /* Chat.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4935FD3E277BDF5F00760675 /* Chat.storyboard */; };
@@ -50,13 +49,15 @@
 		49EC9A022782033E00DE4F79 /* CreatePopOverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EC9A012782033E00DE4F79 /* CreatePopOverViewController.swift */; };
 		49EC9A042782039800DE4F79 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EC9A032782039800DE4F79 /* TabBarController.swift */; };
 		49EC9A06278205D200DE4F79 /* UIView+RoundCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EC9A05278205D200DE4F79 /* UIView+RoundCorners.swift */; };
+		49F18C2C278E5E0800EBDCF8 /* CreateNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F18C2B278E5E0800EBDCF8 /* CreateNavigationController.swift */; };
+		49F18C52278F0FB100EBDCF8 /* UITabBarController+Visibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F18C51278F0FB100EBDCF8 /* UITabBarController+Visibility.swift */; };
+		49F18C54278F2EED00EBDCF8 /* PlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F18C53278F2EED00EBDCF8 /* PlayViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		4935FD2E277BD95200760675 /* HomeListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeListViewController.swift; sourceTree = "<group>"; };
 		4935FD30277BD97400760675 /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
 		4935FD31277BD97400760675 /* VideoListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoListCell.swift; sourceTree = "<group>"; };
-		4935FD33277BD97F00760675 /* PlayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayViewController.swift; sourceTree = "<group>"; };
 		4935FD34277BD97F00760675 /* Play.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Play.storyboard; sourceTree = "<group>"; };
 		4935FD3C277BDC6600760675 /* Home.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Home.storyboard; sourceTree = "<group>"; };
 		4935FD3E277BDF5F00760675 /* Chat.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Chat.storyboard; sourceTree = "<group>"; };
@@ -98,6 +99,9 @@
 		49EC9A012782033E00DE4F79 /* CreatePopOverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePopOverViewController.swift; sourceTree = "<group>"; };
 		49EC9A032782039800DE4F79 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		49EC9A05278205D200DE4F79 /* UIView+RoundCorners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+RoundCorners.swift"; sourceTree = "<group>"; };
+		49F18C2B278E5E0800EBDCF8 /* CreateNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNavigationController.swift; sourceTree = "<group>"; };
+		49F18C51278F0FB100EBDCF8 /* UITabBarController+Visibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITabBarController+Visibility.swift"; sourceTree = "<group>"; };
+		49F18C53278F2EED00EBDCF8 /* PlayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,7 +130,7 @@
 			isa = PBXGroup;
 			children = (
 				4935FD34277BD97F00760675 /* Play.storyboard */,
-				4935FD33277BD97F00760675 /* PlayViewController.swift */,
+				49F18C53278F2EED00EBDCF8 /* PlayViewController.swift */,
 				496279D527828BB3005A2BDC /* PlayExplainViewController.swift */,
 			);
 			path = Play;
@@ -194,6 +198,7 @@
 		49B9C9F3277AF0E5006AE134 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				49F18C51278F0FB100EBDCF8 /* UITabBarController+Visibility.swift */,
 				49EC9A05278205D200DE4F79 /* UIView+RoundCorners.swift */,
 				49B9C9EF277AEF4E006AE134 /* UIColor+CustomColor.swift */,
 				49B9C9F1277AF018006AE134 /* UIFont+CustomFont.swift */,
@@ -248,6 +253,7 @@
 			isa = PBXGroup;
 			children = (
 				49EC99FF278201C600DE4F79 /* Create.storyboard */,
+				49F18C2B278E5E0800EBDCF8 /* CreateNavigationController.swift */,
 				49E8E89B278BB528003AD1DF /* Broadcast.storyboard */,
 				49AB6FE8278C545100D4D1E9 /* LiveChatCell.swift */,
 				49E8E89F278BC264003AD1DF /* LiveViewController.swift */,
@@ -340,13 +346,14 @@
 				496279DE2782BB85005A2BDC /* AccountEditViewController.swift in Sources */,
 				496279DA278297C2005A2BDC /* VideoListViewController.swift in Sources */,
 				49D7A0AA2783DBB9001CAC60 /* LogInViewController.swift in Sources */,
+				49F18C52278F0FB100EBDCF8 /* UITabBarController+Visibility.swift in Sources */,
 				49E8E89E278BB5B0003AD1DF /* CameraView.swift in Sources */,
 				49D7A0B927840595001CAC60 /* RegisterNavigationController.swift in Sources */,
 				496279D627828BB3005A2BDC /* PlayExplainViewController.swift in Sources */,
 				49D7A0B727840595001CAC60 /* IdInputViewController.swift in Sources */,
-				4935FD39277BDAC300760675 /* PlayViewController.swift in Sources */,
 				4935FD44277C0ED100760675 /* ChatCell.swift in Sources */,
 				49D7A0AC2783ECAD001CAC60 /* AppUtility.swift in Sources */,
+				49F18C2C278E5E0800EBDCF8 /* CreateNavigationController.swift in Sources */,
 				49E8E8A0278BC264003AD1DF /* LiveViewController.swift in Sources */,
 				49EC9A042782039800DE4F79 /* TabBarController.swift in Sources */,
 				496279E02782C1AA005A2BDC /* LiveStreamingInfoViewController.swift in Sources */,
@@ -361,6 +368,7 @@
 				4935FD42277C0E4D00760675 /* ChattingViewController.swift in Sources */,
 				49EC9A022782033E00DE4F79 /* CreatePopOverViewController.swift in Sources */,
 				49EC9A06278205D200DE4F79 /* UIView+RoundCorners.swift in Sources */,
+				49F18C54278F2EED00EBDCF8 /* PlayViewController.swift in Sources */,
 				49D7A0B627840595001CAC60 /* NickNameInputViewController.swift in Sources */,
 				49B9C9F0277AEF4E006AE134 /* UIColor+CustomColor.swift in Sources */,
 				49D7A0B827840595001CAC60 /* PwInputViewController.swift in Sources */,

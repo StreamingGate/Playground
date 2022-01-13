@@ -19,8 +19,8 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
     // MARK: - Tab Selection
     // 생성 버튼을 선택할 경우, tab으로 처리되지 않고 탭 위에 띄워지도록 함
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
-        if (viewController as? CreatePopOverViewController)  != nil {
-            guard let popOverVC = UIStoryboard(name: "Create", bundle: nil).instantiateViewController(withIdentifier: "CreatePopOverViewController") as? CreatePopOverViewController else { return false }
+        if (viewController as? CreateNavigationController)  != nil {
+            guard let popOverVC = UIStoryboard(name: "Create", bundle: nil).instantiateViewController(withIdentifier: "CreateNavigationController") as? CreateNavigationController else { return false }
             popOverVC.modalPresentationStyle = .overFullScreen
             popOverVC.modalTransitionStyle = .crossDissolve
             self.present(popOverVC, animated: true, completion: nil)
@@ -29,10 +29,4 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
             return true
         }
     }
-}
-
-
-
-protocol test {
-    func dismissTest()
 }
