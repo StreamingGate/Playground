@@ -32,6 +32,10 @@ const NormalizeStyle = createGlobalStyle`
         background-color: transparent;
         border: none;
     }
+    ol, ul {
+        list-style: none;
+        padding: 0;
+    }
 `;
 
 export default NormalizeStyle;
