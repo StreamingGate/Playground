@@ -14,11 +14,20 @@ spring:
     username: root
     password: test
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    password:
+    properties.mail.smtp.auth: true
+    properties.mail.smtp.starttls.enable: true
+
 eureka:
   instance:
-    instance-id: ${spring.application.name}:${spring.application.instanc_id:${random.value}}
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
   client:
     fetch-registry: true
     register-with-eureka: true
     service-url:
       defaultZone: http://localhost:8761/eureka
+
+

@@ -9,6 +9,4 @@ import lombok.Getter;
 public class ErrorResponse {
     private ErrorCode errorCode;
     private String message;
-
-
 }

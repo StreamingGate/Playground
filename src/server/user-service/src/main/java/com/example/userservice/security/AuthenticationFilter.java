@@ -4,6 +4,7 @@ import com.example.userservice.dto.UserDto;
 import com.example.userservice.service.UserService;
 import com.example.userservice.vo.RequestLogin;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
@@ -55,17 +56,22 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         UserDto userDto = userService.getUserByEmail(userEmail);
 
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, DELETE, PUT");
-        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With,observe");
-        response.setHeader("Access-Control-Expose-Headers","userId,token");
-        if(request.getMethod().equals(HttpMethod.OPTIONS.name()))
+        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With,observe,Content-Length");
+        response.setHeader("Access-Control-Expose-Headers","uuid,token");
+        if(request.getMethod().equals(HttpMethod.OPTIONS.name())) {
             response.setStatus(HttpStatus.OK.value());
+        }
 
+        Claims claims = Jwts.claims().setSubject(userDto.getUuid());
+        Date now = new Date();
         String token = Jwts.builder()
-                .setSubject(userDto.getUserId())
+                .setClaims(claims)
+                .setIssuedAt(now)
                 .setExpiration(new Date(System.currentTimeMillis() + 600000))
-                .signWith(SignatureAlgorithm.HS512,"token_secret")
+                .signWith(SignatureAlgorithm.HS256,"token_secret")
                 .compact();
-        response.addHeader("userId",userDto.getUserId());
+
+        response.addHeader("uuid",userDto.getUuid());
         response.addHeader("token",token);
     }
 }

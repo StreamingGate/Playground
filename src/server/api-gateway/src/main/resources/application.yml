@@ -22,6 +22,7 @@ spring:
             allowCredentials: true
             allowedHeaders:
               - x-requested-with
+              - content-length
               - authorization
               - content-type
               - credential
@@ -54,4 +55,4 @@ spring:
             - Method=POST,GET,DELETE,PUT
           filters:
             - RewritePath=/user-service/(?<segment>.*), /$\{segment}
-            - AuthenticationFilter
+#            - AuthenticationFilter

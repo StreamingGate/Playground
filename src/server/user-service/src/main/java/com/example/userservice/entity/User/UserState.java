@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum UserState {
-    STEADY("stedy"),
+    STEADY("steady"),
     QUIT("quit"),
     WARNED("warned");
 

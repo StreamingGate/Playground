@@ -23,6 +23,9 @@ public class UserServiceApplication {
 
     @Bean
     public ModelMapper modelMapper() {
+        /* TODO : refactoring */
+//        ModelMapper mapper = new ModelMapper();
+//        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         return new ModelMapper();
     }
 }
