@@ -10,7 +10,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--홈-->
+        <!--Home List View Controller-->
         <scene sceneID="ezl-xm-Q6o">
             <objects>
                 <viewController storyboardIdentifier="HomeListViewController" id="MdW-2d-66q" customClass="HomeListViewController" customModule="SG_YouTube" customModuleProvider="target" sceneMemberID="viewController">
@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PS2-bd-NvW">
-                                <rect key="frame" x="0.0" y="44" width="414" height="80"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="80"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="youtubeLogo" translatesAutoresizingMaskIntoConstraints="NO" id="aJL-v9-4Jf">
                                         <rect key="frame" x="15" y="10" width="86" height="20"/>
@@ -127,7 +127,7 @@
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="SYh-TW-QxE">
-                                <rect key="frame" x="0.0" y="124" width="414" height="738"/>
+                                <rect key="frame" x="0.0" y="168" width="414" height="694"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="VideoListCell" rowHeight="309" id="fQd-2O-qXP" customClass="VideoListCell" customModule="SG_YouTube" customModuleProvider="target">
@@ -240,7 +240,7 @@
                             <constraint firstItem="SYh-TW-QxE" firstAttribute="centerX" secondItem="UL5-h1-hmJ" secondAttribute="centerX" id="p7V-sa-rzR"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="홈" image="homeIcon_empty" selectedImage="homeIcon_fill" id="K6X-uz-js4"/>
+                    <navigationItem key="navigationItem" id="brS-Yp-x05"/>
                     <connections>
                         <outlet property="collectionView" destination="9W6-XU-bEX" id="Jee-ZX-W0V"/>
                         <outlet property="searchButton" destination="zGe-nL-jcQ" id="DTG-om-4ff"/>
@@ -248,6 +248,25 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kgY-gz-KDK" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1686.9565217391305" y="51.5625"/>
+        </scene>
+        <!--홈-->
+        <scene sceneID="i81-Iz-0uX">
+            <objects>
+                <navigationController storyboardIdentifier="HomeNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="A0q-eL-f3C" customClass="HomeNavigationController" customModule="SG_YouTube" customModuleProvider="target" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="홈" image="homeIcon_empty" selectedImage="homeIcon_fill" id="K6X-uz-js4"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="HHD-VT-ICx">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="MdW-2d-66q" kind="relationship" relationship="rootViewController" id="xHc-IW-9Ic"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lUT-Xh-MGV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="776.81159420289862" y="51.5625"/>
         </scene>

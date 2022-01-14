@@ -1,14 +1,14 @@
 //
-//  MyPageNavigationController.swift
+//  HomeNavigationController.swift
 //  SG_YouTube
 //
-//  Created by chuiseo-MN on 2022/01/03.
+//  Created by chuiseo-MN on 2022/01/14.
 //
 
 import Foundation
 import UIKit
 
-class MyPageNavigationController: UINavigationController, UIGestureRecognizerDelegate {
+class HomeNavigationController: UINavigationController, UIGestureRecognizerDelegate {
     var playDelegate: playOpenDelegate?
     
     override func viewDidLoad() {

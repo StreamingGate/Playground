@@ -17,6 +17,7 @@ class HomeListViewController: UIViewController {
     let playerView = UIView()
     var safeTop: CGFloat = 0
     var safeBottom: CGFloat = 0
+    var playDelegate: playOpenDelegate?
     
     // MARK: - View Life Cycle
     override func viewDidLayoutSubviews() {
@@ -92,22 +93,8 @@ extension HomeListViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let playVC = self.children.last as? PlayViewController {
-            self.tabBarController?.setTabBar(hidden: true, animated: true, along: self.parent?.transitionCoordinator)
-            playVC.isMinimized = false
-            UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) {
-                playVC.playViewWidth.constant = UIScreen.main.bounds.width
-                playVC.view.backgroundColor = UIColor.black.withAlphaComponent(1)
-                playVC.view.center = CGPoint(x: playVC.view.frame.width / 2, y: playVC.view.frame.height / 2)
-            }
-        } else {
-            guard let playVC = UIStoryboard(name: "Play", bundle: nil).instantiateViewController(withIdentifier: "PlayViewController" ) as? PlayViewController else { return }
-            self.tabBarController?.setTabBar(hidden: true, animated: true, along: self.transitionCoordinator)
-            self.addChild(playVC)
-            self.view.addSubview((playVC.view)!)
-            playVC.view.frame = self.view.bounds
-            playVC.didMove(toParent: self)
-        }
+        guard let navVC = self.navigationController as? HomeNavigationController else{ return }
+        navVC.playDelegate?.openPlayer()
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
