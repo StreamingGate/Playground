@@ -150,7 +150,7 @@ class CustomTabViewController: UIViewController {
     }
 }
 
-extension CustomTabViewController: playOpenDelegate, friendListOpenDelegate, searchOpenDelegate{
+extension CustomTabViewController: PlayOpenDelegate, FriendListOpenDelegate, SearchOpenDelegate{
     func openPlayer() {
         playContainerView.isHidden = false
         if let playVC = self.children.first(where: { vc in
@@ -197,18 +197,3 @@ extension CustomTabViewController: playOpenDelegate, friendListOpenDelegate, sea
         self.present(searchVC, animated: true, completion: nil)
     }
 }
-
-
-protocol playOpenDelegate {
-    func openPlayer()
-}
-
-protocol friendListOpenDelegate {
-    func openFriendList()
-}
-
-protocol searchOpenDelegate {
-    func openSearch()
-}
-
-

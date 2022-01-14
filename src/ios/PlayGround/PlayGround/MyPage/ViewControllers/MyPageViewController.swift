@@ -14,7 +14,7 @@ class MyPageViewController: UIViewController {
     @IBOutlet weak var likedVideoLabel: UILabel!
     @IBOutlet weak var myVideoLabel: UILabel!
     @IBOutlet weak var profileImageView: UIImageView!
-    var playOpenDelegate:playOpenDelegate?
+
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()

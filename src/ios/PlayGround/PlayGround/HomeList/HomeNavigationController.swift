@@ -9,9 +9,9 @@ import Foundation
 import UIKit
 
 class HomeNavigationController: UINavigationController, UIGestureRecognizerDelegate {
-    var playDelegate: playOpenDelegate?
-    var friendDelegate: friendListOpenDelegate?
-    var searchDelegate: searchOpenDelegate?
+    var playDelegate: PlayOpenDelegate?
+    var friendDelegate: FriendListOpenDelegate?
+    var searchDelegate: SearchOpenDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
