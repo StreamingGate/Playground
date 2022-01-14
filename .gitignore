@@ -147,7 +147,7 @@ hs_err_pid*
 .LSOverride
 
 # Icon must end with two \r
-Icon
+# Icon
 
 
 # Thumbnails
@@ -177,8 +177,10 @@ logs
 
 node_modules
 bower_components
+dist
 
 *.sublime*
+.env
 
 psd
 thumb
