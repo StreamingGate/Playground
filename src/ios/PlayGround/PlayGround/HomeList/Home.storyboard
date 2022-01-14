@@ -19,24 +19,24 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PS2-bd-NvW">
-                                <rect key="frame" x="0.0" y="44" width="414" height="80"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="95"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PlayGroundLogo" translatesAutoresizingMaskIntoConstraints="NO" id="aJL-v9-4Jf">
-                                        <rect key="frame" x="15" y="10" width="116" height="27"/>
+                                        <rect key="frame" x="15" y="15" width="130" height="27"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="27" id="ShD-dp-qgP"/>
-                                            <constraint firstAttribute="width" constant="116" id="j2M-0m-lcx"/>
+                                            <constraint firstAttribute="width" constant="130" id="j2M-0m-lcx"/>
                                         </constraints>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ETv-Pc-TJq">
-                                        <rect key="frame" x="0.0" y="44" width="414" height="1"/>
+                                        <rect key="frame" x="0.0" y="54" width="414" height="1"/>
                                         <color key="backgroundColor" name="Separator"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="jNt-0z-d5z"/>
                                         </constraints>
                                     </view>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="9W6-XU-bEX">
-                                        <rect key="frame" x="0.0" y="45" width="414" height="35"/>
+                                        <rect key="frame" x="0.0" y="55" width="414" height="40"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="zHh-Gd-wT2">
                                             <size key="itemSize" width="128" height="128"/>
@@ -46,7 +46,7 @@
                                         </collectionViewFlowLayout>
                                         <cells>
                                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CategoryCell" id="wvg-zi-boI" customClass="CategoryCell" customModule="PlayGround" customModuleProvider="target">
-                                                <rect key="frame" x="15" y="-2.5" width="128" height="40"/>
+                                                <rect key="frame" x="15" y="0.0" width="128" height="40"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="lfd-CD-kqw">
                                                     <rect key="frame" x="0.0" y="0.0" width="128" height="40"/>
@@ -88,7 +88,7 @@
                                         </connections>
                                     </collectionView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zGe-nL-jcQ">
-                                        <rect key="frame" x="375" y="11.5" width="24" height="24"/>
+                                        <rect key="frame" x="336" y="16.5" width="24" height="24"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="24" id="BP9-8e-3Nu"/>
                                             <constraint firstAttribute="width" secondItem="zGe-nL-jcQ" secondAttribute="height" multiplier="1:1" id="hnt-RJ-YpF"/>
@@ -100,34 +100,52 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZHh-b5-SP3">
-                                        <rect key="frame" x="336" y="11.5" width="24" height="24"/>
+                                        <rect key="frame" x="297" y="16.5" width="24" height="24"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="24" id="czK-Sk-TW2"/>
                                         </constraints>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" image="bell_empty"/>
+                                        <connections>
+                                            <action selector="noticeButtonDidTap:" destination="MdW-2d-66q" eventType="touchUpInside" id="wwI-we-bmE"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c1E-NM-kP2">
+                                        <rect key="frame" x="375" y="16.5" width="24" height="24"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="c1E-NM-kP2" secondAttribute="height" multiplier="1:1" id="Xe9-c6-hsl"/>
+                                            <constraint firstAttribute="width" constant="24" id="sUW-ly-yew"/>
+                                        </constraints>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" image="person_greenDot_blue"/>
+                                        <connections>
+                                            <action selector="friendButtonDidTap:" destination="MdW-2d-66q" eventType="touchUpInside" id="Gdp-If-jHB"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstItem="ETv-Pc-TJq" firstAttribute="leading" secondItem="PS2-bd-NvW" secondAttribute="leading" id="9BG-M8-L4n"/>
+                                    <constraint firstItem="c1E-NM-kP2" firstAttribute="leading" secondItem="zGe-nL-jcQ" secondAttribute="trailing" constant="15" id="9Ew-h0-TMh"/>
                                     <constraint firstItem="zGe-nL-jcQ" firstAttribute="centerY" secondItem="aJL-v9-4Jf" secondAttribute="centerY" id="DBk-aG-8hC"/>
                                     <constraint firstItem="ZHh-b5-SP3" firstAttribute="width" secondItem="ZHh-b5-SP3" secondAttribute="height" multiplier="1:1" id="DO6-2j-i70"/>
+                                    <constraint firstAttribute="trailing" secondItem="c1E-NM-kP2" secondAttribute="trailing" constant="15" id="Dvf-xj-6SY"/>
                                     <constraint firstItem="9W6-XU-bEX" firstAttribute="top" secondItem="ETv-Pc-TJq" secondAttribute="bottom" id="FKm-Cq-7tc"/>
                                     <constraint firstItem="ZHh-b5-SP3" firstAttribute="centerY" secondItem="zGe-nL-jcQ" secondAttribute="centerY" id="Fba-fU-X0l"/>
-                                    <constraint firstItem="aJL-v9-4Jf" firstAttribute="top" secondItem="PS2-bd-NvW" secondAttribute="top" constant="10" id="XoO-M2-u49"/>
+                                    <constraint firstItem="aJL-v9-4Jf" firstAttribute="top" secondItem="PS2-bd-NvW" secondAttribute="top" constant="15" id="XoO-M2-u49"/>
+                                    <constraint firstItem="c1E-NM-kP2" firstAttribute="centerY" secondItem="zGe-nL-jcQ" secondAttribute="centerY" id="bhi-ME-6qJ"/>
                                     <constraint firstItem="aJL-v9-4Jf" firstAttribute="leading" secondItem="PS2-bd-NvW" secondAttribute="leading" constant="15" id="bwA-EE-06o"/>
                                     <constraint firstItem="9W6-XU-bEX" firstAttribute="centerX" secondItem="PS2-bd-NvW" secondAttribute="centerX" id="dcf-cJ-fKJ"/>
-                                    <constraint firstAttribute="height" constant="80" id="gYU-eT-mmW"/>
+                                    <constraint firstAttribute="height" constant="95" id="gYU-eT-mmW"/>
                                     <constraint firstItem="9W6-XU-bEX" firstAttribute="leading" secondItem="PS2-bd-NvW" secondAttribute="leading" id="h5G-4e-EiG"/>
                                     <constraint firstAttribute="bottom" secondItem="9W6-XU-bEX" secondAttribute="bottom" id="mWu-ZM-CBl"/>
                                     <constraint firstItem="zGe-nL-jcQ" firstAttribute="leading" secondItem="ZHh-b5-SP3" secondAttribute="trailing" constant="15" id="q86-4m-5nj"/>
                                     <constraint firstItem="ETv-Pc-TJq" firstAttribute="centerX" secondItem="PS2-bd-NvW" secondAttribute="centerX" id="qQk-zY-1Nk"/>
-                                    <constraint firstItem="ETv-Pc-TJq" firstAttribute="top" secondItem="aJL-v9-4Jf" secondAttribute="bottom" constant="7" id="uMZ-KQ-ysS"/>
+                                    <constraint firstItem="ETv-Pc-TJq" firstAttribute="top" secondItem="PS2-bd-NvW" secondAttribute="top" constant="54" id="xS8-hy-oit"/>
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="SYh-TW-QxE">
-                                <rect key="frame" x="0.0" y="124" width="414" height="738"/>
+                                <rect key="frame" x="0.0" y="139" width="414" height="723"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="VideoListCell" rowHeight="309" id="fQd-2O-qXP" customClass="VideoListCell" customModule="PlayGround" customModuleProvider="target">
@@ -246,7 +264,6 @@
                             <constraint firstItem="PS2-bd-NvW" firstAttribute="top" secondItem="UL5-h1-hmJ" secondAttribute="top" id="KLR-K0-ysW"/>
                             <constraint firstItem="SYh-TW-QxE" firstAttribute="top" secondItem="PS2-bd-NvW" secondAttribute="bottom" id="Kmh-Ej-Tj6"/>
                             <constraint firstItem="i4e-TF-pEL" firstAttribute="centerX" secondItem="UL5-h1-hmJ" secondAttribute="centerX" id="VCS-pL-Qat"/>
-                            <constraint firstItem="UL5-h1-hmJ" firstAttribute="trailing" secondItem="zGe-nL-jcQ" secondAttribute="trailing" constant="15" id="WZ5-F7-0mS"/>
                             <constraint firstItem="PS2-bd-NvW" firstAttribute="centerX" secondItem="UL5-h1-hmJ" secondAttribute="centerX" id="fam-fu-AeZ"/>
                             <constraint firstItem="PS2-bd-NvW" firstAttribute="leading" secondItem="UL5-h1-hmJ" secondAttribute="leading" id="p28-Z1-6Sr"/>
                             <constraint firstItem="SYh-TW-QxE" firstAttribute="centerX" secondItem="UL5-h1-hmJ" secondAttribute="centerX" id="p7V-sa-rzR"/>
@@ -289,6 +306,7 @@
         <image name="homeIcon_fill" width="24" height="24"/>
         <image name="liveSign" width="36" height="12"/>
         <image name="magnifier" width="24" height="24"/>
+        <image name="person_greenDot_blue" width="24" height="24"/>
         <namedColor name="Separator">
             <color red="0.89800000190734863" green="0.89800000190734863" blue="0.89800000190734863" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

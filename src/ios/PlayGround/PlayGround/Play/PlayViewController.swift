@@ -94,7 +94,7 @@ class PlayViewController: UIViewController {
         stretchButton.isHidden = UIDevice.current.orientation.isLandscape
         if UIDevice.current.orientation.isLandscape {
             print("Landscape")
-            self.tabBarController?.tabBar.alpha = 0
+            self.view.backgroundColor = UIColor.black
             NSLayoutConstraint.deactivate(portraitLayout)
             NSLayoutConstraint.deactivate(landscapeLayout)
             landscapeLayout = [chatContainerView.topAnchor.constraint(equalTo: self.view.topAnchor),
@@ -113,6 +113,7 @@ class PlayViewController: UIViewController {
     
     // MARK: - UI Setting
     func setupUI() {
+        self.view.backgroundColor = UIColor.black
         titleLabel.font = UIFont.Component
         viewLabel.font = UIFont.caption
         viewLabel.textColor = UIColor.customDarkGray
@@ -205,6 +206,7 @@ class PlayViewController: UIViewController {
     func showAnimation(){
         UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 2, initialSpringVelocity: 2, options: .showHideTransitionViews, animations: {
             self.view.transform = CGAffineTransform.identity
+            self.parent?.view.backgroundColor = UIColor.black
         }, completion: nil)
     }
     
@@ -288,6 +290,7 @@ class PlayViewController: UIViewController {
     @IBAction func playViewDidPan(_ sender: Any) {
         guard let pan = sender as? UIPanGestureRecognizer, let parent = self.parent as? CustomTabViewController else { return }
         if UIDevice.current.value(forKey: "orientation") as? Int == UIInterfaceOrientation.portrait.rawValue {
+            self.view.backgroundColor = UIColor.white
             UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut) {
                 self.playControllView.alpha = 0
             }
@@ -304,7 +307,6 @@ class PlayViewController: UIViewController {
                 } else if pan.location(in: self.parent?.view).y >= maxHeight + 40 {
                     self.setPlayViewMinimizing()
                 } else {
-                    self.view.backgroundColor = UIColor.black.withAlphaComponent(percentage)
                     parent.playViewTopMargin.constant = pan.location(in: self.parent?.view).y - (height / 2)
                 }
             case .ended:
@@ -338,14 +340,16 @@ class PlayViewController: UIViewController {
     func setPlayViewOriginalSize() {
         guard let parent = self.parent as? CustomTabViewController else { return }
         self.isMinimized = false
+        self.playViewWidth.constant = UIScreen.main.bounds.width
+        self.miniCloseButton.isHidden = true
+        self.miniPlayPauseButton.isHidden = true
         parent.playViewTopMargin.constant = 0
         parent.tabBarHeight.constant = 0
         parent.tabBarStackView.isHidden = true
         parent.tabBarSeparatorView.isHidden = true
         parent.bottomWhiteView.isHidden = true
-        self.playViewWidth.constant = UIScreen.main.bounds.width
         UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) {
-            self.view.backgroundColor = UIColor.black.withAlphaComponent(1)
+
             parent.view.backgroundColor = UIColor.black
             parent.view.layoutIfNeeded()
         }
@@ -356,14 +360,15 @@ class PlayViewController: UIViewController {
         self.isMinimized = true
         let maxHeight = UIScreen.main.bounds.height - safeTop - safeBottom - 150
         let targetWidth =  80 / 9 * 16
+        self.playViewWidth.constant = CGFloat(targetWidth)
+        self.miniCloseButton.isHidden = false
+        self.miniPlayPauseButton.isHidden = false
         parent.playViewTopMargin.constant = maxHeight
         parent.tabBarHeight.constant = 80
         parent.tabBarStackView.isHidden = false
         parent.tabBarSeparatorView.isHidden = false
         parent.bottomWhiteView.isHidden = false
-        self.playViewWidth.constant = CGFloat(targetWidth)
         UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) {
-            self.view.backgroundColor = UIColor.black.withAlphaComponent(0)
             parent.view.backgroundColor = UIColor.white
             parent.view.layoutIfNeeded()
         }

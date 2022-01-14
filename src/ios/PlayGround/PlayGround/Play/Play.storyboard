@@ -581,7 +581,7 @@
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dTI-2U-P7C">
                                                 <rect key="frame" x="15" y="126.5" width="107" height="43"/>
                                                 <state key="normal" title="Button"/>
-                                                <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                                                <buttonConfiguration key="configuration" style="plain"/>
                                                 <connections>
                                                     <action selector="channelDidTap:" destination="TES-Af-Nvb" eventType="touchUpInside" id="ybM-cQ-rB4"/>
                                                 </connections>

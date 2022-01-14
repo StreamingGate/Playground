@@ -35,9 +35,19 @@ class HomeListViewController: UIViewController {
         AppUtility.lockOrientation(.portrait)
     }
     
+    @IBAction func noticeButtonDidTap(_ sender: Any) {
+        guard let noticeVC = UIStoryboard(name: "Notice", bundle: nil).instantiateViewController(withIdentifier: "NoticeListViewController") as? NoticeListViewController else { return }
+        self.navigationController?.pushViewController(noticeVC, animated: true)
+    }
+    
     @IBAction func searchButtonDidTap(_ sender: Any) {
-        print(self.tabBarController!.tabBar.frame.height)
-        print(self.view.safeAreaInsets.bottom)
+        guard let navVC = self.navigationController as? HomeNavigationController else{ return }
+        navVC.searchDelegate?.openSearch()
+    }
+    
+    @IBAction func friendButtonDidTap(_ sender: Any) {
+        guard let navVC = self.navigationController as? HomeNavigationController else{ return }
+        navVC.friendDelegate?.openFriendList()
     }
     
     func removeTopChildViewController(){

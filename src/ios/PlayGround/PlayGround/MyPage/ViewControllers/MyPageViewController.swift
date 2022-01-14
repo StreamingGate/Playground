@@ -57,8 +57,7 @@ class MyPageViewController: UIViewController {
     
     @IBAction func profileDidTap(_ sender: Any) {
         guard let accountVC = UIStoryboard(name: "MyPage", bundle: nil).instantiateViewController(withIdentifier: "AccountInfoViewController") as? AccountInfoViewController else { return }
-        accountVC.modalPresentationStyle = .fullScreen
-        self.present(accountVC, animated: true, completion: nil)
+        self.navigationController?.pushViewController(accountVC, animated: true)
     }
 }
 

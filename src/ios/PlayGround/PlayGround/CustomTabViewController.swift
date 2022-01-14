@@ -23,12 +23,11 @@ class CustomTabViewController: UIViewController {
     @IBOutlet weak var myTabImageView: UIImageView!
     @IBOutlet weak var CreateTabImageView: UIImageView!
     @IBOutlet weak var myTabLabel: UILabel!
+    @IBOutlet weak var containerView: UIView!
     
     @Published var selectedTanIndex = 0
     private var cancellable: Set<AnyCancellable> = []
     
-    
-    @IBOutlet weak var containerView: UIView!
     var safeTop: CGFloat = 0
     var safeBottom: CGFloat = 0
     
@@ -49,6 +48,8 @@ class CustomTabViewController: UIViewController {
         homeVC.view.frame = self.containerView.bounds
         homeVC.didMove(toParent: self)
         homeVC.playDelegate = self
+        homeVC.friendDelegate = self
+        homeVC.searchDelegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -99,6 +100,8 @@ class CustomTabViewController: UIViewController {
         homeVC.view.frame = self.containerView.bounds
         homeVC.didMove(toParent: self)
         homeVC.playDelegate = self
+        homeVC.friendDelegate = self
+        homeVC.searchDelegate = self
     }
     
     @IBAction func createTabDidTap(_ sender: Any) {
@@ -147,18 +150,22 @@ class CustomTabViewController: UIViewController {
     }
 }
 
-extension CustomTabViewController: playOpenDelegate {
+extension CustomTabViewController: playOpenDelegate, friendListOpenDelegate, searchOpenDelegate{
     func openPlayer() {
         playContainerView.isHidden = false
-        self.view.backgroundColor = UIColor.black
         if let playVC = self.children.first(where: { vc in
             vc is PlayViewController
         }) as? PlayViewController {
             print("exist")
             playVC.isMinimized = false
             self.playViewTopMargin.constant = 0
+            self.tabBarHeight.constant = 0
+            self.tabBarStackView.isHidden = true
+            self.tabBarSeparatorView.isHidden = true
+            self.bottomWhiteView.isHidden = true
             UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) {
                 self.view.layoutIfNeeded()
+                self.view.backgroundColor = UIColor.black
             }
         } else {
             print("new")
@@ -175,12 +182,33 @@ extension CustomTabViewController: playOpenDelegate {
             bottomWhiteView.isHidden = true
         }
     }
+    
+    func openFriendList() {
+        guard let popOverVC = UIStoryboard(name: "Friend", bundle: nil).instantiateViewController(withIdentifier: "FriendListViewController" ) as? FriendListViewController else { return }
+        popOverVC.modalPresentationStyle = .overFullScreen
+        popOverVC.modalTransitionStyle = .crossDissolve
+        self.present(popOverVC, animated: true, completion: nil)
+    }
+    
+    func openSearch() {
+        guard let searchVC = UIStoryboard(name: "Search", bundle: nil).instantiateViewController(withIdentifier: "SearchViewController" ) as? SearchViewController else { return }
+        searchVC.modalPresentationStyle = .fullScreen
+        searchVC.modalTransitionStyle = .crossDissolve
+        self.present(searchVC, animated: true, completion: nil)
+    }
 }
-
 
 
 protocol playOpenDelegate {
     func openPlayer()
+}
+
+protocol friendListOpenDelegate {
+    func openFriendList()
+}
+
+protocol searchOpenDelegate {
+    func openSearch()
 }
 
 
