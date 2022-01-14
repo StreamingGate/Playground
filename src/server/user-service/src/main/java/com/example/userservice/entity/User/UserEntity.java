@@ -20,13 +20,13 @@ public class UserEntity {
     private String email;
 
     @Column
-    private String userId;
+    private String uuid;
 
     @Column
-    private String encryptedPwd;
+    private String pwd;
 
     @Column
-    private String userName;
+    private String name;
 
     @Column
     private String nickName;
@@ -48,12 +48,15 @@ public class UserEntity {
     @Column(nullable = true, updatable = true, insertable = true)
     private  LocalDate deletedAt;
 
+    @Column(nullable = true, updatable = true, insertable = true)
+    private  LocalDate lastAt;
+
     @Builder
-    public UserEntity(String email,String userId,String encryptedPwd,String name,String nickName,String profileImage,UserState state) {
+    public UserEntity(String email,String uuid,String pwd,String name,String nickName,String profileImage,UserState state) {
         this.email = email;
-        this.userId = userId;
-        this.encryptedPwd = encryptedPwd;
-        this.userName = name;
+        this.uuid = uuid;
+        this.pwd = pwd;
+        this.name = name;
         this.nickName = nickName;
         this.profileImage = profileImage;
         this.state = state;
@@ -62,8 +65,8 @@ public class UserEntity {
     public static UserEntity createUser(UserDto userDto) {
         return UserEntity.builder()
                 .email(userDto.getEmail())
-                .userId(userDto.getUserId())
-                .encryptedPwd(userDto.getEncryptedPwd())
+                .uuid(userDto.getUserId())
+                .pwd(userDto.getEncryptedPwd())
                 .name(userDto.getName())
                 .nickName(userDto.getNickName())
                 .profileImage(userDto.getProfileImage())
@@ -71,11 +74,15 @@ public class UserEntity {
                 .build();
     }
 
-    public static UserEntity updateUser(UserDto userDto) {
-        return UserEntity.builder()
-                .nickName(userDto.getNickName())
-                .encryptedPwd(userDto.getEncryptedPwd())
-                .profileImage(userDto.getProfileImage())
-                .build();
+    public void updateUser(UserDto requestDto, LocalDate modifiedAt) {
+        this.nickName = requestDto.getNickName() == null ? requestDto.getNickName() : nickName;
+        this.pwd = requestDto.getEncryptedPwd() == null ? requestDto.getEncryptedPwd() : pwd;
+        this.profileImage = requestDto.getProfileImage() == null ? requestDto.getProfileImage() : profileImage;
+        this.modifiedAt = modifiedAt;
+    }
+
+    public void deleteUser(LocalDate deletedAt) {
+        this.deletedAt = deletedAt;
+        this.state = UserState.QUIT;
     }
 }
