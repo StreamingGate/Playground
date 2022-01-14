@@ -16,22 +16,22 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
 
-    @Column(length = 30,unique = true)
+    @Column(unique = true)
     private String email;
 
-    @Column
+    @Column(length = 36,columnDefinition = "varchar(36)")
     private String uuid;
 
-    @Column
+    @Column(length = 61,columnDefinition = "varchar(61)")
     private String pwd;
 
-    @Column
+    @Column(length = 30,columnDefinition = "varchar(30)")
     private String name;
 
-    @Column
+    @Column(columnDefinition = "varchar(8)")
     private String nickName;
 
-    @Column
+    @Column(columnDefinition = "TEXT")
     private String profileImage;
 
     @Column
@@ -42,13 +42,16 @@ public class UserEntity {
     @ColumnDefault(value = "CURRENT_TIMESTAMP")
     private LocalDate createdAt;
 
-    @Column(nullable = true, updatable = true, insertable = true)
+    @Column
     private LocalDate modifiedAt;
 
-    @Column(nullable = true, updatable = true, insertable = true)
-    private  LocalDate deletedAt;
+    @Column
+    private LocalDate deletedAt;
 
-    @Column(nullable = true, updatable = true, insertable = true)
+    @Column(columnDefinition = "varchar(50)")
+    private String timeZone;
+
+    @Column
     private  LocalDate lastAt;
 
     @Builder
@@ -65,7 +68,7 @@ public class UserEntity {
     public static UserEntity createUser(UserDto userDto) {
         return UserEntity.builder()
                 .email(userDto.getEmail())
-                .uuid(userDto.getUserId())
+                .uuid(userDto.getUuid())
                 .pwd(userDto.getEncryptedPwd())
                 .name(userDto.getName())
                 .nickName(userDto.getNickName())

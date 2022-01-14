@@ -23,7 +23,7 @@ spring:
 
 eureka:
   instance:
-    instance-id: ${spring.application.name}:${spring.application.instanc_id:${random.value}}
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
   client:
     fetch-registry: true
     register-with-eureka: true

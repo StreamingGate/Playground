@@ -6,6 +6,7 @@ import javax.validation.constraints.Size;
 
 @Data
 public class RequestUser {
+    /* TODO: test이후 지우기 */
 //    @Email
     private String email;
 //    @Size(max = 30)

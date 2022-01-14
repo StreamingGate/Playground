@@ -5,7 +5,6 @@ import com.example.userservice.entity.User.UserEntity;
 import com.example.userservice.entity.User.UserRepository;
 import com.example.userservice.exceptionhandler.customexception.CustomUserException;
 import com.example.userservice.exceptionhandler.customexception.ErrorCode;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.RandomStringUtils;
 import org.modelmapper.ModelMapper;
@@ -24,7 +23,6 @@ import java.time.LocalDate;
 import java.util.*;
 
 @Service
-@RequiredArgsConstructor
 @Slf4j
 public class UserServiceImpl implements UserService {
     UserRepository userRepository;
@@ -57,7 +55,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserDto createUser(UserDto userDto) throws CustomUserException {
-        userDto.setUserId(UUID.randomUUID().toString());
+        userDto.setUuid(UUID.randomUUID().toString());
         userDto.setEncryptedPwd(bCryptPasswordEncoder.encode(userDto.getPassword()));
         userRepository.save(UserEntity.createUser(userDto));
         return userDto;
@@ -65,9 +63,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserDto updateUser(String userId,UserDto requestDto) throws CustomUserException{
+    public UserDto updateUser(String uuid,UserDto requestDto) throws CustomUserException{
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        UserEntity userEntity = userRepository.findByUserId(userId);
+        UserEntity userEntity = userRepository.findByUuid(uuid);
         Date date = new Date();
         LocalDate localDate = new java.sql.Date(date.getTime()).toLocalDate();
         try {
@@ -77,14 +75,14 @@ public class UserServiceImpl implements UserService {
             return requestDto;
 
         } catch (CustomUserException e){
-            throw new CustomUserException(ErrorCode.U002,"이미 사용중인 닉네임 입니다.");
+            throw new CustomUserException(ErrorCode.U002);
         }
     }
 
     @Override
     @Transactional
-    public void deleteUser(String userId) {
-        UserEntity userEntity = userRepository.findByUserId(userId);
+    public void deleteUser(String uuid) {
+        UserEntity userEntity = userRepository.findByUuid(uuid);
         Date date = new Date();
         LocalDate localDate = new java.sql.Date(date.getTime()).toLocalDate();
         userEntity.deleteUser(localDate);
@@ -101,15 +99,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUserByEmail(String email) {
-        UserEntity userEntity = userRepository.findByEmail(email).orElseThrow(()-> new UsernameNotFoundException("찾을수 없는 이메일 입니다."));
+        UserEntity userEntity = userRepository.findByEmail(email).orElseThrow(()-> new CustomUserException(ErrorCode.U002));
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         UserDto userDto = mapper.map(userEntity,UserDto.class);
         return userDto;
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        UserEntity userEntity = userRepository.findByEmail(email).orElseThrow(()-> new UsernameNotFoundException("찾을수 없는 이메일 입니다."));
+    public UserDetails loadUserByUsername(String email) throws CustomUserException {
+        UserEntity userEntity = userRepository.findByEmail(email).orElseThrow(()-> new CustomUserException(ErrorCode.U002));
 
         if (userEntity == null)
             throw new UsernameNotFoundException(email + ": not found");
@@ -118,7 +116,4 @@ public class UserServiceImpl implements UserService {
                 true, true, true, true,authorities);
         return user;
     }
-
-
-
 }

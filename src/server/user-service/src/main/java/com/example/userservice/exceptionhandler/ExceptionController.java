@@ -11,11 +11,7 @@ public class ExceptionController {
 
     @ExceptionHandler(CustomUserException.class)
     public ResponseEntity<ErrorResponse> handleCreateUser(CustomUserException e) {
-        ErrorResponse response = new ErrorResponse(e.getErrorCode(),e.getMessage());
+        ErrorResponse response = new ErrorResponse(e.getErrorCode(), e.getErrorCode().getMessage());
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
-
-
-
-
 }

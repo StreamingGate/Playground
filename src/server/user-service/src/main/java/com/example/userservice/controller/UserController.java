@@ -36,28 +36,28 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(responseUser);
     }
     /* 정보수정 */
-    @PutMapping("/users/{userId}")
-    public ResponseEntity<ResponseUser> updateUser(@PathVariable("userId") String userId,
+    @PutMapping("/users/{uuid}")
+    public ResponseEntity<ResponseUser> updateUser(@PathVariable("uuid") String uuid,
                                                    @RequestBody RequestUser requestUser) throws Exception{
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         UserDto requestDto = mapper.map(requestUser,UserDto.class);
-        requestDto = userService.updateUser(userId,requestDto);
+        requestDto = userService.updateUser(uuid,requestDto);
         ResponseUser responseUser = mapper.map(requestDto,ResponseUser.class);
         return ResponseEntity.status(HttpStatus.OK).body(responseUser);
     }
 
     /* 회원 탈퇴 */
-    @DeleteMapping("/users/{userId}")
-    public ResponseEntity<String> deleteUser(@PathVariable("userId") String userId) {
-        userService.deleteUser(userId);
-        return ResponseEntity.status(HttpStatus.OK).body(userId);
+    @DeleteMapping("/users/{uuid}")
+    public ResponseEntity<String> deleteUser(@PathVariable("uuid") String uuid) {
+        userService.deleteUser(uuid);
+        return ResponseEntity.status(HttpStatus.OK).body(uuid);
     }
 
-    /* 회원가입 이메일 인증 */
-    @PostMapping("/users/mail")
-    public ResponseEntity<String> checkUserMail(@RequestBody String email) {
-
-        return ResponseEntity.status(HttpStatus.OK).body(email);
-    }
+    /* TODO : 회원가입 이메일 인증 */
+//    @PostMapping("/users/mail")
+//    public ResponseEntity<String> checkUserMail(@RequestBody String email) {
+//
+//        return ResponseEntity.status(HttpStatus.OK).body(email);
+//    }
 
 }

@@ -6,7 +6,7 @@ import java.time.LocalDate;
 @Data
 public class UserDto {
     private String email;
-    private String userId;
+    private String uuid;
     private String password;
     private String encryptedPwd;
     private String name;

@@ -57,12 +57,12 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, DELETE, PUT");
         response.setHeader("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With,observe,Content-Length");
-        response.setHeader("Access-Control-Expose-Headers","userId,token");
+        response.setHeader("Access-Control-Expose-Headers","uuid,token");
         if(request.getMethod().equals(HttpMethod.OPTIONS.name())) {
             response.setStatus(HttpStatus.OK.value());
         }
 
-        Claims claims = Jwts.claims().setSubject(userDto.getUserId());
+        Claims claims = Jwts.claims().setSubject(userDto.getUuid());
         Date now = new Date();
         String token = Jwts.builder()
                 .setClaims(claims)
@@ -71,7 +71,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                 .signWith(SignatureAlgorithm.HS256,"token_secret")
                 .compact();
 
-        response.addHeader("userId",userDto.getUserId());
+        response.addHeader("uuid",userDto.getUuid());
         response.addHeader("token",token);
     }
 }
