@@ -40,6 +40,9 @@
 		49D7A0B727840595001CAC60 /* IdInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D7A0B027840595001CAC60 /* IdInputViewController.swift */; };
 		49D7A0B827840595001CAC60 /* PwInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D7A0B127840595001CAC60 /* PwInputViewController.swift */; };
 		49D7A0B927840595001CAC60 /* RegisterNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D7A0B227840595001CAC60 /* RegisterNavigationController.swift */; };
+		49E6BE31279100BC000E475C /* HomeNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E6BE30279100BC000E475C /* HomeNavigationController.swift */; };
+		49E7374927906331000BC3FF /* Tab.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49E7374827906330000BC3FF /* Tab.storyboard */; };
+		49E7374B2790644C000BC3FF /* CustomTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E7374A2790644C000BC3FF /* CustomTabViewController.swift */; };
 		49E8E899278BB4C2003AD1DF /* HorizontalVideoListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E8E898278BB4C2003AD1DF /* HorizontalVideoListCell.swift */; };
 		49E8E89C278BB528003AD1DF /* Broadcast.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49E8E89B278BB528003AD1DF /* Broadcast.storyboard */; };
 		49E8E89E278BB5B0003AD1DF /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E8E89D278BB5B0003AD1DF /* CameraView.swift */; };
@@ -90,6 +93,9 @@
 		49D7A0B027840595001CAC60 /* IdInputViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdInputViewController.swift; sourceTree = "<group>"; };
 		49D7A0B127840595001CAC60 /* PwInputViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PwInputViewController.swift; sourceTree = "<group>"; };
 		49D7A0B227840595001CAC60 /* RegisterNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterNavigationController.swift; sourceTree = "<group>"; };
+		49E6BE30279100BC000E475C /* HomeNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNavigationController.swift; sourceTree = "<group>"; };
+		49E7374827906330000BC3FF /* Tab.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Tab.storyboard; sourceTree = "<group>"; };
+		49E7374A2790644C000BC3FF /* CustomTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabViewController.swift; sourceTree = "<group>"; };
 		49E8E898278BB4C2003AD1DF /* HorizontalVideoListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalVideoListCell.swift; sourceTree = "<group>"; };
 		49E8E89B278BB528003AD1DF /* Broadcast.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Broadcast.storyboard; sourceTree = "<group>"; };
 		49E8E89D278BB5B0003AD1DF /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
@@ -119,6 +125,7 @@
 			isa = PBXGroup;
 			children = (
 				4935FD3C277BDC6600760675 /* Home.storyboard */,
+				49E6BE30279100BC000E475C /* HomeNavigationController.swift */,
 				4935FD2E277BD95200760675 /* HomeListViewController.swift */,
 				4935FD30277BD97400760675 /* CategoryCell.swift */,
 				4935FD31277BD97400760675 /* VideoListCell.swift */,
@@ -178,6 +185,8 @@
 				49D7A0AB2783ECAD001CAC60 /* AppUtility.swift */,
 				49B9C9BB277ACE9C006AE134 /* SceneDelegate.swift */,
 				49B9C9BF277ACE9C006AE134 /* Main.storyboard */,
+				49E7374827906330000BC3FF /* Tab.storyboard */,
+				49E7374A2790644C000BC3FF /* CustomTabViewController.swift */,
 				49D7A0A92783DBB9001CAC60 /* LogInViewController.swift */,
 				49EC9A032782039800DE4F79 /* TabBarController.swift */,
 				4935FD2D277BD95200760675 /* HomeList */,
@@ -326,6 +335,7 @@
 				4935FD3A277BDAD100760675 /* Play.storyboard in Resources */,
 				4935FD3D277BDC6600760675 /* Home.storyboard in Resources */,
 				49B9C9C6277ACE9F006AE134 /* LaunchScreen.storyboard in Resources */,
+				49E7374927906331000BC3FF /* Tab.storyboard in Resources */,
 				49EC9A00278201C600DE4F79 /* Create.storyboard in Resources */,
 				49D7A0B527840595001CAC60 /* Register.storyboard in Resources */,
 				49818AC82780C66100C0C956 /* MyPage.storyboard in Resources */,
@@ -357,6 +367,7 @@
 				49E8E8A0278BC264003AD1DF /* LiveViewController.swift in Sources */,
 				49EC9A042782039800DE4F79 /* TabBarController.swift in Sources */,
 				496279E02782C1AA005A2BDC /* LiveStreamingInfoViewController.swift in Sources */,
+				49E7374B2790644C000BC3FF /* CustomTabViewController.swift in Sources */,
 				4935FD37277BDA5D00760675 /* VideoListCell.swift in Sources */,
 				49B9C9F2277AF018006AE134 /* UIFont+CustomFont.swift in Sources */,
 				4935FD36277BDA5D00760675 /* HomeListViewController.swift in Sources */,
@@ -364,6 +375,7 @@
 				49EC99FD2782015A00DE4F79 /* RecentViewedCell.swift in Sources */,
 				496279D827829516005A2BDC /* MyPageNavigationController.swift in Sources */,
 				49B9C9BA277ACE9C006AE134 /* AppDelegate.swift in Sources */,
+				49E6BE31279100BC000E475C /* HomeNavigationController.swift in Sources */,
 				49818AC52780C63F00C0C956 /* MyPageViewController.swift in Sources */,
 				4935FD42277C0E4D00760675 /* ChattingViewController.swift in Sources */,
 				49EC9A022782033E00DE4F79 /* CreatePopOverViewController.swift in Sources */,

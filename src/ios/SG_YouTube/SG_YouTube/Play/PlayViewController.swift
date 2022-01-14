@@ -59,7 +59,12 @@ class PlayViewController: UIViewController {
     let miniCloseButton = UIButton()
     var miniTapGesture = UITapGestureRecognizer()
     
+    var safeTop: CGFloat = 0
+    var safeBottom: CGFloat = 0
+    
+    
     // MARK: - View Life Cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         prepareAnimation()
@@ -182,8 +187,11 @@ class PlayViewController: UIViewController {
                 guard let self = self  else { return }
                 self.miniBackView.isHidden = !tf
                 if tf {
+                    let targetWidth =  80 / 9 * 16
+                    self.playViewWidth.constant = CGFloat(targetWidth)
                     AppUtility.lockOrientation(.portrait)
                 } else {
+                    self.playViewWidth.constant = UIScreen.main.bounds.width
                     AppUtility.lockOrientation(.all)
                 }
             }.store(in: &cancellable)
@@ -192,7 +200,7 @@ class PlayViewController: UIViewController {
     // MARK: - Animation Setting
     func prepareAnimation(){
         self.view.transform = CGAffineTransform.init(translationX: 0, y: UIScreen.main.bounds.height)
-    }
+     }
     
     func showAnimation(){
         UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 2, initialSpringVelocity: 2, options: .showHideTransitionViews, animations: {
@@ -206,12 +214,14 @@ class PlayViewController: UIViewController {
     }
     
     @objc func miniCLoseButtonDidTap() {
-        let targetY = (UIScreen.main.bounds.height) - (self.tabBarController?.tabBar.frame.height ?? 0)
+        let targetY = (UIScreen.main.bounds.height)
         UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseInOut) {
             self.view.center = CGPoint(x: self.view.frame.width / 2, y: (self.view.frame.height / 2) + targetY)
         } completion: { _ in
-            guard let parent = self.parent as? HomeListViewController else { return }
-            parent.removeTopChildViewController()
+            guard let parent = self.parent as? CustomTabViewController else { return }
+            parent.playContainerView.isHidden = true
+            parent.playViewTopMargin.constant = 0
+            parent.removePlayer()
         }
     }
     
@@ -222,6 +232,7 @@ class PlayViewController: UIViewController {
         explainVC.view.frame = self.explainContainerView.bounds
         explainVC.didMove(toParent: self)
     }
+    
     @IBAction func minimizeButtonDidTap(_ sender: Any) {
         AppUtility.lockOrientation(.portrait)
         isMinimized = true
@@ -253,13 +264,17 @@ class PlayViewController: UIViewController {
     
     @IBAction func playViewTapped(_ sender: Any) {
         chatTextView.resignFirstResponder()
+        guard let parent = self.parent as? CustomTabViewController else { return }
         if isMinimized {
-            self.tabBarController?.setTabBar(hidden: true, animated: true, along: self.parent?.transitionCoordinator)
             isMinimized = false
             UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) {
                 self.playViewWidth.constant = UIScreen.main.bounds.width
-                self.view.backgroundColor = UIColor.black.withAlphaComponent(1)
-                self.view.center = CGPoint(x: self.view.frame.width / 2, y: self.view.frame.height / 2)
+                parent.playViewTopMargin.constant = 0
+                parent.tabBarHeight.constant = 0
+                parent.tabBarStackView.isHidden = true
+                parent.tabBarSeparatorView.isHidden = true
+                parent.bottomWhiteView.isHidden = true
+                parent.view.backgroundColor = UIColor.black
             }
         } else {
             self.playControllTimer.invalidate()
@@ -283,44 +298,70 @@ class PlayViewController: UIViewController {
     }
     
     @IBAction func playViewDidPan(_ sender: Any) {
-        guard let pan = sender as? UIPanGestureRecognizer else { return }
+        guard let pan = sender as? UIPanGestureRecognizer, let parent = self.parent as? CustomTabViewController else { return }
         if UIDevice.current.value(forKey: "orientation") as? Int == UIInterfaceOrientation.portrait.rawValue {
             UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut) {
                 self.playControllView.alpha = 0
             }
-            let width = UIScreen.main.bounds.width
-            let height = width / 16 * 9
-            
             self.playControllTimer.invalidate()
-            let targetY = (UIScreen.main.bounds.height) - (self.tabBarController?.tabBar.frame.height ?? 0) - 80
+            let targetY = UIScreen.main.bounds.height - safeTop - safeBottom - 160
             let percentage = 1 - (pan.location(in: self.parent?.view).y / targetY)
             switch pan.state {
             case .began, .changed:
                 self.lastTranslation = pan.translation(in: view).y
-                if pan.location(in: self.parent?.view).y <= height {
-                    UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseInOut) {
-                        self.setPlayViewOriginalSize()
-                    }
-                } else if pan.location(in: self.parent?.view).y > targetY {
-                    UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseInOut) {
-                        self.setPlayViewMinimizing()
-                    }
+                let height = UIScreen.main.bounds.width / 16 * 9
+                let maxHeight = UIScreen.main.bounds.height - safeTop - safeBottom - 150
+                if pan.location(in: self.parent?.view).y <= height / 2 {
+                    self.view.backgroundColor = UIColor.black.withAlphaComponent(1)
+                    parent.playViewTopMargin.constant = 0
+                    parent.tabBarHeight.constant = 0
+                    parent.tabBarStackView.isHidden = true
+                    parent.tabBarSeparatorView.isHidden = true
+                    parent.bottomWhiteView.isHidden = true
+                    parent.view.backgroundColor = UIColor.black
+                    self.playViewWidth.constant = UIScreen.main.bounds.width
+                } else if pan.location(in: self.parent?.view).y >= maxHeight + 40 {
+                    self.view.backgroundColor = UIColor.black.withAlphaComponent(0)
+                    parent.playViewTopMargin.constant = maxHeight
+                    parent.tabBarHeight.constant = 80
+                    parent.tabBarStackView.isHidden = false
+                    parent.tabBarSeparatorView.isHidden = false
+                    parent.bottomWhiteView.isHidden = false
+                    parent.view.backgroundColor = UIColor.white
+                    let targetWidth =  80 / 9 * 16
+                    self.playViewWidth.constant = CGFloat(targetWidth)
                 } else {
                     self.view.backgroundColor = UIColor.black.withAlphaComponent(percentage)
-                    moveViewWithPan(view: view, sender: pan)
+                    parent.playViewTopMargin.constant = pan.location(in: self.parent?.view).y - (height / 2)
                 }
             case .ended:
+                let height = UIScreen.main.bounds.width / 16 * 9
+                let maxHeight = UIScreen.main.bounds.height - safeTop - safeBottom - 150
                 if lastTranslation == 0 {
-                    if pan.location(in: self.parent?.view).y < self.view.frame.height / 2 {
-                        self.tabBarController?.setTabBar(hidden: true, animated: true, along: self.parent?.transitionCoordinator)
+                    if pan.location(in: self.parent?.view).y <= self.view.frame.height / 2 {
+                        self.isMinimized = false
                         UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) {
-                            self.setPlayViewOriginalSize()
+                            self.view.backgroundColor = UIColor.black.withAlphaComponent(1)
+                            parent.playViewTopMargin.constant = 0
+                            parent.tabBarHeight.constant = 0
+                            parent.tabBarStackView.isHidden = true
+                            parent.tabBarSeparatorView.isHidden = true
+                            parent.bottomWhiteView.isHidden = true
+                            parent.view.backgroundColor = UIColor.black
+                            self.playViewWidth.constant = UIScreen.main.bounds.width
                         }
                     } else {
-                        self.tabBarController?.tabBar.alpha = 1
-                        self.tabBarController?.setTabBar(hidden: false, animated: true, along: self.parent?.transitionCoordinator)
+                        self.isMinimized = true
                         UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) {
-                            self.setPlayViewMinimizing()
+                            self.view.backgroundColor = UIColor.black.withAlphaComponent(0)
+                            parent.playViewTopMargin.constant = maxHeight
+                            parent.tabBarHeight.constant = 80
+                            parent.tabBarStackView.isHidden = false
+                            parent.tabBarSeparatorView.isHidden = false
+                            parent.bottomWhiteView.isHidden = false
+                            parent.view.backgroundColor = UIColor.white
+                            let targetWidth =  80 / 9 * 16
+                            self.playViewWidth.constant = CGFloat(targetWidth)
                         }
                     }
                 } else if lastTranslation < 0 {
@@ -328,16 +369,30 @@ class PlayViewController: UIViewController {
                         let value = UIInterfaceOrientation.landscapeRight.rawValue
                         UIDevice.current.setValue(value, forKey: "orientation")
                     } else {
-                        self.tabBarController?.setTabBar(hidden: true, animated: true, along: self.parent?.transitionCoordinator)
+                        self.isMinimized = false
                         UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) {
-                            self.setPlayViewOriginalSize()
+                            self.view.backgroundColor = UIColor.black.withAlphaComponent(1)
+                            parent.playViewTopMargin.constant = 0
+                            parent.tabBarHeight.constant = 0
+                            parent.tabBarStackView.isHidden = true
+                            parent.tabBarSeparatorView.isHidden = true
+                            parent.bottomWhiteView.isHidden = true
+                            parent.view.backgroundColor = UIColor.black
+                            self.playViewWidth.constant = UIScreen.main.bounds.width
                         }
                     }
                 } else {
-                    self.tabBarController?.tabBar.alpha = 1
-                    self.tabBarController?.setTabBar(hidden: false, animated: true, along: self.parent?.transitionCoordinator)
+                    self.isMinimized = true
                     UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) {
-                        self.setPlayViewMinimizing()
+                        self.view.backgroundColor = UIColor.black.withAlphaComponent(0)
+                        parent.playViewTopMargin.constant = maxHeight
+                        parent.tabBarHeight.constant = 80
+                        parent.tabBarStackView.isHidden = false
+                        parent.tabBarSeparatorView.isHidden = false
+                        parent.bottomWhiteView.isHidden = false
+                        parent.view.backgroundColor = UIColor.white
+                        let targetWidth =  80 / 9 * 16
+                        self.playViewWidth.constant = CGFloat(targetWidth)
                     }
                 }
             default:
@@ -351,19 +406,9 @@ class PlayViewController: UIViewController {
     
     // MARK: - PlayView layout change
     func setPlayViewOriginalSize() {
-        isMinimized = false
-        self.view.center = CGPoint(x: self.view.frame.width / 2, y: self.view.frame.height / 2)
-        self.view.backgroundColor = UIColor.black.withAlphaComponent(1)
-        self.playViewWidth.constant = UIScreen.main.bounds.width
     }
     
     func setPlayViewMinimizing() {
-        isMinimized = true
-        let targetWidth =  80 / 9 * 16
-        let targetY = (UIScreen.main.bounds.height) - (self.tabBarController?.tabBar.frame.height ?? 0) - 80
-        self.view.backgroundColor = UIColor.black.withAlphaComponent(0)
-        self.playViewWidth.constant = CGFloat(targetWidth)
-        self.view.center = CGPoint(x: self.view.frame.width / 2, y: (self.view.frame.height / 2) + targetY)
     }
     
     func moveViewWithPan(view: UIView, sender: UIPanGestureRecognizer) {

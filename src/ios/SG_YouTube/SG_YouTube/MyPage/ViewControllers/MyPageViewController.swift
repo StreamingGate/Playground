@@ -14,7 +14,7 @@ class MyPageViewController: UIViewController {
     @IBOutlet weak var likedVideoLabel: UILabel!
     @IBOutlet weak var myVideoLabel: UILabel!
     @IBOutlet weak var profileImageView: UIImageView!
-    
+    var playOpenDelegate:playOpenDelegate?
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,22 +75,8 @@ extension MyPageViewController: UICollectionViewDataSource, UICollectionViewDele
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let playVC = self.children.last as? PlayViewController {
-            self.tabBarController?.setTabBar(hidden: true, animated: true, along: self.parent?.transitionCoordinator)
-            playVC.isMinimized = false
-            UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) {
-                playVC.playViewWidth.constant = UIScreen.main.bounds.width
-                playVC.view.backgroundColor = UIColor.black.withAlphaComponent(1)
-                playVC.view.center = CGPoint(x: playVC.view.frame.width / 2, y: playVC.view.frame.height / 2)
-            }
-        } else {
-            guard let playVC = UIStoryboard(name: "Play", bundle: nil).instantiateViewController(withIdentifier: "PlayViewController" ) as? PlayViewController else { return }
-            self.tabBarController?.setTabBar(hidden: true, animated: true, along: self.transitionCoordinator)
-            self.addChild(playVC)
-            self.view.addSubview((playVC.view)!)
-            playVC.view.frame = self.view.bounds
-            playVC.didMove(toParent: self)
-        }
+        guard let navVC = self.navigationController as? MyPageNavigationController else{ return }
+        navVC.playDelegate?.openPlayer()
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

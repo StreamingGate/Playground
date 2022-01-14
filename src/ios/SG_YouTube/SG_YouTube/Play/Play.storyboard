@@ -12,6 +12,44 @@
         <!--Play View Controller-->
         <scene sceneID="AEv-if-D0R">
             <objects>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="u95-Lv-TVw">
+                    <connections>
+                        <action selector="playViewDidPan:" destination="zL7-Q9-x2b" id="fRU-8f-rV5"/>
+                        <outlet property="delegate" destination="zL7-Q9-x2b" id="oGr-fZ-E6Q"/>
+                    </connections>
+                </panGestureRecognizer>
+                <tapGestureRecognizer id="i3D-s5-2aj">
+                    <connections>
+                        <action selector="playControllerViewTapped:" destination="zL7-Q9-x2b" id="CUh-IE-Usi"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="QGS-uA-Xj7">
+                    <connections>
+                        <action selector="playViewTapped:" destination="zL7-Q9-x2b" id="Pg5-lR-zqV"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dUe-3m-ioB" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="sg9-Xa-LOA">
+                    <connections>
+                        <action selector="playViewDidPan:" destination="zL7-Q9-x2b" id="L4U-IW-vn0"/>
+                    </connections>
+                </panGestureRecognizer>
+                <tapGestureRecognizer id="42w-KU-Y7C">
+                    <connections>
+                        <action selector="playViewTapped:" destination="zL7-Q9-x2b" id="Ul7-Hi-TEn"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="RCZ-cR-RhB">
+                    <connections>
+                        <action selector="playViewDidPan:" destination="zL7-Q9-x2b" id="bKD-bm-PpC"/>
+                        <outlet property="delegate" destination="zL7-Q9-x2b" id="U3P-AL-1z0"/>
+                    </connections>
+                </panGestureRecognizer>
+                <tapGestureRecognizer id="3sv-Wl-HXa">
+                    <connections>
+                        <action selector="backTapped:" destination="zL7-Q9-x2b" id="d9q-7L-SEd"/>
+                    </connections>
+                </tapGestureRecognizer>
                 <viewController storyboardIdentifier="PlayViewController" id="zL7-Q9-x2b" customClass="PlayViewController" customModule="SG_YouTube" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="EK8-zi-7mB">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
@@ -479,44 +517,6 @@
                         <outlet property="viewLabel" destination="TYG-q8-tSZ" id="NA9-Ez-2vm"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dUe-3m-ioB" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="3sv-Wl-HXa">
-                    <connections>
-                        <action selector="backTapped:" destination="zL7-Q9-x2b" id="d9q-7L-SEd"/>
-                    </connections>
-                </tapGestureRecognizer>
-                <tapGestureRecognizer id="QGS-uA-Xj7">
-                    <connections>
-                        <action selector="playViewTapped:" destination="zL7-Q9-x2b" id="Pg5-lR-zqV"/>
-                    </connections>
-                </tapGestureRecognizer>
-                <tapGestureRecognizer id="i3D-s5-2aj">
-                    <connections>
-                        <action selector="playControllerViewTapped:" destination="zL7-Q9-x2b" id="CUh-IE-Usi"/>
-                    </connections>
-                </tapGestureRecognizer>
-                <panGestureRecognizer minimumNumberOfTouches="1" id="u95-Lv-TVw">
-                    <connections>
-                        <action selector="playViewDidPan:" destination="zL7-Q9-x2b" id="fRU-8f-rV5"/>
-                        <outlet property="delegate" destination="zL7-Q9-x2b" id="oGr-fZ-E6Q"/>
-                    </connections>
-                </panGestureRecognizer>
-                <panGestureRecognizer minimumNumberOfTouches="1" id="RCZ-cR-RhB">
-                    <connections>
-                        <action selector="playViewDidPan:" destination="zL7-Q9-x2b" id="bKD-bm-PpC"/>
-                        <outlet property="delegate" destination="zL7-Q9-x2b" id="U3P-AL-1z0"/>
-                    </connections>
-                </panGestureRecognizer>
-                <tapGestureRecognizer id="42w-KU-Y7C">
-                    <connections>
-                        <action selector="playViewTapped:" destination="zL7-Q9-x2b" id="Ul7-Hi-TEn"/>
-                    </connections>
-                </tapGestureRecognizer>
-                <panGestureRecognizer minimumNumberOfTouches="1" id="sg9-Xa-LOA">
-                    <connections>
-                        <action selector="playViewDidPan:" destination="zL7-Q9-x2b" id="L4U-IW-vn0"/>
-                    </connections>
-                </panGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1590" y="52"/>
         </scene>
