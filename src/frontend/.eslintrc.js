@@ -21,6 +21,7 @@ module.exports = {
     'import/no-unresolved': 'off',
     'import/extensions': 'off',
     'react/jsx-props-no-spreading': 'off',
+    'react-hooks/exhaustive-deps': 'off',
   },
   overrides: [
     {
