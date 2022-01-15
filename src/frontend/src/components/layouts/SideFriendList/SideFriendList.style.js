@@ -1,6 +1,10 @@
 import styled from 'styled-components';
 
+import { breakPoint } from '@utils/constant';
+
 import { Typography } from '@components/cores';
+
+const { queries } = breakPoint;
 
 export default {
   SideFriendListContainer: styled.div`
@@ -9,6 +13,13 @@ export default {
     padding: 25px 0px 25px 20px;
     background-color: #ffffff;
     overflow: auto;
+    transition: visibility 225ms, transform 225ms;
+    transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+
+    @media (${queries.laptopMax}) {
+      transform: translateX(200px);
+      visibility: hidden;
+    }
   `,
   SideFriendListHeader: styled(Typography)`
     margin-bottom: 15px;
