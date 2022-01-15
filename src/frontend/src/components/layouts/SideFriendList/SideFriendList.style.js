@@ -14,14 +14,14 @@ export default {
     margin-bottom: 15px;
     color: ${({ theme }) => theme.colors.placeHolder};
   `,
-  FriendList: styled.ul``,
+  FriendList: styled.ul`
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  `,
   FriendItem: styled.li`
     display: flex;
     align-items: center;
-
-    &:not(:last-child) {
-      margin-bottom: 15px;
-    }
   `,
   FriendName: styled(Typography)`
     margin-left: 5px;
