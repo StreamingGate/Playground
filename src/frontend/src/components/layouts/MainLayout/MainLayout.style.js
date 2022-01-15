@@ -8,9 +8,10 @@ const { queries } = breakPoint;
 
 export default {
   MainContentContainer: styled.main`
-    margin-left: 250px;
-    margin-right: 200px;
-    height: calc(100vh - 60px);
+    padding-top: var(--head-height);
+    margin-left: var(--side-nav-bar-width);
+    margin-right: var(--side-friend-list-width);
+    height: 100vh;
     overflow: auto;
 
     ${({ sideNavState }) =>

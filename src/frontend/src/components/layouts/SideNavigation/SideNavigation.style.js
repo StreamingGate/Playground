@@ -6,8 +6,9 @@ export default {
     display: flex;
     flex-direction: column;
     position: fixed;
-    height: calc(100vh - 60px);
-    min-width: 250px;
+    top: var(--head-height);
+    height: calc(100vh - var(--head-height));
+    width: var(--side-nav-bar-width);
     padding: 5px 10px 0px 0px;
     background-color: #ffffff;
     overflow: auto;
@@ -18,7 +19,7 @@ export default {
     ${({ state }) =>
       !state.open &&
       css`
-        transform: translateX(-250px);
+        transform: translateX(calc(-1 * var(--side-nav-bar-width)));
         visibility: hidden;
       `}
   `,

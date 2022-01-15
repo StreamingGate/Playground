@@ -5,10 +5,10 @@ import { Typography } from '@components/cores';
 export default {
   SideFriendListContainer: styled.div`
     position: fixed;
-    top: 60px;
+    top: var(--head-height);
     right: 0;
-    width: 200px;
-    height: calc(100vh - 60px);
+    width: var(--side-friend-list-width);
+    height: calc(100vh - var(--head-height));
     padding: 25px 0px 25px 20px;
     background-color: #ffffff;
     overflow: auto;
@@ -18,7 +18,7 @@ export default {
     ${({ state }) =>
       !state.open &&
       css`
-        transform: translateX(200px);
+        transform: translateX(var(--side-friend-list-width));
         visibility: hidden;
       `}
   `,

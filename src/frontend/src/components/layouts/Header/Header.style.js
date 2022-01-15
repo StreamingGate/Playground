@@ -12,9 +12,12 @@ const { queries } = breakPoint;
 export default {
   Header: styled.header`
     display: flex;
+    position: fixed;
+    left: 0;
+    right: 0;
     align-items: center;
     justify-content: space-between;
-    height: 60px;
+    height: var(--head-height);
     background-color: #ffffff;
     padding: 10px 20px;
     min-width: 300px;
