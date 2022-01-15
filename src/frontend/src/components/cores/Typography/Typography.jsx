@@ -3,11 +3,16 @@ import PropTypes from 'prop-types';
 
 import TypographyStyle from './Typography.style';
 
-function Typography({ type, children }) {
-  return <TypographyStyle.P type={type}>{children}</TypographyStyle.P>;
+function Typography({ className, type, children }) {
+  return (
+    <TypographyStyle.P className={className} type={type}>
+      {children}
+    </TypographyStyle.P>
+  );
 }
 
 Typography.propTypes = {
+  className: PropTypes.string,
   type: PropTypes.oneOf([
     'title',
     'subtitle',
@@ -23,6 +28,7 @@ Typography.propTypes = {
 };
 
 Typography.defaultProps = {
+  className: '',
   type: 'content',
   children: '',
 };
