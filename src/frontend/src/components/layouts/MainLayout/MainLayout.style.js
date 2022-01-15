@@ -8,7 +8,7 @@ export default {
   MainContentContainer: styled.main`
     margin-left: 250px;
     margin-right: 200px;
-    height: 100vh;
+    height: calc(100vh - 60px);
     overflow: auto;
 
     ${({ sideNavState }) =>
