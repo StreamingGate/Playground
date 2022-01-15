@@ -51,11 +51,11 @@ function MainLayout() {
   return (
     <MainLayoutContext.Provider value={mainLayoutContextValue}>
       <Header />
-      <S.Temp>
-        <SideNavigation />
-        <S.MainContentContainer>Content</S.MainContentContainer>
-        <SideFriendList />
-      </S.Temp>
+      <SideNavigation />
+      <S.MainContentContainer sideNavState={sideNavState} sideFriendState={sideFriendState}>
+        Content
+      </S.MainContentContainer>
+      <SideFriendList />
     </MainLayoutContext.Provider>
   );
 }
