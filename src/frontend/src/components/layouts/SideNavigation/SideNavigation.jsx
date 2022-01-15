@@ -4,6 +4,7 @@ import { MainLayoutContext } from '@utils/context';
 import S from './SideNavigation.style';
 
 import { HomeEmpty, History, ThumbUp, MyVideo } from '@components/cores';
+import { BackDrop } from '@components/feedbacks';
 import NavigationItem from './NavigationItem';
 
 const myNavigationItems = [
@@ -13,12 +14,12 @@ const myNavigationItems = [
 ];
 
 function SideNavigation() {
-  const { isSideNavOpen } = useContext(MainLayoutContext);
+  const { sideNavState, onToggleSideNav } = useContext(MainLayoutContext);
 
   return (
-    <S.Temp isOpen={isSideNavOpen}>
-      <div />
-      <S.SideNavigationContainer isOpen={isSideNavOpen}>
+    <>
+      <BackDrop isOpen={sideNavState.open && sideNavState.backdrop} onClick={onToggleSideNav} />
+      <S.SideNavigationContainer state={sideNavState}>
         <ul>
           <NavigationItem
             type='base'
@@ -41,7 +42,7 @@ function SideNavigation() {
           </S.MyNavigationItems>
         </ul>
       </S.SideNavigationContainer>
-    </S.Temp>
+    </>
   );
 }
 
