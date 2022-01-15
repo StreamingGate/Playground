@@ -8,6 +8,7 @@ import S from './MainLayout.style';
 import Header from '../Header/Header';
 import SideNavigation from '../SideNavigation/SideNavigation';
 import SideFriendList from '../SideFriendList/SideFriendList';
+import { Friends } from '@components/cores';
 
 const { screenSize } = breakPoint;
 
@@ -56,6 +57,9 @@ function MainLayout() {
         Content
       </S.MainContentContainer>
       <SideFriendList />
+      <S.FriendListToggleBtn>
+        <Friends />
+      </S.FriendListToggleBtn>
     </MainLayoutContext.Provider>
   );
 }
