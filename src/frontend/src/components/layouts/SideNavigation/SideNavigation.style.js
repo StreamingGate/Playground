@@ -1,8 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
-import { breakPoint } from '@utils/constant';
-
 export default {
   SideNavigationContainer: styled.nav`
     display: flex;

@@ -8,6 +8,9 @@ const { queries } = breakPoint;
 
 export default {
   SideFriendListContainer: styled.div`
+    position: fixed;
+    top: 60px;
+    right: 0;
     width: 200px;
     height: calc(100vh - 60px);
     padding: 25px 0px 25px 20px;
