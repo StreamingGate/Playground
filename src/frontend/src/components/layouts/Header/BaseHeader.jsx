@@ -1,20 +1,21 @@
 import React, { useContext } from 'react';
 
+import { HeaderContext, MainLayoutContext } from '@utils/context';
+import S from './Header.style';
+
 import { IconButton } from '@components/buttons';
 import { HamburgerBar, AddEmptyCircle, Alarm, Search } from '@components/cores';
 import SearchForm from './SearchForm';
 import Profile from './Profile';
 
-import { HeaderContext } from '@/utils/context';
-import S from './Header.style';
-
 function BaseHeader() {
   const { onToggle } = useContext(HeaderContext);
+  const { onToggleSideNav } = useContext(MainLayoutContext);
 
   return (
     <>
       <S.HeaderLeftDiv>
-        <S.HambergurIconButton>
+        <S.HambergurIconButton onClick={onToggleSideNav}>
           <HamburgerBar />
         </S.HambergurIconButton>
         <S.VerticalLogo />
