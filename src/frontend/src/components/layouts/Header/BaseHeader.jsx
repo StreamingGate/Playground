@@ -5,8 +5,8 @@ import S from './Header.style';
 
 import { IconButton } from '@components/buttons';
 import { HamburgerBar, AddEmptyCircle, Alarm, Search } from '@components/cores';
+import { Avatar } from '@components/dataDisplays';
 import SearchForm from './SearchForm';
-import Profile from './Profile';
 
 function BaseHeader() {
   const { onToggle } = useContext(HeaderContext);
@@ -22,16 +22,16 @@ function BaseHeader() {
       </S.HeaderLeftDiv>
       <SearchForm />
       <S.HeaderRightDiv>
-        <S.TabletSearchIconButton onClick={onToggle}>
+        <S.SearchBarIconButton onClick={onToggle}>
           <Search />
-        </S.TabletSearchIconButton>
+        </S.SearchBarIconButton>
         <IconButton>
           <AddEmptyCircle />
         </IconButton>
         <IconButton>
           <Alarm />
         </IconButton>
-        <Profile />
+        <Avatar />
       </S.HeaderRightDiv>
     </>
   );

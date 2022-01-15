@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Input } from '@components/forms';
 import { Button, IconButton } from '@components/buttons';
 import { VerticalLogo } from '@components/cores';
+import { Avatar } from '@components/dataDisplays';
 
 import { breakPoint } from '@utils/constant';
 
@@ -52,12 +53,18 @@ export default {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
   `,
-  HeaderRightDiv: styled.div``,
-  TabletSearchIconButton: styled(IconButton)`
+  HeaderRightDiv: styled.div`
+    display: flex;
+    align-items: center;
+  `,
+  SearchBarIconButton: styled(IconButton)`
     display: none;
 
     @media (${queries.tabletMax}) {
       display: revert;
     }
+  `,
+  SearchBarAvatar: styled(Avatar)`
+    margin-left: 25px;
   `,
 };

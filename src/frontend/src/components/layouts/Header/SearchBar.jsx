@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 
 import { HeaderContext } from '@utils/context';
+import S from './Header.style';
 
 import { IconButton } from '@components/buttons';
 import { ArrowBack } from '@components/cores';
-import Profile from './Profile';
 import SearchForm from './SearchForm';
 
 function SearchBar() {
@@ -16,7 +16,7 @@ function SearchBar() {
         <ArrowBack />
       </IconButton>
       <SearchForm />
-      <Profile />
+      <S.SearchBarAvatar />
     </>
   );
 }
