@@ -3,8 +3,6 @@ import styled, { css } from 'styled-components';
 
 import { breakPoint } from '@utils/constant';
 
-const { queries } = breakPoint;
-
 export default {
   SideNavigationContainer: styled.nav`
     display: flex;
@@ -25,11 +23,6 @@ export default {
         transform: translateX(-250px);
         visibility: hidden;
       `}
-
-    @media (${queries.wideLaptop}) {
-      transform: translateX(-250px);
-      visibility: hidden;
-    }
   `,
   NavigationLink: styled(NavLink)`
     display: flex;
