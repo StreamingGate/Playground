@@ -44,20 +44,27 @@ function MainLayout() {
     setSideNavState(prev => ({ ...prev, open: !prev.open }));
   };
 
+  const handleToggleSideFriend = () => {
+    setSideFriendState(prev => ({ ...prev, open: !prev.open }));
+  };
+
   const mainLayoutContextValue = useMemo(
-    () => ({ sideNavState, sideFriendState, onToggleSideNav: handleToggleSideNav }),
-    [sideNavState]
+    () => ({
+      sideNavState,
+      sideFriendState,
+      onToggleSideNav: handleToggleSideNav,
+      onToggleSideFriend: handleToggleSideFriend,
+    }),
+    [sideNavState, sideFriendState]
   );
 
   return (
     <MainLayoutContext.Provider value={mainLayoutContextValue}>
       <Header />
       <SideNavigation />
-      <S.MainContentContainer sideNavState={sideNavState} sideFriendState={sideFriendState}>
-        Content
-      </S.MainContentContainer>
+      <S.MainContentContainer sideNavState={sideNavState}>Content</S.MainContentContainer>
       <SideFriendList />
-      <S.FriendListToggleBtn>
+      <S.FriendListToggleBtn onClick={handleToggleSideFriend} isShow={sideFriendState.open}>
         <Friends />
       </S.FriendListToggleBtn>
     </MainLayoutContext.Provider>

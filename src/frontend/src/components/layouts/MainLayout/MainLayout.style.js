@@ -29,7 +29,7 @@ export default {
     }
   `,
   FriendListToggleBtn: styled(Button)`
-    display: none;
+    display: ${({ isShow }) => (isShow ? 'none' : 'inline')};
     position: fixed;
     bottom: 35px;
     right: 35px;
@@ -37,9 +37,5 @@ export default {
     background-color: #ffffff;
     border-radius: 100%;
     box-shadow: 0 0 50px rgba(0, 0, 0, 0.25);
-
-    @media (${queries.laptopMax}) {
-      display: inline;
-    }
   `,
 };
