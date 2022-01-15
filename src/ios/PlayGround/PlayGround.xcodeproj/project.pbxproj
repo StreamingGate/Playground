@@ -145,6 +145,8 @@
 			isa = PBXGroup;
 			children = (
 				49E6BE3A2791A066000E475C /* Friend */,
+				49E6BE3F2791A9EC000E475C /* Search */,
+				49AC952B2791AD2D0030DCC0 /* Notice */,
 				4935FD3C277BDC6600760675 /* Home.storyboard */,
 				49E6BE30279100BC000E475C /* HomeNavigationController.swift */,
 				4935FD2E277BD95200760675 /* HomeListViewController.swift */,
@@ -222,8 +224,6 @@
 				49A308A72791D97A005D6109 /* SearchOpenDelegate.swift */,
 				49A308A52791D96C005D6109 /* FriendListOpenDelegate.swift */,
 				49A308A32791D935005D6109 /* PlayOpenDelegate.swift */,
-				49AC952B2791AD2D0030DCC0 /* Notice */,
-				49E6BE3F2791A9EC000E475C /* Search */,
 				4935FD2D277BD95200760675 /* HomeList */,
 				4935FD32277BD97F00760675 /* Play */,
 				49C52CDD278B4379009D6FBB /* Channel */,
