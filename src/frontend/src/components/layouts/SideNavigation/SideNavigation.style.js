@@ -33,7 +33,7 @@ export default {
     display: flex;
     flex-direction: column;
     height: calc(100vh - 60px);
-    max-width: 250px;
+    min-width: 250px;
     padding: 5px 10px 0px 0px;
     background-color: #ffffff;
     overflow: auto;
