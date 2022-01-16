@@ -27,12 +27,12 @@ export default {
       'storybook/docs/panel': { hidden: true },
     },
   },
+  args: {
+    ctx: { sideNavState: { open: true, backdrop: false }, onToggleSideNav: undefined },
+  },
 };
 
 const Template = args => <SideNavigation {...args} />;
 
 export const SideNavigationStory = Template.bind({});
-SideNavigationStory.args = {
-  ctx: { sideNavState: { open: true, backdrop: false }, onToggleSideNav: undefined },
-};
 SideNavigationStory.storyName = 'SideNavigation';

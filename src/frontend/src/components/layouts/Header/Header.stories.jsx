@@ -26,12 +26,12 @@ export default {
       'storybook/docs/panel': { hidden: true },
     },
   },
+  args: {
+    ctx: { onToggleSideNav: undefined },
+  },
 };
 
 const Template = args => <Header {...args} />;
 
 export const HeaderStory = Template.bind({});
-HeaderStory.args = {
-  ctx: { onToggleSideNav: undefined },
-};
 HeaderStory.storyName = 'Header';

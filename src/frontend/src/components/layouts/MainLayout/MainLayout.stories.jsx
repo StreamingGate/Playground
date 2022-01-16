@@ -7,6 +7,10 @@ export default {
   component: MainLayout,
   parameters: {
     layout: 'fullscreen',
+    previewTabs: {
+      'storybook/docs/panel': { hidden: true },
+    },
+    controls: { hideNoControlsWarning: true },
   },
   decorators: [
     Story => (
