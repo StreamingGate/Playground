@@ -2,21 +2,12 @@ import React, { useCallback, memo } from 'react';
 import PropTypes from 'prop-types';
 
 import * as S from './VideoOverview.style';
-// import RealTimeMark from '@assets/image/RealTimeMark.png';
 
 import { Avatar } from '@components/dataDisplays';
 
-function VideoOverview({
-  direction,
-  thumbNailSrc,
-  profileImgSrc,
-  title,
-  userName,
-  content,
-  viewCount,
-  createdAt,
-  isRealTime,
-}) {
+function VideoOverview({ direction, videoInfo }) {
+  const { thumbNailSrc, title, userName, content, viewCount, createdAt, isRealTime } = videoInfo;
+
   const renderVideoInfo = useCallback(() => {
     if (direction === 'horizontal') {
       return (
@@ -63,21 +54,20 @@ function VideoOverview({
 
 VideoOverview.propTypes = {
   direction: PropTypes.oneOf(['horizontal', 'vertical']),
-  thumbNailSrc: PropTypes.string.isRequired,
-  profileImgSrc: PropTypes.string,
-  title: PropTypes.string.isRequired,
-  userName: PropTypes.string.isRequired,
-  viewCount: PropTypes.number.isRequired,
-  content: PropTypes.string,
-  createdAt: PropTypes.instanceOf(Date).isRequired,
-  isRealTime: PropTypes.bool,
+  videoInfo: PropTypes.shape({
+    thumbNailSrc: PropTypes.string.isRequired,
+    profileImgSrc: PropTypes.string,
+    title: PropTypes.string.isRequired,
+    userName: PropTypes.string.isRequired,
+    viewCount: PropTypes.number.isRequired,
+    content: PropTypes.string,
+    createdAt: PropTypes.instanceOf(Date).isRequired,
+    isRealTime: PropTypes.bool,
+  }).isRequired,
 };
 
 VideoOverview.defaultProps = {
   direction: 'vertical',
-  profileImgSrc: '',
-  isRealTime: false,
-  content: '',
 };
 
 export default memo(VideoOverview);
