@@ -5,7 +5,7 @@ import { MainLayoutContext } from '@utils/context';
 import SideNavigation from './SideNavigation';
 
 export default {
-  title: 'Layouts/SideNavigation',
+  title: 'Components/Layouts/SideNavigation',
   component: SideNavigation,
   decorators: [
     (Story, rest) => {

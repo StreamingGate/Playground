@@ -5,7 +5,7 @@ import { MainLayoutContext } from '@utils/context';
 import SideFriendList from './SideFriendList';
 
 export default {
-  title: 'Components/layouts/SideFriendList',
+  title: 'Components/Layouts/SideFriendList',
   component: SideFriendList,
   decorators: [
     (Story, rest) => {

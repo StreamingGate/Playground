@@ -5,7 +5,7 @@ import { MainLayoutContext } from '@utils/context';
 import Header from './Header';
 
 export default {
-  title: 'Layouts/Header',
+  title: 'Components/Layouts/Header',
   component: Header,
   decorators: [
     (Story, rest) => {

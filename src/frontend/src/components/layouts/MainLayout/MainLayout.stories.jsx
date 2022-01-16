@@ -3,7 +3,7 @@ import React from 'react';
 import MainLayout from './MainLayout';
 
 export default {
-  title: 'Layouts/MainLayout',
+  title: 'Components/Layouts/MainLayout',
   component: MainLayout,
   parameters: {
     layout: 'fullscreen',
