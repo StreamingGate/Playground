@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: user-service
+    name: user_service
   jpa:
     hibernate:
       ddl-auto: update

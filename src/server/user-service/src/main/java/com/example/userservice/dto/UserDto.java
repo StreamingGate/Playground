@@ -1,9 +1,10 @@
 package com.example.userservice.dto;
 
 import lombok.Data;
+
 import java.time.LocalDate;
 
-//@Data
+@Data
 public class UserDto {
     private String email;
     private String uuid;
