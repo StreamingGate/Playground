@@ -22,6 +22,16 @@ export default {
         transform: translateX(var(--side-friend-list-width));
         visibility: hidden;
       `}
+
+    /* BackDrop 컴포넌트와 같이 열릴 때 창 높이를 채움 */
+    ${({ state }) =>
+      state.open &&
+      state.backdrop &&
+      css`
+        top: 0;
+        bottom: 0;
+        height: 100vh;
+      `}
   `,
   SideFriendListHeader: styled(Typography)`
     margin-bottom: 15px;
