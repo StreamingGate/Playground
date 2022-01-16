@@ -1,22 +1,34 @@
 import React from 'react';
 
+import { MainLayoutContext } from '@utils/context';
+
 import SideFriendList from './SideFriendList';
 
 export default {
   title: 'Components/layouts/SideFriendList',
   component: SideFriendList,
+  decorators: [
+    (Story, rest) => {
+      const { args } = rest;
+      return (
+        <MainLayoutContext.Provider value={args.ctx}>
+          <div style={{ flex: 1 }}>
+            <div style={{ height: '60px' }} />
+            <Story />
+          </div>
+        </MainLayoutContext.Provider>
+      );
+    },
+  ],
   parameters: {
     layout: 'fullscreen',
+    controls: { hideNoControlsWarning: true, exclude: ['ctx'] },
+    previewTabs: {
+      'storybook/docs/panel': { hidden: true },
+    },
   },
-  decorators: [
-    Story => (
-      <div style={{ flex: 1 }}>
-        <div style={{ height: '60px' }} />
-        <Story />
-      </div>
-    ),
-  ],
   args: {
+    ctx: { sideFriendState: { open: true, backdrop: false }, onToggleSideFriend: undefined },
     friends: [
       { isOnline: false, profileImgSrc: '', name: '김하늬' },
       { isOnline: false, profileImgSrc: '', name: '서채희' },
