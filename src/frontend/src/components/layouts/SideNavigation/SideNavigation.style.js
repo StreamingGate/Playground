@@ -6,6 +6,7 @@ export default {
     display: flex;
     flex-direction: column;
     position: fixed;
+    z-index: 2;
     top: var(--head-height);
     height: calc(100vh - var(--head-height));
     width: var(--side-nav-bar-width);

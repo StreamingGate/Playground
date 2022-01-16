@@ -13,6 +13,7 @@ export default {
   Header: styled.header`
     display: flex;
     position: fixed;
+    z-index: 1;
     left: 0;
     right: 0;
     align-items: center;
