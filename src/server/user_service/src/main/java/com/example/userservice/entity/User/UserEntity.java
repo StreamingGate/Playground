@@ -1,5 +1,6 @@
 package com.example.userservice.entity.User;
 
+import com.example.userservice.dto.RegisterUser;
 import com.example.userservice.dto.UserDto;
 import lombok.Builder;
 import lombok.Getter;
@@ -65,11 +66,11 @@ public class UserEntity {
         this.state = state;
     }
 
-    public static UserEntity createUser(UserDto userDto) {
+    public static UserEntity createUser(RegisterUser userDto,String uuid,String pwd) {
         return UserEntity.builder()
                 .email(userDto.getEmail())
-                .uuid(userDto.getUuid())
-                .pwd(userDto.getEncryptedPwd())
+                .uuid(uuid)
+                .pwd(pwd)
                 .name(userDto.getName())
                 .nickName(userDto.getNickName())
                 .profileImage(userDto.getProfileImage())
@@ -77,10 +78,10 @@ public class UserEntity {
                 .build();
     }
 
-    public void updateUser(UserDto requestDto, LocalDate modifiedAt) {
-        this.nickName = requestDto.getNickName() == null ? requestDto.getNickName() : nickName;
-        this.pwd = requestDto.getEncryptedPwd() == null ? requestDto.getEncryptedPwd() : pwd;
-        this.profileImage = requestDto.getProfileImage() == null ? requestDto.getProfileImage() : profileImage;
+    public void updateUser(RegisterUser requestDto, LocalDate modifiedAt,String ecryptpwd) {
+        this.nickName = requestDto.getNickName() == null ? nickName : requestDto.getNickName();
+        this.pwd = ecryptpwd == null ? pwd : ecryptpwd;
+        this.profileImage = requestDto.getProfileImage() == null ? profileImage : requestDto.getProfileImage();
         this.modifiedAt = modifiedAt;
     }
 

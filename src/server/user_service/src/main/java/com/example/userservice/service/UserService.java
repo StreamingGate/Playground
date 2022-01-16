@@ -1,5 +1,6 @@
 package com.example.userservice.service;
 
+import com.example.userservice.dto.RegisterUser;
 import com.example.userservice.dto.UserDto;
 import com.example.userservice.entity.User.UserEntity;
 import com.example.userservice.entity.User.UserRepository;
@@ -15,6 +16,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,17 +26,17 @@ import java.util.*;
 
 @Service
 @Slf4j
-public class UserServiceImpl implements UserService {
+public class UserService implements UserDetailsService {
     UserRepository userRepository;
     BCryptPasswordEncoder bCryptPasswordEncoder;
     ModelMapper mapper;
     JavaMailSender javaMailSender;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository,
-                           BCryptPasswordEncoder bCryptPasswordEncoder,
-                           ModelMapper mapper,
-                           JavaMailSender javaMailSender) {
+    public UserService(UserRepository userRepository,
+                       BCryptPasswordEncoder bCryptPasswordEncoder,
+                       ModelMapper mapper,
+                       JavaMailSender javaMailSender) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.mapper = mapper;
@@ -52,26 +54,25 @@ public class UserServiceImpl implements UserService {
         return randomCode;
     }
 
-    @Override
     @Transactional
-    public UserDto createUser(UserDto userDto) throws CustomUserException {
-        userDto.setUuid(UUID.randomUUID().toString());
-        userDto.setEncryptedPwd(bCryptPasswordEncoder.encode(userDto.getPassword()));
-        userRepository.save(UserEntity.createUser(userDto));
+    public RegisterUser createUser(RegisterUser userDto) throws CustomUserException {
+        String uuid =  UUID.randomUUID().toString();
+        String bcryptPwd = bCryptPasswordEncoder.encode(userDto.getPassword());
+        userRepository.save(UserEntity.createUser(userDto,uuid,bcryptPwd));
         return userDto;
     }
 
-    @Override
     @Transactional
-    public UserDto updateUser(String uuid,UserDto requestDto) throws CustomUserException{
+    public RegisterUser updateUser(String uuid,RegisterUser requestDto) throws CustomUserException{
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         UserEntity userEntity = userRepository.findByUuid(uuid);
         Date date = new Date();
         LocalDate localDate = new java.sql.Date(date.getTime()).toLocalDate();
         try {
-            if(requestDto.getPassword() == null) requestDto.setEncryptedPwd(bCryptPasswordEncoder.encode(requestDto.getPassword()));
-            userEntity.updateUser(requestDto,localDate);
-            requestDto = mapper.map(userEntity,UserDto.class);
+            String bcryptPwd = "";
+            if(requestDto.getPassword() != null) bcryptPwd = bCryptPasswordEncoder.encode(requestDto.getPassword());
+            userEntity.updateUser(requestDto,localDate,bcryptPwd);
+            requestDto = mapper.map(userEntity,RegisterUser.class);
             return requestDto;
 
         } catch (CustomUserException e){
@@ -79,7 +80,6 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Override
     @Transactional
     public void deleteUser(String uuid) {
         UserEntity userEntity = userRepository.findByUuid(uuid);
@@ -89,7 +89,6 @@ public class UserServiceImpl implements UserService {
     }
 
     /* TODO :  이메일 인증  */
-//    @Override
 //    public String checkEmail(String email) {
 //        userRepository.findByEmail(email).orElse(sendEmail(email));
 //
@@ -97,7 +96,6 @@ public class UserServiceImpl implements UserService {
 //        return email;
 //    }
 
-    @Override
     public UserDto getUserByEmail(String email) {
         UserEntity userEntity = userRepository.findByEmail(email).orElseThrow(()-> new CustomUserException(ErrorCode.U002));
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
