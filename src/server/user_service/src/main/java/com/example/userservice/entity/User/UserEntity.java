@@ -20,19 +20,19 @@ public class UserEntity {
     @Column(unique = true)
     private String email;
 
-    @Column(length = 36,columnDefinition = "varchar(36)")
+    @Column(length = 36)
     private String uuid;
 
-    @Column(length = 61,columnDefinition = "varchar(61)")
+    @Column(length = 61)
     private String pwd;
 
-    @Column(length = 30,columnDefinition = "varchar(30)")
+    @Column(length = 30)
     private String name;
 
-    @Column(columnDefinition = "varchar(8)")
+    @Column
     private String nickName;
 
-    @Column(columnDefinition = "TEXT")
+    @Column
     private String profileImage;
 
     @Column
@@ -49,7 +49,7 @@ public class UserEntity {
     @Column
     private LocalDate deletedAt;
 
-    @Column(columnDefinition = "varchar(50)")
+    @Column
     private String timeZone;
 
     @Column
@@ -66,7 +66,7 @@ public class UserEntity {
         this.state = state;
     }
 
-    public static UserEntity createUser(RegisterUser userDto,String uuid,String pwd) {
+    public static UserEntity create(RegisterUser userDto,String uuid,String pwd) {
         return UserEntity.builder()
                 .email(userDto.getEmail())
                 .uuid(uuid)
@@ -78,14 +78,14 @@ public class UserEntity {
                 .build();
     }
 
-    public void updateUser(RegisterUser requestDto, LocalDate modifiedAt,String ecryptpwd) {
+    public void update(RegisterUser requestDto, LocalDate modifiedAt,String ecryptpwd) {
         this.nickName = requestDto.getNickName() == null ? nickName : requestDto.getNickName();
         this.pwd = ecryptpwd == null ? pwd : ecryptpwd;
         this.profileImage = requestDto.getProfileImage() == null ? profileImage : requestDto.getProfileImage();
         this.modifiedAt = modifiedAt;
     }
 
-    public void deleteUser(LocalDate deletedAt) {
+    public void delete(LocalDate deletedAt) {
         this.deletedAt = deletedAt;
         this.state = UserState.QUIT;
     }

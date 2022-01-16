@@ -27,10 +27,10 @@ import java.util.*;
 @Service
 @Slf4j
 public class UserService implements UserDetailsService {
-    UserRepository userRepository;
-    BCryptPasswordEncoder bCryptPasswordEncoder;
-    ModelMapper mapper;
-    JavaMailSender javaMailSender;
+    private UserRepository userRepository;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private ModelMapper mapper;
+    private JavaMailSender javaMailSender;
 
     @Autowired
     public UserService(UserRepository userRepository,
@@ -55,15 +55,15 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public RegisterUser createUser(RegisterUser userDto) throws CustomUserException {
+    public RegisterUser register(RegisterUser userDto) throws CustomUserException {
         String uuid =  UUID.randomUUID().toString();
         String bcryptPwd = bCryptPasswordEncoder.encode(userDto.getPassword());
-        userRepository.save(UserEntity.createUser(userDto,uuid,bcryptPwd));
+        userRepository.save(UserEntity.create(userDto,uuid,bcryptPwd));
         return userDto;
     }
 
     @Transactional
-    public RegisterUser updateUser(String uuid,RegisterUser requestDto) throws CustomUserException{
+    public RegisterUser update(String uuid,RegisterUser requestDto) throws CustomUserException{
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         UserEntity userEntity = userRepository.findByUuid(uuid);
         Date date = new Date();
@@ -71,7 +71,7 @@ public class UserService implements UserDetailsService {
         try {
             String bcryptPwd = "";
             if(requestDto.getPassword() != null) bcryptPwd = bCryptPasswordEncoder.encode(requestDto.getPassword());
-            userEntity.updateUser(requestDto,localDate,bcryptPwd);
+            userEntity.update(requestDto,localDate,bcryptPwd);
             requestDto = mapper.map(userEntity,RegisterUser.class);
             return requestDto;
 
@@ -81,11 +81,11 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public void deleteUser(String uuid) {
+    public void delete(String uuid) {
         UserEntity userEntity = userRepository.findByUuid(uuid);
         Date date = new Date();
         LocalDate localDate = new java.sql.Date(date.getTime()).toLocalDate();
-        userEntity.deleteUser(localDate);
+        userEntity.delete(localDate);
     }
 
     /* TODO :  이메일 인증  */
