@@ -1,6 +1,8 @@
 import { NavLink } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
+import { VerticalLogo } from '@components/cores';
+
 export default {
   SideNavigationContainer: styled.nav`
     display: flex;
@@ -23,6 +25,24 @@ export default {
         transform: translateX(calc(-1 * var(--side-nav-bar-width)));
         visibility: hidden;
       `}
+
+    /* BackDrop과 함께 열릴 경우 로고와 함께 창 높이를 채움*/
+    ${({ state }) =>
+      state.open &&
+      state.backdrop &&
+      css`
+        top: 0;
+        bottom: 0;
+        height: 100vh;
+      `}
+  `,
+  NavigationLogoContainer: styled.div`
+    display: flex;
+    justify-content: center;
+  `,
+  NavigationLogo: styled(VerticalLogo)`
+    width: 200px;
+    height: 50px;
   `,
   NavigationLink: styled(NavLink)`
     display: flex;

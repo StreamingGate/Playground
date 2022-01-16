@@ -20,6 +20,11 @@ function SideNavigation() {
     <>
       <BackDrop isOpen={sideNavState.open && sideNavState.backdrop} onClick={onToggleSideNav} />
       <S.SideNavigationContainer state={sideNavState}>
+        {sideNavState.open && sideNavState.backdrop && (
+          <S.NavigationLogoContainer>
+            <S.NavigationLogo />
+          </S.NavigationLogoContainer>
+        )}
         <ul>
           <NavigationItem
             type='base'
