@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Typography from '@components/core/Typography/Typography';
+import { Typography } from '@components/cores';
 import Button from './Button';
 
 export default {
@@ -10,7 +10,7 @@ export default {
     fullWidth: false,
     children: <Typography type='content'>구독</Typography>,
   },
-  parameters: { controls: { exclude: ['children'] } },
+  parameters: { controls: { exclude: ['children', 'className'] } },
 };
 
 const SizeTemplate = args => (

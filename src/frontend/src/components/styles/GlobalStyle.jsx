@@ -12,6 +12,12 @@ const GlobalStyle = createGlobalStyle`
         font-family: 'Roboto';
     }
 
+    :root {
+        --head-height: 60px;
+        --side-nav-bar-width: 250px;
+        --side-friend-list-width: 200px;
+    }
+
     body {
         background-color: ${props => props.theme.colors.background}
     }

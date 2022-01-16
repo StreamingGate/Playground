@@ -3,7 +3,7 @@ import React, { Fragment } from 'react';
 import Typography from './Typography';
 
 export default {
-  title: 'Components/Core/Typography',
+  title: 'Components/Cores/Typography',
   component: Typography,
   decorators: [
     Story => (
@@ -26,6 +26,9 @@ export default {
       { type: 'bottomTab', title: 'Bottom Tab(9px, regular)' },
     ],
   },
+  parameters: {
+    controls: { hideNoControlsWarning: true, exclude: ['className', 'type', 'children', 'props'] },
+  },
 };
 
 const Template = args => {
@@ -41,14 +44,12 @@ const Template = args => {
       >
         {title}
       </div>
-      <Typography type={type}>{args.children}</Typography>
+      <Typography type={type} {...args}>
+        {args.children}
+      </Typography>
       <br />
     </Fragment>
   ));
 };
 
-export const SGTubeFonts = Template.bind({});
-
-SGTubeFonts.parameters = {
-  controls: { hideNoControlsWarning: true, exclude: ['type', 'children', 'props'] },
-};
+export const Fonts = Template.bind({});

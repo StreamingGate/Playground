@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Input } from '@components/forms';
-import { Typography } from '@components/core';
+import { Typography } from '@components/cores';
 import { Button } from '@components/buttons';
 
 import { placeholder } from '@utils/constant';

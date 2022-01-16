@@ -1,10 +1,9 @@
 import React from 'react';
 
 import LoginPageImage from '@assets/image/LoginPageImage.png';
+import S from './LoginPage.style';
 
 import LoginForm from '../LoginForm/LoginForm';
-
-import S from './LoginPage.style';
 
 function LoginPage() {
   return (
