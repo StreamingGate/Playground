@@ -7,6 +7,7 @@ export default {
   component: HomePage,
   parameters: {
     layout: 'fullscreen',
+    controls: { hideNoControlsWarning: true },
   },
 };
 
