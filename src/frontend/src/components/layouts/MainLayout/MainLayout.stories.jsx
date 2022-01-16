@@ -12,13 +12,6 @@ export default {
     },
     controls: { hideNoControlsWarning: true },
   },
-  decorators: [
-    Story => (
-      <div style={{ flex: '1' }}>
-        <Story />
-      </div>
-    ),
-  ],
 };
 
 const Template = args => <MainLayout {...args} />;

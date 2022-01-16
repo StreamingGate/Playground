@@ -12,9 +12,7 @@ export default {
       const { args } = rest;
       return (
         <MainLayoutContext.Provider value={{ ...args.ctx }}>
-          <div style={{ flex: '1' }}>
-            <Story />
-          </div>
+          <Story />
         </MainLayoutContext.Provider>
       );
     },
