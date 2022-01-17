@@ -22,6 +22,6 @@
 		</dict>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>스트리밍을 시작하기 위해서는 PlayGround에 카메라 권한을 주셔야 합니다</string>
+	<string>실시간 스트리밍을 하기 위해서는 PlayGround에 카메라 권한을 허용해주셔야 합니다</string>
 </dict>
 </plist>

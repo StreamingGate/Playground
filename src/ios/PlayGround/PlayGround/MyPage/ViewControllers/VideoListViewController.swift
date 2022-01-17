@@ -48,7 +48,7 @@ extension VideoListViewController: UICollectionViewDataSource, UICollectionViewD
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let navVC = self.navigationController as? MyPageNavigationController else{ return }
-        navVC.playDelegate?.openPlayer()
+        navVC.coordinator?.showPlayer()
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

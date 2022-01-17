@@ -13,6 +13,7 @@ class AccountEditViewController: UIViewController {
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var nicknameLabel: UILabel!
     @IBOutlet weak var nicknameTextField: UITextField!
+    var coordinator: AccountEditCoordinator?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,6 +30,10 @@ class AccountEditViewController: UIViewController {
     }
     
     @IBAction func backButtonDidTap(_ sender: Any) {
-        self.dismiss(animated: true, completion: nil)
+        coordinator?.dismiss()
+    }
+    
+    @IBAction func withdrawButtonDidTap(_ sender: Any) {
+        coordinator?.dismissToRoot()
     }
 }

@@ -23,16 +23,15 @@ class ChannelViewController: UIViewController {
         setupUI()
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
         videoTableView.removeObserver(self, forKeyPath: "contentSize")
-        super.viewWillDisappear(true)
     }
     
 
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if(keyPath == "contentSize"){
-            if let newvalue = change?[.newKey]
-            {
+            if let newvalue = change?[.newKey] {
                 let newsize  = newvalue as! CGSize
                 videoTableViewHeight.constant = newsize.height
             }
@@ -68,7 +67,7 @@ extension ChannelViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let navVC = self.navigationController as? HomeNavigationController else{ return }
-        navVC.playDelegate?.openPlayer()
+        navVC.coordinator?.showPlayer()
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

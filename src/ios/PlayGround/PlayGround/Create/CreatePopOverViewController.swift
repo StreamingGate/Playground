@@ -14,6 +14,7 @@ class CreatePopOverViewController: UIViewController {
     @IBOutlet weak var createTitleLabel: UILabel!
     @IBOutlet weak var shortsCreateLabel: UILabel!
     @IBOutlet weak var liveCreateLabel: UILabel!
+    var navVC: CreateNavigationController?
     
     // MARK: - View Life Cycle
     override func viewDidLayoutSubviews() {
@@ -23,6 +24,8 @@ class CreatePopOverViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        guard let nav = self.navigationController as? CreateNavigationController else { return }
+        self.navVC = nav
         setupUI()
         prepareAnimation()
     }
@@ -60,7 +63,7 @@ class CreatePopOverViewController: UIViewController {
             self.backView.alpha = 0
             self.view.backgroundColor = UIColor.black.withAlphaComponent(0.0)
         }, completion: {_ in
-            self.dismiss(animated: false, completion: nil)
+            self.navVC?.coordinator?.dismiss()
         })
     }
     
@@ -70,9 +73,7 @@ class CreatePopOverViewController: UIViewController {
     }
     
     @IBAction func liveStreamingButtonDidTap(_ sender: Any) {
-        guard let liveInfoVC = UIStoryboard(name: "Create", bundle: nil).instantiateViewController(withIdentifier: "LiveStreamingInfoViewController") as? LiveStreamingInfoViewController, var viewControllers = self.navigationController?.viewControllers else { return }
-        viewControllers[viewControllers.count - 1] = liveInfoVC
-        self.navigationController?.setViewControllers(viewControllers, animated: true)
+        self.navVC?.coordinator?.showCreatingPage()
     }
     
     @IBAction func backgroundDidTap(_ sender: Any) {

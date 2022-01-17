@@ -9,6 +9,8 @@ import Foundation
 import UIKit
 
 class CreateNavigationController: UINavigationController {
+    var coordinator: CreateTabCoordinator?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }

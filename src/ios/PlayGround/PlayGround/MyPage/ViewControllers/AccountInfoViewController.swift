@@ -13,10 +13,12 @@ class AccountInfoViewController: UIViewController {
     @IBOutlet weak var nicknameLabel: UILabel!
     @IBOutlet weak var logOutLabel: UILabel!
     @IBOutlet weak var editButton: UIButton!
-    
+    var navVC: MyPageNavigationController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        guard let nav = self.navigationController as? MyPageNavigationController else { return }
+        self.navVC = nav
         setupUI()
     }
     
@@ -29,15 +31,19 @@ class AccountInfoViewController: UIViewController {
     }
     
     @IBAction func closeButtonDidTap(_ sender: Any) {
-        self.dismiss(animated: true, completion: nil)
+        self.navVC?.coordinator?.dismiss()
     }
     
     @IBAction func logOutButtonDidTap(_ sender: Any) {
-        self.presentingViewController?.dismiss(animated: true, completion: nil)
+        self.navVC?.coordinator?.dismissToRoot()
     }
     
     @IBAction func backButtonDidTap(_ sender: Any) {
-        self.navigationController?.popViewController(animated: true)
+        self.navVC?.coordinator?.pop()
+    }
+    
+    @IBAction func editButtonDidTap(_ sender: Any) {
+        self.navVC?.coordinator?.showAccountEdit()
     }
 }
 
@@ -55,8 +61,7 @@ extension AccountInfoViewController: UITableViewDataSource, UITableViewDelegate 
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let channelVC = UIStoryboard(name: "Channel", bundle: nil).instantiateViewController(withIdentifier: "ChannelViewController") as? ChannelViewController else { return }
-        self.navigationController?.pushViewController(channelVC, animated: true)
+        self.navVC?.coordinator?.showChannel()
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

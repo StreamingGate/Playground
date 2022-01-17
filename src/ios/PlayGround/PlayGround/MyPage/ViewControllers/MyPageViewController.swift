@@ -14,10 +14,13 @@ class MyPageViewController: UIViewController {
     @IBOutlet weak var likedVideoLabel: UILabel!
     @IBOutlet weak var myVideoLabel: UILabel!
     @IBOutlet weak var profileImageView: UIImageView!
-
+    var navVC: MyPageNavigationController?
+    
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        guard let nav = self.navigationController as? MyPageNavigationController else { return }
+        self.navVC = nav
         setupUI()
     }
     
@@ -38,26 +41,19 @@ class MyPageViewController: UIViewController {
     
     // MARK: - Button Action
     @IBAction func viewedVideoButtonDidTap(_ sender: Any) {
-        guard let videoListVC = UIStoryboard(name: "MyPage", bundle: nil).instantiateViewController(withIdentifier: "VideoListViewController") as? VideoListViewController else { return }
-        videoListVC.type = 0
-        self.navigationController?.pushViewController(videoListVC, animated: true)
+        self.navVC?.coordinator?.showVideoList(index: 0)
     }
     
     @IBAction func likedVideoButtonDidTap(_ sender: Any) {
-        guard let videoListVC = UIStoryboard(name: "MyPage", bundle: nil).instantiateViewController(withIdentifier: "VideoListViewController") as? VideoListViewController else { return }
-        videoListVC.type = 1
-        self.navigationController?.pushViewController(videoListVC, animated: true)
+        self.navVC?.coordinator?.showVideoList(index: 1)
     }
     
     @IBAction func myVideoButtonDidTap(_ sender: Any) {
-        guard let videoListVC = UIStoryboard(name: "MyPage", bundle: nil).instantiateViewController(withIdentifier: "VideoListViewController") as? VideoListViewController else { return }
-        videoListVC.type = 2
-        self.navigationController?.pushViewController(videoListVC, animated: true)
+        self.navVC?.coordinator?.showVideoList(index: 2)
     }
     
     @IBAction func profileDidTap(_ sender: Any) {
-        guard let accountVC = UIStoryboard(name: "MyPage", bundle: nil).instantiateViewController(withIdentifier: "AccountInfoViewController") as? AccountInfoViewController else { return }
-        self.navigationController?.pushViewController(accountVC, animated: true)
+        self.navVC?.coordinator?.showProfile()
     }
 }
 
@@ -74,8 +70,7 @@ extension MyPageViewController: UICollectionViewDataSource, UICollectionViewDele
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let navVC = self.navigationController as? MyPageNavigationController else{ return }
-        navVC.playDelegate?.openPlayer()
+        self.navVC?.coordinator?.showPlayer()
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

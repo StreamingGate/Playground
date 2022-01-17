@@ -17,6 +17,7 @@ class HomeListViewController: UIViewController {
     let playerView = UIView()
     var safeTop: CGFloat = 0
     var safeBottom: CGFloat = 0
+    var navVC: HomeNavigationController?
     
     // MARK: - View Life Cycle
     override func viewDidLayoutSubviews() {
@@ -27,7 +28,8 @@ class HomeListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tabBarController?.tabBar.backgroundColor = UIColor.white
+        guard let nav = self.navigationController as? HomeNavigationController else{ return }
+        self.navVC = nav
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -36,18 +38,15 @@ class HomeListViewController: UIViewController {
     }
     
     @IBAction func noticeButtonDidTap(_ sender: Any) {
-        guard let noticeVC = UIStoryboard(name: "Notice", bundle: nil).instantiateViewController(withIdentifier: "NoticeListViewController") as? NoticeListViewController else { return }
-        self.navigationController?.pushViewController(noticeVC, animated: true)
+        navVC?.coordinator?.showNotice()
     }
     
     @IBAction func searchButtonDidTap(_ sender: Any) {
-        guard let navVC = self.navigationController as? HomeNavigationController else{ return }
-        navVC.searchDelegate?.openSearch()
+        navVC?.coordinator?.showSearch()
     }
     
     @IBAction func friendButtonDidTap(_ sender: Any) {
-        guard let navVC = self.navigationController as? HomeNavigationController else{ return }
-        navVC.friendDelegate?.openFriendList()
+        navVC?.coordinator?.showFriendList()
     }
     
     func removeTopChildViewController(){
@@ -99,15 +98,13 @@ extension HomeListViewController: UITableViewDataSource, UITableViewDelegate {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "VideoListCell", for: indexPath) as? VideoListCell else { return UITableViewCell() }
         cell.setupUI()
         cell.channelTapHandler = {
-            guard let channelVC = UIStoryboard(name: "Channel", bundle: nil).instantiateViewController(withIdentifier: "ChannelViewController") as? ChannelViewController else { return }
-            self.navigationController?.pushViewController(channelVC, animated: true)
+            self.navVC?.coordinator?.showChannel()
         }
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let navVC = self.navigationController as? HomeNavigationController else{ return }
-        navVC.playDelegate?.openPlayer()
+        self.navVC?.coordinator?.showPlayer()
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

@@ -75,8 +75,7 @@ class PlayExplainViewController: UIViewController {
     @IBAction func channelDidTap(_ sender: Any) {
         guard let parent = self.parent as? PlayViewController else { return }
         parent.setPlayViewMinimizing()
-//        guard let channelVC = UIStoryboard(name: "Channel", bundle: nil).instantiateViewController(withIdentifier: "ChannelViewController") as? ChannelViewController else { return }
-//        self.navigationController?.pushViewController(channelVC, animated: true)
+        parent.coordinator?.showChannel()
     }
     
     @IBAction func closeButtonDidTap(_ sender: Any) {

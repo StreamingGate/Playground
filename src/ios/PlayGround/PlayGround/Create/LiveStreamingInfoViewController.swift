@@ -41,7 +41,7 @@ class LiveStreamingInfoViewController: UIViewController {
     let sessionQueue = DispatchQueue(label: "session queue")
     let videoDeviceDiscoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInDualCamera, .builtInWideAngleCamera, .builtInTrueDepthCamera], mediaType: .video, position: .unspecified)
     
-    
+    var navVC: CreateNavigationController?
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -53,6 +53,8 @@ class LiveStreamingInfoViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        guard let nav = self.navigationController as? CreateNavigationController else { return }
+        navVC = nav
         cameraView.session = captureSession
         sessionQueue.async {
             self.setupSession()
@@ -120,18 +122,15 @@ class LiveStreamingInfoViewController: UIViewController {
     }
     
     @IBAction func loadingCancleButtonDidTap(_ sender: Any) {
-        self.dismiss(animated: true, completion: nil)
+        self.navVC?.coordinator?.dismiss()
     }
     
     @IBAction func closeButtonDidTap(_ sender: Any) {
-        self.dismiss(animated: true, completion: nil)
+        self.navVC?.coordinator?.dismiss()
     }
     
     @IBAction func tempButtonDidTap(_ sender: Any) {
-        guard let vc = UIStoryboard(name: "Broadcast", bundle: nil).instantiateViewController(withIdentifier: "LiveViewController") as? LiveViewController, var viewControllers = self.navigationController?.viewControllers else { return }
-        viewControllers[viewControllers.count - 1] = vc
-        self.navigationController?.setViewControllers(viewControllers, animated: true)
-        
+        self.navVC?.coordinator?.startBroadcasting()
     }
 }
 

@@ -17,8 +17,12 @@ class LogInViewController: UIViewController {
     @IBOutlet weak var autoLogInLabel: UILabel!
     @IBOutlet weak var autoLogInButton: UIButton!
     
+    var coordinator: MainCoordinator?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        coordinator = MainCoordinator(parent: nil, navigation: self.navigationController ?? UINavigationController())
+        coordinator?.start()
         setupUI()
     }
     
@@ -40,10 +44,11 @@ class LogInViewController: UIViewController {
     @IBAction func logInButtonDidTap(_ sender: Any) {
         idField.resignFirstResponder()
         pwField.resignFirstResponder()
-//        guard let mainTab = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "TabBarController") as? TabBarController else { return }
-        guard let mainTab = UIStoryboard(name: "Tab", bundle: nil).instantiateViewController(withIdentifier: "CustomTabViewController") as? CustomTabViewController else { return }
-        mainTab.modalPresentationStyle = .fullScreen
-        self.present(mainTab, animated: true, completion: nil)
+////        guard let mainTab = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "TabBarController") as? TabBarController else { return }
+//        guard let mainTab = UIStoryboard(name: "Tab", bundle: nil).instantiateViewController(withIdentifier: "CustomTabViewController") as? CustomTabViewController else { return }
+//        mainTab.modalPresentationStyle = .fullScreen
+//        self.present(mainTab, animated: true, completion: nil)
+        coordinator?.showTabPage()
     }
     
     @IBAction func registerButtonDidTap(_ sender: Any) {

@@ -10,9 +10,12 @@ import UIKit
 
 class NoticeListViewController: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
+    var navVC: HomeNavigationController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        guard let nav = self.navigationController as? HomeNavigationController else { return }
+        self.navVC = nav
         setupUI()
     }
     
@@ -21,7 +24,7 @@ class NoticeListViewController: UIViewController {
     }
     
     @IBAction func backButtonDidTap(_ sender: Any) {
-        self.navigationController?.popViewController(animated: true)
+        navVC?.coordinator?.pop()
     }
 }
 

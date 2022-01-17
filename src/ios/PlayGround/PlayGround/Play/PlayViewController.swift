@@ -62,9 +62,9 @@ class PlayViewController: UIViewController {
     var safeTop: CGFloat = 0
     var safeBottom: CGFloat = 0
     
+    var coordinator: PlayerCoordinator?
     
     // MARK: - View Life Cycle
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         prepareAnimation()
@@ -216,23 +216,25 @@ class PlayViewController: UIViewController {
     }
     
     @objc func miniCLoseButtonDidTap() {
-        let targetY = (UIScreen.main.bounds.height)
-        UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseInOut) {
-            self.view.center = CGPoint(x: self.view.frame.width / 2, y: (self.view.frame.height / 2) + targetY)
-        } completion: { _ in
-            guard let parent = self.parent as? CustomTabViewController else { return }
-            parent.playContainerView.isHidden = true
-            parent.playViewTopMargin.constant = 0
-            parent.removePlayer()
-        }
+//        let targetY = (UIScreen.main.bounds.height)
+//        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) {
+//            self.view.center = CGPoint(x: self.view.frame.width / 2, y: (self.view.frame.height / 2) + targetY)
+//        } completion: { _ in
+//            guard let parent = self.parent as? CustomTabViewController else { return }
+//            parent.playContainerView.isHidden = true
+//            parent.playViewTopMargin.constant = 0
+//            parent.removePlayer()
+//        }
+        coordinator?.closeMiniPlayer(vc: self)
     }
     
     @IBAction func explainStretchButtonDidTap(_ sender: Any) {
-        guard let explainVC = UIStoryboard(name: "Play", bundle: nil).instantiateViewController(withIdentifier: "PlayExplainViewController") as? PlayExplainViewController else { return }
-        self.addChild(explainVC)
-        self.explainContainerView.addSubview((explainVC.view)!)
-        explainVC.view.frame = self.explainContainerView.bounds
-        explainVC.didMove(toParent: self)
+//        guard let explainVC = UIStoryboard(name: "Play", bundle: nil).instantiateViewController(withIdentifier: "PlayExplainViewController") as? PlayExplainViewController else { return }
+//        self.addChild(explainVC)
+//        self.explainContainerView.addSubview((explainVC.view)!)
+//        explainVC.view.frame = self.explainContainerView.bounds
+//        explainVC.didMove(toParent: self)
+        coordinator?.showExplain(vc: self)
     }
     
     @IBAction func minimizeButtonDidTap(_ sender: Any) {
@@ -338,47 +340,43 @@ class PlayViewController: UIViewController {
     
     // MARK: - PlayView layout change
     func setPlayViewOriginalSize() {
-        guard let parent = self.parent as? CustomTabViewController else { return }
-        self.isMinimized = false
-        self.playViewWidth.constant = UIScreen.main.bounds.width
-        self.miniCloseButton.isHidden = true
-        self.miniPlayPauseButton.isHidden = true
-        parent.playViewTopMargin.constant = 0
-        parent.tabBarHeight.constant = 0
-        parent.tabBarStackView.isHidden = true
-        parent.tabBarSeparatorView.isHidden = true
-        parent.bottomWhiteView.isHidden = true
-        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) {
-
-            parent.view.backgroundColor = UIColor.black
-            parent.view.layoutIfNeeded()
-        }
+        coordinator?.setPlayViewOriginalSize(vc: self)
+//        guard let parent = self.parent as? CustomTabViewController else { return }
+//        self.isMinimized = false
+//        self.playViewWidth.constant = UIScreen.main.bounds.width
+//        self.miniCloseButton.isHidden = true
+//        self.miniPlayPauseButton.isHidden = true
+//        parent.playViewTopMargin.constant = 0
+//        parent.tabBarHeight.constant = 0
+//        parent.tabBarStackView.isHidden = true
+//        parent.tabBarSeparatorView.isHidden = true
+//        parent.bottomWhiteView.isHidden = true
+//        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) {
+//            self.view.backgroundColor = UIColor.clear
+//            parent.view.backgroundColor = UIColor.black
+//            parent.view.layoutIfNeeded()
+//        }
     }
     
     func setPlayViewMinimizing() {
-        guard let parent = self.parent as? CustomTabViewController else { return }
-        self.isMinimized = true
-        let maxHeight = UIScreen.main.bounds.height - safeTop - safeBottom - 150
-        let targetWidth =  80 / 9 * 16
-        self.playViewWidth.constant = CGFloat(targetWidth)
-        self.miniCloseButton.isHidden = false
-        self.miniPlayPauseButton.isHidden = false
-        parent.playViewTopMargin.constant = maxHeight
-        parent.tabBarHeight.constant = 80
-        parent.tabBarStackView.isHidden = false
-        parent.tabBarSeparatorView.isHidden = false
-        parent.bottomWhiteView.isHidden = false
-        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) {
-            parent.view.backgroundColor = UIColor.white
-            parent.view.layoutIfNeeded()
-        }
-    }
-    
-    func moveViewWithPan(view: UIView, sender: UIPanGestureRecognizer) {
-        // translation : -는 위로, +는 아래로
-        let translation = sender.translation(in: view)
-        view.center = CGPoint(x: view.center.x, y: view.center.y + translation.y)
-        sender.setTranslation(CGPoint.zero, in: view)
+        coordinator?.setPlayMinimizing(vc: self)
+//        guard let parent = self.parent as? CustomTabViewController else { return }
+//        self.isMinimized = true
+//        let maxHeight = UIScreen.main.bounds.height - safeTop - safeBottom - 150
+//        let targetWidth =  80 / 9 * 16
+//        self.playViewWidth.constant = CGFloat(targetWidth)
+//        self.miniCloseButton.isHidden = false
+//        self.miniPlayPauseButton.isHidden = false
+//        parent.playViewTopMargin.constant = maxHeight
+//        parent.tabBarHeight.constant = 80
+//        parent.tabBarStackView.isHidden = false
+//        parent.tabBarSeparatorView.isHidden = false
+//        parent.bottomWhiteView.isHidden = false
+//        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) {
+//            self.view.backgroundColor = UIColor.clear
+//            parent.view.backgroundColor = UIColor.white
+//            parent.view.layoutIfNeeded()
+//        }
     }
 }
 

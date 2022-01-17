@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 class MyPageNavigationController: UINavigationController, UIGestureRecognizerDelegate {
-    var playDelegate: PlayOpenDelegate?
+    var coordinator: MyTabCoordinator?
     
     override func viewDidLoad() {
         super.viewDidLoad()

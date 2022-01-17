@@ -10,9 +10,12 @@ import UIKit
 
 class SearchViewController: UIViewController {
     @IBOutlet weak var searchTextField: UITextField!
+    var navVC: HomeNavigationController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        guard let nav = self.navigationController as? HomeNavigationController else { return }
+        self.navVC = nav
         setupUI()
     }
     
@@ -26,7 +29,7 @@ class SearchViewController: UIViewController {
     }
     
     @IBAction func backButtonDidTap(_ sender: Any) {
-        dismiss(animated: true, completion: nil)
+        navVC?.coordinator?.pop()
     }
 }
 
@@ -39,15 +42,13 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "VideoListCell", for: indexPath) as? VideoListCell else { return UITableViewCell() }
         cell.setupUI()
         cell.channelTapHandler = {
-            guard let channelVC = UIStoryboard(name: "Channel", bundle: nil).instantiateViewController(withIdentifier: "ChannelViewController") as? ChannelViewController else { return }
-            self.navigationController?.pushViewController(channelVC, animated: true)
+            self.navVC?.coordinator?.showChannel()
         }
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let navVC = self.navigationController as? HomeNavigationController else{ return }
-        navVC.playDelegate?.openPlayer()
+        navVC?.coordinator?.showPlayer()
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
