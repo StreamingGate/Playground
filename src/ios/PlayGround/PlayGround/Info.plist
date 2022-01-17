@@ -16,12 +16,12 @@
 					<key>UISceneDelegateClassName</key>
 					<string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
 					<key>UISceneStoryboardFile</key>
-					<string>Main</string>
+					<string>Login</string>
 				</dict>
 			</array>
 		</dict>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>실시간 스트리밍을 하기 위해서는 PlayGround에 카메라 권한을 허용해주셔야 합니다</string>
+	<string>스트리밍을 시작하기 위해서는 PlayGround에 카메라 권한을 주셔야 합니다</string>
 </dict>
 </plist>

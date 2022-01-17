@@ -6,66 +6,13 @@
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Tab Bar Controller-->
-        <scene sceneID="6FB-v6-dP2">
-            <objects>
-                <tabBarController storyboardIdentifier="TabBarController" automaticallyAdjustsScrollViewInsets="NO" hidesBottomBarWhenPushed="YES" id="qyu-BS-Ov5" customClass="TabBarController" customModule="PlayGround" customModuleProvider="target" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="yR5-jF-PZJ">
-                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <color key="tintColor" systemColor="labelColor"/>
-                        <color key="selectedImageTintColor" systemColor="labelColor"/>
-                    </tabBar>
-                    <connections>
-                        <segue destination="VB5-Pn-0ga" kind="relationship" relationship="viewControllers" id="dOx-9z-rwj"/>
-                        <segue destination="btk-bs-NL2" kind="relationship" relationship="viewControllers" id="Tnx-f7-3WX"/>
-                        <segue destination="TZ6-qe-qfj" kind="relationship" relationship="viewControllers" id="aRx-9a-ims"/>
-                    </connections>
-                </tabBarController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="051-UT-8vq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-262" y="37"/>
-        </scene>
-        <!--HomeListViewController-->
-        <scene sceneID="bpq-NN-2aH">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Home" referencedIdentifier="HomeListViewController" id="VB5-Pn-0ga" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="Pwp-GW-Rwm"/>
-                </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="uj6-gJ-1Ak" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="580" y="-115"/>
-        </scene>
-        <!--MyPageNavigationController-->
-        <scene sceneID="alh-lu-cAh">
-            <objects>
-                <viewControllerPlaceholder storyboardName="MyPage" referencedIdentifier="MyPageNavigationController" id="TZ6-qe-qfj" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="fnk-3q-jIC"/>
-                </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="8Bf-bR-PJ3" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="569" y="224"/>
-        </scene>
-        <!--CreateNavigationController-->
-        <scene sceneID="uhH-5I-afr">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Create" referencedIdentifier="CreateNavigationController" id="btk-bs-NL2" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="jee-GX-A4I"/>
-                </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="7Ui-NU-VaH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="580" y="37"/>
-        </scene>
-        <!--Main Navigation Controller-->
+        <!--Login Navigation Controller-->
         <scene sceneID="lZk-LM-jg1">
             <objects>
-                <navigationController storyboardIdentifier="MainNavigationController" navigationBarHidden="YES" id="d0j-C3-jmk" customClass="MainNavigationController" customModule="PlayGround" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="LoginNavigationController" navigationBarHidden="YES" id="d0j-C3-jmk" customClass="LoginNavigationController" customModule="PlayGround" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="vdW-ky-dns">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -77,10 +24,10 @@
             </objects>
             <point key="canvasLocation" x="-2609" y="33"/>
         </scene>
-        <!--Log In View Controller-->
+        <!--Login View Controller-->
         <scene sceneID="bJO-JF-Gh0">
             <objects>
-                <viewController storyboardIdentifier="LogInViewController" id="DfO-Qw-ZAC" customClass="LogInViewController" customModule="PlayGround" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LoginViewController" id="DfO-Qw-ZAC" customClass="LoginViewController" customModule="PlayGround" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Xq4-mR-lwa">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -257,7 +204,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-1239" y="37"/>
+            <point key="canvasLocation" x="-1832" y="33"/>
         </scene>
     </scenes>
     <resources>
@@ -278,8 +225,5 @@
         <namedColor name="Separator">
             <color red="0.89800000190734863" green="0.89800000190734863" blue="0.89800000190734863" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <systemColor name="labelColor">
-            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
     </resources>
 </document>

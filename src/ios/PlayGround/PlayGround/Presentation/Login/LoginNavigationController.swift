@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class MainNavigationController: UINavigationController {
+class LoginNavigationController: UINavigationController {
     
     
     override func viewDidLoad() {
