@@ -4,7 +4,7 @@ import * as S from './ChatRoom.style';
 
 import { Input } from '@components/forms';
 import { IconButton } from '@components/buttons';
-import { ChatDialog, Avatar } from '@components/dataDisplays';
+import { ChatDialog } from '@components/dataDisplays';
 
 const dummyChatList = [
   { id: 1, timeStamp: '오후 2:30', userName: 'test', message: '이것은 채팅이다.' },
@@ -42,7 +42,7 @@ function ChatRoom() {
         ))}
       </S.ChaListContainer>
       <S.ChatInputContainer>
-        <Avatar />
+        <S.UserProfile />
         <Input fullWidth variant='standard' placeholder='닉네임으로 채팅하기' />
         <IconButton>
           <S.SendIcon />

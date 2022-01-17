@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 import { Typography, Person, Send } from '@components/cores';
+import { Avatar } from '@components/dataDisplays';
 
 export const ChatRoomContainer = styled.div`
   max-height: 375px;
@@ -50,6 +51,10 @@ export const ChatInputContainer = styled.div`
   gap: 10px;
   padding: 15px 20px 30px;
   background-color: #ffffff;
+`;
+
+export const UserProfile = styled(Avatar)`
+  flex-shrink: 0;
 `;
 
 export const SendIcon = styled(Send)`
