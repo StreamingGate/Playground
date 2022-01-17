@@ -8,7 +8,7 @@ import { theme } from '@utils/constant';
 import { MainLayout } from '@components/layouts';
 import LoginPage from '@pages/Login';
 import HomePage from '@pages/Home';
-import VideoPlayPage from '@pages/Video';
+import VideoPlayPage from '@pages/VideoPlay';
 
 function App() {
   return (
