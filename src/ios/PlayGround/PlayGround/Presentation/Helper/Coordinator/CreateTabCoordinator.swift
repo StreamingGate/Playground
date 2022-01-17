@@ -29,7 +29,7 @@ class CreateTabCoordinator: Coordinator {
     }
     
     func showCreatingPage() {
-        guard let liveInfoVC = UIStoryboard(name: "Create", bundle: nil).instantiateViewController(withIdentifier: "LiveStreamingInfoViewController") as? LiveStreamingInfoViewController else { return }
+        guard let liveInfoVC = UIStoryboard(name: "Create", bundle: nil).instantiateViewController(withIdentifier: "createInfoViewController") as? createInfoViewController else { return }
         var viewControllers = navigation.viewControllers
         viewControllers[viewControllers.count - 1] = liveInfoVC
         navigation.setViewControllers(viewControllers, animated: true)

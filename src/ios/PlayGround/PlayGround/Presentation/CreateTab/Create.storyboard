@@ -159,10 +159,10 @@
             </objects>
             <point key="canvasLocation" x="1756.521739130435" y="175.44642857142856"/>
         </scene>
-        <!--Live Streaming Info View Controller-->
+        <!--Create Info View Controller-->
         <scene sceneID="Pzr-CU-ubN">
             <objects>
-                <viewController storyboardIdentifier="LiveStreamingInfoViewController" id="RWS-wc-lxH" customClass="LiveStreamingInfoViewController" customModule="PlayGround" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="createInfoViewController" id="RWS-wc-lxH" customClass="createInfoViewController" customModule="PlayGround" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="spv-i1-HHb">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

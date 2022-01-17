@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import AVFoundation
 
-class LiveStreamingInfoViewController: UIViewController {
+class createInfoViewController: UIViewController {
     @IBOutlet weak var currentAccountLabel: UILabel!
     @IBOutlet weak var accountNicknameLabel: UILabel!
     @IBOutlet weak var detailTitleLabel: UILabel!
@@ -136,7 +136,7 @@ class LiveStreamingInfoViewController: UIViewController {
 
 
 
-extension LiveStreamingInfoViewController {
+extension createInfoViewController {
     // MARK: - Setup session and preview
     func setupSession() {
         

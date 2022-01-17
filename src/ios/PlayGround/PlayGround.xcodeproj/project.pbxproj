@@ -27,7 +27,7 @@
 		496279DA278297C2005A2BDC /* VideoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496279D9278297C2005A2BDC /* VideoListViewController.swift */; };
 		496279DC27829CA5005A2BDC /* AccountInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496279DB27829CA5005A2BDC /* AccountInfoViewController.swift */; };
 		496279DE2782BB85005A2BDC /* AccountEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496279DD2782BB85005A2BDC /* AccountEditViewController.swift */; };
-		496279E02782C1AA005A2BDC /* LiveStreamingInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496279DF2782C1AA005A2BDC /* LiveStreamingInfoViewController.swift */; };
+		496279E02782C1AA005A2BDC /* CreateInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496279DF2782C1AA005A2BDC /* CreateInfoViewController.swift */; };
 		49818AC52780C63F00C0C956 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49818AC42780C63F00C0C956 /* MyPageViewController.swift */; };
 		49818AC82780C66100C0C956 /* MyPage.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49818AC72780C66100C0C956 /* MyPage.storyboard */; };
 		49A308A22791AD72005D6109 /* Notice.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49A308A12791AD72005D6109 /* Notice.storyboard */; };
@@ -92,7 +92,7 @@
 		496279D9278297C2005A2BDC /* VideoListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoListViewController.swift; sourceTree = "<group>"; };
 		496279DB27829CA5005A2BDC /* AccountInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInfoViewController.swift; sourceTree = "<group>"; };
 		496279DD2782BB85005A2BDC /* AccountEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountEditViewController.swift; sourceTree = "<group>"; };
-		496279DF2782C1AA005A2BDC /* LiveStreamingInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveStreamingInfoViewController.swift; sourceTree = "<group>"; };
+		496279DF2782C1AA005A2BDC /* CreateInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateInfoViewController.swift; sourceTree = "<group>"; };
 		49818AC42780C63F00C0C956 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 		49818AC72780C66100C0C956 /* MyPage.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MyPage.storyboard; sourceTree = "<group>"; };
 		49A308A12791AD72005D6109 /* Notice.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Notice.storyboard; sourceTree = "<group>"; };
@@ -385,12 +385,12 @@
 			children = (
 				49EC99FF278201C600DE4F79 /* Create.storyboard */,
 				49F18C2B278E5E0800EBDCF8 /* CreateNavigationController.swift */,
-				49E8E89B278BB528003AD1DF /* Broadcast.storyboard */,
-				49AB6FE8278C545100D4D1E9 /* LiveChatCell.swift */,
-				49E8E89F278BC264003AD1DF /* LiveViewController.swift */,
-				49E8E89D278BB5B0003AD1DF /* CameraView.swift */,
-				496279DF2782C1AA005A2BDC /* LiveStreamingInfoViewController.swift */,
 				49EC9A012782033E00DE4F79 /* CreatePopOverViewController.swift */,
+				496279DF2782C1AA005A2BDC /* CreateInfoViewController.swift */,
+				49E8E89B278BB528003AD1DF /* Broadcast.storyboard */,
+				49E8E89F278BC264003AD1DF /* LiveViewController.swift */,
+				49AB6FE8278C545100D4D1E9 /* LiveChatCell.swift */,
+				49E8E89D278BB5B0003AD1DF /* CameraView.swift */,
 			);
 			path = CreateTab;
 			sourceTree = "<group>";
@@ -491,7 +491,7 @@
 				49F18C2C278E5E0800EBDCF8 /* CreateNavigationController.swift in Sources */,
 				492C62252795326B00AE546E /* MainCoordinator.swift in Sources */,
 				49E8E8A0278BC264003AD1DF /* LiveViewController.swift in Sources */,
-				496279E02782C1AA005A2BDC /* LiveStreamingInfoViewController.swift in Sources */,
+				496279E02782C1AA005A2BDC /* CreateInfoViewController.swift in Sources */,
 				492C62192794F90500AE546E /* LoginNavigationController.swift in Sources */,
 				49E7374B2790644C000BC3FF /* CustomTabViewController.swift in Sources */,
 				4935FD37277BDA5D00760675 /* VideoListCell.swift in Sources */,
