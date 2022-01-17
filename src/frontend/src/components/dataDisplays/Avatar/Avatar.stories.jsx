@@ -23,6 +23,7 @@ const SizeTemplate = args => (
     <Avatar size='small' {...args} />
     <Avatar size='medium' {...args} />
     <Avatar size='large' {...args} />
+    <Avatar size='exLarge' {...args} />
   </>
 );
 

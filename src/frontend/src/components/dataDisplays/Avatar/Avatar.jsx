@@ -15,7 +15,7 @@ function Avatar({ className, onClick, imgSrc, size }) {
 Avatar.propTypes = {
   className: PropTypes.string,
   imgSrc: PropTypes.string,
-  size: PropTypes.oneOf(['small', 'medium', 'large']),
+  size: PropTypes.oneOf(['small', 'medium', 'large', 'exLarge']),
   onClick: PropTypes.func,
 };
 
