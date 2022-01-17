@@ -14,6 +14,7 @@
 		492C62212795323700AE546E /* CreateTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492C62202795323700AE546E /* CreateTabCoordinator.swift */; };
 		492C62232795325000AE546E /* HomeTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492C62222795325000AE546E /* HomeTabCoordinator.swift */; };
 		492C62252795326B00AE546E /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492C62242795326B00AE546E /* MainCoordinator.swift */; };
+		492C622C27954F9800AE546E /* UIView+takeScreenshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492C622B27954F9800AE546E /* UIView+takeScreenshot.swift */; };
 		4935FD35277BDA5D00760675 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4935FD30277BD97400760675 /* CategoryCell.swift */; };
 		4935FD36277BDA5D00760675 /* HomeListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4935FD2E277BD95200760675 /* HomeListViewController.swift */; };
 		4935FD37277BDA5D00760675 /* VideoListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4935FD31277BD97400760675 /* VideoListCell.swift */; };
@@ -79,6 +80,7 @@
 		492C62202795323700AE546E /* CreateTabCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTabCoordinator.swift; sourceTree = "<group>"; };
 		492C62222795325000AE546E /* HomeTabCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabCoordinator.swift; sourceTree = "<group>"; };
 		492C62242795326B00AE546E /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
+		492C622B27954F9800AE546E /* UIView+takeScreenshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+takeScreenshot.swift"; sourceTree = "<group>"; };
 		4935FD2E277BD95200760675 /* HomeListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeListViewController.swift; sourceTree = "<group>"; };
 		4935FD30277BD97400760675 /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
 		4935FD31277BD97400760675 /* VideoListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoListCell.swift; sourceTree = "<group>"; };
@@ -291,6 +293,7 @@
 				49EC9A05278205D200DE4F79 /* UIView+RoundCorners.swift */,
 				49B9C9EF277AEF4E006AE134 /* UIColor+CustomColor.swift */,
 				49B9C9F1277AF018006AE134 /* UIFont+CustomFont.swift */,
+				492C622B27954F9800AE546E /* UIView+takeScreenshot.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -507,6 +510,7 @@
 				4935FD42277C0E4D00760675 /* ChattingViewController.swift in Sources */,
 				49EA4E0E279461B200A038E3 /* Coordinator.swift in Sources */,
 				49E6BE3927919C7A000E475C /* FriendPopUpViewController.swift in Sources */,
+				492C622C27954F9800AE546E /* UIView+takeScreenshot.swift in Sources */,
 				49EC9A022782033E00DE4F79 /* CreatePopOverViewController.swift in Sources */,
 				492C62232795325000AE546E /* HomeTabCoordinator.swift in Sources */,
 				49EC9A06278205D200DE4F79 /* UIView+RoundCorners.swift in Sources */,
