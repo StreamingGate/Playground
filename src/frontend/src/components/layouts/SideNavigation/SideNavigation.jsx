@@ -18,7 +18,11 @@ function SideNavigation() {
 
   return (
     <>
-      <BackDrop isOpen={sideNavState.open && sideNavState.backdrop} onClick={onToggleSideNav} />
+      <BackDrop
+        isOpen={sideNavState.open && sideNavState.backdrop}
+        zIndex={2}
+        onClick={onToggleSideNav}
+      />
       <S.SideNavigationContainer state={sideNavState}>
         {sideNavState.open && sideNavState.backdrop && (
           <S.NavigationLogoContainer>
