@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: user_service
+    name: user-service
   jpa:
     hibernate:
       ddl-auto: update
@@ -13,13 +13,18 @@ spring:
     url: jdbc:mariadb://localhost:3306/userdb
     username: root
     password: test
+  redis:
+    host: localhost
+    port: 6379
 
   mail:
     host: smtp.gmail.com
     port: 587
-    password:
+    username: sgssgmanager@gmail.com
+    password: streamingsgs!
     properties.mail.smtp.auth: true
     properties.mail.smtp.starttls.enable: true
+
 
 eureka:
   instance:

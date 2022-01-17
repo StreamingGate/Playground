@@ -48,12 +48,24 @@ public class UserController {
         userService.delete(uuid);
         return ResponseEntity.status(HttpStatus.OK).body(uuid);
     }
+    /* 이메일 인증코드 전송 */
+    @PostMapping("/users/mail")
+    public ResponseEntity<String> checkMail(@RequestParam(value = "email") String email) {
+        String res = userService.checkEmail(email);
+        return ResponseEntity.status(HttpStatus.OK).body(res);
+    }
+    /* 인증코드 확인 */
+    @GetMapping("/users/mail")
+    public ResponseEntity<String> checkCode(@RequestParam(value = "code") String code) {
+        String res = userService.checkCode(code);
+        return ResponseEntity.status(HttpStatus.OK).body(res);
+    }
 
-    /* TODO : 회원가입 이메일 인증 */
-//    @PostMapping("/users/mail")
-//    public ResponseEntity<String> checkUserMail(@RequestBody String email) {
-//
-//        return ResponseEntity.status(HttpStatus.OK).body(email);
-//    }
-
+    /* 비밀번호 찾기 인증코드 전송 */
+    @PostMapping("/password")
+    public ResponseEntity<String> findPassword(@RequestParam(value = "email") String email,
+                                               @RequestParam(value = "name") String name) {
+        String res = userService.checkUser(name,email);
+        return ResponseEntity.status(HttpStatus.OK).body(res);
+    }
 }
