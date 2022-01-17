@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 
 import { MainLayoutContext } from '@utils/context';
 import { useWindowSize } from '@utils/hook';
@@ -13,14 +13,22 @@ import { Friends } from '@components/cores';
 
 const { screenSize } = breakPoint;
 
+const sideComponentInitState = { open: false, backdrop: false };
+
+const videoPlayUrl = /video-play/;
+
 function MainLayout() {
   const { innerWidth } = useWindowSize();
-  const [sideNavState, setSideNavState] = useState({ open: false, backdrop: false });
-  const [sideFriendState, setSideFriendState] = useState({ open: false, backdrop: false });
+  const { pathname } = useLocation();
+
+  const [sideNavState, setSideNavState] = useState({ ...sideComponentInitState });
+  const [sideFriendState, setSideFriendState] = useState({ ...sideComponentInitState });
 
   const setInitNavState = () => {
     // 비디오 재생 화면, wide laptop 사이즈 보다 작을때 backdrop true!!
-    if (innerWidth > screenSize.wideLaptop) {
+    if (videoPlayUrl.test(pathname)) {
+      setSideNavState({ open: false, backdrop: true });
+    } else if (innerWidth > screenSize.wideLaptop) {
       setSideNavState({ open: true, backdrop: false });
     } else {
       setSideNavState({ open: false, backdrop: true });
@@ -28,7 +36,7 @@ function MainLayout() {
   };
 
   const setInitFriendListState = () => {
-    // 비디오 재생 화면, laptop 사이즈 보다 작을때 backdrop true!!
+    // laptop 사이즈 보다 작을때 backdrop true!!
     if (innerWidth > screenSize.laptop) {
       setSideFriendState({ open: true, backdrop: false });
     } else {
