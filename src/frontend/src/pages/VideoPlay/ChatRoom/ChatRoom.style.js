@@ -15,9 +15,7 @@ export const ChatRoomHeader = styled.div`
   background-color: #ffffff;
 `;
 
-export const ChatRoomTitle = styled(Typography)`
-  font-weight: bold;
-`;
+export const ChatRoomTitle = styled(Typography)``;
 
 export const ChatMetaContainer = styled.div`
   display: flex;
