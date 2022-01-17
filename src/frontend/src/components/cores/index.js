@@ -14,3 +14,4 @@ export { default as MyVideo } from './Icons/MyVideo';
 export { default as Friends } from './Icons/Friends';
 export { default as RealTimeMark } from './Icons/RealTimeMark';
 export { default as Person } from './Icons/Person';
+export { default as Send } from './Icons/Send';
