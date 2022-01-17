@@ -16,3 +16,4 @@ export { default as RealTimeMark } from './Icons/RealTimeMark';
 export { default as Person } from './Icons/Person';
 export { default as Send } from './Icons/Send';
 export { default as ThumbDown } from './Icons/ThumbDown';
+export { default as Share } from './Icons/Share';
