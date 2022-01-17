@@ -1,11 +1,10 @@
 import React, { useContext } from 'react';
 
-import { HeaderContext, MainLayoutContext } from '@utils/context';
 import S from './Header.style';
+import { HeaderContext, MainLayoutContext } from '@utils/context';
 
 import { IconButton } from '@components/buttons';
 import { HamburgerBar, AddEmptyCircle, Alarm, Search } from '@components/cores';
-import { Avatar } from '@components/dataDisplays';
 import SearchForm from './SearchForm';
 
 function BaseHeader() {
@@ -31,7 +30,7 @@ function BaseHeader() {
         <IconButton>
           <Alarm />
         </IconButton>
-        <Avatar />
+        <S.HeaderAvatar />
       </S.HeaderRightDiv>
     </>
   );

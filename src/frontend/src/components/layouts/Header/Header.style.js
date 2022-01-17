@@ -61,6 +61,9 @@ export default {
     display: flex;
     align-items: center;
   `,
+  HeaderAvatar: styled(Avatar)`
+    margin-left: 8px;
+  `,
   SearchBarIconButton: styled(IconButton)`
     display: none;
 
