@@ -15,8 +15,9 @@ class VideoListCell: UITableViewCell {
     @IBOutlet weak var viewLabel: UILabel!
     @IBOutlet weak var liveSign: UIImageView!
     var channelTapHandler: (()->Void)?
-    func setupUI() {
+    func setupUI(_ index: Int) {
         titleLabel.font = UIFont.Component
+        titleLabel.text = "\(index) 번째 동영상"
         nicknameLabel.font = UIFont.caption
         nicknameLabel.textColor = UIColor.customDarkGray
         viewLabel.font = UIFont.caption

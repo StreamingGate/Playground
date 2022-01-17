@@ -8,11 +8,13 @@
 import Foundation
 import UIKit
 import Combine
+import AVFoundation
 
 class PlayViewController: UIViewController {
-    @IBOutlet weak var playView: UIView!
+    @IBOutlet weak var playView: PlayerView!
     @IBOutlet weak var playViewWidth: NSLayoutConstraint!
     @IBOutlet weak var playControllView: UIView!
+    @IBOutlet weak var playPauseButton: UIButton!
     var playControllTimer = Timer()
     
     @IBOutlet weak var titleLabel: UILabel!
@@ -63,6 +65,7 @@ class PlayViewController: UIViewController {
     var safeBottom: CGFloat = 0
     
     var coordinator: PlayerCoordinator?
+    let player = AVPlayer()
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
@@ -73,6 +76,13 @@ class PlayViewController: UIViewController {
         portraitLayout = [chatContainerViewLeading, chatContainerViewCenterX, chatContainerViewTop, playViewTop, playViewCenterX, playViewWidth]
         NotificationCenter.default.addObserver(self, selector: #selector(adjustInputView), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(adjustInputView), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        let url = URL(string: "https://bitmovin-a.akamaihd.net/content/art-of-motion_drm/m3u8s/11331.m3u8")!
+        let avAsset = AVURLAsset(url: url)
+        let item = AVPlayerItem(asset: avAsset)
+        self.player.replaceCurrentItem(with: item)
+        playView.player = self.player
+        playView.player?.play()
         setupUI()
         setMiniPlayerlayout()
         setMiniPlayerAction()
@@ -213,10 +223,32 @@ class PlayViewController: UIViewController {
     // MARK: - Button Action
     func setMiniPlayerAction() {
         miniCloseButton.addTarget(self, action: #selector(miniCLoseButtonDidTap), for: .touchUpInside)
+        miniPlayPauseButton.addTarget(self, action: #selector(miniPlayPauseButtonDidTap), for: .touchUpInside)
     }
     
     @objc func miniCLoseButtonDidTap() {
         coordinator?.closeMiniPlayer(vc: self)
+    }
+    
+    @objc func miniPlayPauseButtonDidTap() {
+        togglePlay()
+    }
+    
+    @IBAction func playPauseButtonDidTap(_ sender: Any) {
+        togglePlay()
+    }
+    
+    func togglePlay() {
+        guard let play = playView.player else { return }
+        if (play.isPlaying) {
+            miniPlayPauseButton.setImage(UIImage(named: "play_black"), for: .normal)
+            playPauseButton.setImage(UIImage(named: "play_white"), for: .normal)
+            play.pause()
+        } else {
+            miniPlayPauseButton.setImage(UIImage(named: "pause_black"), for: .normal)
+            playPauseButton.setImage(UIImage(named: "pause_white"), for: .normal)
+            play.play()
+        }
     }
     
     @IBAction func explainStretchButtonDidTap(_ sender: Any) {
@@ -361,5 +393,14 @@ extension PlayViewController {
             chatViewBottom.constant = 0
             self.view.layoutIfNeeded()
         }
+    }
+}
+
+
+
+extension AVPlayer {
+    var isPlaying: Bool {
+        guard self.currentItem != nil else { return false }
+        return self.rate != 0
     }
 }

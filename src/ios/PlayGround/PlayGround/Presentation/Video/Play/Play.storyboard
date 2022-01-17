@@ -27,9 +27,9 @@
                                     <outletCollection property="gestureRecognizers" destination="sg9-Xa-LOA" appends="YES" id="tFy-Mw-ao9"/>
                                 </connections>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yqi-XC-h5e">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yqi-XC-h5e" customClass="PlayerView" customModule="PlayGround" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="44" width="414" height="233"/>
-                                <color key="backgroundColor" name="Separator"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstAttribute="width" priority="999" constant="414" id="v2O-eg-KOu"/>
@@ -61,6 +61,9 @@
                                         </constraints>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" image="pause_white"/>
+                                        <connections>
+                                            <action selector="playPauseButtonDidTap:" destination="zL7-Q9-x2b" eventType="touchUpInside" id="7dI-XS-hvS"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zbm-Dr-h03">
                                         <rect key="frame" x="375" y="194" width="24" height="24"/>
@@ -467,7 +470,8 @@
                         <outlet property="playControlPanGesture" destination="RCZ-cR-RhB" id="UDD-C8-uCu"/>
                         <outlet property="playControllView" destination="LRj-f8-gzh" id="vsA-rt-1SE"/>
                         <outlet property="playPanGesture" destination="u95-Lv-TVw" id="dfZ-Dy-oeY"/>
-                        <outlet property="playView" destination="yqi-XC-h5e" id="BYb-4e-hv1"/>
+                        <outlet property="playPauseButton" destination="gdz-vP-Wa1" id="OBx-ki-FPm"/>
+                        <outlet property="playView" destination="yqi-XC-h5e" id="tuS-c1-5gk"/>
                         <outlet property="playViewCenterX" destination="ZZ4-Fk-jH1" id="hq4-yO-vbv"/>
                         <outlet property="playViewTop" destination="S62-GT-XAz" id="qIm-Mw-v25"/>
                         <outlet property="playViewWidth" destination="v2O-eg-KOu" id="vaK-bl-PQP"/>
