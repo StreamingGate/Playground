@@ -1,11 +1,11 @@
-package com.example.userservice.vo;
+package com.example.userservice.dto;
 
 import lombok.Data;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 
 @Data
-public class RequestUser {
+public class RegisterUser {
     /* TODO: test이후 지우기 */
 //    @Email
     private String email;
