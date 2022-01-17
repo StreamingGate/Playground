@@ -11,6 +11,7 @@ import UIKit
 class IdInputViewController: UIViewController {
     
     // MARK: Properties
+    @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var idFormatCheckLabel: UILabel!
     @IBOutlet weak var idTextField: UITextField!
     @IBOutlet weak var sendVerifyMailButton: UIButton!
@@ -54,6 +55,13 @@ class IdInputViewController: UIViewController {
         return emailCheck.evaluate(with: input)
     }
     
+    @IBAction func idTextFieldDidBegin(_ sender: Any) {
+        idFormatCheckLabel.isHidden = false
+        idFormatCheckLabel.text = "이메일을 입력해주세요"
+        idFormatCheckLabel.textColor = UIColor.PGBlue
+        sendVerifyMailButton.isEnabled = false
+    }
+    
     @IBAction func idTextFieldEditingChanged(_ sender: Any) {
         guard let idInfo = idTextField.text, idInfo.isEmpty == false else {
             idFormatCheckLabel.isHidden = false
@@ -63,6 +71,7 @@ class IdInputViewController: UIViewController {
 //            UserDefaults.standard.set(false, forKey: "onRegister")
             return
         }
+        sendVerifyMailButton.isEnabled = isValidEmail(input: idInfo)
 //        UserDefaults.standard.set(true, forKey: "onRegister")
 //        UserDefaults.standard.set(idInfo, forKey: "onRegister-Email")
     }
@@ -82,12 +91,20 @@ class IdInputViewController: UIViewController {
     @IBAction func sendVerifyMailButtonDidTap(_ sender: Any) {
         guard let idInfo = idTextField.text, idInfo.isEmpty == false else { return }
         sendVerifyMailButton.isEnabled = false
+        sendVerifyMailButton.isHidden = true
+        verifyNumTextField.isHidden = false
+        verifyNumUnderLine.isHidden = false
+        verifyNumTitleLabel.isHidden = false
+        nextButton.isHidden = false
     }
     
     // 다음
     @IBAction func nextButtonDidTap(_ sender: Any) {
         guard let verifyInput = verifyNumTextField.text, verifyInput.isEmpty == false, let inputNum = Int(verifyInput) else { return }
         nextButton.isEnabled = false
+        guard let vc = UIStoryboard(name: "Register", bundle: nil).instantiateViewController(withIdentifier: "NickNameInputViewController") as? NickNameInputViewController else { return }
+        vc.nameInfo = nameTextField.text ?? ""
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     // 백그라운드 탭

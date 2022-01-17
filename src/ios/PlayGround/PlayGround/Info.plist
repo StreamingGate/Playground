@@ -23,5 +23,7 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>스트리밍을 시작하기 위해서는 PlayGround에 카메라 권한을 주셔야 합니다</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>프로필 사진을 설정하려면 PlayGround에서 갤러리 접근 권한을 주셔야 합니다</string>
 </dict>
 </plist>
