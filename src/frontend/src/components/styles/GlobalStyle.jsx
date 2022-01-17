@@ -22,7 +22,11 @@ const GlobalStyle = createGlobalStyle`
         --head-logo-width: 116px;
         --head-logo-height: 27px;
         --head-logo-margin: 17px;
-        --video-num-in-a-row: 3;
+        --video-num-in-a-row: 4;
+
+        @media(${queries.wideLaptop}) {
+            --video-num-in-a-row: 3;
+        }
 
         @media(${queries.tabletMax}) {
             --video-num-in-a-row: 2;
