@@ -4,7 +4,7 @@ export default {
   BackDropContainer: styled.div`
     visibility: hidden;
     position: fixed;
-    z-index: 1;
+    z-index: ${({ zIndex }) => zIndex};
     top: 0;
     left: 0;
     right: 0;
