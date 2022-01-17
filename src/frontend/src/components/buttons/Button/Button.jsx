@@ -33,7 +33,7 @@ Button.defaultProps = {
   className: '',
   variant: 'contained',
   children: '',
-  color: 'youtubeRed',
+  color: 'pgOrange',
   size: 'small',
   fullWidth: false,
   onClick: null,
