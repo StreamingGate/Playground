@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 
 import * as S from './ChatDialog.style';
@@ -31,4 +31,4 @@ ChatDialog.defaultProps = {
   isAdmin: false,
 };
 
-export default ChatDialog;
+export default memo(ChatDialog);

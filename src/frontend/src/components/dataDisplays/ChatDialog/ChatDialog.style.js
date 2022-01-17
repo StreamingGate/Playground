@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 import { Avatar } from '@components/dataDisplays';
 import { Typography } from '@components/cores';
 
-export const ChatDialogContainer = styled.div`
+export const ChatDialogContainer = styled.li`
   display: flex;
   align-items: flex-start;
 
