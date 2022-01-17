@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Typography } from '@components/cores';
+import { NormalWrapper } from '@components/storybook';
 import Button from './Button';
 
 export default {
@@ -11,6 +12,13 @@ export default {
     children: <Typography type='content'>구독</Typography>,
   },
   parameters: { controls: { exclude: ['children', 'className'] } },
+  decorators: [
+    Story => (
+      <NormalWrapper>
+        <Story />
+      </NormalWrapper>
+    ),
+  ],
 };
 
 const SizeTemplate = args => (

@@ -12,10 +12,8 @@ export default {
       const { args } = rest;
       return (
         <MainLayoutContext.Provider value={{ ...args.ctx }}>
-          <div style={{ flex: '1' }}>
-            <div style={{ height: '60px' }} />
-            <Story />
-          </div>
+          <div style={{ height: '60px' }} />
+          <Story />
         </MainLayoutContext.Provider>
       );
     },

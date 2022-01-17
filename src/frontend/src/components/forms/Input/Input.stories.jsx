@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Input from './Input';
+import { NormalWrapper } from '@components/storybook';
 
 export default {
   title: 'Components/Forms/Input',
@@ -12,6 +13,13 @@ export default {
     fullWidth: false,
   },
   parameters: { controls: { exclude: ['className'] } },
+  decorators: [
+    Story => (
+      <NormalWrapper>
+        <Story />
+      </NormalWrapper>
+    ),
+  ],
 };
 
 const VariantTemplate = args => (

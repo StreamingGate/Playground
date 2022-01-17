@@ -13,6 +13,9 @@ export default {
     ),
   ],
   parameters: { layout: 'fullscreen' },
+  args: {
+    zIndex: 1,
+  },
 };
 
 const Template = args => <BackDrop {...args} />;

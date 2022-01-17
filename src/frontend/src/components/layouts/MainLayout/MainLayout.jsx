@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
+import { Outlet } from 'react-router-dom';
 
 import { MainLayoutContext } from '@utils/context';
 import { useWindowSize } from '@utils/hook';
@@ -62,7 +63,9 @@ function MainLayout() {
     <MainLayoutContext.Provider value={mainLayoutContextValue}>
       <Header />
       <SideNavigation />
-      <S.MainContentContainer sideNavState={sideNavState}>Content</S.MainContentContainer>
+      <S.MainContentContainer sideNavState={sideNavState}>
+        <Outlet />
+      </S.MainContentContainer>
       <SideFriendList />
       <S.FriendListToggleBtn onClick={handleToggleSideFriend} isShow={sideFriendState.open}>
         <Friends />

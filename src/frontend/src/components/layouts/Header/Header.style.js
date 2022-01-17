@@ -13,6 +13,7 @@ export default {
   Header: styled.header`
     display: flex;
     position: fixed;
+    z-index: 1;
     left: 0;
     right: 0;
     align-items: center;
@@ -59,6 +60,9 @@ export default {
   HeaderRightDiv: styled.div`
     display: flex;
     align-items: center;
+  `,
+  HeaderAvatar: styled(Avatar)`
+    margin-left: 8px;
   `,
   SearchBarIconButton: styled(IconButton)`
     display: none;

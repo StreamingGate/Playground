@@ -10,7 +10,7 @@ function SearchSection() {
 
   return (
     <S.SearchContainer style={{ display: isShow }}>
-      <S.SearchInput />
+      <S.SearchInput placeholder='검색' />
       <S.SearchButton>
         <Search />
       </S.SearchButton>

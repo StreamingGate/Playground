@@ -5,6 +5,7 @@ import { Typography } from '@components/cores';
 export default {
   SideFriendListContainer: styled.div`
     position: fixed;
+    z-index: 1;
     top: var(--head-height);
     right: 0;
     width: var(--side-friend-list-width);
@@ -20,6 +21,16 @@ export default {
       css`
         transform: translateX(var(--side-friend-list-width));
         visibility: hidden;
+      `}
+
+    /* BackDrop 컴포넌트와 같이 열릴 때 창 높이를 채움 */
+    ${({ state }) =>
+      state.open &&
+      state.backdrop &&
+      css`
+        top: 0;
+        bottom: 0;
+        height: 100vh;
       `}
   `,
   SideFriendListHeader: styled(Typography)`

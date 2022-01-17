@@ -14,11 +14,6 @@ export const decorators = [
     </ThemeProvider>
   ),
   Story => (
-    <div style={{ display: 'flex', alignItems: 'flex-end', gap: '10px' }}>
-      <Story />
-    </div>
-  ),
-  Story => (
     <Router>
       <Story />
     </Router>

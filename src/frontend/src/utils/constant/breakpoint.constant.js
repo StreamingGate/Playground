@@ -1,5 +1,5 @@
 const screenSize = {
-  wideLaptop: 1200,
+  wideLaptop: 1440,
   laptop: 1023.99,
   tablet: 767.99,
   mobile: 450,
