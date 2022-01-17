@@ -19,6 +19,9 @@ const GlobalStyle = createGlobalStyle`
         --head-height: 60px;
         --side-nav-bar-width: 250px;
         --side-friend-list-width: 200px;
+        --head-logo-width: 116px;
+        --head-logo-height: 27px;
+        --head-logo-margin: 17px;
         --video-num-in-a-row: 3;
 
         @media(${queries.tabletMax}) {
