@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import { MainLayoutContext } from '@utils/context';
 import S from './SideNavigation.style';
 
-import { HomeEmpty, History, ThumbUp, MyVideo } from '@components/cores';
+import { HomeEmpty, History, ThumbUp, MyVideo, HamburgerBar } from '@components/cores';
 import { BackDrop } from '@components/feedbacks';
 import NavigationItem from './NavigationItem';
 
@@ -22,6 +22,9 @@ function SideNavigation() {
       <S.SideNavigationContainer state={sideNavState}>
         {sideNavState.open && sideNavState.backdrop && (
           <S.NavigationLogoContainer>
+            <S.HamburgerIconBtn onClick={onToggleSideNav}>
+              <HamburgerBar />
+            </S.HamburgerIconBtn>
             <S.NavigationLogo />
           </S.NavigationLogoContainer>
         )}

@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
+import { IconButton } from '@components/buttons';
 import { VerticalLogo } from '@components/cores';
 
 export default {
@@ -38,11 +39,15 @@ export default {
   `,
   NavigationLogoContainer: styled.div`
     display: flex;
-    justify-content: center;
+    align-items: center;
+    padding: 10px 20px;
+  `,
+  HamburgerIconBtn: styled(IconButton)`
+    margin-right: var(--head-logo-margin);
   `,
   NavigationLogo: styled(VerticalLogo)`
-    width: 200px;
-    height: 50px;
+    width: var(--head-logo-width);
+    height: var(--head-logo-height);
   `,
   NavigationLink: styled(NavLink)`
     display: flex;
