@@ -1,8 +1,6 @@
 package com.example.userservice.dto;
 
 import lombok.Data;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Size;
 
 @Data
 public class RegisterUser {

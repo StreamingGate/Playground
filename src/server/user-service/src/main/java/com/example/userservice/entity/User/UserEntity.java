@@ -1,7 +1,6 @@
 package com.example.userservice.entity.User;
 
 import com.example.userservice.dto.RegisterUser;
-import com.example.userservice.dto.UserDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
