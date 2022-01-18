@@ -1,13 +1,49 @@
-version: "3.7"
+version: "3"
 services:
   mariadb:
-    container_name: mariadb
+    container_name: pg-mariadb
     image: mariadb
+    hostname: pg-mariadb
     environment:
-      MARIADB_DATABASE: playground
-      MARIADB_ROOT_PASSWORD: mariadb
+      MYSQL_DATABASE: playground
+      MYSQL_ROOT_PASSWORD: test
     volumes:
-         - ../data/mariadb:/docker-entrypoint-initdb.d/:ro
+      - "../data/mariadb:/docker-entrypoint-initdb.d/:ro"
     ports:
       - "3306:3306"
+    networks:
+      sg-network:
+        ipv4_address: 172.20.0.3
+
+  redis:
+    container_name: redis
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    networks:
+      sg-network:
+        ipv4_address: 172.20.0.4
+
+  user-service:
+    container_name: user-service
+    image: user-service:1.0
+    ports:
+      - "50001:50001"
+    environment:
+      spring.datasource.url: jdbc:mariadb://pg-mariadb:3306/playground
+    depends_on:
+      - pg-mariadb
+      - redis
+    links:
+      - pg-mariadb
+      - redis
     restart: always
+    networks:
+      sg-network:
+        ipv4_address: 172.20.0.2
+
+networks:
+  sg-network:
+    name: sg-network
+    external: true
+

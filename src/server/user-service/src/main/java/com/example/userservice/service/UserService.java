@@ -7,6 +7,7 @@ import com.example.userservice.entity.User.UserRepository;
 import com.example.userservice.exceptionhandler.customexception.CustomUserException;
 import com.example.userservice.exceptionhandler.customexception.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.RandomStringUtils;
 import org.modelmapper.ModelMapper;
