@@ -235,6 +235,7 @@
                                         <connections>
                                             <outlet property="liveSign" destination="Suu-l4-YDW" id="dvK-oZ-087"/>
                                             <outlet property="nicknameLabel" destination="3OY-zH-JXZ" id="J5h-HD-8EC"/>
+                                            <outlet property="playView" destination="J38-vs-nkq" id="S6r-Wr-QtY"/>
                                             <outlet property="profileImageView" destination="rJb-gZ-83I" id="riT-JL-6sQ"/>
                                             <outlet property="titleLabel" destination="f45-AV-TzK" id="SqY-Mc-aj7"/>
                                             <outlet property="viewLabel" destination="yxb-VC-CdG" id="0zz-xk-Ugo"/>

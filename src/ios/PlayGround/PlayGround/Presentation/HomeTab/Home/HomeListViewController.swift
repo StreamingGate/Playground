@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import AVFoundation
 
 class HomeListViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
@@ -14,10 +15,12 @@ class HomeListViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     var selectedIndex = 0
     
-    let playerView = UIView()
+    let playerView = PlayerView()
     var safeTop: CGFloat = 0
     var safeBottom: CGFloat = 0
     var navVC: HomeNavigationController?
+    var middle = 0
+    var player = AVPlayer()
     
     // MARK: - View Life Cycle
     override func viewDidLayoutSubviews() {
@@ -96,11 +99,18 @@ extension HomeListViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "VideoListCell", for: indexPath) as? VideoListCell else { return UITableViewCell() }
-        cell.setupUI(indexPath.row)
+        cell.setupUI(indexPath.row, middle)
         cell.channelTapHandler = {
             self.navVC?.coordinator?.showChannel()
         }
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if middle == indexPath.row {
+            self.playerView.player?.pause()
+            self.playerView.player = nil
+        }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -112,9 +122,24 @@ extension HomeListViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if scrollView == tableView {
             let middleIndex = ((tableView.indexPathsForVisibleRows?.first?.row)! + (tableView.indexPathsForVisibleRows?.last?.row)!)/2
+            if middle == middleIndex { return }
+            self.middle = middleIndex
+            self.playerView.player = nil
+            let cell = tableView.cellForRow(at: IndexPath(row: middleIndex, section: 0))
+            self.tableView.addSubview(playerView)
+            let width = UIScreen.main.bounds.width
+            let height = width / 16 * 9
+            playerView.frame = CGRect(x: cell?.frame.minX ?? 0, y: cell?.frame.minY ?? 0, width: width, height: height)
+            
+            let url = URL(string: "https://bitmovin-a.akamaihd.net/content/art-of-motion_drm/m3u8s/11331.m3u8")!
+            let avAsset = AVURLAsset(url: url)
+            let item = AVPlayerItem(asset: avAsset)
+            player.replaceCurrentItem(with: item)
+            self.playerView.player = player
+            self.playerView.player?.play()
         }
     }
 }
