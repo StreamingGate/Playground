@@ -24,7 +24,7 @@ Button.propTypes = {
   variant: PropTypes.oneOf(['contained', 'outlined']),
   children: PropTypes.node,
   color: PropTypes.oneOf(['youtubeRed', 'youtubeBlue', 'pgOrange']),
-  size: PropTypes.oneOf(['small', 'large']),
+  size: PropTypes.oneOf(['sm', 'md', 'lg']),
   fullWidth: PropTypes.bool,
   onClick: PropTypes.func,
 };
@@ -34,7 +34,7 @@ Button.defaultProps = {
   variant: 'contained',
   children: '',
   color: 'pgOrange',
-  size: 'small',
+  size: 'md',
   fullWidth: false,
   onClick: null,
 };

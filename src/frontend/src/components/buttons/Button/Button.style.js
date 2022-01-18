@@ -2,11 +2,15 @@ import styled, { css } from 'styled-components';
 
 const getButtonPadding = size => {
   switch (size) {
-    case 'large':
+    case 'lg':
       return css`
         padding: 10px 35px;
       `;
-    // default size is 'small'
+    case 'sm':
+      return css`
+        padding: 5px 10px;
+      `;
+    // default size is 'md'
     default:
       return css`
         padding: 5px 18px;
