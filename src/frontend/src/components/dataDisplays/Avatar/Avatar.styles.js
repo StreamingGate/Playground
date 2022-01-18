@@ -2,10 +2,15 @@ import styled, { css } from 'styled-components';
 
 const getAvatarSize = size => {
   switch (size) {
-    case 'large':
+    case 'exLarge':
       return css`
         width: 50px;
         height: 50px;
+      `;
+    case 'large':
+      return css`
+        width: 35px;
+        height: 35px;
       `;
     case 'small':
       return css`

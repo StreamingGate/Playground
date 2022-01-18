@@ -13,3 +13,8 @@ export { default as HighlightEmpty } from './Icons/HighlightEmpty';
 export { default as MyVideo } from './Icons/MyVideo';
 export { default as Friends } from './Icons/Friends';
 export { default as RealTimeMark } from './Icons/RealTimeMark';
+export { default as Person } from './Icons/Person';
+export { default as Send } from './Icons/Send';
+export { default as ThumbDown } from './Icons/ThumbDown';
+export { default as Share } from './Icons/Share';
+export { default as Report } from './Icons/Report';

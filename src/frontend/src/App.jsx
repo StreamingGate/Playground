@@ -8,6 +8,7 @@ import { theme } from '@utils/constant';
 import { MainLayout } from '@components/layouts';
 import LoginPage from '@pages/Login';
 import HomePage from '@pages/Home';
+import VideoPlayPage from '@pages/VideoPlay';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path='/login' element={<LoginPage />} />
           <Route path='*' element={<MainLayout />}>
             <Route path='home' element={<HomePage />} />
+            <Route path='video-play/:id' element={<VideoPlayPage />} />
           </Route>
         </Routes>
       </Router>

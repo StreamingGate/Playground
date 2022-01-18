@@ -1,7 +1,7 @@
 const screenSize = {
   wideLaptop: 1440,
-  laptop: 1023.99,
-  tablet: 767.99,
+  laptop: 1024,
+  tablet: 768,
   mobile: 450,
   minSize: 300,
 };

@@ -30,7 +30,7 @@ const SizeTemplate = args => (
 export const Size = SizeTemplate.bind({});
 Size.args = {
   variant: 'contained',
-  color: 'youtubeRed',
+  color: 'pgOrange',
 };
 
 const VariantTemplate = args => (
@@ -42,12 +42,12 @@ const VariantTemplate = args => (
 export const Variant = VariantTemplate.bind({});
 Variant.args = {
   size: 'small',
-  color: 'youtubeRed',
+  color: 'pgOrange',
 };
 
 const ColorTemplate = args => (
   <>
-    <Button color='youtubeRed' {...args} />
+    <Button color='pgOrange' {...args} />
     <Button color='youtubeBlue' {...args} />
   </>
 );

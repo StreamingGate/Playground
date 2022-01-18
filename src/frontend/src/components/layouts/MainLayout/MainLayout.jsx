@@ -13,13 +13,16 @@ import { Friends } from '@components/cores';
 
 const { screenSize } = breakPoint;
 
+const sideComponentInitState = { open: false, backdrop: false };
+
 function MainLayout() {
   const { innerWidth } = useWindowSize();
-  const [sideNavState, setSideNavState] = useState({ open: false, backdrop: false });
-  const [sideFriendState, setSideFriendState] = useState({ open: false, backdrop: false });
+
+  const [sideNavState, setSideNavState] = useState({ ...sideComponentInitState });
+  const [sideFriendState, setSideFriendState] = useState({ ...sideComponentInitState });
 
   const setInitNavState = () => {
-    // 비디오 재생 화면, wide laptop 사이즈 보다 작을때 backdrop true!!
+    // wide laptop 사이즈 보다 작을때 backdrop true!!
     if (innerWidth > screenSize.wideLaptop) {
       setSideNavState({ open: true, backdrop: false });
     } else {
@@ -28,7 +31,7 @@ function MainLayout() {
   };
 
   const setInitFriendListState = () => {
-    // 비디오 재생 화면, laptop 사이즈 보다 작을때 backdrop true!!
+    // laptop 사이즈 보다 작을때 backdrop true!!
     if (innerWidth > screenSize.laptop) {
       setSideFriendState({ open: true, backdrop: false });
     } else {

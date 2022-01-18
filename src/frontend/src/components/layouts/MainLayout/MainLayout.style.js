@@ -9,21 +9,17 @@ const { queries } = breakPoint;
 export default {
   MainContentContainer: styled.main`
     padding-top: var(--head-height);
-    margin-left: var(--side-nav-bar-width);
+    margin-left: 0px;
     margin-right: var(--side-friend-list-width);
     height: 100vh;
     overflow: auto;
 
     ${({ sideNavState }) =>
-      !sideNavState.open &&
+      sideNavState.open &&
       !sideNavState.backdrop &&
       css`
-        margin-left: 0;
+        margin-left: var(--side-nav-bar-width);
       `}
-
-    @media (${queries.wideLaptop}) {
-      margin-left: 0;
-    }
 
     @media (${queries.laptopMax}) {
       margin-right: 0;
