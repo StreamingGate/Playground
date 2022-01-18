@@ -8,7 +8,7 @@ export default {
   component: MyPage,
   parameters: {
     layout: 'fullscreen',
-    controls: { hideNoControlsWarning: true },
+    controls: { hideNoControlsWarning: true, exclude: ['path'] },
   },
 };
 
