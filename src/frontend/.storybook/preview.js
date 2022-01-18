@@ -13,9 +13,4 @@ export const decorators = [
       <Story />
     </ThemeProvider>
   ),
-  Story => (
-    <Router>
-      <Story />
-    </Router>
-  ),
 ];
