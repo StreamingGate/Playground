@@ -18,7 +18,7 @@ function LoginForm() {
         <Input fullWidth size='large' placeholder={loginPage.email} />
         <Input type='password' fullWidth size='large' placeholder={loginPage.password} />
       </S.InputContainer>
-      <Button fullWidth size='large'>
+      <Button fullWidth size='lg'>
         <Typography type='subtitle'>로그인</Typography>
       </Button>
       <S.RegisterContainer>

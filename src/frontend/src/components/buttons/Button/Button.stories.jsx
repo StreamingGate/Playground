@@ -23,8 +23,9 @@ export default {
 
 const SizeTemplate = args => (
   <>
-    <Button size='small' {...args} />
-    <Button size='large' {...args} />
+    <Button size='sm' {...args} />
+    <Button size='md' {...args} />
+    <Button size='lg' {...args} />
   </>
 );
 export const Size = SizeTemplate.bind({});
