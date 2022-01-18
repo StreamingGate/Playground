@@ -1,0 +1,72 @@
+{{>header}}
+<body>
+<div>
+    <h2 id="roomId"></h2>
+</div>
+<div >
+    <label >내용</label>
+    <input type="text" id="inputMsg">
+    <button  type="button" onClick="sendMessage()">보내기</button>
+</div>
+<ul id="msglist">
+    
+</ul>
+</body>
+{{>footer}}
+<!-- JavaScript -->
+<script>
+    // websocket & stomp initialize
+    var sock = new SockJS("/ws");
+    var ws = Stomp.over(sock);
+    let roomTitle = document.querySelector("#roomId");
+
+    let data= {
+        roomId: localStorage.getItem('wschat.roomId'),
+        room: {},
+        sender: localStorage.getItem('wschat.sender'),
+        message: '',
+        messages: []
+    }
+
+    findRoom = function() {
+        axios.get('/chat/room/'+data.roomId).then(response => { 
+            alert('response: '+ response);
+            data.room = response.data; 
+            console.log("roomName:",data.room.name);
+            document.querySelector("#roomId").innerText = data.room.name;
+        });
+    }
+    sendMessage= () => {
+        console.log("send btn");
+        inputMsg = document.querySelector("#inputMsg").value;
+        ws.send("/app/chat/message", {}, JSON.stringify({type:'TALK', roomId:data.roomId, sender:data.sender, message:inputMsg}));
+        this.message = '';
+    },
+    recvMessage= (recv) => {
+        console.log("reved msg");
+        let msgList = document.querySelector("#msglist");
+        let msgTemplate = (sender, message) => `
+                <li>
+                ${sender} - ${message}</a>
+                </li>
+                `;
+        //this.messages.unshift({"type":recv.type,"sender":recv.type=='ENTER'?'[알림]':recv.sender,"message":recv.message})
+        msgList.append(msgTemplate(recv.sender, recv.message));
+    
+    }
+
+    findRoom();
+
+    
+    // pub/sub event
+    ws.connect({}, function(frame) {
+        ws.subscribe("/topic/chat/room/"+data.roomId, function(message) {
+            var recv = JSON.parse(message.body);
+            console.log("sub.......", message, "..........", recv, "........end");
+            recvMessage(recv);
+        });
+        ws.send("/app/chat/message", {}, JSON.stringify({type:'ENTER', roomId:data.roomId, sender:data.sender}));
+    }, function(error) {
+        alert("error "+error);
+    });
+</script>
