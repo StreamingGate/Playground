@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 
 import { MainLayoutContext } from '@utils/context';
 import { useWindowSize } from '@utils/hook';
@@ -15,20 +15,15 @@ const { screenSize } = breakPoint;
 
 const sideComponentInitState = { open: false, backdrop: false };
 
-const videoPlayUrl = /video-play/;
-
 function MainLayout() {
   const { innerWidth } = useWindowSize();
-  const { pathname } = useLocation();
 
   const [sideNavState, setSideNavState] = useState({ ...sideComponentInitState });
   const [sideFriendState, setSideFriendState] = useState({ ...sideComponentInitState });
 
   const setInitNavState = () => {
-    // 비디오 재생 화면, wide laptop 사이즈 보다 작을때 backdrop true!!
-    if (videoPlayUrl.test(pathname)) {
-      setSideNavState({ open: false, backdrop: true });
-    } else if (innerWidth > screenSize.wideLaptop) {
+    // wide laptop 사이즈 보다 작을때 backdrop true!!
+    if (innerWidth > screenSize.wideLaptop) {
       setSideNavState({ open: true, backdrop: false });
     } else {
       setSideNavState({ open: false, backdrop: true });
