@@ -1,4 +1,5 @@
 import React from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 import MainLayout from './MainLayout';
 
@@ -12,6 +13,13 @@ export default {
     },
     controls: { hideNoControlsWarning: true },
   },
+  decorators: [
+    Story => (
+      <Router>
+        <Story />
+      </Router>
+    ),
+  ],
 };
 
 const Template = args => <MainLayout {...args} />;
