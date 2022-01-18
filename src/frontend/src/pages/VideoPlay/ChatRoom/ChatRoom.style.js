@@ -4,8 +4,8 @@ import { Typography, Person, Send } from '@components/cores';
 import { Avatar } from '@components/dataDisplays';
 
 export const ChatRoomContainer = styled.div`
-  max-height: 375px;
   margin-bottom: 40px;
+  border: 1px solid ${({ theme }) => theme.colors.separator};
 `;
 
 export const ChatRoomHeader = styled.div`
@@ -41,6 +41,8 @@ export const ChaListContainer = styled.ul`
   height: 240px;
   overflow: auto;
   padding: 20px 20px 0px 20px;
+  border-top: 1px solid ${({ theme }) => theme.colors.separator};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.separator};
 `;
 
 export const ChatInputContainer = styled.div`
