@@ -114,6 +114,7 @@ extension HomeListViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.playerView.player = nil
         self.navVC?.coordinator?.showPlayer()
     }
     
@@ -123,6 +124,11 @@ extension HomeListViewController: UITableViewDataSource, UITableViewDelegate {
     
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        guard let parent = self.navigationController?.parent as? CustomTabViewController else { return }
+        if parent.children.contains(where: { ($0 as? PlayViewController) != nil }) {
+            self.playerView.player = nil
+            return
+        }
         if scrollView == tableView {
             let middleIndex = ((tableView.indexPathsForVisibleRows?.first?.row)! + (tableView.indexPathsForVisibleRows?.last?.row)!)/2
             if middle == middleIndex { return }
