@@ -9,6 +9,7 @@ const { queries } = breakPoint;
 export default {
   MainContentContainer: styled.main`
     padding-top: var(--head-height);
+    padding-bottom: 40px;
     margin-left: 0px;
     margin-right: var(--side-friend-list-width);
     height: 100vh;
