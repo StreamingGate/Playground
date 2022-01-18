@@ -15,14 +15,14 @@ function Avatar({ className, onClick, imgSrc, size }) {
 Avatar.propTypes = {
   className: PropTypes.string,
   imgSrc: PropTypes.string,
-  size: PropTypes.oneOf(['small', 'medium', 'large', 'exLarge']),
+  size: PropTypes.oneOf(['xs', 'sm', 'md', 'lg', 'xl']),
   onClick: PropTypes.func,
 };
 
 Avatar.defaultProps = {
   className: '',
   imgSrc: ProfileDefaultImg,
-  size: 'medium',
+  size: 'sm',
   onClick: undefined,
 };
 
