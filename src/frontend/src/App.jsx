@@ -10,6 +10,7 @@ import LoginPage from '@pages/Login';
 import HomePage from '@pages/Home';
 import VideoPlayPage from '@pages/VideoPlay';
 import ChannelPage from '@pages/Channel';
+import HistoryPage from '@pages/History';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
             <Route path='home' element={<HomePage />} />
             <Route path='video-play/:id' element={<VideoPlayPage />} />
             <Route path='channel/:id' element={<ChannelPage />} />
+            <Route path='mypage/:type' element={<HistoryPage />} />
           </Route>
         </Routes>
       </Router>
