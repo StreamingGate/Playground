@@ -91,11 +91,11 @@
                                 <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstItem="CXv-Af-7tz" firstAttribute="leading" secondItem="XbX-Kr-dZU" secondAttribute="leading" id="4bd-sP-KxQ"/>
-                                    <constraint firstItem="XbX-Kr-dZU" firstAttribute="centerX" secondItem="LRj-f8-gzh" secondAttribute="centerX" id="5Ep-uc-fm2"/>
                                     <constraint firstAttribute="trailing" secondItem="zbm-Dr-h03" secondAttribute="trailing" constant="20" id="8Nb-5f-6lU"/>
                                     <constraint firstItem="gdz-vP-Wa1" firstAttribute="width" secondItem="gdz-vP-Wa1" secondAttribute="height" multiplier="1:1" id="AI5-a9-1hY"/>
                                     <constraint firstItem="gdz-vP-Wa1" firstAttribute="centerY" secondItem="LRj-f8-gzh" secondAttribute="centerY" id="CFI-hS-E3t"/>
                                     <constraint firstAttribute="bottom" secondItem="XbX-Kr-dZU" secondAttribute="bottom" constant="10" id="TDD-l3-rHr"/>
+                                    <constraint firstItem="XbX-Kr-dZU" firstAttribute="centerX" secondItem="LRj-f8-gzh" secondAttribute="centerX" priority="999" id="VRb-Se-rTX"/>
                                     <constraint firstItem="gdz-vP-Wa1" firstAttribute="centerX" secondItem="LRj-f8-gzh" secondAttribute="centerX" id="b8A-j3-pM2"/>
                                     <constraint firstItem="aOM-mK-z29" firstAttribute="top" secondItem="LRj-f8-gzh" secondAttribute="top" constant="15" id="ev1-28-OlK"/>
                                     <constraint firstItem="XbX-Kr-dZU" firstAttribute="leading" secondItem="LRj-f8-gzh" secondAttribute="leading" constant="20" id="iHH-1e-7QR"/>

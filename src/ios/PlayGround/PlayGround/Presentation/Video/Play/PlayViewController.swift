@@ -105,6 +105,7 @@ class PlayViewController: UIViewController {
         stretchButton.isHidden = UIDevice.current.orientation.isLandscape
         if UIDevice.current.orientation.isLandscape {
             print("Landscape")
+            self.coordinator?.dismissExplain(vc: self)
             self.view.backgroundColor = UIColor.black
             NSLayoutConstraint.deactivate(portraitLayout)
             NSLayoutConstraint.deactivate(landscapeLayout)
@@ -167,7 +168,7 @@ class PlayViewController: UIViewController {
         playView.player = self.player
         playView.player?.play()
         
-        let doubleTap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap))
+        let doubleTap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(gestureRecognizer:)))
         doubleTap.numberOfTapsRequired = 2
         self.playView.addGestureRecognizer(doubleTap)
         playViewSingleTap.require(toFail: doubleTap)
@@ -434,7 +435,7 @@ class PlayViewController: UIViewController {
     @objc func handleDoubleTap(gestureRecognizer: UITapGestureRecognizer) {
         if isMinimized { return }
         let point = gestureRecognizer.location(in: self.playView)
-        let halfPosition = UIScreen.main.bounds.width / 2
+        let halfPosition = playView.frame.width / 2
         if point.x < (halfPosition - 30) {
             let duration = CMTimeGetSeconds(self.playView.player!.currentItem!.duration)
             let time = CMTimeGetSeconds(self.playView.player!.currentTime()) - 10
