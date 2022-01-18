@@ -15,6 +15,8 @@ class PlayViewController: UIViewController {
     @IBOutlet weak var playViewWidth: NSLayoutConstraint!
     @IBOutlet weak var playControllView: UIView!
     @IBOutlet weak var playPauseButton: UIButton!
+    @IBOutlet weak var backwardImageView: UIImageView!
+    @IBOutlet weak var forwardImageView: UIImageView!
     var playControllTimer = Timer()
     
     @IBOutlet weak var titleLabel: UILabel!
@@ -42,10 +44,13 @@ class PlayViewController: UIViewController {
     @IBOutlet weak var chatContainerView: UIView!
     @IBOutlet weak var chatContainerViewLeading: NSLayoutConstraint!
     @IBOutlet weak var chatContainerViewCenterX: NSLayoutConstraint!
+    @IBOutlet weak var previewImage: UIImageView!
     
     var portraitLayout: [NSLayoutConstraint] = []
     var landscapeLayout: [NSLayoutConstraint] = []
     
+    @IBOutlet weak var seekbar: CustomSlider!
+    @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet var playControlPanGesture: UIPanGestureRecognizer!
     @IBOutlet var playPanGesture: UIPanGestureRecognizer!
     
@@ -66,6 +71,8 @@ class PlayViewController: UIViewController {
     
     var coordinator: PlayerCoordinator?
     let player = AVPlayer()
+    @IBOutlet var playViewSingleTap: UITapGestureRecognizer!
+    @IBOutlet var playControlViewSingleTap: UITapGestureRecognizer!
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
@@ -76,13 +83,7 @@ class PlayViewController: UIViewController {
         portraitLayout = [chatContainerViewLeading, chatContainerViewCenterX, chatContainerViewTop, playViewTop, playViewCenterX, playViewWidth]
         NotificationCenter.default.addObserver(self, selector: #selector(adjustInputView), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(adjustInputView), name: UIResponder.keyboardWillHideNotification, object: nil)
-        
-        let url = URL(string: "https://bitmovin-a.akamaihd.net/content/art-of-motion_drm/m3u8s/11331.m3u8")!
-        let avAsset = AVURLAsset(url: url)
-        let item = AVPlayerItem(asset: avAsset)
-        self.player.replaceCurrentItem(with: item)
-        playView.player = self.player
-        playView.player?.play()
+        setPlayer()
         setupUI()
         setMiniPlayerlayout()
         setMiniPlayerAction()
@@ -127,6 +128,7 @@ class PlayViewController: UIViewController {
         titleLabel.font = UIFont.Component
         viewLabel.font = UIFont.caption
         viewLabel.textColor = UIColor.customDarkGray
+        timeLabel.font = UIFont.caption
         categoryLabel.font = UIFont.highlightCaption
         channelNicknameLabel.font = UIFont.Content
         channelProfileImageView.backgroundColor = UIColor.placeHolder
@@ -154,6 +156,80 @@ class PlayViewController: UIViewController {
         connectChatView()
     }
     
+    
+    // MARK: - Player, SeekBar, Gesture setting
+    func setPlayer() {
+        //player
+        let url = URL(string: "https://bitmovin-a.akamaihd.net/content/art-of-motion_drm/m3u8s/11331.m3u8")!
+        let avAsset = AVURLAsset(url: url)
+        let item = AVPlayerItem(asset: avAsset)
+        self.player.replaceCurrentItem(with: item)
+        playView.player = self.player
+        playView.player?.play()
+        
+        let doubleTap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap))
+        doubleTap.numberOfTapsRequired = 2
+        self.playView.addGestureRecognizer(doubleTap)
+        playViewSingleTap.require(toFail: doubleTap)
+        playViewSingleTap.delaysTouchesBegan = true
+        doubleTap.delaysTouchesBegan = true
+        
+        let doubleTap2: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(gestureRecognizer:)))
+        doubleTap2.numberOfTapsRequired = 2
+        self.playControllView.addGestureRecognizer(doubleTap2)
+        playControlViewSingleTap.require(toFail: doubleTap2)
+        playControlViewSingleTap.delaysTouchesBegan = true
+        doubleTap.delaysTouchesBegan = true
+        
+        //slider
+        seekbar.minimumValue = 0
+        seekbar.maximumValue = Float(CMTimeGetSeconds(avAsset.duration))
+        seekbar.addTarget(self, action: #selector(onSliderValChanged(slider:event:)), for: .valueChanged)
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(sliderTapped(gestureRecognizer:)))
+        seekbar.addGestureRecognizer(tapGestureRecognizer)
+        
+        // Set Seekbar Interval
+        let interval: Double = Double(0.1 * seekbar.maximumValue) / Double(seekbar.bounds.maxX)
+        let time : CMTime = CMTimeMakeWithSeconds(interval, preferredTimescale: Int32(NSEC_PER_SEC))
+        playView.player?.addPeriodicTimeObserver(forInterval: time, queue: nil, using: {time in
+            // seekbar update
+            let duration = CMTimeGetSeconds(self.playView.player!.currentItem!.duration)
+            let time = CMTimeGetSeconds(self.playView.player!.currentTime())
+            let value = Float(self.seekbar.maximumValue - self.seekbar.minimumValue) * Float(time) / Float(duration) + Float(self.seekbar.minimumValue)
+            self.seekbar.value = value
+            guard let currentTime = self.playView.player?.currentTime() else { return }
+            self.updateVideoPlayerState(currentTime: currentTime)
+        })
+    }
+    
+    // Player timeLabel change
+    func updateVideoPlayerState(currentTime: CMTime) {
+        let currentTimeInSeconds = CMTimeGetSeconds(currentTime)
+        if let currentItem = playView.player?.currentItem {
+            let duration = currentItem.duration
+            if (CMTIME_IS_INVALID(duration)) {
+                return;
+            }
+            let totalTimeInSeconds = CMTimeGetSeconds(duration)
+            let curMins = currentTimeInSeconds / 60
+            let curSecs = currentTimeInSeconds.truncatingRemainder(dividingBy: 60)
+            let endMins = totalTimeInSeconds / 60
+            let endSecs = totalTimeInSeconds.truncatingRemainder(dividingBy: 60)
+            let timeformatter = NumberFormatter()
+            timeformatter.minimumIntegerDigits = 2
+            timeformatter.minimumFractionDigits = 0
+            timeformatter.roundingMode = .down
+
+            guard let curMinsStr = timeformatter.string(from: NSNumber(value: curMins)),
+                  let curSecsStr = timeformatter.string(from: NSNumber(value: curSecs)), let endMinsStr = timeformatter.string(from: NSNumber(value: endMins)),
+                  let endSecsStr = timeformatter.string(from: NSNumber(value: endSecs)) else {
+                return
+            }
+            timeLabel.text = "\(curMinsStr):\(curSecsStr) / \(endMinsStr):\(endSecsStr)"
+        }
+    }
+    
+    // Player size change
     func setMiniPlayerlayout() {
         self.view.addSubview(miniBackView)
         self.miniBackView.addSubview(miniTitleLabel)
@@ -355,6 +431,73 @@ class PlayViewController: UIViewController {
         }
     }
     
+    @objc func handleDoubleTap(gestureRecognizer: UITapGestureRecognizer) {
+        if isMinimized { return }
+        let point = gestureRecognizer.location(in: self.playView)
+        let halfPosition = UIScreen.main.bounds.width / 2
+        if point.x < (halfPosition - 30) {
+            let duration = CMTimeGetSeconds(self.playView.player!.currentItem!.duration)
+            let time = CMTimeGetSeconds(self.playView.player!.currentTime()) - 10
+            let value = Float(self.seekbar.maximumValue - self.seekbar.minimumValue) * Float(time) / Float(duration) + Float(self.seekbar.minimumValue)
+            self.seekbar.setValue(Float(value), animated: true)
+            let currentTime = CMTimeMakeWithSeconds(Float64(seekbar.value), preferredTimescale: Int32(NSEC_PER_SEC))
+            playView.player?.seek(to: currentTime)
+            guard let currentTime = self.playView.player?.currentTime() else { return }
+            self.updateVideoPlayerState(currentTime: currentTime)
+            self.backwardImageView.alpha = 1
+            UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 2, initialSpringVelocity: 2, options: .showHideTransitionViews, animations: {
+                self.backwardImageView.alpha = 0
+            }, completion: nil)
+        } else if point.x > (halfPosition + 30) {
+            let duration = CMTimeGetSeconds(self.playView.player!.currentItem!.duration)
+            let time = CMTimeGetSeconds(self.playView.player!.currentTime()) + 10
+            let value = Float(self.seekbar.maximumValue - self.seekbar.minimumValue) * Float(time) / Float(duration) + Float(self.seekbar.minimumValue)
+            self.seekbar.setValue(Float(value), animated: true)
+            let currentTime = CMTimeMakeWithSeconds(Float64(seekbar.value), preferredTimescale: Int32(NSEC_PER_SEC))
+            playView.player?.seek(to: currentTime)
+            guard let currentTime = self.playView.player?.currentTime() else { return }
+            self.updateVideoPlayerState(currentTime: currentTime)
+            self.forwardImageView.alpha = 1
+            UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 2, initialSpringVelocity: 2, options: .showHideTransitionViews, animations: {
+                self.forwardImageView.alpha = 0
+            }, completion: nil)
+        }
+    }
+    
+    @objc func onSliderValChanged(slider: UISlider, event: UIEvent) {
+        if let touchEvent = event.allTouches?.first {
+            switch touchEvent.phase {
+            case .began, .moved:
+                self.playControllTimer.invalidate()
+                self.playView.player?.pause()
+                let currentTime = CMTimeMakeWithSeconds(Float64(seekbar.value), preferredTimescale: Int32(NSEC_PER_SEC))
+                self.updateVideoPlayerState(currentTime: currentTime)
+            case .ended:
+                self.playControllTimer.invalidate()
+                playView.player?.seek(to: CMTimeMakeWithSeconds(Float64(seekbar.value), preferredTimescale: Int32(NSEC_PER_SEC)))
+                self.playView.player?.play()
+                self.playControllTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { timer in
+                    UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut) {
+                        self.playControllView.alpha = 0
+                    }
+                })
+            default:
+                break
+            }
+        }
+    }
+    
+    @objc func sliderTapped(gestureRecognizer: UIGestureRecognizer) {
+        let pointTapped: CGPoint = gestureRecognizer.location(in: self.view)
+        let positionOfSlider: CGPoint = seekbar.frame.origin
+        let widthOfSlider: CGFloat = seekbar.frame.size.width
+        let newValue = ((pointTapped.x - positionOfSlider.x) * CGFloat(seekbar.maximumValue) / widthOfSlider)
+        seekbar.setValue(Float(newValue), animated: true)
+        let currentTime = CMTimeMakeWithSeconds(Float64(seekbar.value), preferredTimescale: Int32(NSEC_PER_SEC))
+        playView.player?.seek(to: currentTime)
+        updateVideoPlayerState(currentTime: currentTime)
+    }
+    
     // MARK: - PlayView layout change
     func setPlayViewOriginalSize() {
         coordinator?.setPlayViewOriginalSize(vc: self)
@@ -397,10 +540,3 @@ extension PlayViewController {
 }
 
 
-
-extension AVPlayer {
-    var isPlaying: Bool {
-        guard self.currentItem != nil else { return false }
-        return self.rate != 0
-    }
-}

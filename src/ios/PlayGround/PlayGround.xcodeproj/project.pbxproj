@@ -16,6 +16,8 @@
 		492C62252795326B00AE546E /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492C62242795326B00AE546E /* MainCoordinator.swift */; };
 		492C622C27954F9800AE546E /* UIView+takeScreenshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492C622B27954F9800AE546E /* UIView+takeScreenshot.swift */; };
 		492C622E27955F6C00AE546E /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492C622D27955F6C00AE546E /* Player.swift */; };
+		492C62302795989F00AE546E /* CustomSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492C622F2795989F00AE546E /* CustomSlider.swift */; };
+		492C6232279598CF00AE546E /* AVPlayer+isPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492C6231279598CE00AE546E /* AVPlayer+isPlayer.swift */; };
 		4935FD35277BDA5D00760675 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4935FD30277BD97400760675 /* CategoryCell.swift */; };
 		4935FD36277BDA5D00760675 /* HomeListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4935FD2E277BD95200760675 /* HomeListViewController.swift */; };
 		4935FD37277BDA5D00760675 /* VideoListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4935FD31277BD97400760675 /* VideoListCell.swift */; };
@@ -83,6 +85,8 @@
 		492C62242795326B00AE546E /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
 		492C622B27954F9800AE546E /* UIView+takeScreenshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+takeScreenshot.swift"; sourceTree = "<group>"; };
 		492C622D27955F6C00AE546E /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		492C622F2795989F00AE546E /* CustomSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSlider.swift; sourceTree = "<group>"; };
+		492C6231279598CE00AE546E /* AVPlayer+isPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AVPlayer+isPlayer.swift"; sourceTree = "<group>"; };
 		4935FD2E277BD95200760675 /* HomeListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeListViewController.swift; sourceTree = "<group>"; };
 		4935FD30277BD97400760675 /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
 		4935FD31277BD97400760675 /* VideoListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoListCell.swift; sourceTree = "<group>"; };
@@ -292,7 +296,9 @@
 		49B9C9F3277AF0E5006AE134 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				492C622F2795989F00AE546E /* CustomSlider.swift */,
 				49F18C51278F0FB100EBDCF8 /* UITabBarController+Visibility.swift */,
+				492C6231279598CE00AE546E /* AVPlayer+isPlayer.swift */,
 				49EC9A05278205D200DE4F79 /* UIView+RoundCorners.swift */,
 				49B9C9EF277AEF4E006AE134 /* UIColor+CustomColor.swift */,
 				49B9C9F1277AF018006AE134 /* UIFont+CustomFont.swift */,
@@ -504,7 +510,9 @@
 				49B9C9F2277AF018006AE134 /* UIFont+CustomFont.swift in Sources */,
 				4935FD36277BDA5D00760675 /* HomeListViewController.swift in Sources */,
 				49E8E899278BB4C2003AD1DF /* HorizontalVideoListCell.swift in Sources */,
+				492C6232279598CF00AE546E /* AVPlayer+isPlayer.swift in Sources */,
 				49EC99FD2782015A00DE4F79 /* RecentViewedCell.swift in Sources */,
+				492C62302795989F00AE546E /* CustomSlider.swift in Sources */,
 				496279D827829516005A2BDC /* MyPageNavigationController.swift in Sources */,
 				49E6BE3E2791A7C1000E475C /* SearchViewController.swift in Sources */,
 				49B9C9BA277ACE9C006AE134 /* AppDelegate.swift in Sources */,
