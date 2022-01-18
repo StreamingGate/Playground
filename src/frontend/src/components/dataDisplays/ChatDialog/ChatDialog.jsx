@@ -8,7 +8,7 @@ function ChatDialog({ chatInfo, isAdmin }) {
   return (
     <S.ChatDialogContainer>
       <S.ChatMetaContainer>
-        <S.ChatProfile size='large' isAdmin={isAdmin} />
+        <S.ChatProfile size='md' isAdmin={isAdmin} />
         <S.TimeStamp type='bottomTab'>{timeStamp}</S.TimeStamp>
         <S.UserName type='highlightCaption'>{userName}</S.UserName>
       </S.ChatMetaContainer>
