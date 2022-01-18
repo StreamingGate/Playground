@@ -14,7 +14,7 @@ function VideoOverview({ direction, videoInfo }) {
         <>
           <S.VideoMetaContainer>
             <S.VideoCaption type='caption'>{userName}</S.VideoCaption>
-            <S.VideoCaption type='caption'>조회 수 {viewCount}회</S.VideoCaption>
+            <S.VideoCaption type='caption'>조회수 {viewCount}회</S.VideoCaption>
           </S.VideoMetaContainer>
           <S.VideoContent type='caption'>{content}</S.VideoContent>
         </>
@@ -24,7 +24,7 @@ function VideoOverview({ direction, videoInfo }) {
       <>
         <S.VideoCaption type='caption'>{userName}</S.VideoCaption>
         <S.VideoMetaContainer>
-          <S.VideoCaption type='caption'>조회 수 {viewCount}회</S.VideoCaption>
+          <S.VideoCaption type='caption'>조회수 {viewCount}회</S.VideoCaption>
           <S.VideoCaption type='caption'>{createdAt}</S.VideoCaption>
         </S.VideoMetaContainer>
       </>
