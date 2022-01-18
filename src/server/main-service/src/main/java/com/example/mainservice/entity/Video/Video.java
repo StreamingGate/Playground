@@ -27,8 +27,8 @@ public class Video {
     @Column(length = 5000)
     private String content;
 
-    private int like;
-    private int dislike;
+    private int liked;
+    private int disliked;
 
     @Enumerated(EnumType.STRING)
     @Column(length = 10)
@@ -41,7 +41,7 @@ public class Video {
     private LocalDateTime createdAt;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "users_id")
     private UserEntity userEntity;
 
     @OneToMany( mappedBy = "video")

@@ -24,9 +24,9 @@ public class ViewedHistory {
 
     private LocalDateTime viewedProgress;
     
-    private boolean like;
+    private boolean liked;
     
-    private boolean dislike;
+    private boolean disliked;
     
     private LocalDateTime likedAt;
     
@@ -37,7 +37,7 @@ public class ViewedHistory {
     private Video video;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "users_id")
     private UserEntity userEntity;
 
 }

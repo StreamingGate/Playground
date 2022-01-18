@@ -15,10 +15,7 @@ import com.example.mainservice.entity.Video.Video;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-enum VideoState{
-    NORMAL, DELETED;
-    // PRIVATE, REPORTED
-}
+
 @NoArgsConstructor
 @Getter
 @Entity

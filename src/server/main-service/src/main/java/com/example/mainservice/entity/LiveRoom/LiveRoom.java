@@ -15,11 +15,6 @@ import com.example.mainservice.entity.Category;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-enum LiveRoomState {
-    STREAMING,
-    UPLOADING,
-    COMPLETED;
-}
 @NoArgsConstructor
 @Getter
 @Entity

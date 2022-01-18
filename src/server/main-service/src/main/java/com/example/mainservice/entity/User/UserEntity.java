@@ -21,19 +21,6 @@ import org.hibernate.annotations.ColumnDefault;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-enum UserState {
-    STEADY("steady"),
-    QUIT("quit"),
-    WARNED("warned");
-
-    private final String state;
-
-    private UserState(String state) {
-        this.state = state;
-    }
-}
-
-
 @NoArgsConstructor
 @Getter
 @Entity(name = "users")

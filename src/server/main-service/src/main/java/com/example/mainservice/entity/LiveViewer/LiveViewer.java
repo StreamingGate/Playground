@@ -16,14 +16,6 @@ import com.example.mainservice.entity.User.UserEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-enum LiveViewerState{
-    ENTERED, LEAVED;
-}
-enum Role {
-    STREAMER,
-    VIEWER;
-}
-
 @NoArgsConstructor
 @Getter
 @Entity
@@ -36,7 +28,7 @@ public class LiveViewer {
     @Column(length=10)
     private Role role;
 
-    private boolean like;
+    private boolean liked;
 
     @Enumerated(EnumType.STRING)
     @Column(length=7)
