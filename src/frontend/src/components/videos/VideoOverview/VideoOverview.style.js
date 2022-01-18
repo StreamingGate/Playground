@@ -49,12 +49,10 @@ export const VideoMetaContainer = styled.div`
   display: flex;
 
   & p:first-child:after {
-    content: '';
+    content: '•';
     display: inline-block;
-    width: 1px;
-    height: 10px;
     margin: 0 3px;
-    background-color: ${({ theme }) => theme.colors.placeHolder};
+    color: ${({ theme }) => theme.colors.placeHolder};
   }
 `;
 

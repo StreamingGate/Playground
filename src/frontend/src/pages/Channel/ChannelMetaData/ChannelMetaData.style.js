@@ -30,12 +30,9 @@ export const ChannelFriendNum = styled(Typography)`
   color: ${({ theme }) => theme.colors.customDarkGray};
 
   &:after {
-    content: '';
+    content: '•';
     display: inline-block;
-    width: 1px;
-    height: 9px;
     margin: 0 3px;
-    background-color: ${({ theme }) => theme.colors.customDarkGray};
   }
 `;
 
