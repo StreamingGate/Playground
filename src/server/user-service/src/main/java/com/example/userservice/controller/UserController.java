@@ -50,22 +50,29 @@ public class UserController {
     }
     /* 이메일 인증코드 전송 */
     @PostMapping("/users/mail")
-    public ResponseEntity<String> checkMail(@RequestParam(value = "email") String email) {
+    public ResponseEntity<String> checkMail(@RequestParam(value = "email") String email) throws Exception{
         String res = userService.checkEmail(email);
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
     /* 인증코드 확인 */
     @GetMapping("/users/mail")
-    public ResponseEntity<String> checkCode(@RequestParam(value = "code") String code) {
+    public ResponseEntity<String> checkCode(@RequestParam(value = "code") String code) throws Exception{
         String res = userService.checkCode(code);
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
     /* 비밀번호 찾기 인증코드 전송 */
     @PostMapping("/password")
-    public ResponseEntity<String> findPassword(@RequestParam(value = "email") String email,
+    public ResponseEntity<?> findPassword(@RequestParam(value = "email") String email,
                                                @RequestParam(value = "name") String name) {
         String res = userService.checkUser(name,email);
+        return ResponseEntity.status(HttpStatus.OK).body(res);
+    }
+
+    /* 닉네임 중복체크 */
+    @GetMapping("/nickname")
+    public ResponseEntity<Boolean> checkNickName(@RequestParam(value = "nickname") String nickName) throws Exception{
+        boolean res = userService.checkNickName(nickName);
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 }

@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.RandomStringUtils;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -61,16 +60,14 @@ public class UserService implements UserDetailsService {
         UserEntity userEntity = userRepository.findByUuid(uuid);
         Date date = new Date();
         LocalDate localDate = new java.sql.Date(date.getTime()).toLocalDate();
-        try {
+        if(checkNickName(requestDto.getNickName())) {
             String bcryptPwd = "";
             if(requestDto.getPassword() != null) bcryptPwd = bCryptPasswordEncoder.encode(requestDto.getPassword());
             userEntity.update(requestDto,localDate,bcryptPwd);
             requestDto = mapper.map(userEntity,RegisterUser.class);
             return requestDto;
-
-        } catch (CustomUserException e){
-            throw new CustomUserException(ErrorCode.U004);
         }
+        throw new CustomUserException(ErrorCode.U004);
     }
 
     @Transactional
@@ -81,35 +78,43 @@ public class UserService implements UserDetailsService {
         userEntity.delete(localDate);
     }
 
-    @Transactional
-    public String checkEmail(String email) {
+    @Transactional(readOnly = true)
+    public String checkEmail(String email) throws CustomUserException{
         if(!userRepository.findByEmail(email).isPresent()) {
             String randomCode = sendEmail(email);
             // 만약 n번의 요청할시, 인증코드를 overwrite
             redisTemplate.opsForValue().set(randomCode,email,60*10L, TimeUnit.SECONDS);
             return email;
         }
-        return "U001";
+        throw new CustomUserException(ErrorCode.U001);
     }
 
-    public String checkUser(String name,String email) {
+    @Transactional(readOnly = true)
+    public String checkUser(String name,String email) throws CustomUserException {
         if(userRepository.findByNameAndEmail(name,email).isPresent()) {
             String randomCode = sendEmail(email);
             redisTemplate.opsForValue().set(randomCode,email,60*10L, TimeUnit.SECONDS);
             return email;
         }
-        return "U005";
+        throw new CustomUserException(ErrorCode.U005);
     }
 
     @Transactional
-    public String checkCode(String code) {
+    public String checkCode(String code) throws CustomUserException{
         String email = (String) redisTemplate.opsForValue().get(code);
-        if (email == null) return "U003";
-        redisTemplate.delete(code);
-        return email;
+        if (email != null) {
+            redisTemplate.delete(code);
+            return email;
+        }
+        throw new CustomUserException(ErrorCode.U003);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
+    public boolean checkNickName(String nickName) throws CustomUserException {
+        return Optional.of(!userRepository.findByNickName(nickName).isPresent()).orElseThrow(()-> new CustomUserException(ErrorCode.U004));
+    }
+
+    @Transactional(readOnly = true)
     public UserDto getUserByEmail(String email) {
         UserEntity userEntity = userRepository.findByEmail(email).orElseThrow(()-> new CustomUserException(ErrorCode.U002));
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
