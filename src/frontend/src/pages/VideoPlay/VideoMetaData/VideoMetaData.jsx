@@ -30,7 +30,7 @@ function VideoMetaData() {
         </S.ActionContainer>
       </S.VideoInfoContainer>
       <S.VideoSubInfoContainer>
-        <S.MyProfile size='large' />
+        <S.MyProfile size='md' />
         <S.VideoSubInfo>
           <S.ChannelInfo>
             <S.ChannelName>채널 이름</S.ChannelName>

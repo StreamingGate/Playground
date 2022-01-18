@@ -49,20 +49,18 @@ export const VideoMetaContainer = styled.div`
   display: flex;
 
   & p:first-child:after {
-    content: '';
+    content: '•';
     display: inline-block;
-    width: 1px;
-    height: 10px;
     margin: 0 3px;
-    background-color: ${({ theme }) => theme.colors.placeHolder};
+    color: ${({ theme }) => theme.colors.placeHolder};
   }
 `;
 
-export const ViedeoOverviewContainer = styled.article`
+export const ViedeoOverviewContainer = styled.li`
   display: flex;
   flex-direction: ${({ direction }) => (direction === 'vertical' ? 'column' : 'row')};
   gap: 10px;
-  max-width: ${({ direction }) => (direction === 'vertical' ? '400px' : 'none')};
+  max-width: ${({ direction }) => (direction === 'vertical' ? '500px' : 'none')};
 
   ${ThumbNailContainer} {
     ${({ direction }) =>

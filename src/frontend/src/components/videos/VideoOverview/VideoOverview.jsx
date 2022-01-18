@@ -40,7 +40,7 @@ function VideoOverview({ direction, videoInfo }) {
       <S.VideoInfoContainer>
         {direction === 'vertical' && (
           <div>
-            <Avatar size='small' />
+            <Avatar size='xs' />
           </div>
         )}
         <S.VideoInfo>
