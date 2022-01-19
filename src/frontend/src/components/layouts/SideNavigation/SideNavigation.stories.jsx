@@ -1,4 +1,5 @@
 import React from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 import { MainLayoutContext } from '@utils/context';
 
@@ -11,10 +12,12 @@ export default {
     (Story, rest) => {
       const { args } = rest;
       return (
-        <MainLayoutContext.Provider value={{ ...args.ctx }}>
-          <div style={{ height: '60px' }} />
-          <Story />
-        </MainLayoutContext.Provider>
+        <Router>
+          <MainLayoutContext.Provider value={{ ...args.ctx }}>
+            <div style={{ height: '60px' }} />
+            <Story />
+          </MainLayoutContext.Provider>
+        </Router>
       );
     },
   ],

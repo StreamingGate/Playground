@@ -52,15 +52,14 @@ export const VideoMetaContainer = styled.div`
     content: '•';
     display: inline-block;
     margin: 0 3px;
-    color: ${({ theme }) => theme.colors.placeHolder};
   }
 `;
 
-export const ViedeoOverviewContainer = styled.li`
+export const ViedeoOverviewContainer = styled.ul`
   display: flex;
   flex-direction: ${({ direction }) => (direction === 'vertical' ? 'column' : 'row')};
   gap: 10px;
-  max-width: ${({ direction }) => (direction === 'vertical' ? '500px' : 'none')};
+  max-width: ${({ direction }) => (direction === 'vertical' ? '400px' : 'none')};
 
   ${ThumbNailContainer} {
     ${({ direction }) =>
