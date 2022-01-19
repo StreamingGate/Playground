@@ -13,11 +13,14 @@ function Stepper({ step, inActiveColor, activeColor, width, spacing, activeStep 
       width={width}
       spacing={spacing}
     >
-      {new Array(step).fill(0).map((_, idx) => (
-        <S.Step key={idx} isActive={activeStep >= idx + 1}>
-          <S.StepContent type='highlightCaption'>{idx + 1}</S.StepContent>
-        </S.Step>
-      ))}
+      {new Array(step)
+        .fill(0)
+        .map((_, idx) => idx + 1)
+        .map((elem, idx) => (
+          <S.Step key={elem} isActive={activeStep >= idx + 1}>
+            <S.StepContent type='highlightCaption'>{idx + 1}</S.StepContent>
+          </S.Step>
+        ))}
     </S.StepperContainer>
   );
 }
