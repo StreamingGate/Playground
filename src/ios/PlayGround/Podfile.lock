@@ -1,0 +1,16 @@
+PODS:
+  - ACThumbnailGenerator-Swift (1.0.1)
+
+DEPENDENCIES:
+  - ACThumbnailGenerator-Swift
+
+SPEC REPOS:
+  trunk:
+    - ACThumbnailGenerator-Swift
+
+SPEC CHECKSUMS:
+  ACThumbnailGenerator-Swift: 4c619a2ab32f005762c79a9a91ac61b092ab5e7e
+
+PODFILE CHECKSUM: 0bc7de5a80f02e8815aa44517621e7ff06a9e8bc
+
+COCOAPODS: 1.11.2
