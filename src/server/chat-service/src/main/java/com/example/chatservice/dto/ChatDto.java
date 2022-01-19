@@ -1,30 +1,34 @@
 package com.example.chatservice.dto;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
-import com.example.chatservice.entity.Chat;
-import com.example.chatservice.entity.chat.Role;
+import com.example.chatservice.entity.chat.Chat;
+import com.example.chatservice.entity.chat.ChatType;
+import com.example.chatservice.entity.chat.SenderRole;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 
 @NoArgsConstructor
 @Getter
 public class ChatDto {
 
+    private String roomId;
     private String nickname;
-    private Role role;
+    private SenderRole senderRole;
+    private ChatType chatType;          // TEST: STREAMER & (PINNED || NORMAL) , reverse
     private String message;
-    private LocalDateTime timestamp;
+    private LocalDateTime timestamp;    // TODO: 혹시 dto받으면서 변경되진 않는지 확인
 
     public Chat toEntity() {
         return Chat.builder()
                 .nickname(nickname)
-                .role(role)
+                .senderRole(senderRole)
+                .chatType(chatType)
                 .message(message)
                 .timestamp(timestamp)
                 .build();
     }
+
 }

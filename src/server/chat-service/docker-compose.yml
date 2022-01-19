@@ -1,0 +1,24 @@
+version: '3.7'
+services:
+  mongodb:
+    container_name: mongodb
+    image: mongo
+    ports:
+      - "27017:27017"
+    environment:
+      # MongoDB 계정 및 패스워드 설정 옵션
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: test
+      MONGO_INITDB_DATABASE: playground
+  mariadb:
+    container_name: mariadb
+    image: mariadb
+    environment:
+      MARIADB_DATABASE: playground
+      MARIADB_ROOT_PASSWORD: mariadb
+    volumes:
+#      - ../data/mariadb:/docker-entrypoint-initdb.d/:ro
+      - ../../../data/mariadb:/docker-entrypoint-initdb.d/:ro
+    ports:
+      - "3306:3306"
+    restart: always

@@ -30,7 +30,7 @@
 
     findRoom = function() {
         axios.get('/chat/room/'+data.roomId).then(response => { 
-            alert('response: '+ response);
+            // alert('response: '+ response);
             data.room = response.data; 
             console.log("roomName:",data.room.name);
             document.querySelector("#roomId").innerText = data.room.name;
@@ -39,10 +39,20 @@
     sendMessage= () => {
         console.log("send btn");
         inputMsg = document.querySelector("#inputMsg").value;
-        ws.send("/app/chat/message", {}, JSON.stringify({type:'TALK', roomId:data.roomId, sender:data.sender, message:inputMsg}));
+        ws.send("/app/chat/message", {}, JSON.stringify(
+                {
+
+                    // type:'ENTER',
+                    roomId:data.roomId,
+                    nickname:data.sender,
+                    senderRole: "VIEWER",
+                    chatType: "NORMAL",
+                    message: inputMsg,
+                    timestamp: new Date() // GMT(대한민국 표준시)
+                }));
         this.message = '';
     },
-    recvMessage= (recv) => {
+    recvMessage= (chatDto) => {
         console.log("reved msg");
         let msgList = document.querySelector("#msglist");
         let msgTemplate = (sender, message) => `
@@ -51,21 +61,23 @@
                 </li>
                 `;
         //this.messages.unshift({"type":recv.type,"sender":recv.type=='ENTER'?'[알림]':recv.sender,"message":recv.message})
-        msgList.append(msgTemplate(recv.sender, recv.message));
+        const liElem = document.createElement("li");
+        liElem.innerText = "["+ chatDto.nickname + "] "+ chatDto.message;
+        msgList.append(liElem);
     
     }
 
     findRoom();
 
-    
+
     // pub/sub event
     ws.connect({}, function(frame) {
-        ws.subscribe("/topic/chat/room/"+data.roomId, function(message) {
-            var recv = JSON.parse(message.body);
-            console.log("sub.......", message, "..........", recv, "........end");
-            recvMessage(recv);
+        ws.subscribe("/topic/chat/room/"+data.roomId, function(resp) {
+            console.log("received");
+            const chatDto = JSON.parse(resp.body);
+            console.log("sub.......", message, "..........", chatDto, "........end");
+            recvMessage(chatDto);
         });
-        ws.send("/app/chat/message", {}, JSON.stringify({type:'ENTER', roomId:data.roomId, sender:data.sender}));
     }, function(error) {
         alert("error "+error);
     });

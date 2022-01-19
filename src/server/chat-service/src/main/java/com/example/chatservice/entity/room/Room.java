@@ -2,14 +2,17 @@ package com.example.chatservice.entity.room;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.util.UUID;
 
 @RequiredArgsConstructor
 @Getter
-@Document
+@Entity
 public class Room {
 
     @Id
@@ -17,6 +20,7 @@ public class Room {
     private String name;
 
     public Room(String name)  {
+        this.id = UUID.randomUUID().toString();
         this.name = name;
     }
 }

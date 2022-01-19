@@ -1,5 +1,5 @@
 package com.example.chatservice.entity.chat;
 
-public enum Role {
+public enum SenderRole {
     STREAMER, VIEWER;
 }

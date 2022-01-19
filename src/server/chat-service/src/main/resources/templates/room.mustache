@@ -10,7 +10,7 @@
     <ul>
         {{#rooms}}
         <li>
-            <button type="button" onClick="enterRoom(`{{roomId}}`)"> {{name}} </button>
+            <button type="button" onClick="enterRoom(`{{id}}`)"> {{name}} </button>
         </li>
         {{/rooms}}
     </ul>
@@ -23,9 +23,6 @@
     
     let chatRooms = [];
     
-    //findAllRoom = () => {
-     //   axios.get('/chat/rooms').then(response => { chatRooms = response.data.rooms; });
-    //}
     createRoom = () => {
         const roomName = document.querySelector("#roomName").value;
         console.log(roomName);
@@ -40,17 +37,13 @@
             .then(
                 response => {
                     console.log('---',response.data);
-                    //alert(response.data.name+"방 개설에 성공하였습니다.")
-                    
                     document.querySelector("#roomName").innerText ='';
-                    
                     window.location.href="/chat/room";
                 }
             )
             .catch( response => {
                 console.log(response);
                 alert("채팅방 개설에 실패하였습니다.");
-                //window.location.href="/chat/room"; 
             });
         }
     };
@@ -61,5 +54,4 @@
         localStorage.setItem('wschat.roomId',roomId);
         location.href="/chat/room/enter/"+roomId;
     };
-    //findAllRoom();
 </script>

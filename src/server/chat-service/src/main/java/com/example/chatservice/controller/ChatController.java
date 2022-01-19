@@ -1,6 +1,7 @@
 package com.example.chatservice.controller;
 
-import com.example.chatservice.dto.MessageDto;
+import com.example.chatservice.dto.ChatDto;
+import com.example.chatservice.service.ChatService;
 
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
@@ -19,15 +20,15 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class ChatController {
 
+    private final ChatService chatService;
     private final SimpMessageSendingOperations messagingTemplate;
     
     @MessageMapping("/chat/message")
-    public void message(MessageDto message){
-        log.info("ws message:" + message.getMessage());
-        if(MessageDto.MessageType.ENTER.equals(message.getType())){
-            message.setMessage(message.getSender() + "님이 입장하셨습니다.");
-        }
-        log.info("to client : " + message.getRoomId()+ " " + message);
-        messagingTemplate.convertAndSend("/topic/chat/room" + message.getRoomId(), message);
+    public void message(ChatDto chatDto) throws Exception{
+        log.info("ws message:" + chatDto.getMessage());
+        chatService.create(chatDto);
+        log.info("to client : " + chatDto.getRoomId()+ " " + chatDto.getMessage());
+        
+        messagingTemplate.convertAndSend("/topic/chat/room/" + chatDto.getRoomId(), chatDto);
     }
 }
