@@ -1,4 +1,4 @@
-package com.example.chatservice.entity;
+package com.example.chatservice.entity.chat;
 
 
 import com.example.chatservice.entity.chat.Role;
