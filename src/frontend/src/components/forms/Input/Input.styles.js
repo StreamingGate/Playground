@@ -2,11 +2,15 @@ import styled, { css } from 'styled-components';
 
 const getInputPadding = size => {
   switch (size) {
-    case 'large':
+    case 'lg':
       return css`
-        padding: 14px 15px;
+        padding: 14px;
       `;
-    //   default size is 'small'
+    case 'sm':
+      return css`
+        padding: 8px;
+      `;
+    //   default size is 'md'
     default:
       return css`
         padding: 10px;

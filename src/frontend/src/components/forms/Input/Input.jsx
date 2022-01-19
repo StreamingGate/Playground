@@ -34,7 +34,7 @@ Input.propTypes = {
   type: PropTypes.oneOf(['text', 'password']),
   placeholder: PropTypes.string,
   value: PropTypes.string,
-  size: PropTypes.oneOf(['small', 'large']),
+  size: PropTypes.oneOf(['sm', 'md', 'lg']),
   variant: PropTypes.oneOf(['outlined', 'standard']),
   fontSize: PropTypes.oneOf([
     'title',
@@ -56,7 +56,7 @@ Input.defaultProps = {
   type: 'text',
   placeholder: '',
   value: undefined,
-  size: 'small',
+  size: 'md',
   variant: 'outlined',
   fontSize: 'content',
   fullWidth: false,
