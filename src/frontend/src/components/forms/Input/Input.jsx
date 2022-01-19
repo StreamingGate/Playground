@@ -31,7 +31,7 @@ function Input({
 
 Input.propTypes = {
   className: PropTypes.string,
-  type: PropTypes.oneOf(['text', 'password']),
+  type: PropTypes.oneOf(['text', 'password', 'file']),
   placeholder: PropTypes.string,
   value: PropTypes.string,
   size: PropTypes.oneOf(['sm', 'md', 'lg']),
