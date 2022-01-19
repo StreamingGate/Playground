@@ -1,26 +1,3 @@
-alter table friend
-drop foreign key FK77hwidnt50k76utjsr02f15dx;
-alter table live_viewer
-drop foreign key FK6swae88o8jsovsq1hbk50kvg6;
-alter table live_viewer
-drop foreign key FKl4jneonk8e7lghuvykdkck79l;
-alter table video
-drop foreign key FKlq8ktyke2jim62cq0gnu2ys3s;
-alter table video
-drop foreign key FKbumohg6sht50cdc9spya45hp5;
-alter table viewed_history
-drop foreign key FKhs9qlglx4cco197tva5upwvc0;
-alter table viewed_history
-drop foreign key FKjr82k6pv411gu2ji3865w6kqr;
-drop table if exists friend;
-drop table if exists friend_wait;
-drop table if exists live_room;
-drop table if exists live_viewer;
-drop table if exists metadata;
-drop table if exists users;
-drop table if exists video;
-drop table if exists viewed_history;
-
 create table friend
 (
     id               bigint not null auto_increment,

@@ -1,6 +1,7 @@
 import React from 'react';
 
-import Typography from '@components/core/Typography/Typography';
+import { Typography } from '@components/cores';
+import { NormalWrapper } from '@components/storybook';
 import Button from './Button';
 
 export default {
@@ -10,19 +11,27 @@ export default {
     fullWidth: false,
     children: <Typography type='content'>구독</Typography>,
   },
-  parameters: { controls: { exclude: ['children'] } },
+  parameters: { controls: { exclude: ['children', 'className'] } },
+  decorators: [
+    Story => (
+      <NormalWrapper>
+        <Story />
+      </NormalWrapper>
+    ),
+  ],
 };
 
 const SizeTemplate = args => (
   <>
-    <Button size='small' {...args} />
-    <Button size='large' {...args} />
+    <Button size='sm' {...args} />
+    <Button size='md' {...args} />
+    <Button size='lg' {...args} />
   </>
 );
 export const Size = SizeTemplate.bind({});
 Size.args = {
   variant: 'contained',
-  color: 'youtubeRed',
+  color: 'pgOrange',
 };
 
 const VariantTemplate = args => (
@@ -34,12 +43,12 @@ const VariantTemplate = args => (
 export const Variant = VariantTemplate.bind({});
 Variant.args = {
   size: 'small',
-  color: 'youtubeRed',
+  color: 'pgOrange',
 };
 
 const ColorTemplate = args => (
   <>
-    <Button color='youtubeRed' {...args} />
+    <Button color='pgOrange' {...args} />
     <Button color='youtubeBlue' {...args} />
   </>
 );
