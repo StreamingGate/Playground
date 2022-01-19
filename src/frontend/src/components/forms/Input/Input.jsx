@@ -1,22 +1,15 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import PropTypes from 'prop-types';
 
 import InputStyle from './Input.styles';
 
-function Input({
-  className,
-  type,
-  placeholder,
-  value,
-  size,
-  variant,
-  fontSize,
-  fullWidth,
-  onChange,
-}) {
+const Input = forwardRef((props, ref) => {
+  const { className, type, placeholder, value, size, variant, fontSize, fullWidth, onChange } =
+    props;
   return (
     <InputStyle.Input
       className={className}
+      ref={ref}
       type={type}
       placeholder={placeholder}
       value={value}
@@ -27,7 +20,7 @@ function Input({
       onChange={onChange}
     />
   );
-}
+});
 
 Input.propTypes = {
   className: PropTypes.string,
