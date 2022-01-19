@@ -20,6 +20,10 @@ module.exports = {
   rules: {
     'import/no-unresolved': 'off',
     'import/extensions': 'off',
+    'react/jsx-props-no-spreading': 'off',
+    'react-hooks/exhaustive-deps': 'off',
+    'import/order': 'off',
+    'import/prefer-default-export': 'off',
   },
   overrides: [
     {
@@ -27,6 +31,7 @@ module.exports = {
       rules: {
         'react/function-component-definition': 'off',
         'react/jsx-props-no-spreading': 'off',
+        'react/jsx-no-constructed-context-values': 'off',
       },
     },
   ],

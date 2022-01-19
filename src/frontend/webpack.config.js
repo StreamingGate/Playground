@@ -40,11 +40,11 @@ module.exports = (env, args) => {
     module: {
       rules: [
         {
-          test: /\.(png|jpg|jpeg|gif)$/i,
+          test: /\.(png|jpg|jpeg|gif|mp4)$/i,
           type: 'asset/resource',
         },
         {
-          test: /\.(png|jpg|jpeg|gif)$/i,
+          test: /\.(png|jpg|jpeg|gif|mp4)$/i,
           type: 'asset',
           parser: {
             dataUrlCondition: {

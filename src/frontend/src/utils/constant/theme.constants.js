@@ -30,6 +30,8 @@ const colors = {
   placeHolder: '#999999',
   separator: '#E5E5E5',
   background: '#F3F3F3',
+  pgOrange: '#FFBD13',
+  pgBlue: '#4286F5',
 };
 
 const theme = { fontSizes, fontWeights, colors };

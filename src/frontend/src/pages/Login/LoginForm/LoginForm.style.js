@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-import { VerticalLogo } from '@assets/icon';
+import { VerticalLogo } from '@components/cores';
 
 import { breakPoint } from '@utils/constant';
 
@@ -25,6 +25,7 @@ export default {
   `,
   Logo: styled(VerticalLogo)`
     width: 172px;
+    height: 40px;
   `,
   InputContainer: styled.div`
     margin: 30px 0 40px;

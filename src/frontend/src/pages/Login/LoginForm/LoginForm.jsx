@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Input } from '@components/forms';
-import { Typography } from '@components/core';
+import { Typography } from '@components/cores';
 import { Button } from '@components/buttons';
 
 import { placeholder } from '@utils/constant';
@@ -18,7 +18,7 @@ function LoginForm() {
         <Input fullWidth size='large' placeholder={loginPage.email} />
         <Input type='password' fullWidth size='large' placeholder={loginPage.password} />
       </S.InputContainer>
-      <Button fullWidth size='large'>
+      <Button fullWidth size='lg'>
         <Typography type='subtitle'>로그인</Typography>
       </Button>
       <S.RegisterContainer>

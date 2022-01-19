@@ -3,9 +3,20 @@ import PropTypes from 'prop-types';
 
 import InputStyle from './Input.styles';
 
-function Input({ type, placeholder, value, size, variant, fontSize, fullWidth, onChange }) {
+function Input({
+  className,
+  type,
+  placeholder,
+  value,
+  size,
+  variant,
+  fontSize,
+  fullWidth,
+  onChange,
+}) {
   return (
     <InputStyle.Input
+      className={className}
       type={type}
       placeholder={placeholder}
       value={value}
@@ -19,6 +30,7 @@ function Input({ type, placeholder, value, size, variant, fontSize, fullWidth, o
 }
 
 Input.propTypes = {
+  className: PropTypes.string,
   type: PropTypes.oneOf(['text', 'password']),
   placeholder: PropTypes.string,
   value: PropTypes.string,
@@ -40,6 +52,7 @@ Input.propTypes = {
 };
 
 Input.defaultProps = {
+  className: '',
   type: 'text',
   placeholder: '',
   value: undefined,
