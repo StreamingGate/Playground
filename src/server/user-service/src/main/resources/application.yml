@@ -1,5 +1,5 @@
 server:
-  port: 0
+  port: 50001
 
 spring:
   profiles:
@@ -13,7 +13,7 @@ spring:
     show-sql: true
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://pg-mariadb:3306/playground
+    url: jdbc:mariadb://localhost:3306/playground
     username: root
     password: test
   redis:
