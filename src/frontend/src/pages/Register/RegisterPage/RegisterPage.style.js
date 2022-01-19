@@ -1,13 +1,21 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+
+import { breakPoint } from '@utils/constant';
 
 import { Button } from '@components/buttons';
 import { VerticalLogo, Typography } from '@components/cores';
+
+const { queries, screenSize } = breakPoint;
 
 export const RegisterPageContainer = styled.main`
   display: flex;
   flex-direction: column;
   justify-content: center;
   max-width: 675px;
+  min-width: ${() =>
+    css`
+      ${screenSize.minSize}px
+    `};
   height: 100vh;
   margin: 0 auto;
 `;
@@ -15,6 +23,10 @@ export const RegisterPageContainer = styled.main`
 export const RegisterFormContainer = styled.div`
   padding: 43px 0;
   background-color: #ffffff;
+
+  @media (${queries.mobileMax}) {
+    height: 100%;
+  }
 `;
 
 export const RegisterForm = styled.form`
