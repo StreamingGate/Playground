@@ -13,7 +13,7 @@ const initBtnContent = { prev: '취소', next: '다음' };
 function RegisterPage() {
   const [btnContent, setBtnContent] = useState({ ...initBtnContent });
 
-  const [curStage, setCurState] = useState(2);
+  const [curStage, setCurState] = useState(1);
   const [isNextInActive, setNextInActive] = useState(false);
 
   useEffect(() => {
