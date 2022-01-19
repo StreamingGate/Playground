@@ -42,7 +42,7 @@ export const StageContainer = styled.div`
   margin-top: 45px;
 `;
 
-export const FormControlBtnContainer = styled.div`
+export const FormActionContainer = styled.div`
   display: flex;
   justify-content: center;
   gap: 10px;
@@ -54,7 +54,7 @@ export const PrevButton = styled(Button)`
   padding: 12px 39px;
 `;
 
-export const PrevBtnCaption = styled(Typography)`
+export const PrevBtnContent = styled(Typography)`
   color: ${({ theme }) => theme.colors.pgBlue};
 `;
 
@@ -62,4 +62,4 @@ export const NextButton = styled(Button)`
   padding: 12px 75px;
 `;
 
-export const NextBtnCaption = styled(Typography)``;
+export const NextBtnContent = styled(Typography)``;
