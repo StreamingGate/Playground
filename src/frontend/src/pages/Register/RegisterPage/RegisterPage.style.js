@@ -30,12 +30,16 @@ export const RegisterTitleContainer = styled.header`
   margin-bottom: 40px;
 `;
 
-export const RegisterTitle = styled(Typography)``;
-
 export const FormHorizontalLogo = styled(VerticalLogo)`
   width: 135px;
   height: 28px;
   margin-right: 8px;
+`;
+
+export const RegisterTitle = styled(Typography)``;
+
+export const StageContainer = styled.div`
+  margin-top: 45px;
 `;
 
 export const FormControlBtnContainer = styled.div`
