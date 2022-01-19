@@ -111,7 +111,7 @@ class CustomTabViewController: UIViewController {
     }
     
     func removePlayer() {
-        if self.children.count > 0{
+        if self.children.count > 0 {
             let viewControllers:[UIViewController] = self.children
             for i in viewControllers {
                 if (i as? PlayViewController) != nil {

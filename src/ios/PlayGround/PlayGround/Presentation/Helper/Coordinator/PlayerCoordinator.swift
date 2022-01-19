@@ -116,4 +116,19 @@ class PlayerCoordinator: Coordinator {
         guard let channelVC = UIStoryboard(name: "Channel", bundle: nil).instantiateViewController(withIdentifier: "ChannelViewController") as? ChannelViewController else { return }
         navigation.pushViewController(channelVC, animated: true)
     }
+    
+    func dismissExplain(vc: PlayViewController) {
+        if vc.children.count > 0 {
+            let viewControllers:[UIViewController] = vc.children
+            for i in viewControllers {
+                if (i as? PlayExplainViewController) != nil {
+                    vc.explainContainerView.alpha = 0
+                    i.willMove(toParent: nil)
+                    i.removeFromParent()
+                    i.view.removeFromSuperview()
+                    return
+                }
+            }
+        }
+    }
 }
