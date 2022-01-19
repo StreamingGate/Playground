@@ -1,5 +1,6 @@
 package com.example.chatservice.controller;
 
+import com.example.chatservice.dto.ChatDto;
 import com.example.chatservice.dto.RoomDto;
 import com.example.chatservice.service.RoomService;
 
@@ -22,20 +23,28 @@ public class RoomController {
 
     private final RoomService roomService;
 
+    @GetMapping("/room/{roomId}")
+    @ResponseBody
+    public RoomDto roomInfo(@PathVariable("roomId") String id) {
+        RoomDto res = roomService.findById(id);
+        log.info(res.getName()+" " + res.getId());
+        log.info("recorded chat start.......");
+        if(res.getChats() != null) {
+            for(ChatDto dto: res.getChats()) {
+                log.info(dto.getNickname() + " " +dto.getMessage());
+            }
+        }
+        log.info("recorded chat end.......");
+        return res;
+    }
+
     @PostMapping("/room")
     @ResponseBody
     public RoomDto createRoom(@RequestParam String name) {
         log.info("채팅방 생성: name="+name);
         RoomDto res = roomService.create(name);
         log.info("res: id="+res.getId());
-        return res;
-    }
-
-    @GetMapping("/room/{roomId}")
-    @ResponseBody
-    public RoomDto roomInfo(@PathVariable("roomId") String id) {
-        RoomDto res = roomService.findById(id);
-        log.info(res.getName()+" " + res.getId());
+        
         return res;
     }
 }

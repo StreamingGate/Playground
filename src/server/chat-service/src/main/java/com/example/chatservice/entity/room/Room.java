@@ -1,23 +1,26 @@
 package com.example.chatservice.entity.room;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import com.example.chatservice.entity.chat.Chat;
+
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.util.UUID;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
-@Entity
+@Document(collection = "room")
 public class Room {
 
     @Id
     private String id = UUID.randomUUID().toString();
     private String name;
+    private List<Chat> chats = new ArrayList<>();
 
     public Room(String name)  {
         this.id = UUID.randomUUID().toString();

@@ -2,13 +2,13 @@
 
  import java.util.Optional;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
 /**
  * <h1>RoomRespository</h1>
  * This repository uses Mariadb
  */
- public interface RoomRepository extends JpaRepository<Room, String> {
+ public interface RoomRepository extends MongoRepository<Room, String> {
 
   Optional<Room> findByName(String name);
  }

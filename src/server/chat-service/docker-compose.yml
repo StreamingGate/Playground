@@ -16,9 +16,11 @@ services:
     environment:
       MARIADB_DATABASE: playground
       MARIADB_ROOT_PASSWORD: mariadb
-#    volumes:
-#      - ../data/mariadb:/docker-entrypoint-initdb.d/:ro
-#      - ../../../data/mariadb:/docker-entrypoint-initdb.d/:ro
     ports:
       - "3306:3306"
+  redis:
+    container_name: redis
+    image: redis:latest
+    ports:
+      - "6379:6379"
     restart: always

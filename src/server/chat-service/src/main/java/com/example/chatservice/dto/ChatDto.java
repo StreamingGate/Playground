@@ -6,8 +6,10 @@ import com.example.chatservice.entity.chat.Chat;
 import com.example.chatservice.entity.chat.ChatType;
 import com.example.chatservice.entity.chat.SenderRole;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
 
 
 @NoArgsConstructor
@@ -30,5 +32,31 @@ public class ChatDto {
                 .timestamp(timestamp)
                 .build();
     }
+
+    public static ChatDto from(Chat chat){
+        return ChatDto.builder()
+                .nickname(chat.getNickname())
+                .senderRole(chat.getSenderRole())
+                .chatType(chat.getChatType())
+                .message(chat.getMessage())
+                .timestamp(chat.getTimestamp())
+                .build();
+    }
+
+    @Builder
+    public ChatDto(String roomId,
+     String nickname,
+     SenderRole senderRole,
+     ChatType chatType,
+     String message,
+     LocalDateTime timestamp){
+         this.nickname = nickname;
+         this.roomId = roomId;
+         this.senderRole = senderRole;
+         this.chatType = chatType;
+         this.message = message;
+         this.timestamp= timestamp;
+     }
+
 
 }
