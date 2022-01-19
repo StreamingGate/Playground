@@ -53,7 +53,7 @@ class HomeListViewController: UIViewController {
     }
     
     func removeTopChildViewController(){
-        if self.children.count > 0{
+        if self.children.count > 0 {
             let viewControllers:[UIViewController] = self.children
             for i in viewControllers {
                 i.willMove(toParent: nil)

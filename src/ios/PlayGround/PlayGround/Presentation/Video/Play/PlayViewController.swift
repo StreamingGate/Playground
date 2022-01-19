@@ -11,14 +11,39 @@ import Combine
 import AVFoundation
 
 class PlayViewController: UIViewController {
+    
+    // MARK: - Properties
+    // player
     @IBOutlet weak var playView: PlayerView!
     @IBOutlet weak var playViewWidth: NSLayoutConstraint!
     @IBOutlet weak var playControllView: UIView!
     @IBOutlet weak var playPauseButton: UIButton!
     @IBOutlet weak var backwardImageView: UIImageView!
     @IBOutlet weak var forwardImageView: UIImageView!
+    @IBOutlet weak var playViewTop: NSLayoutConstraint!
+    @IBOutlet weak var playViewCenterX: NSLayoutConstraint!
+    @IBOutlet weak var seekbar: CustomSlider!
+    @IBOutlet weak var timeLabel: UILabel!
     var playControllTimer = Timer()
+    let player = AVPlayer()
+    @IBOutlet var playViewSingleTap: UITapGestureRecognizer!
+    @IBOutlet var playControlViewSingleTap: UITapGestureRecognizer!
     
+    // mini player
+    @IBOutlet weak var miniBackView: UIView!
+    @IBOutlet var playPanGesture: UIPanGestureRecognizer!
+    @IBOutlet var playControlPanGesture: UIPanGestureRecognizer!
+    let miniTitleLabel = UILabel()
+    let miniChannelNameLabel = UILabel()
+    let miniPlayPauseButton = UIButton()
+    let miniCloseButton = UIButton()
+    var miniTapGesture = UITapGestureRecognizer()
+    @Published var isMinimized: Bool = false
+    private var cancellable: Set<AnyCancellable> = []
+    var isMaximizing: Bool = true
+    var lastTranslation: CGFloat = 0
+    
+    // video information
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var titleBackView: UIView!
     @IBOutlet weak var viewLabel: UILabel!
@@ -29,50 +54,31 @@ class PlayViewController: UIViewController {
     @IBOutlet weak var channelView: UIView!
     @IBOutlet weak var separatorView: UIView!
     @IBOutlet weak var stackView: UIStackView!
+    @IBOutlet weak var explainContainerView: UIView!
     
+    // chatting
     @IBOutlet weak var chatSendButton: UIButton!
     @IBOutlet weak var chatTextView: UITextView!
     @IBOutlet weak var chatPlaceHolderLabel: UILabel!
     @IBOutlet weak var chatProfileImageView: UIImageView!
     @IBOutlet weak var chatSeparatorView: UIView!
     @IBOutlet weak var chatViewBottom: NSLayoutConstraint!
-    @IBOutlet weak var playViewTop: NSLayoutConstraint!
-    @IBOutlet weak var playViewCenterX: NSLayoutConstraint!
 
-    @IBOutlet weak var explainContainerView: UIView!
-    @IBOutlet weak var chatContainerViewTop: NSLayoutConstraint!
     @IBOutlet weak var chatContainerView: UIView!
+    @IBOutlet weak var chatContainerViewTop: NSLayoutConstraint!
     @IBOutlet weak var chatContainerViewLeading: NSLayoutConstraint!
     @IBOutlet weak var chatContainerViewCenterX: NSLayoutConstraint!
-    @IBOutlet weak var previewImage: UIImageView!
     
+    // orientation transition
     var portraitLayout: [NSLayoutConstraint] = []
     var landscapeLayout: [NSLayoutConstraint] = []
     
-    @IBOutlet weak var seekbar: CustomSlider!
-    @IBOutlet weak var timeLabel: UILabel!
-    @IBOutlet var playControlPanGesture: UIPanGestureRecognizer!
-    @IBOutlet var playPanGesture: UIPanGestureRecognizer!
-    
-    @Published var isMinimized: Bool = false
-    private var cancellable: Set<AnyCancellable> = []
-    var isMaximizing: Bool = true
-    var lastTranslation: CGFloat = 0
-    
-    @IBOutlet weak var miniBackView: UIView!
-    let miniTitleLabel = UILabel()
-    let miniChannelNameLabel = UILabel()
-    let miniPlayPauseButton = UIButton()
-    let miniCloseButton = UIButton()
-    var miniTapGesture = UITapGestureRecognizer()
-    
+    // safearea margin
     var safeTop: CGFloat = 0
     var safeBottom: CGFloat = 0
     
+    // transition handler
     var coordinator: PlayerCoordinator?
-    let player = AVPlayer()
-    @IBOutlet var playViewSingleTap: UITapGestureRecognizer!
-    @IBOutlet var playControlViewSingleTap: UITapGestureRecognizer!
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
@@ -168,6 +174,7 @@ class PlayViewController: UIViewController {
         playView.player = self.player
         playView.player?.play()
         
+        // 10 secs forward || backward
         let doubleTap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(gestureRecognizer:)))
         doubleTap.numberOfTapsRequired = 2
         self.playView.addGestureRecognizer(doubleTap)
@@ -230,7 +237,7 @@ class PlayViewController: UIViewController {
         }
     }
     
-    // Player size change
+    // Mini size Player initialize
     func setMiniPlayerlayout() {
         self.view.addSubview(miniBackView)
         self.miniBackView.addSubview(miniTitleLabel)
@@ -260,6 +267,7 @@ class PlayViewController: UIViewController {
         ])
     }
     
+    // add chat view
     func connectChatView() {
         guard let chattingVC = UIStoryboard(name: "Chat", bundle: nil).instantiateViewController(withIdentifier: "ChattingViewController") as? ChattingViewController else { return }
         self.addChild(chattingVC)
