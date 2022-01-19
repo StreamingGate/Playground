@@ -29,6 +29,9 @@ export const ProfilInputContainer = styled.div`
 export const ProfilePreview = styled.img`
   width: 100px;
   height: 100px;
+  border: none;
+  border-radius: 50%;
+  overflow: hidden;
 `;
 
 export const ProfileInput = styled(Input)`
