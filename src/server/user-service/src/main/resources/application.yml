@@ -1,7 +1,10 @@
 server:
-  port: 0
+  port: 50001
 
 spring:
+  profiles:
+    include: auth
+    active: local
   application:
     name: user-service
   jpa:
@@ -10,7 +13,7 @@ spring:
     show-sql: true
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://localhost:3306/userdb
+    url: jdbc:mariadb://localhost:3306/playground
     username: root
     password: test
   redis:
@@ -20,8 +23,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: sgssgmanager@gmail.com
-    password: streamingsgs!
+    username: ${playground.mail.username}
+    password: ${playground.mail.password}
     properties.mail.smtp.auth: true
     properties.mail.smtp.starttls.enable: true
 
