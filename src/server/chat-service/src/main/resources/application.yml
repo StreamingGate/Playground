@@ -5,8 +5,8 @@ spring:
       enabled: true
     restart:
       enabled: false
-  freemarker:
-    cache: false
+  # freemarker:
+  #   cache: false
 
 ---
 spring.config.activate.on-profile: local
@@ -23,9 +23,14 @@ spring:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     hibernate:
       ddl-auto: create
-spring.redis:
-  host: localhost
-  port: 6379
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: playground
+  redis:
+    host: localhost
+    port: 6379
 
 ---
 spring.config.activate.on-profile: develop

@@ -1,14 +1,10 @@
 package com.example.chatservice.service;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
-import javax.annotation.PostConstruct;
-
-import com.example.chatservice.dto.ChatRoom;
-
+import com.example.chatservice.dto.ChatDto;
+import com.example.chatservice.entity.Chat;
+import com.example.chatservice.entity.chat.ChatRepository;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -19,24 +15,13 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class ChatService {
 
-    private Map<String, ChatRoom> chatRooms;    // db대신 사용하는 메모리
-
-    @PostConstruct
-    private void init() {
-        chatRooms = new LinkedHashMap<>();
+    private final ChatRepository chatRepository;
+    
+    public List<Chat> findAll() {
+        return chatRepository.findAll();
     }
 
-    public List<ChatRoom> findAllRoom() {
-        return new ArrayList<>(chatRooms.values());
-    }
-
-    public ChatRoom findRoomById(String roomId) {
-        return chatRooms.get(roomId);
-    }
-
-    public ChatRoom createRoom(String name) {
-        ChatRoom chatRoom = new ChatRoom(name);
-        chatRooms.put(chatRoom.getRoomId(), chatRoom);
-        return chatRoom;
+    public void create(ChatDto chatDto){
+        chatRepository.save(chatDto.toEntity()); // TODO: mapper로 바꾸기
     }
 }

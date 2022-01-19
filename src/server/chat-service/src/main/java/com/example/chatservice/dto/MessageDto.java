@@ -9,7 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class ChatMessage {
+public class MessageDto {
 
     private MessageType type;   // 메시지 타입
     private String roomId;      // 방번호
@@ -21,11 +21,11 @@ public class ChatMessage {
         ENTER, TALK
     }
 
-    public static ChatMessage createEnterMessage(String roomId, String sender, String message) {
-        return new ChatMessage(MessageType.ENTER, roomId, sender, message);
+    public static MessageDto createEnterMessage(String roomId, String sender, String message) {
+        return new MessageDto(MessageType.ENTER, roomId, sender, message);
     }
 
-    public static ChatMessage createTalkMessage(String roomId, String sender, String message) {
-        return new ChatMessage(MessageType.TALK, roomId, sender, message);
+    public static MessageDto createTalkMessage(String roomId, String sender, String message) {
+        return new MessageDto(MessageType.TALK, roomId, sender, message);
     }
 }

@@ -23,8 +23,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation "org.springframework.boot:spring-boot-starter-websocket"
     implementation 'org.springframework.boot:spring-boot-starter-mustache'
-	// implementation 'org.webjars.bower:bootstrap:4.3.1'
-    // implementation 'org.webjars.bower:vue:2.5.16'
+	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
     implementation 'org.webjars.bower:axios:0.17.1'
     implementation 'org.webjars:sockjs-client:1.1.2'
     implementation 'org.webjars:stomp-websocket:2.3.3-1'

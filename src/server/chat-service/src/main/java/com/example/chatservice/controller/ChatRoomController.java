@@ -1,6 +1,6 @@
 package com.example.chatservice.controller;
 
-import com.example.chatservice.dto.ChatRoom;
+import com.example.chatservice.dto.ChatDto;
 import com.example.chatservice.service.ChatService;
 
 import org.springframework.stereotype.Controller;
@@ -31,11 +31,9 @@ public class ChatRoomController {
 
     @PostMapping("/room")
     @ResponseBody
-    public ChatRoom createRoom(@RequestParam String name) {
+    public ChatDto createRoom(@RequestParam String name) {
         log.info("채팅방 생성: name="+name);
-        
-        ChatRoom res = chatService.createRoom(name);
-        
+        ChatDto res = chatService.createRoom(name);
         log.info("res: id="+res.getRoomId());
         return res;
     }
@@ -49,8 +47,8 @@ public class ChatRoomController {
 
     @GetMapping("/room/{roomId}")
     @ResponseBody
-    public ChatRoom roomInfo(@PathVariable String roomId) {
-        ChatRoom res = chatService.findRoomById(roomId);
+    public ChatDto roomInfo(@PathVariable String roomId) {
+        ChatDto res = chatService.findRoomById(roomId);
         log.info(res.getName()+" " + res.getRoomId());
         return res;
     }
