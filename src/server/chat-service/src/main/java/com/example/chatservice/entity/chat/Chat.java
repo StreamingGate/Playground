@@ -1,19 +1,19 @@
 package com.example.chatservice.entity.chat;
 
 
-import java.time.LocalDateTime;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.annotation.Id;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
 @Getter
-@Document(collection = "chat")
-public class Chat {
+public class Chat  implements Serializable {
+
+    private static final long serialVersionUID = 1234678977089006638L;
 
     @Id
     private String id;

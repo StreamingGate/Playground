@@ -2,18 +2,11 @@ package com.example.chatservice.controller;
 
 import com.example.chatservice.dto.ChatDto;
 import com.example.chatservice.dto.RoomDto;
-import com.example.chatservice.service.RoomService;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
+import com.example.chatservice.redis.RedisRoomRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -21,19 +14,12 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/chat")
 public class RoomController {
 
-    private final RoomService roomService;
+    private final RedisRoomRepository redisRoomRepository;
 
     @GetMapping("/room/{roomId}")
     @ResponseBody
     public RoomDto roomInfo(@PathVariable("roomId") String id) {
-        RoomDto res = roomService.findById(id);
-        log.info(res.getName()+" " + res.getId());
-        log.info("recorded chat start.......");
-        if(res.getChats() != null) {
-            for(ChatDto dto: res.getChats()) {
-                log.info(dto.getNickname() + " " +dto.getMessage());
-            }
-        }
+        RoomDto res = redisRoomRepository.findById(id);
         log.info("recorded chat end.......");
         return res;
     }
@@ -42,9 +28,8 @@ public class RoomController {
     @ResponseBody
     public RoomDto createRoom(@RequestParam String name) {
         log.info("채팅방 생성: name="+name);
-        RoomDto res = roomService.create(name);
+        RoomDto res = redisRoomRepository.create(name);
         log.info("res: id="+res.getId());
-        
         return res;
     }
 }

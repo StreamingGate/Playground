@@ -1,5 +1,6 @@
 package com.example.chatservice.dto;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,15 +15,13 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class RoomDto {
+public class RoomDto implements Serializable {
+    private static final long serialVersionUID = 5554678977089006555L;
 
     private String id;
     private String name;
-    private List<ChatDto> chats;
 
     public static RoomDto from(Room room) {
-        List<ChatDto> chats = room.getChats().stream()
-        .map(chat -> ChatDto.from(chat)).collect(Collectors.toList());
-        return new RoomDto(room.getId(), room.getName(), chats);
+        return new RoomDto(room.getId(), room.getName());
     }
 }
