@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import com.example.mainservice.entity.Friend.Friend;
+import com.example.mainservice.entity.LiveRoom.LiveRoom;
 import com.example.mainservice.entity.LiveViewer.LiveViewer;
 import com.example.mainservice.entity.Video.Video;
 import com.example.mainservice.entity.ViewdHistory.ViewedHistory;
@@ -78,5 +79,8 @@ public class UserEntity {
     
     @OneToMany(mappedBy = "userEntity")
     private List<Friend> friends;
+
+    @OneToMany(mappedBy="userEntity")
+    private List<LiveRoom> liveRooms;
 
 }

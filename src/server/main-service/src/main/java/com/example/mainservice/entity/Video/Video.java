@@ -27,8 +27,7 @@ public class Video {
     @Column(length = 5000)
     private String content;
 
-    private int liked;
-    private int disliked;
+    private int likeCnt;
 
     @Enumerated(EnumType.STRING)
     @Column(length = 10)

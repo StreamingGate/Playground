@@ -29,6 +29,7 @@ public class LiveViewer {
     private Role role;
 
     private boolean liked;
+    private boolean disliked;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
