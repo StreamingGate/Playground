@@ -101,6 +101,9 @@ extension HomeListViewController: UITableViewDataSource, UITableViewDelegate {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "VideoListCell", for: indexPath) as? VideoListCell else { return UITableViewCell() }
         cell.setupUI(indexPath.row, middle)
         cell.channelTapHandler = {
+            self.playerView.player?.pause()
+            self.playerView.player?.replaceCurrentItem(with: nil)
+            self.playerView.player = nil
             self.navVC?.coordinator?.showChannel()
         }
         return cell
@@ -109,11 +112,14 @@ extension HomeListViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if middle == indexPath.row {
             self.playerView.player?.pause()
+            self.playerView.player?.replaceCurrentItem(with: nil)
             self.playerView.player = nil
         }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.playerView.player?.pause()
+        self.playerView.player?.replaceCurrentItem(with: nil)
         self.playerView.player = nil
         self.navVC?.coordinator?.showPlayer()
     }

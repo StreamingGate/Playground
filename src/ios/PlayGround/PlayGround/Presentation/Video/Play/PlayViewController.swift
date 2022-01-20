@@ -28,6 +28,7 @@ class PlayViewController: UIViewController {
     let player = AVPlayer()
     @IBOutlet var playViewSingleTap: UITapGestureRecognizer!
     @IBOutlet var playControlViewSingleTap: UITapGestureRecognizer!
+    var timeObserver: Any?
     
     // mini player
     @IBOutlet weak var miniBackView: UIView!
@@ -99,6 +100,14 @@ class PlayViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         AppUtility.lockOrientation(.all)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        if let observer = timeObserver {
+            self.playView.player?.removeTimeObserver(observer)
+        }
+        self.playView.player?.replaceCurrentItem(with: nil)
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -199,7 +208,7 @@ class PlayViewController: UIViewController {
         // Set Seekbar Interval
         let interval: Double = Double(0.1 * seekbar.maximumValue) / Double(seekbar.bounds.maxX)
         let time : CMTime = CMTimeMakeWithSeconds(interval, preferredTimescale: Int32(NSEC_PER_SEC))
-        playView.player?.addPeriodicTimeObserver(forInterval: time, queue: nil, using: {time in
+        self.timeObserver = playView.player?.addPeriodicTimeObserver(forInterval: time, queue: nil, using: {time in
             // seekbar update
             let duration = CMTimeGetSeconds(self.playView.player!.currentItem!.duration)
             let time = CMTimeGetSeconds(self.playView.player!.currentTime())
