@@ -80,20 +80,17 @@ class PlayViewController: UIViewController {
     
     // transition handler
     var coordinator: PlayerCoordinator?
+
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         prepareAnimation()
         showAnimation()
-        playViewWidth.constant = UIScreen.main.bounds.width
         portraitLayout = [chatContainerViewLeading, chatContainerViewCenterX, chatContainerViewTop, playViewTop, playViewCenterX, playViewWidth]
         NotificationCenter.default.addObserver(self, selector: #selector(adjustInputView), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(adjustInputView), name: UIResponder.keyboardWillHideNotification, object: nil)
-        setPlayer()
         setupUI()
-        setMiniPlayerlayout()
-        setMiniPlayerAction()
         bindingData()
     }
     
@@ -119,7 +116,7 @@ class PlayViewController: UIViewController {
         titleBackView.isHidden = UIDevice.current.orientation.isLandscape
         stretchButton.isHidden = UIDevice.current.orientation.isLandscape
         if UIDevice.current.orientation.isLandscape {
-            print("Landscape")
+            // 가로 모드
             self.coordinator?.dismissExplain(vc: self)
             self.view.backgroundColor = UIColor.black
             NSLayoutConstraint.deactivate(portraitLayout)
@@ -131,7 +128,7 @@ class PlayViewController: UIViewController {
             ]
             NSLayoutConstraint.activate(landscapeLayout)
         } else {
-            print("Portrait")
+            // 세로 모드
             NSLayoutConstraint.deactivate(landscapeLayout)
             NSLayoutConstraint.deactivate(portraitLayout)
             NSLayoutConstraint.activate(portraitLayout)
@@ -169,6 +166,7 @@ class PlayViewController: UIViewController {
         miniChannelNameLabel.translatesAutoresizingMaskIntoConstraints = false
         miniPlayPauseButton.translatesAutoresizingMaskIntoConstraints = false
         miniCloseButton.translatesAutoresizingMaskIntoConstraints = false
+        setPlayer()
         connectChatView()
     }
     
@@ -217,6 +215,10 @@ class PlayViewController: UIViewController {
             guard let currentTime = self.playView.player?.currentTime() else { return }
             self.updateVideoPlayerState(currentTime: currentTime)
         })
+        
+        // setting for mini player
+        setMiniPlayerlayout()
+        setMiniPlayerAction()
     }
     
     // Player timeLabel change
@@ -238,10 +240,10 @@ class PlayViewController: UIViewController {
             timeformatter.roundingMode = .down
 
             guard let curMinsStr = timeformatter.string(from: NSNumber(value: curMins)),
-                  let curSecsStr = timeformatter.string(from: NSNumber(value: curSecs)), let endMinsStr = timeformatter.string(from: NSNumber(value: endMins)),
-                  let endSecsStr = timeformatter.string(from: NSNumber(value: endSecs)) else {
-                return
-            }
+                  let curSecsStr = timeformatter.string(from: NSNumber(value: curSecs)),
+                  let endMinsStr = timeformatter.string(from: NSNumber(value: endMins)),
+                  let endSecsStr = timeformatter.string(from: NSNumber(value: endSecs)) else { return }
+            
             timeLabel.text = "\(curMinsStr):\(curSecsStr) / \(endMinsStr):\(endSecsStr)"
         }
     }
@@ -408,13 +410,14 @@ class PlayViewController: UIViewController {
                 self.playControllView.alpha = 0
             }
             self.playControllTimer.invalidate()
-            let targetY = UIScreen.main.bounds.height - safeTop - safeBottom - 160
-            let percentage = 1 - (pan.location(in: self.parent?.view).y / targetY)
+//            let targetY = UIScreen.main.bounds.height - safeTop - safeBottom - 160
+//            let percentage = 1 - (pan.location(in: self.parent?.view).y / targetY)
+            let height = UIScreen.main.bounds.width / 16 * 9
+            let maxHeight = UIScreen.main.bounds.height - safeTop - safeBottom - 150
+            
             switch pan.state {
             case .began, .changed:
                 self.lastTranslation = pan.translation(in: view).y
-                let height = UIScreen.main.bounds.width / 16 * 9
-                let maxHeight = UIScreen.main.bounds.height - safeTop - safeBottom - 150
                 if pan.location(in: self.parent?.view).y <= height / 2 {
                     self.setPlayViewOriginalSize()
                 } else if pan.location(in: self.parent?.view).y >= maxHeight + 40 {
@@ -423,7 +426,6 @@ class PlayViewController: UIViewController {
                     parent.playViewTopMargin.constant = pan.location(in: self.parent?.view).y - (height / 2)
                 }
             case .ended:
-                let height = UIScreen.main.bounds.width / 16 * 9
                 if lastTranslation == 0 {
                     if pan.location(in: self.parent?.view).y <= self.view.frame.height / 2 {
                         self.setPlayViewOriginalSize()
@@ -454,33 +456,33 @@ class PlayViewController: UIViewController {
         let point = gestureRecognizer.location(in: self.playView)
         let halfPosition = playView.frame.width / 2
         if point.x < (halfPosition - 30) {
-            let duration = CMTimeGetSeconds(self.playView.player!.currentItem!.duration)
-            let time = CMTimeGetSeconds(self.playView.player!.currentTime()) - 10
-            let value = Float(self.seekbar.maximumValue - self.seekbar.minimumValue) * Float(time) / Float(duration) + Float(self.seekbar.minimumValue)
-            self.seekbar.setValue(Float(value), animated: true)
-            let currentTime = CMTimeMakeWithSeconds(Float64(seekbar.value), preferredTimescale: Int32(NSEC_PER_SEC))
-            playView.player?.seek(to: currentTime)
-            guard let currentTime = self.playView.player?.currentTime() else { return }
-            self.updateVideoPlayerState(currentTime: currentTime)
-            self.backwardImageView.alpha = 1
-            UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 2, initialSpringVelocity: 2, options: .showHideTransitionViews, animations: {
-                self.backwardImageView.alpha = 0
-            }, completion: nil)
+            move10Secs(secs: -10)
         } else if point.x > (halfPosition + 30) {
-            let duration = CMTimeGetSeconds(self.playView.player!.currentItem!.duration)
-            let time = CMTimeGetSeconds(self.playView.player!.currentTime()) + 10
-            let value = Float(self.seekbar.maximumValue - self.seekbar.minimumValue) * Float(time) / Float(duration) + Float(self.seekbar.minimumValue)
-            self.seekbar.setValue(Float(value), animated: true)
-            let currentTime = CMTimeMakeWithSeconds(Float64(seekbar.value), preferredTimescale: Int32(NSEC_PER_SEC))
-            playView.player?.seek(to: currentTime)
-            guard let currentTime = self.playView.player?.currentTime() else { return }
-            self.updateVideoPlayerState(currentTime: currentTime)
-            self.forwardImageView.alpha = 1
-            UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 2, initialSpringVelocity: 2, options: .showHideTransitionViews, animations: {
-                self.forwardImageView.alpha = 0
-            }, completion: nil)
+            move10Secs(secs: 10)
         }
     }
+    
+    func move10Secs(secs: Double) {
+        let duration = CMTimeGetSeconds(self.playView.player!.currentItem!.duration)
+        let time = CMTimeGetSeconds(self.playView.player!.currentTime()) + secs
+        let value = Float(self.seekbar.maximumValue - self.seekbar.minimumValue) * Float(time) / Float(duration) + Float(self.seekbar.minimumValue)
+        self.seekbar.setValue(Float(value), animated: true)
+        let currentTime = CMTimeMakeWithSeconds(Float64(seekbar.value), preferredTimescale: Int32(NSEC_PER_SEC))
+        playView.player?.seek(to: currentTime)
+        guard let currentTime = self.playView.player?.currentTime() else { return }
+        self.updateVideoPlayerState(currentTime: currentTime)
+        var stateImageView =  UIImageView()
+        if secs < 0 {
+            stateImageView = self.backwardImageView
+        } else {
+            stateImageView = self.forwardImageView
+        }
+        stateImageView.alpha = 1
+        UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 2, initialSpringVelocity: 2, options: .showHideTransitionViews, animations: {
+            stateImageView.alpha = 0
+        }, completion: nil)
+    }
+    
     
     @objc func onSliderValChanged(slider: UISlider, event: UIEvent) {
         if let touchEvent = event.allTouches?.first {
