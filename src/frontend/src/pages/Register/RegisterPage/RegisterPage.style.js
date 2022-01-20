@@ -51,6 +51,7 @@ export const FormHorizontalLogo = styled(VerticalLogo)`
 export const RegisterTitle = styled(Typography)``;
 
 export const StageContainer = styled.div`
+  height: 320px;
   margin-top: 45px;
 `;
 
