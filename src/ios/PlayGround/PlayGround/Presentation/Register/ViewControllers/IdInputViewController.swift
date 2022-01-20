@@ -80,13 +80,6 @@ class IdInputViewController: UIViewController {
         return emailCheck.evaluate(with: input)
     }
     
-    @IBAction func idTextFieldDidBegin(_ sender: Any) {
-        idFormatCheckLabel.isHidden = false
-        idFormatCheckLabel.text = "이메일을 입력해주세요"
-        idFormatCheckLabel.textColor = UIColor.PGBlue
-        sendVerifyMailButton.isEnabled = false
-    }
-    
     @IBAction func idTextFieldEditingChanged(_ sender: Any) {
         sendButtonAvailability()
         guard let idInfo = idTextField.text, idInfo.isEmpty == false else {
@@ -96,8 +89,24 @@ class IdInputViewController: UIViewController {
             sendVerifyMailButton.isEnabled = false
             return
         }
+        if isValidEmail(input: idInfo) {
+            idFormatCheckLabel.isHidden = true
+        } else {
+            idFormatCheckLabel.isHidden = false
+            idFormatCheckLabel.text = "올바른 이메일 형식을 입력해주세요"
+            idFormatCheckLabel.textColor = UIColor.PGBlue
+        }
         UserDefaults.standard.set(true, forKey: "onRegister")
         UserDefaults.standard.set(idInfo, forKey: "onRegister-Email")
+    }
+    
+    // MARK: Verify Num Input
+    @IBAction func verifyNumTextFieldEditingChanged(_ sender: Any) {
+        guard let verifyInputInfo = verifyNumTextField.text, verifyInputInfo.isEmpty == false else {
+            nextButton.isEnabled = false
+            return
+        }
+        nextButton.isEnabled = true
     }
     
     func sendButtonAvailability() {
@@ -113,15 +122,6 @@ class IdInputViewController: UIViewController {
             UserDefaults.standard.removeObject(forKey: "onRegister-Name")
             sendVerifyMailButton.isEnabled = false
         }
-    }
-    
-    // MARK: Verify Num Input
-    @IBAction func verifyNumTextFieldEditingChanged(_ sender: Any) {
-        guard let verifyInputInfo = verifyNumTextField.text, verifyInputInfo.isEmpty == false else {
-            nextButton.isEnabled = false
-            return
-        }
-        nextButton.isEnabled = true
     }
     
     // MARK: Button Action

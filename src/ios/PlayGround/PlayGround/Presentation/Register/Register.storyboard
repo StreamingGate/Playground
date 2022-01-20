@@ -132,7 +132,6 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no" textContentType="email"/>
                                         <connections>
-                                            <action selector="idTextFieldDidBegin:" destination="Y6W-OH-hqX" eventType="editingDidBegin" id="0IK-gm-jyJ"/>
                                             <action selector="idTextFieldEditingChanged:" destination="Y6W-OH-hqX" eventType="editingChanged" id="5KL-oe-9HH"/>
                                         </connections>
                                     </textField>
