@@ -186,6 +186,7 @@
 		492C62262795372B00AE546E /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				4907709E2797AC8C00ADD8E8 /* RegisterHelper.swift */,
 				490770A02797E8D100ADD8E8 /* UserManager.swift */,
 				49D7A0AB2783ECAD001CAC60 /* AppUtility.swift */,
 				49EA4E10279473AC00A038E3 /* Coordinator */,
@@ -206,7 +207,6 @@
 				49818AC62780C64300C0C956 /* MyTab */,
 				492C622A2795390200AE546E /* Video */,
 				49D7A0A62783D730001CAC60 /* Register */,
-				4907709E2797AC8C00ADD8E8 /* RegisterHelper.swift */,
 				492C62262795372B00AE546E /* Helper */,
 			);
 			path = Presentation;
