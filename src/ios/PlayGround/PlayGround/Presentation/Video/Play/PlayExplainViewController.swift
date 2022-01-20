@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 
 class PlayExplainViewController: UIViewController {
+    // MARK: - Properties
     @IBOutlet weak var explainTitleLabel: UILabel!
     @IBOutlet weak var videoTitleLabel: UILabel!
     @IBOutlet weak var viewerLabel: UILabel!
@@ -19,6 +20,7 @@ class PlayExplainViewController: UIViewController {
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var scrollView: UIScrollView!
     
+    // MARK: - View Life Cycle
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         backView.roundCorners([.topLeft , .topRight], radius: 20)
@@ -32,6 +34,7 @@ class PlayExplainViewController: UIViewController {
         showAnimation()
     }
     
+    // MARK: - UI Setting
     func setupUI() {
         explainTitleLabel.font = UIFont.caption
         explainTitleLabel.textColor = UIColor.customDarkGray
@@ -69,15 +72,19 @@ class PlayExplainViewController: UIViewController {
             (self.parent as? PlayViewController)?.explainContainerView.alpha = 0
         }, completion: {_ in
             self.view.removeFromSuperview()
-            
         })
     }
+    
+    // MARK: - Tap Action
+    
+    // move to certain channel
     @IBAction func channelDidTap(_ sender: Any) {
         guard let parent = self.parent as? PlayViewController else { return }
         parent.setPlayViewMinimizing()
         parent.coordinator?.showChannel()
     }
     
+    // close explain view
     @IBAction func closeButtonDidTap(_ sender: Any) {
         disappearAnimation()
     }
