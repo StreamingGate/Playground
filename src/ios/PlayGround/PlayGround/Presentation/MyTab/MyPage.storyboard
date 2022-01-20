@@ -500,7 +500,6 @@
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain"/>
                                 <connections>
-                                    <action selector="likedVideoButtonDidTap:" destination="oGT-qv-d4N" eventType="touchUpInside" id="YrP-91-BO4"/>
                                     <action selector="logOutButtonDidTap:" destination="2se-Cf-mH3" eventType="touchUpInside" id="2yP-oz-q4u"/>
                                 </connections>
                             </button>

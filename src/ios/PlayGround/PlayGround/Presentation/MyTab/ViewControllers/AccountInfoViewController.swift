@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import SwiftKeychainWrapper
 
 class AccountInfoViewController: UIViewController {
     @IBOutlet weak var profileImageView: UIImageView!
@@ -35,6 +36,8 @@ class AccountInfoViewController: UIViewController {
     }
     
     @IBAction func logOutButtonDidTap(_ sender: Any) {
+        KeychainWrapper.standard.removeObject(forKey: KeychainWrapper.Key.accessToken.rawValue)
+        KeychainWrapper.standard.removeObject(forKey: KeychainWrapper.Key.uuid.rawValue)
         self.navVC?.coordinator?.dismissToRoot()
     }
     

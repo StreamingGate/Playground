@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4907709B27979A1D00ADD8E8 /* UserServiceAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4907709A27979A1D00ADD8E8 /* UserServiceAPI.swift */; };
+		4907709D27979A2800ADD8E8 /* UserDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4907709C27979A2800ADD8E8 /* UserDataModel.swift */; };
+		4907709F2797AC8C00ADD8E8 /* RegisterHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4907709E2797AC8C00ADD8E8 /* RegisterHelper.swift */; };
+		490770A12797E8D100ADD8E8 /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490770A02797E8D100ADD8E8 /* UserManager.swift */; };
+		490770A32797EA7A00ADD8E8 /* KeyChainWrapper+Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490770A22797EA7A00ADD8E8 /* KeyChainWrapper+Key.swift */; };
+		490770A52797F7A300ADD8E8 /* ErrorCodeConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490770A42797F7A300ADD8E8 /* ErrorCodeConverter.swift */; };
 		492C62192794F90500AE546E /* LoginNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492C62182794F90500AE546E /* LoginNavigationController.swift */; };
 		492C621B279531F200AE546E /* AccountEditCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492C621A279531F200AE546E /* AccountEditCoordinator.swift */; };
 		492C621D2795320C00AE546E /* PlayerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492C621C2795320C00AE546E /* PlayerCoordinator.swift */; };
@@ -70,12 +76,20 @@
 		49EC9A00278201C600DE4F79 /* Create.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49EC99FF278201C600DE4F79 /* Create.storyboard */; };
 		49EC9A022782033E00DE4F79 /* CreatePopOverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EC9A012782033E00DE4F79 /* CreatePopOverViewController.swift */; };
 		49EC9A06278205D200DE4F79 /* UIView+RoundCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EC9A05278205D200DE4F79 /* UIView+RoundCorners.swift */; };
+		49F0213E2799505400684A25 /* UIViewController+SimpleAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F0213D2799505400684A25 /* UIViewController+SimpleAlert.swift */; };
 		49F18C2C278E5E0800EBDCF8 /* CreateNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F18C2B278E5E0800EBDCF8 /* CreateNavigationController.swift */; };
 		49F18C52278F0FB100EBDCF8 /* UITabBarController+Visibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F18C51278F0FB100EBDCF8 /* UITabBarController+Visibility.swift */; };
 		49F18C54278F2EED00EBDCF8 /* PlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F18C53278F2EED00EBDCF8 /* PlayViewController.swift */; };
+		B86390ACC07320C4661BD124 /* Pods_PlayGround.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C094C2C5DF13CB2E6DBF8A02 /* Pods_PlayGround.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4907709A27979A1D00ADD8E8 /* UserServiceAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserServiceAPI.swift; sourceTree = "<group>"; };
+		4907709C27979A2800ADD8E8 /* UserDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataModel.swift; sourceTree = "<group>"; };
+		4907709E2797AC8C00ADD8E8 /* RegisterHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterHelper.swift; sourceTree = "<group>"; };
+		490770A02797E8D100ADD8E8 /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
+		490770A22797EA7A00ADD8E8 /* KeyChainWrapper+Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KeyChainWrapper+Key.swift"; sourceTree = "<group>"; };
+		490770A42797F7A300ADD8E8 /* ErrorCodeConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorCodeConverter.swift; sourceTree = "<group>"; };
 		492C62182794F90500AE546E /* LoginNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginNavigationController.swift; sourceTree = "<group>"; };
 		492C621A279531F200AE546E /* AccountEditCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountEditCoordinator.swift; sourceTree = "<group>"; };
 		492C621C2795320C00AE546E /* PlayerCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerCoordinator.swift; sourceTree = "<group>"; };
@@ -141,9 +155,13 @@
 		49EC99FF278201C600DE4F79 /* Create.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Create.storyboard; sourceTree = "<group>"; };
 		49EC9A012782033E00DE4F79 /* CreatePopOverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePopOverViewController.swift; sourceTree = "<group>"; };
 		49EC9A05278205D200DE4F79 /* UIView+RoundCorners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+RoundCorners.swift"; sourceTree = "<group>"; };
+		49F0213D2799505400684A25 /* UIViewController+SimpleAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+SimpleAlert.swift"; sourceTree = "<group>"; };
 		49F18C2B278E5E0800EBDCF8 /* CreateNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNavigationController.swift; sourceTree = "<group>"; };
 		49F18C51278F0FB100EBDCF8 /* UITabBarController+Visibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITabBarController+Visibility.swift"; sourceTree = "<group>"; };
 		49F18C53278F2EED00EBDCF8 /* PlayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayViewController.swift; sourceTree = "<group>"; };
+		8A3D7763AEF5C85EA43F3126 /* Pods-PlayGround.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlayGround.debug.xcconfig"; path = "Target Support Files/Pods-PlayGround/Pods-PlayGround.debug.xcconfig"; sourceTree = "<group>"; };
+		C094C2C5DF13CB2E6DBF8A02 /* Pods_PlayGround.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PlayGround.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FD5FDC1E3E6EC365A13644FD /* Pods-PlayGround.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlayGround.release.xcconfig"; path = "Target Support Files/Pods-PlayGround/Pods-PlayGround.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -151,15 +169,27 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B86390ACC07320C4661BD124 /* Pods_PlayGround.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3E9FCF30DA5A593E2722A25E /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				8A3D7763AEF5C85EA43F3126 /* Pods-PlayGround.debug.xcconfig */,
+				FD5FDC1E3E6EC365A13644FD /* Pods-PlayGround.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		492C62262795372B00AE546E /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				4907709E2797AC8C00ADD8E8 /* RegisterHelper.swift */,
+				490770A02797E8D100ADD8E8 /* UserManager.swift */,
 				49D7A0AB2783ECAD001CAC60 /* AppUtility.swift */,
 				49EA4E10279473AC00A038E3 /* Coordinator */,
 				49B9C9F3277AF0E5006AE134 /* Extensions */,
@@ -271,6 +301,8 @@
 			children = (
 				49B9C9B8277ACE9C006AE134 /* PlayGround */,
 				49B9C9B7277ACE9C006AE134 /* Products */,
+				3E9FCF30DA5A593E2722A25E /* Pods */,
+				4BB6462863348B59AD0F7306 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -289,6 +321,9 @@
 				49B9C9C2277ACE9F006AE134 /* Assets.xcassets */,
 				49B9C9C4277ACE9F006AE134 /* LaunchScreen.storyboard */,
 				49B9C9C7277ACE9F006AE134 /* Info.plist */,
+				4907709A27979A1D00ADD8E8 /* UserServiceAPI.swift */,
+				490770A42797F7A300ADD8E8 /* ErrorCodeConverter.swift */,
+				4907709C27979A2800ADD8E8 /* UserDataModel.swift */,
 			);
 			path = PlayGround;
 			sourceTree = "<group>";
@@ -297,12 +332,14 @@
 			isa = PBXGroup;
 			children = (
 				492C622F2795989F00AE546E /* CustomSlider.swift */,
+				490770A22797EA7A00ADD8E8 /* KeyChainWrapper+Key.swift */,
 				49F18C51278F0FB100EBDCF8 /* UITabBarController+Visibility.swift */,
 				492C6231279598CE00AE546E /* AVPlayer+isPlayer.swift */,
 				49EC9A05278205D200DE4F79 /* UIView+RoundCorners.swift */,
 				49B9C9EF277AEF4E006AE134 /* UIColor+CustomColor.swift */,
 				49B9C9F1277AF018006AE134 /* UIFont+CustomFont.swift */,
 				492C622B27954F9800AE546E /* UIView+takeScreenshot.swift */,
+				49F0213D2799505400684A25 /* UIViewController+SimpleAlert.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -330,8 +367,8 @@
 			children = (
 				49D7A0B227840595001CAC60 /* RegisterNavigationController.swift */,
 				49D7A0B027840595001CAC60 /* IdInputViewController.swift */,
-				49D7A0B127840595001CAC60 /* PwInputViewController.swift */,
 				49D7A0AF27840595001CAC60 /* NickNameInputViewController.swift */,
+				49D7A0B127840595001CAC60 /* PwInputViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -407,6 +444,14 @@
 			path = CreateTab;
 			sourceTree = "<group>";
 		};
+		4BB6462863348B59AD0F7306 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C094C2C5DF13CB2E6DBF8A02 /* Pods_PlayGround.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -414,9 +459,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 49B9C9CA277ACEA0006AE134 /* Build configuration list for PBXNativeTarget "PlayGround" */;
 			buildPhases = (
+				5DEBF51E2A301B16320A01AB /* [CP] Check Pods Manifest.lock */,
 				49B9C9B2277ACE9C006AE134 /* Sources */,
 				49B9C9B3277ACE9C006AE134 /* Frameworks */,
 				49B9C9B4277ACE9C006AE134 /* Resources */,
+				8754DC8BF157693A0A733D8B /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -485,12 +532,55 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		5DEBF51E2A301B16320A01AB /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-PlayGround-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8754DC8BF157693A0A733D8B /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PlayGround/Pods-PlayGround-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PlayGround/Pods-PlayGround-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PlayGround/Pods-PlayGround-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		49B9C9B2277ACE9C006AE134 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				496279DE2782BB85005A2BDC /* AccountEditViewController.swift in Sources */,
+				49F0213E2799505400684A25 /* UIViewController+SimpleAlert.swift in Sources */,
 				496279DA278297C2005A2BDC /* VideoListViewController.swift in Sources */,
 				49D7A0AA2783DBB9001CAC60 /* LoginViewController.swift in Sources */,
 				49F18C52278F0FB100EBDCF8 /* UITabBarController+Visibility.swift in Sources */,
@@ -520,12 +610,15 @@
 				49818AC52780C63F00C0C956 /* MyPageViewController.swift in Sources */,
 				4935FD42277C0E4D00760675 /* ChattingViewController.swift in Sources */,
 				49EA4E0E279461B200A038E3 /* Coordinator.swift in Sources */,
+				4907709F2797AC8C00ADD8E8 /* RegisterHelper.swift in Sources */,
 				49E6BE3927919C7A000E475C /* FriendPopUpViewController.swift in Sources */,
 				492C622C27954F9800AE546E /* UIView+takeScreenshot.swift in Sources */,
 				49EC9A022782033E00DE4F79 /* CreatePopOverViewController.swift in Sources */,
 				492C62232795325000AE546E /* HomeTabCoordinator.swift in Sources */,
 				492C622E27955F6C00AE546E /* Player.swift in Sources */,
 				49EC9A06278205D200DE4F79 /* UIView+RoundCorners.swift in Sources */,
+				490770A52797F7A300ADD8E8 /* ErrorCodeConverter.swift in Sources */,
+				490770A32797EA7A00ADD8E8 /* KeyChainWrapper+Key.swift in Sources */,
 				492C62212795323700AE546E /* CreateTabCoordinator.swift in Sources */,
 				492C621B279531F200AE546E /* AccountEditCoordinator.swift in Sources */,
 				49F18C54278F2EED00EBDCF8 /* PlayViewController.swift in Sources */,
@@ -533,13 +626,16 @@
 				49B9C9F0277AEF4E006AE134 /* UIColor+CustomColor.swift in Sources */,
 				492C621F2795322300AE546E /* MyTabCoordinator.swift in Sources */,
 				49D7A0B827840595001CAC60 /* PwInputViewController.swift in Sources */,
+				4907709D27979A2800ADD8E8 /* UserDataModel.swift in Sources */,
 				496279DC27829CA5005A2BDC /* AccountInfoViewController.swift in Sources */,
 				49E6BE372791951D000E475C /* FriendListViewController.swift in Sources */,
 				49B9C9BC277ACE9C006AE134 /* SceneDelegate.swift in Sources */,
 				49AB6FE9278C545100D4D1E9 /* LiveChatCell.swift in Sources */,
 				492C621D2795320C00AE546E /* PlayerCoordinator.swift in Sources */,
 				49C52CE0278B4379009D6FBB /* ChannelViewController.swift in Sources */,
+				4907709B27979A1D00ADD8E8 /* UserServiceAPI.swift in Sources */,
 				49AC952A2791AC080030DCC0 /* NoticeListViewController.swift in Sources */,
+				490770A12797E8D100ADD8E8 /* UserManager.swift in Sources */,
 				4935FD35277BDA5D00760675 /* CategoryCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -684,6 +780,7 @@
 		};
 		49B9C9CB277ACEA0006AE134 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8A3D7763AEF5C85EA43F3126 /* Pods-PlayGround.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -713,6 +810,7 @@
 		};
 		49B9C9CC277ACEA0006AE134 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FD5FDC1E3E6EC365A13644FD /* Pods-PlayGround.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

@@ -13,16 +13,17 @@ services:
       - "3306:3306"
     networks:
       sg-network:
-        ipv4_address: 172.20.0.3
+        ipv4_address: 172.18.0.3
 
   redis:
     container_name: redis
+    hostname: redis
     image: redis:latest
     ports:
       - "6379:6379"
     networks:
       sg-network:
-        ipv4_address: 172.20.0.4
+        ipv4_address: 172.18.0.4
 
   user-service:
     container_name: user-service
@@ -32,15 +33,15 @@ services:
     environment:
       spring.datasource.url: jdbc:mariadb://pg-mariadb:3306/playground
     depends_on:
-      - pg-mariadb
+      #- pg-mariadb
       - redis
     links:
-      - pg-mariadb
+      #- pg-mariadb
       - redis
     restart: always
     networks:
       sg-network:
-        ipv4_address: 172.20.0.2
+        ipv4_address: 172.18.0.2
 
 networks:
   sg-network:
