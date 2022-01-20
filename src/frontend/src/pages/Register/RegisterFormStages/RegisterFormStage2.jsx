@@ -21,17 +21,17 @@ function RegisterFormStage2() {
     setImageUrl(defaultProfileImg.current);
   }, []);
 
-  const handleProfileSelectBtn = () => {
-    console.log(profileInputRef.current);
+  const handleProfileSelectBtnClick = () => {
     profileInputRef.current.click();
   };
 
-  const handleProfileInput = async () => {
+  const handleProfileInputChange = async () => {
     const dataUrl = await mediaService.getImagePreviewURl(profileInputRef.current);
     setImageUrl(dataUrl);
   };
 
-  const handleResetProfileBtn = () => {
+  const handleResetProfileBtnClick = () => {
+    profileInputRef.current.value = '';
     setImageUrl(defaultProfileImg.current);
   };
 
@@ -45,13 +45,13 @@ function RegisterFormStage2() {
             type='file'
             accept='.jpg, .jpeg, .png'
             ref={profileInputRef}
-            onChange={handleProfileInput}
+            onChange={handleProfileInputChange}
           />
           <S.ProfileActionContainer>
-            <S.FileSelectBtn color='pgBlue' onClick={handleProfileSelectBtn}>
+            <S.FileSelectBtn color='pgBlue' onClick={handleProfileSelectBtnClick}>
               <Typography>파일에서 선택</Typography>
             </S.FileSelectBtn>
-            <S.DefaultProfileBtn variant='outlined' onClick={handleResetProfileBtn}>
+            <S.DefaultProfileBtn variant='outlined' onClick={handleResetProfileBtnClick}>
               <S.DefaultProfileBtnContent>기본이미지로 변경</S.DefaultProfileBtnContent>
             </S.DefaultProfileBtn>
           </S.ProfileActionContainer>
