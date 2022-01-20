@@ -5,7 +5,6 @@ import { theme } from '@utils/constant';
 import { mediaService } from '@utils/service';
 
 import { Typography } from '@components/cores';
-import { Input } from '@components/forms';
 
 function RegisterFormStage2() {
   const defaultProfileImg = useRef('');
@@ -54,7 +53,7 @@ function RegisterFormStage2() {
       </S.FormStageInputContainer>
       <S.FormStageInputContainer>
         <S.InputLabel>닉네임</S.InputLabel>
-        <Input size='sm' fullWidth />
+        <S.StageInput size='sm' fullWidth />
       </S.FormStageInputContainer>
     </>
   );

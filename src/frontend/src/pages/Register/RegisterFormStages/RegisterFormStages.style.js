@@ -4,13 +4,18 @@ import { Typography } from '@components/cores';
 import { Button } from '@components/buttons';
 import { Input } from '@components/forms';
 
+export const FormStageInputContainer = styled.div`
+  margin-bottom: 30px;
+`;
+
 export const InputLabel = styled(Typography)`
   color: ${({ theme }) => theme.colors.placeHolder};
   margin-bottom: 8px;
 `;
 
-export const FormStageInputContainer = styled.div`
-  margin-bottom: 30px;
+export const StageInput = styled(Input)`
+  border: none;
+  background-color: ${({ theme }) => theme.colors.background};
 `;
 
 // Stage 1
