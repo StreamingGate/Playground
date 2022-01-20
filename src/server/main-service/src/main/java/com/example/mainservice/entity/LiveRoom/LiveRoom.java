@@ -27,6 +27,10 @@ public class LiveRoom {
     @Column(length = 30)
     private String hostEmail;
 
+
+    @Column(columnDefinition="TEXT")
+    private String thumbnail;
+
     private int likeCnt;
 
     @Enumerated(EnumType.STRING)

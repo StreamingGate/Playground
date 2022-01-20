@@ -33,6 +33,9 @@ public class Video {
     @Column(length = 10)
     private Category category;
 
+    @Column(columnDefinition="TEXT")
+    private String thumbnail;
+    
     private int hits;
 
     private short reportCnt;

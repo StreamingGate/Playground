@@ -45,7 +45,7 @@ public class UserEntity {
     @Column
     private String nickName;
     
-    @Column
+    @Column(columnDefinition="TEXT")
     private String profileImage;
     
     @Column
