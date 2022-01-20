@@ -17,22 +17,24 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
-@RequiredArgsConstructor
-@Repository
 public class RedisRoomRepository {
     // 채팅방(topic)에 발행되는 메시지를 처리할 Listner
     private final RedisMessageListenerContainer redisMessageListener;
     // 구독 처리 서비스
     private final RedisSubscriber redisSubscriber;
-    // Redis
-    private static final String CHAT_ROOMS = "CHAT_ROOM";
     private final RedisTemplate<String, Object> redisTemplate;
+    private static final String CHAT_ROOMS = "CHAT_ROOM";
     private HashOperations<String, String, Room> opsHashChatRoom; // 방id, 방 만 저장됨.
-    /**
-     * redis에 topic이란 걸 방Id와 매칭시켜줘야 다중서버에서
-     */
+
     // 채팅방의 대화 메시지를 발행하기 위한 redis topic 정보. 서버별로 채팅방에 매치되는 topic정보를 Map에 넣어 roomId로 찾을수 있도록 한다.
     private Map<String, ChannelTopic> topics;
+
+    public RedisRoomRepository(RedisMessageListenerContainer redisMessageListenerContainer,
+                               RedisSubscriber redisSubscriber, RedisTemplate<String, Object> redisTemplate) {
+        this.redisMessageListener = redisMessageListenerContainer;
+        this.redisSubscriber= redisSubscriber;
+        this.redisTemplate = redisTemplate;
+    }
 
     @PostConstruct
     private void init() {
@@ -56,12 +58,6 @@ public class RedisRoomRepository {
     public RoomDto create(String name) {
         Room room = new Room(name);
         opsHashChatRoom.put(CHAT_ROOMS, room.getId(), room);
-
-        // roomId로 topic 생성
-        ChannelTopic topic = new ChannelTopic(room.getId());
-        redisMessageListener.addMessageListener(redisSubscriber, topic);
-        topics.put(room.getId(), topic);
-        log.info("=="+room.getId()+", "+topics.get(room.getId()));
         return RoomDto.from(room);
     }
 
