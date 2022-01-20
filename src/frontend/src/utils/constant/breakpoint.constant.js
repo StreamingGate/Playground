@@ -3,7 +3,7 @@ const screenSize = {
   laptop: 1024,
   tablet: 768,
   mobile: 500,
-  minSize: 300,
+  minSize: 350,
 };
 
 const queries = {
