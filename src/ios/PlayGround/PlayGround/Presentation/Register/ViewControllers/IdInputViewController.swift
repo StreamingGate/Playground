@@ -20,6 +20,9 @@ class IdInputViewController: UIViewController {
     @IBOutlet weak var verifyNumTextField: UITextField!
     @IBOutlet weak var verifyNumUnderLine: UIView!
     @IBOutlet weak var nextButton: UIButton!
+    @IBOutlet weak var step1View: UIView!
+    @IBOutlet weak var step2View: UIView!
+    @IBOutlet weak var step3View: UIView!
     
     @IBOutlet weak var timerLabel: UILabel!
     var timeLeft = 600
@@ -40,12 +43,34 @@ class IdInputViewController: UIViewController {
         verifyNumTextField.font = UIFont.Content
         timerLabel.font = UIFont.Content
         timerLabel.textColor = UIColor.placeHolder
+        step1View.layer.cornerRadius = 10
+        step2View.layer.cornerRadius = 10
+        step3View.layer.cornerRadius = 10
+        if let idInfo = UserDefaults.standard.string(forKey: "onRegister-Email") {
+            idTextField.text = idInfo
+            if isValidEmail(input: idInfo) {
+                idFormatCheckLabel.isHidden = true
+            } else {
+                idFormatCheckLabel.isHidden = false
+                idFormatCheckLabel.text = "올바른 형식의 이메일을 입력해주세요"
+                idFormatCheckLabel.textColor = UIColor.systemRed
+                sendVerifyMailButton.isEnabled = false
+            }
+        }
+        if let nameInfo = UserDefaults.standard.string(forKey: "onRegister-Name") {
+            nameTextField.text = nameInfo
+        }
         self.sendButtonAvailability()
     }
     
     // MARK: name input
     @IBAction func nameTextFieldEditingChanged(_ sender: Any) {
         sendButtonAvailability()
+        guard let nameInfo = nameTextField.text, nameInfo.isEmpty == false else {
+            return
+        }
+        UserDefaults.standard.set(true, forKey: "onRegister")
+        UserDefaults.standard.set(nameInfo, forKey: "onRegister-Name")
     }
     
     // MARK: Email(id) input
@@ -69,12 +94,10 @@ class IdInputViewController: UIViewController {
             idFormatCheckLabel.text = "이메일을 입력해주세요"
             idFormatCheckLabel.textColor = UIColor.PGBlue
             sendVerifyMailButton.isEnabled = false
-//            UserDefaults.standard.set(false, forKey: "onRegister")
             return
         }
-        sendVerifyMailButton.isEnabled = isValidEmail(input: idInfo)
-//        UserDefaults.standard.set(true, forKey: "onRegister")
-//        UserDefaults.standard.set(idInfo, forKey: "onRegister-Email")
+        UserDefaults.standard.set(true, forKey: "onRegister")
+        UserDefaults.standard.set(idInfo, forKey: "onRegister-Email")
     }
     
     func sendButtonAvailability() {
@@ -85,6 +108,9 @@ class IdInputViewController: UIViewController {
                 sendVerifyMailButton.isEnabled = false
             }
         } else {
+            UserDefaults.standard.set(false, forKey: "onRegister")
+            UserDefaults.standard.removeObject(forKey: "onRegister-Email")
+            UserDefaults.standard.removeObject(forKey: "onRegister-Name")
             sendVerifyMailButton.isEnabled = false
         }
     }
@@ -143,6 +169,9 @@ class IdInputViewController: UIViewController {
                 RegisterHelper.shared.email = emailInput
                 RegisterHelper.shared.name = nameInput
                 RegisterHelper.shared.isVerified = true
+                UserDefaults.standard.set(false, forKey: "onRegister")
+                UserDefaults.standard.removeObject(forKey: "onRegister-Email")
+                UserDefaults.standard.removeObject(forKey: "onRegister-Name")
                 DispatchQueue.main.async {
                     guard let vc = UIStoryboard(name: "Register", bundle: nil).instantiateViewController(withIdentifier: "NickNameInputViewController") as? NickNameInputViewController else { return }
                     vc.nameInfo = nameInput
@@ -166,6 +195,7 @@ class IdInputViewController: UIViewController {
     @IBAction func backButtonDidTap(_ sender: Any) {
         UserDefaults.standard.set(false, forKey: "onRegister")
         UserDefaults.standard.removeObject(forKey: "onRegister-Email")
+        UserDefaults.standard.removeObject(forKey: "onRegister-Name")
         dismiss(animated: true, completion: nil)
     }
     

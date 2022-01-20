@@ -18,6 +18,9 @@ class NickNameInputViewController: UIViewController {
     @IBOutlet weak var selectButton: UIButton!
     @IBOutlet weak var defaultImageButton: UIButton!
     @IBOutlet weak var profileView: UIView!
+    @IBOutlet weak var step1View: UIView!
+    @IBOutlet weak var step2View: UIView!
+    @IBOutlet weak var step3View: UIView!
     let firstCharacterLabel = UILabel()
     let imagePicker = UIImagePickerController()
     let profileImageView = UIImageView()
@@ -31,10 +34,14 @@ class NickNameInputViewController: UIViewController {
         self.imagePicker.delegate = self
         self.style()
         self.layout()
+        let image = profileView.snapshotView(afterScreenUpdates: true)?.takeScreenshot()
+        RegisterHelper.shared.profileImage = image
     }
     
-    // MARK: Life Cycle
     func style() {
+        step1View.layer.cornerRadius = 10
+        step2View.layer.cornerRadius = 10
+        step3View.layer.cornerRadius = 10
         profileView.backgroundColor = UIColor.placeHolder
         profileView.layer.cornerRadius = 50
         nextButton.layer.cornerRadius = 5
@@ -76,22 +83,23 @@ class NickNameInputViewController: UIViewController {
         profileView.layer.cornerRadius = 0
         let image = profileView.snapshotView(afterScreenUpdates: true)?.takeScreenshot()
         profileView.layer.cornerRadius = 50
-        savePhotoLibrary(image: image!)
+        RegisterHelper.shared.profileImage = image
+//        savePhotoLibrary(image: image!)
     }
     
     // MARK: Nickname Input
     @IBAction func nickNameTextFieldEditingChanged(_ sender: Any) {
         guard let nickNameInfo = nickNameTextField.text, nickNameInfo.isEmpty == false else {
             nickNameValidCheckLabel.isHidden = false
-            nickNameValidCheckLabel.text = "최대 6글자까지 입력하실 수 있습니다"
+            nickNameValidCheckLabel.text = "최대 8글자까지 입력하실 수 있습니다"
             nickNameValidCheckLabel.textColor = UIColor.systemRed
             nextButton.isEnabled = false
             return
         }
-        if nickNameInfo.count > 6 {
+        if nickNameInfo.count > 8 {
             nickNameTextField.deleteBackward()
             nickNameValidCheckLabel.isHidden = false
-            nickNameValidCheckLabel.text = "최대 6글자까지 입력하실 수 있습니다"
+            nickNameValidCheckLabel.text = "최대 8글자까지 입력하실 수 있습니다"
             nickNameValidCheckLabel.textColor = UIColor.systemRed
         } else {
             nickNameValidCheckLabel.isHidden = true
@@ -104,6 +112,30 @@ class NickNameInputViewController: UIViewController {
     @IBAction func nextButtonDidTap(_ sender: Any) {
         guard let nickNameInfo = nickNameTextField.text, nickNameInfo.isEmpty == false else { return }
         nextButton.isEnabled = false
+        // 닉네임 중복 확인
+        UserServiceAPI.shared.nicknameDuplicateCheck(nickname: nickNameInfo) { result in
+            print("nickname check result = \(result)")
+            if result {
+                RegisterHelper.shared.nickName = nickNameInfo
+                DispatchQueue.main.async {
+                    guard let pwVC = UIStoryboard(name: "Register", bundle: nil).instantiateViewController(withIdentifier: "PwInputViewController") as? PwInputViewController else { return }
+                    self.navigationController?.pushViewController(pwVC, animated: true)
+                }
+            } else {
+                // 오류
+                DispatchQueue.main.async {
+                    self.nickNameValidCheckLabel.isHidden = false
+                    self.nickNameValidCheckLabel.text = "새 닉네임을 입력해주세요"
+                    self.nickNameValidCheckLabel.textColor = UIColor.systemRed
+                    
+                    let alert = UIAlertController(title: "", message: "이미 사용 중인 닉네임입니다", preferredStyle: .alert)
+                    let action = UIAlertAction(title: "확인", style: .default, handler: nil)
+                    alert.addAction(action)
+                    self.present(alert, animated: true, completion: nil)
+                    self.nextButton.isEnabled = false
+                }
+            }
+        }
     }
     
     // 뒤로 가기
@@ -137,7 +169,6 @@ extension NickNameInputViewController {
     
     func alertToEncouragePhotoLibraryAccessWhenApplicationStarts() {
         let cameraUnavailableAlertController = UIAlertController (title: "사진 접근 권한", message: "캡쳐를 위해서는 사진 권한을 허용해주세요.", preferredStyle: .alert)
-
         let settingsAction = UIAlertAction(title: "설정 가기", style: .destructive) { (_) -> Void in
             let settingsUrl = NSURL(string:UIApplication.openSettingsURLString)
             if let url = settingsUrl {
@@ -152,7 +183,6 @@ extension NickNameInputViewController {
 }
 
 extension NickNameInputViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         var newImage: UIImage? = nil
         if let possibleImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
@@ -162,6 +192,7 @@ extension NickNameInputViewController: UIImagePickerControllerDelegate, UINaviga
         }
         self.profileView.isHidden = false
         self.profileImageView.image = newImage
+        RegisterHelper.shared.profileImage = newImage
         picker.dismiss(animated: true, completion: nil)
     }
 }

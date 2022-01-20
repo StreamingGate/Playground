@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import SwiftKeychainWrapper
 
 class LoginViewController: UIViewController {
     @IBOutlet weak var idField: UITextField!
@@ -24,6 +25,9 @@ class LoginViewController: UIViewController {
         coordinator = MainCoordinator(parent: nil, navigation: self.navigationController ?? UINavigationController())
         coordinator?.start()
         setupUI()
+        if UserDefaults.standard.bool(forKey: "onRegister") == true, (UserDefaults.standard.string(forKey: "onRegister-Email") != nil || UserDefaults.standard.string(forKey: "onRegister-Name") != nil) {
+            self.onRegister()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -39,6 +43,26 @@ class LoginViewController: UIViewController {
         idField.font = UIFont.Content
         pwField.font = UIFont.Content
         logInButton.layer.cornerRadius = 5
+    }
+    
+    func onRegister() {
+        let alert = UIAlertController(title: "", message: "회원가입 중이던 정보가 있습니다. 이어서 회원가입을 진행하시겠습니까?", preferredStyle: .alert)
+        let action1 = UIAlertAction(title: "취소", style: .default) { _ in
+            UserDefaults.standard.set(false, forKey: "onRegister")
+            UserDefaults.standard.removeObject(forKey: "onRegister-Email")
+            UserDefaults.standard.removeObject(forKey: "onRegister-Name")
+        }
+        let action2 = UIAlertAction(title: "이동", style: .default) { _ in
+            guard let registerPage = UIStoryboard(name: "Register", bundle: nil).instantiateViewController(withIdentifier: "RegisterNavigationController") as? RegisterNavigationController else { return }
+            registerPage.modalPresentationStyle = .fullScreen
+            self.present(registerPage, animated: true, completion: {
+                self.idField.text = ""
+                self.pwField.text = ""
+            })
+        }
+        alert.addAction(action1)
+        alert.addAction(action2)
+        self.present(alert, animated: true, completion: nil)
     }
     
     @IBAction func logInButtonDidTap(_ sender: Any) {

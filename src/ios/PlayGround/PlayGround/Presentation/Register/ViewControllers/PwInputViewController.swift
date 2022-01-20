@@ -17,6 +17,9 @@ class PwInputViewController: UIViewController{
     @IBOutlet weak var registerButton: UIButton!
     @IBOutlet weak var pwValidLabel: UILabel!
     @IBOutlet weak var pwCheckValidLabel: UILabel!
+    @IBOutlet weak var step1View: UIView!
+    @IBOutlet weak var step2View: UIView!
+    @IBOutlet weak var step3View: UIView!
     
     // MARK: Life Cycle
     override func viewDidLoad() {
@@ -26,6 +29,9 @@ class PwInputViewController: UIViewController{
     
     // MARK: UI Setting
     func style() {
+        step1View.layer.cornerRadius = 10
+        step2View.layer.cornerRadius = 10
+        step3View.layer.cornerRadius = 10
         registerButton.layer.cornerRadius = 5
         pwTextField.font = UIFont.Content
         pwCheckTextField.font = UIFont.Content
@@ -35,7 +41,7 @@ class PwInputViewController: UIViewController{
     func isValidated(_ password: String) -> Bool {
         var lowerCaseLetter: Bool = false
         var digit: Bool = false
-        if password.count  >= 6 {
+        if password.count  >= 6 && password.count <= 16 {
             for char in password.unicodeScalars {
                 if !lowerCaseLetter {
                     lowerCaseLetter = CharacterSet.lowercaseLetters.contains(char)
@@ -66,7 +72,7 @@ class PwInputViewController: UIViewController{
             pwCheckValidLabel.text = "비밀번호를 확인해주세요"
             pwCheckValidLabel.textColor = UIColor.systemRed
         } else {
-            pwValidLabel.text = "영문 소문자와 숫자가 포함 6자 이상"
+            pwValidLabel.text = "영문 소문자와 숫자가 포함한 6~16자"
             pwValidLabel.textColor = UIColor.systemRed
             pwCheckValidLabel.isHidden = true
             pwCheckTextField.isEnabled = false
@@ -106,6 +112,14 @@ class PwInputViewController: UIViewController{
     // MARK: Button Action
     // 가입하기
     @IBAction func registerButtonDidTap(_ sender: Any) {
+        guard let pwInfo = pwTextField.text, pwInfo.isEmpty == false, let emailInfo = RegisterHelper.shared.email, let nameInfo = RegisterHelper.shared.name, let nicknameInfo = RegisterHelper.shared.nickName, let profileImage = RegisterHelper.shared.profileImage else { return }
+        print("image: \(profileImage)")
+        UserServiceAPI.shared.register(email: emailInfo, name: nameInfo, nickName: nicknameInfo, password: pwInfo, profileImage: "test") { userInfo in
+            print("register result = \(userInfo)")
+            DispatchQueue.main.async {
+                self.dismiss(animated: true, completion: nil)
+            }
+        }
     }
     
     // 뒤로 가기
