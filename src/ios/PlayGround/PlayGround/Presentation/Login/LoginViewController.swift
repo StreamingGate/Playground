@@ -44,11 +44,32 @@ class LoginViewController: UIViewController {
     @IBAction func logInButtonDidTap(_ sender: Any) {
         idField.resignFirstResponder()
         pwField.resignFirstResponder()
-////        guard let mainTab = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "TabBarController") as? TabBarController else { return }
-//        guard let mainTab = UIStoryboard(name: "Tab", bundle: nil).instantiateViewController(withIdentifier: "CustomTabViewController") as? CustomTabViewController else { return }
-//        mainTab.modalPresentationStyle = .fullScreen
-//        self.present(mainTab, animated: true, completion: nil)
-        coordinator?.showTabPage()
+        guard let idInfo = idField.text, idInfo.isEmpty == false, let pwInfo = pwField.text, pwInfo.isEmpty == false else { return }
+        print(TimeZone.current.identifier)
+        UserServiceAPI.shared.login(email: idInfo, password: pwInfo, timezone: TimeZone.current.identifier, fcmtoken: "token") { result in
+            print("login result = \(result)")
+            if result["success"] as? Int == 1, let uuid = result["uuid"] as? String, let token = result["accessToken"] as? String {
+                KeychainWrapper.standard.set(uuid, forKey: KeychainWrapper.Key.uuid.rawValue)
+                KeychainWrapper.standard.set(token, forKey: KeychainWrapper.Key.accessToken.rawValue)
+                DispatchQueue.main.async {
+                    self.coordinator?.showTabPage()
+                }
+            } else {
+                // 실패
+                DispatchQueue.main.async {                
+                    let alert = UIAlertController(title: "", message: "로그인에 실패했습닏다", preferredStyle: .alert)
+                    let action = UIAlertAction(title: "확인", style: .default, handler: nil)
+                    alert.addAction(action)
+                    self.present(alert, animated: true, completion: nil)
+                }
+            }
+        }
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        self.idField.text = ""
+        self.pwField.text = ""
     }
     
     @IBAction func registerButtonDidTap(_ sender: Any) {

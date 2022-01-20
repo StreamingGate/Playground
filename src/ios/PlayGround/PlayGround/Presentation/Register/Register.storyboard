@@ -39,9 +39,11 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="eiZ-Fv-Y2z"/>
                                         </constraints>
-                                        <color key="textColor" name="customViolet"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no" textContentType="email"/>
+                                        <connections>
+                                            <action selector="nameTextFieldEditingChanged:" destination="Y6W-OH-hqX" eventType="editingChanged" id="kAD-Gi-n6Q"/>
+                                        </connections>
                                     </textField>
                                 </subviews>
                             </stackView>
@@ -51,7 +53,6 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="syJ-Tf-gCn"/>
                                 </constraints>
-                                <color key="textColor" name="customViolet"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="numberPad" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                 <connections>
@@ -85,7 +86,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="인증번호" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tTX-8i-AWe">
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="인증코드" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tTX-8i-AWe">
                                 <rect key="frame" x="30" y="347" width="59" height="20.5"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                 <nil key="textColor"/>
@@ -114,7 +115,7 @@
                                 <fontDescription key="fontDescription" name="AppleSDGothicNeo-Bold" family="Apple SD Gothic Neo" pointSize="18"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" title="인증메일 받기"/>
+                                <state key="normal" title="인증하기"/>
                                 <connections>
                                     <action selector="sendVerifyMailButtonDidTap:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="tsn-Zw-EAO"/>
                                 </connections>
@@ -134,7 +135,6 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="jwG-gs-VKq"/>
                                         </constraints>
-                                        <color key="textColor" name="customViolet"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no" textContentType="email"/>
                                         <connections>
@@ -156,6 +156,12 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QxI-1M-O51">
+                                <rect key="frame" x="326" y="384.5" width="43" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -173,6 +179,7 @@
                             <constraint firstItem="b1z-MM-BpA" firstAttribute="top" secondItem="ZAk-jx-fmo" secondAttribute="bottom" id="VF8-ad-IqJ"/>
                             <constraint firstItem="Ofc-Ht-deY" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="30" id="ViE-CK-zhk"/>
                             <constraint firstItem="b1z-MM-BpA" firstAttribute="centerX" secondItem="ZAk-jx-fmo" secondAttribute="centerX" id="W0P-zB-y08"/>
+                            <constraint firstItem="QxI-1M-O51" firstAttribute="trailing" secondItem="ZAk-jx-fmo" secondAttribute="trailing" constant="-15" id="W0k-OE-cA2"/>
                             <constraint firstItem="v9p-Os-E8f" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="30" id="WJw-48-Bdk"/>
                             <constraint firstItem="ybr-hE-M1b" firstAttribute="centerX" secondItem="vDu-zF-Fre" secondAttribute="centerX" id="Wz6-uL-6AA"/>
                             <constraint firstItem="ZAk-jx-fmo" firstAttribute="centerX" secondItem="Ofc-Ht-deY" secondAttribute="centerX" id="XFb-Td-hLO"/>
@@ -191,6 +198,7 @@
                             <constraint firstItem="Ofc-Ht-deY" firstAttribute="centerX" secondItem="vDu-zF-Fre" secondAttribute="centerX" id="n9D-n9-Kd8"/>
                             <constraint firstItem="3lV-Q2-k8W" firstAttribute="leading" secondItem="LLN-sI-RhG" secondAttribute="leading" id="sjq-dM-YxL"/>
                             <constraint firstItem="abW-ku-ODU" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="15" id="skP-c9-WzN"/>
+                            <constraint firstItem="QxI-1M-O51" firstAttribute="centerY" secondItem="ZAk-jx-fmo" secondAttribute="centerY" id="u81-Fk-vlV"/>
                             <constraint firstItem="abW-ku-ODU" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="15" id="wWZ-El-Bx2"/>
                             <constraint firstItem="Xgz-Vh-R8m" firstAttribute="centerX" secondItem="vDu-zF-Fre" secondAttribute="centerX" id="xCf-uD-Cby"/>
                             <constraint firstItem="Ofc-Ht-deY" firstAttribute="top" secondItem="CM9-MX-XSf" secondAttribute="bottom" constant="5" id="zJ1-uQ-rNM"/>
@@ -203,6 +211,7 @@
                         <outlet property="nameTextField" destination="b86-Q3-iaf" id="wn6-Xj-ULi"/>
                         <outlet property="nextButton" destination="v9p-Os-E8f" id="hQO-t4-MHU"/>
                         <outlet property="sendVerifyMailButton" destination="Xgz-Vh-R8m" id="6Qq-kY-TjT"/>
+                        <outlet property="timerLabel" destination="QxI-1M-O51" id="YZm-FC-MYo"/>
                         <outlet property="verifyNumTextField" destination="ZAk-jx-fmo" id="f5X-D1-4xq"/>
                         <outlet property="verifyNumTitleLabel" destination="tTX-8i-AWe" id="uEn-da-q3d"/>
                         <outlet property="verifyNumUnderLine" destination="b1z-MM-BpA" id="le4-xY-KuU"/>
@@ -242,7 +251,6 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="L2p-dZ-H3Z"/>
                                         </constraints>
-                                        <color key="textColor" name="customViolet"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                         <connections>
@@ -423,7 +431,6 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="GaU-eD-3vW"/>
                                         </constraints>
-                                        <color key="textColor" name="customViolet"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" secureTextEntry="YES" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                         <connections>
@@ -460,7 +467,6 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="hfy-5l-piE"/>
                                         </constraints>
-                                        <color key="textColor" name="customViolet"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" secureTextEntry="YES" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                         <connections>
@@ -577,9 +583,6 @@
         </namedColor>
         <namedColor name="YoutubeBlue">
             <color red="0.25900000333786011" green="0.52499997615814209" blue="0.96100002527236938" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="customViolet">
-            <color red="0.40799999237060547" green="0.40400001406669617" blue="0.9649999737739563" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
