@@ -34,6 +34,10 @@ class NickNameInputViewController: UIViewController {
         self.imagePicker.delegate = self
         self.style()
         self.layout()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         let image = profileView.snapshotView(afterScreenUpdates: true)?.takeScreenshot()
         RegisterHelper.shared.profileImage = image
     }
@@ -128,12 +132,7 @@ class NickNameInputViewController: UIViewController {
                     self.nickNameValidCheckLabel.isHidden = false
                     self.nickNameValidCheckLabel.text = "새 닉네임을 입력해주세요"
                     self.nickNameValidCheckLabel.textColor = UIColor.systemRed
-                    
-                    let alert = UIAlertController(title: "", message: "이미 사용 중인 닉네임입니다", preferredStyle: .alert)
-                    let action = UIAlertAction(title: "확인", style: .default, handler: nil)
-                    alert.addAction(action)
-                    self.present(alert, animated: true, completion: nil)
-                    self.nextButton.isEnabled = false
+                    self.simpleAlert(message: "이미 사용 중인 닉네임입니다")
                     self.nextButton.isEnabled = true
                 }
             }
@@ -154,10 +153,7 @@ extension NickNameInputViewController {
                     PHAssetChangeRequest.creationRequestForAsset(from: image)
                 }, completionHandler: { (_, error) in
                     DispatchQueue.main.async {
-                        let alert1 = UIAlertController(title: "", message: "이미지가 저장되었습니다.", preferredStyle: .alert)
-                        let action11 = UIAlertAction(title: "OK", style: .default, handler: nil)
-                        alert1.addAction(action11)
-                        self.present(alert1, animated: true, completion: nil)
+                        self.simpleAlert(message: "이미지가 저장되었습니다")
                     }
                 })
             } else {
@@ -192,7 +188,7 @@ extension NickNameInputViewController: UIImagePickerControllerDelegate, UINaviga
         } else if let possibleImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             newImage = possibleImage
         }
-        self.profileView.isHidden = false
+        self.profileImageView.isHidden = false
         self.profileImageView.image = newImage
         RegisterHelper.shared.profileImage = newImage
         picker.dismiss(animated: true, completion: nil)

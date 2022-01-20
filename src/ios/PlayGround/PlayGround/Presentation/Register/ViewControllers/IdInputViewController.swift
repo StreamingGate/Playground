@@ -126,6 +126,8 @@ class IdInputViewController: UIViewController {
         nextButton.isEnabled = true
     }
     
+    // MARK: button state change
+    // 인증하기 전송 버튼 활성화
     func sendButtonAvailability() {
         if let nameInfo = nameTextField.text, nameInfo.isEmpty == false, let emailInfo = idTextField.text, emailInfo.isEmpty == false {
             if isValidEmail(input: emailInfo) {
@@ -144,6 +146,8 @@ class IdInputViewController: UIViewController {
     // MARK: Button Action
     // 인증번호 전송 버튼
     @IBAction func sendVerifyMailButtonDidTap(_ sender: Any) {
+        idTextField.resignFirstResponder()
+        nameTextField.resignFirstResponder()
         guard let idInfo = idTextField.text, idInfo.isEmpty == false else { return }
         sendVerifyMailButton.isEnabled = false
         UserServiceAPI.shared.sendEmailVerification(email: idInfo) { result in
@@ -163,12 +167,13 @@ class IdInputViewController: UIViewController {
             } else {
                 // 오류
                 DispatchQueue.main.async {
+                    self.idFormatCheckLabel.isHidden = false
+                    self.idFormatCheckLabel.textColor = UIColor.systemRed
+                    self.sendVerifyMailButton.isEnabled = false
                     let converter = ErrorCodeConverter()
                     let errorType = converter.parse(result)
-                    let alert = UIAlertController(title: "", message: errorType.rawValue, preferredStyle: .alert)
-                    let action = UIAlertAction(title: "확인", style: .default, handler: nil)
-                    alert.addAction(action)
-                    self.present(alert, animated: true, completion: nil)
+                    self.idFormatCheckLabel.text = errorType.rawValue
+                    self.simpleAlert(message: errorType.rawValue)
                     self.sendVerifyMailButton.isEnabled = true
                 }
             }
@@ -200,10 +205,7 @@ class IdInputViewController: UIViewController {
                 DispatchQueue.main.async {
                     let converter = ErrorCodeConverter()
                     let errorType = converter.parse(result)
-                    let alert = UIAlertController(title: "", message: errorType.rawValue, preferredStyle: .alert)
-                    let action = UIAlertAction(title: "확인", style: .default, handler: nil)
-                    alert.addAction(action)
-                    self.present(alert, animated: true, completion: nil)
+                    self.simpleAlert(message: errorType.rawValue)
                     self.nextButton.isEnabled = true
                 }
             }
@@ -219,15 +221,7 @@ class IdInputViewController: UIViewController {
     
     @objc func timerAction() {
         if timeLeft == 0 {
-            timer.invalidate()
-            self.sendVerifyMailButton.isHidden = false
-            self.sendVerifyMailButton.isEnabled = true
-            self.verifyNumTextField.isHidden = true
-            self.verifyNumTextField.text = ""
-            self.verifyNumUnderLine.isHidden = true
-            self.verifyNumTitleLabel.isHidden = true
-            self.timerLabel.isHidden = true
-            self.nextButton.isHidden = true
+            initializeVerifyUI()
             return
         }
         timeLeft -= 1
@@ -236,3 +230,4 @@ class IdInputViewController: UIViewController {
         timerLabel.text = "\(String(format: "%02d", mins)):\(String(format: "%02d", secs))"
     }
 }
+
