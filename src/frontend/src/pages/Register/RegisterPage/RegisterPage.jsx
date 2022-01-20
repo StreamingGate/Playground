@@ -22,7 +22,7 @@ function RegisterPage() {
       newBtnContent.prev = '이전';
     }
     if (curStage === STAGE_STEP) {
-      newBtnContent.next = '가입하기';
+      newBtnContent.next = '가입';
     }
     setBtnContent({ ...newBtnContent });
   }, [curStage]);
