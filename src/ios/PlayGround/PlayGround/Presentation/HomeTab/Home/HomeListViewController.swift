@@ -32,6 +32,7 @@ class HomeListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.addSubview(playerView)
+        self.playerView.isUserInteractionEnabled = false
         guard let nav = self.navigationController as? HomeNavigationController else{ return }
         self.navVC = nav
     }
