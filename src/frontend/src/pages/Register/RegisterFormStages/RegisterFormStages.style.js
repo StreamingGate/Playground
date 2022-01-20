@@ -37,6 +37,7 @@ export const ProfilePreview = styled.img`
   border: none;
   border-radius: 50%;
   overflow: hidden;
+  object-fit: cover;
 `;
 
 export const ProfileInput = styled(Input)`
