@@ -22,6 +22,7 @@ function RegisterFormStage2() {
   }, []);
 
   const handleProfileSelectBtn = () => {
+    console.log(profileInputRef.current);
     profileInputRef.current.click();
   };
 
@@ -40,7 +41,12 @@ function RegisterFormStage2() {
         <S.InputLabel>프로필</S.InputLabel>
         <S.ProfilInputContainer>
           <S.ProfilePreview src={imageUrl} />
-          <S.ProfileInput type='file' ref={profileInputRef} onChange={handleProfileInput} />
+          <S.ProfileInput
+            type='file'
+            accept='.jpg, .jpeg, .png'
+            ref={profileInputRef}
+            onChange={handleProfileInput}
+          />
           <S.ProfileActionContainer>
             <S.FileSelectBtn color='pgBlue' onClick={handleProfileSelectBtn}>
               <Typography>파일에서 선택</Typography>

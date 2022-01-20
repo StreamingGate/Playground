@@ -4,8 +4,18 @@ import PropTypes from 'prop-types';
 import InputStyle from './Input.styles';
 
 const Input = forwardRef((props, ref) => {
-  const { className, type, placeholder, value, size, variant, fontSize, fullWidth, onChange } =
-    props;
+  const {
+    className,
+    type,
+    placeholder,
+    value,
+    size,
+    variant,
+    fontSize,
+    fullWidth,
+    onChange,
+    ...rest
+  } = props;
   return (
     <InputStyle.Input
       className={className}
@@ -18,6 +28,7 @@ const Input = forwardRef((props, ref) => {
       fullWidth={fullWidth}
       fontSize={fontSize}
       onChange={onChange}
+      {...rest}
     />
   );
 });
