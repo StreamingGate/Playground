@@ -28,10 +28,15 @@ class IdInputViewController: UIViewController {
     var timeLeft = 600
     var timer = Timer()
     
-    // MARK: Life Cycle
+    // MARK: View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupUI()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        initializeVerifyUI()
     }
     
     // MARK: UI Setting
@@ -61,6 +66,18 @@ class IdInputViewController: UIViewController {
             nameTextField.text = nameInfo
         }
         self.sendButtonAvailability()
+    }
+    
+    func initializeVerifyUI() {
+        timer.invalidate()
+        self.sendVerifyMailButton.isHidden = false
+        self.sendVerifyMailButton.isEnabled = true
+        self.verifyNumTextField.isHidden = true
+        self.verifyNumTextField.text = ""
+        self.verifyNumUnderLine.isHidden = true
+        self.verifyNumTitleLabel.isHidden = true
+        self.timerLabel.isHidden = true
+        self.nextButton.isHidden = true
     }
     
     // MARK: name input
@@ -173,6 +190,7 @@ class IdInputViewController: UIViewController {
                 UserDefaults.standard.removeObject(forKey: "onRegister-Email")
                 UserDefaults.standard.removeObject(forKey: "onRegister-Name")
                 DispatchQueue.main.async {
+                    self.nextButton.isEnabled = true
                     guard let vc = UIStoryboard(name: "Register", bundle: nil).instantiateViewController(withIdentifier: "NickNameInputViewController") as? NickNameInputViewController else { return }
                     vc.nameInfo = nameInput
                     self.navigationController?.pushViewController(vc, animated: true)

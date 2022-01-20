@@ -118,6 +118,7 @@ class NickNameInputViewController: UIViewController {
             if result {
                 RegisterHelper.shared.nickName = nickNameInfo
                 DispatchQueue.main.async {
+                    self.nextButton.isEnabled = true
                     guard let pwVC = UIStoryboard(name: "Register", bundle: nil).instantiateViewController(withIdentifier: "PwInputViewController") as? PwInputViewController else { return }
                     self.navigationController?.pushViewController(pwVC, animated: true)
                 }
@@ -133,6 +134,7 @@ class NickNameInputViewController: UIViewController {
                     alert.addAction(action)
                     self.present(alert, animated: true, completion: nil)
                     self.nextButton.isEnabled = false
+                    self.nextButton.isEnabled = true
                 }
             }
         }
