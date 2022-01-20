@@ -30,10 +30,6 @@ public class LiveViewer {
 
     private boolean liked;
 
-    @Enumerated(EnumType.STRING)
-    @Column(length=7)
-    private LiveViewerState state;
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserEntity userEntity;

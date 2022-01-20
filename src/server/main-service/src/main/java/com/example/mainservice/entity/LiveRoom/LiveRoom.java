@@ -2,16 +2,11 @@ package com.example.mainservice.entity.LiveRoom;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import com.example.mainservice.entity.Category;
 
+import com.example.mainservice.entity.User.UserEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -38,10 +33,6 @@ public class LiveRoom {
     @Column(length = 10)
     private Category category;
 
-    @Enumerated(EnumType.STRING)
-    @Column(length = 10)
-    private LiveRoomState state;
-
     private LocalDateTime createdAt;
 
     private short reportCnt;
@@ -49,4 +40,8 @@ public class LiveRoom {
     private String streamingId;
 
     private String chatRoomId;
+
+    @ManyToOne
+    @JoinColumn(name="users_id")
+    private UserEntity userEntity;
 }
