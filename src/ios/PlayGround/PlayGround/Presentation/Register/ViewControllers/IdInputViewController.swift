@@ -10,7 +10,7 @@ import UIKit
 
 class IdInputViewController: UIViewController {
     
-    // MARK: Properties
+    // MARK: - Properties
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var idFormatCheckLabel: UILabel!
     @IBOutlet weak var idTextField: UITextField!
@@ -28,7 +28,7 @@ class IdInputViewController: UIViewController {
     var timeLeft = 600
     var timer = Timer()
     
-    // MARK: View Life Cycle
+    // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupUI()
@@ -39,7 +39,7 @@ class IdInputViewController: UIViewController {
         initializeVerifyUI()
     }
     
-    // MARK: UI Setting
+    // MARK: - UI Setting
     func setupUI() {
         sendVerifyMailButton.layer.cornerRadius = 5
         nextButton.layer.cornerRadius = 5
@@ -80,7 +80,8 @@ class IdInputViewController: UIViewController {
         self.nextButton.isHidden = true
     }
     
-    // MARK: name input
+    // MARK: - TextField Input
+    // 이름(본명) textField 변경
     @IBAction func nameTextFieldEditingChanged(_ sender: Any) {
         sendButtonAvailability()
         guard let nameInfo = nameTextField.text, nameInfo.isEmpty == false else {
@@ -90,12 +91,7 @@ class IdInputViewController: UIViewController {
         UserDefaults.standard.set(nameInfo, forKey: "onRegister-Name")
     }
     
-    // MARK: Email(id) input
-    func isValidEmail(input: String) -> Bool {
-        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
-        let emailCheck = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
-        return emailCheck.evaluate(with: input)
-    }
+    // 아이디(이메일) textField 변경
     
     @IBAction func idTextFieldEditingChanged(_ sender: Any) {
         sendButtonAvailability()
@@ -117,13 +113,32 @@ class IdInputViewController: UIViewController {
         UserDefaults.standard.set(idInfo, forKey: "onRegister-Email")
     }
     
-    // MARK: Verify Num Input
+    func isValidEmail(input: String) -> Bool {
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+        let emailCheck = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        return emailCheck.evaluate(with: input)
+    }
+    
+    // 인증코드 textField 변경
     @IBAction func verifyNumTextFieldEditingChanged(_ sender: Any) {
         guard let verifyInputInfo = verifyNumTextField.text, verifyInputInfo.isEmpty == false else {
             nextButton.isEnabled = false
             return
         }
         nextButton.isEnabled = true
+    }
+    
+    // 인증코드의 유효시간인 10분 타이머를 추가
+    // 10분 초과 시에는 이메일을 다시 보내도록 유도
+    @objc func timerAction() {
+        if timeLeft == 0 {
+            initializeVerifyUI()
+            return
+        }
+        timeLeft -= 1
+        let mins = timeLeft / 60
+        let secs = timeLeft % 60
+        timerLabel.text = "\(String(format: "%02d", mins)):\(String(format: "%02d", secs))"
     }
     
     // MARK: button state change
@@ -180,11 +195,10 @@ class IdInputViewController: UIViewController {
         }
     }
     
-    // 다음
+    // 다음 버튼
     @IBAction func nextButtonDidTap(_ sender: Any) {
         guard let verifyInput = verifyNumTextField.text, verifyInput.isEmpty == false, let nameInput = nameTextField.text, nameInput.isEmpty == false, let emailInput  = idTextField.text, emailInput.isEmpty == false else { return }
         nextButton.isEnabled = false
-        // 인증확인 성공
         UserServiceAPI.shared.checkVerificationCode(code: verifyInput) { result in
             print("code check result = \(result)")
             if result == emailInput {
@@ -217,17 +231,6 @@ class IdInputViewController: UIViewController {
         UserDefaults.standard.removeObject(forKey: "onRegister-Email")
         UserDefaults.standard.removeObject(forKey: "onRegister-Name")
         dismiss(animated: true, completion: nil)
-    }
-    
-    @objc func timerAction() {
-        if timeLeft == 0 {
-            initializeVerifyUI()
-            return
-        }
-        timeLeft -= 1
-        let mins = timeLeft / 60
-        let secs = timeLeft % 60
-        timerLabel.text = "\(String(format: "%02d", mins)):\(String(format: "%02d", secs))"
     }
 }
 

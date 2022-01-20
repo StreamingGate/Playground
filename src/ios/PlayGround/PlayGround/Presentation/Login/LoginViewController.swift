@@ -80,11 +80,8 @@ class LoginViewController: UIViewController {
                 }
             } else {
                 // 실패
-                DispatchQueue.main.async {                
-                    let alert = UIAlertController(title: "", message: "로그인에 실패했습닏다", preferredStyle: .alert)
-                    let action = UIAlertAction(title: "확인", style: .default, handler: nil)
-                    alert.addAction(action)
-                    self.present(alert, animated: true, completion: nil)
+                DispatchQueue.main.async {
+                    self.simpleAlert(message: "로그인에 실패했습니다")
                 }
             }
         }

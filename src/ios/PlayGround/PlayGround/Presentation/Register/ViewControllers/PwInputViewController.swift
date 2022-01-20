@@ -11,7 +11,7 @@ import UIKit
 
 class PwInputViewController: UIViewController{
     
-    // MARK: Properties
+    // MARK: - Properties
     @IBOutlet weak var pwTextField: UITextField!
     @IBOutlet weak var pwCheckTextField: UITextField!
     @IBOutlet weak var registerButton: UIButton!
@@ -21,14 +21,14 @@ class PwInputViewController: UIViewController{
     @IBOutlet weak var step2View: UIView!
     @IBOutlet weak var step3View: UIView!
     
-    // MARK: Life Cycle
+    // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.style()
+        self.setupUI()
     }
     
-    // MARK: UI Setting
-    func style() {
+    // MARK: - UI Setting
+    func setupUI() {
         step1View.layer.cornerRadius = 10
         step2View.layer.cornerRadius = 10
         step3View.layer.cornerRadius = 10
@@ -37,28 +37,8 @@ class PwInputViewController: UIViewController{
         pwCheckTextField.font = UIFont.Content
     }
     
-    // MARK: Password Input
-    func isValidated(_ password: String) -> Bool {
-        var lowerCaseLetter: Bool = false
-        var digit: Bool = false
-        if password.count  >= 6 && password.count <= 16 {
-            for char in password.unicodeScalars {
-                if !lowerCaseLetter {
-                    lowerCaseLetter = CharacterSet.lowercaseLetters.contains(char)
-                }
-                if !digit {
-                    digit = CharacterSet.decimalDigits.contains(char)
-                }
-            }
-            if (digit && lowerCaseLetter) {
-                return true
-            } else {
-                return false
-            }
-        }
-        return false
-    }
-    
+    // MARK: - Password TextField Input
+    // 비밀번호 textField 변경
     @IBAction func pwTextFieldEditingChanged(_ sender: Any) {
         guard let pwInfo = pwTextField.text, pwInfo.isEmpty == false else {
             pwCheckTextField.isEnabled = false
@@ -87,7 +67,7 @@ class PwInputViewController: UIViewController{
         }
     }
     
-    // MARK: Password check Input
+    // 비밀번호 확인 textField 변경
     @IBAction func pwCheckTextFieldEditingChanged(_ sender: Any) {
         guard let pwInfo = pwTextField.text, pwInfo.isEmpty == false, let pwCheckInfo = pwCheckTextField.text, pwCheckInfo.isEmpty == false else {
             pwCheckValidLabel.text = "비밀번호를 다시 입력해주세요"
@@ -108,12 +88,33 @@ class PwInputViewController: UIViewController{
         }
     }
     
+    // 비밀번호 형식 확인
+    // 영어소문자 + 숫자 조합의 6~16자
+    func isValidated(_ password: String) -> Bool {
+        var lowerCaseLetter: Bool = false
+        var digit: Bool = false
+        if password.count  >= 6 && password.count <= 16 {
+            for char in password.unicodeScalars {
+                if !lowerCaseLetter {
+                    lowerCaseLetter = CharacterSet.lowercaseLetters.contains(char)
+                }
+                if !digit {
+                    digit = CharacterSet.decimalDigits.contains(char)
+                }
+            }
+            if (digit && lowerCaseLetter) {
+                return true
+            } else {
+                return false
+            }
+        }
+        return false
+    }
     
-    // MARK: Button Action
+    // MARK: - Button Action
     // 가입하기
     @IBAction func registerButtonDidTap(_ sender: Any) {
         guard let pwInfo = pwTextField.text, pwInfo.isEmpty == false, let emailInfo = RegisterHelper.shared.email, let nameInfo = RegisterHelper.shared.name, let nicknameInfo = RegisterHelper.shared.nickName, let profileImage = RegisterHelper.shared.profileImage else { return }
-        print("image: \(profileImage)")
         UserServiceAPI.shared.register(email: emailInfo, name: nameInfo, nickName: nicknameInfo, password: pwInfo, profileImage: "test") { userInfo in
             print("register result = \(userInfo)")
             DispatchQueue.main.async {
