@@ -2,7 +2,7 @@ package com.example.chatservice.redis;
 
 import com.example.chatservice.model.chat.Chat;
 
-import com.example.exception.ErrorResponse;
+import com.example.chatservice.exception.ErrorResponse;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.stereotype.Service;

@@ -5,16 +5,14 @@ import com.example.chatservice.model.chat.ChatType;
 import com.example.chatservice.redis.RedisPublisher;
 import com.example.chatservice.redis.RedisRoomRepository;
 
-import com.example.exception.ErrorCode;
-import com.example.exception.ErrorResponse;
+import com.example.chatservice.exception.ErrorResponse;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.support.ErrorMessage;
 import org.springframework.stereotype.Controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import static com.example.exception.ErrorCode.C001;
+import static com.example.chatservice.exception.ErrorCode.C001;
 
 
 /**

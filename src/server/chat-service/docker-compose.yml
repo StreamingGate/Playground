@@ -2,6 +2,7 @@ version: '3.7'
 services:
   redis:
     container_name: redis
+    hostname: redis
     image: redis:latest
     ports:
       - "6379:6379"
@@ -12,7 +13,8 @@ services:
 
   chat-service:
     container_name: chat-service
-    build: .
+    image: chat-service
+#    build: .
     ports:
       - "8080:8080"
     restart: always

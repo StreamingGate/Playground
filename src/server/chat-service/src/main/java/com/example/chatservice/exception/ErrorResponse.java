@@ -1,4 +1,4 @@
-package com.example.exception;
+package com.example.chatservice.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

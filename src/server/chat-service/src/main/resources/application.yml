@@ -1,4 +1,4 @@
-spring.profiles.active: develop
+spring.profiles.active: local
 spring:
   devtools:
     livereload:
