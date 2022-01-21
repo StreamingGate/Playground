@@ -24,9 +24,7 @@ public class LiveRoom {
     @Column(length=5000)
     private String content;
 
-    @Column(length = 30)
     private String hostEmail;
-
 
     @Column(columnDefinition="TEXT")
     private String thumbnail;

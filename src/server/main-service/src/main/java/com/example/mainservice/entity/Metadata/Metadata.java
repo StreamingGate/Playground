@@ -38,7 +38,6 @@ public class Metadata {
     @Column(length = 10)
     private VideoState state;
 
-    @Column(length = 30)
     private String uploaderEmail;
 
     @OneToOne(mappedBy = "metadata")
