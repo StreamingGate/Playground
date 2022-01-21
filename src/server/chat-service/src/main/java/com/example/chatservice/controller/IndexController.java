@@ -1,6 +1,7 @@
 package com.example.chatservice.controller;
 
 import com.example.chatservice.dto.RoomDto;
+import com.example.chatservice.entity.room.Room;
 import com.example.chatservice.redis.RedisRoomRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,9 +23,9 @@ public class IndexController {
 
     @GetMapping("/room")
     public String rooms(Model model) {
-        List<RoomDto> roomDtos = redisRoomRepository.findAll();
-        log.info("room cnt: "+ roomDtos.size());
-        model.addAttribute("rooms", roomDtos);
+        List<Room> rooms = redisRoomRepository.findAll();
+        log.info("room cnt: "+ rooms.size());
+        model.addAttribute("rooms", rooms);
         return "/room";
     }
     

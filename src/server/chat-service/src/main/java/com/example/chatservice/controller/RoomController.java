@@ -2,6 +2,7 @@ package com.example.chatservice.controller;
 
 import com.example.chatservice.dto.ChatDto;
 import com.example.chatservice.dto.RoomDto;
+import com.example.chatservice.entity.room.Room;
 import com.example.chatservice.redis.RedisRoomRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,17 +19,17 @@ public class RoomController {
 
     @GetMapping("/room/{roomId}")
     @ResponseBody
-    public RoomDto roomInfo(@PathVariable("roomId") String id) {
-        RoomDto res = redisRoomRepository.findById(id);
+    public Room roomInfo(@PathVariable("roomId") String id) {
+        Room res = redisRoomRepository.findById(id);
         log.info("recorded chat end.......");
         return res;
     }
 
     @PostMapping("/room")
     @ResponseBody
-    public RoomDto createRoom(@RequestParam String name) {
+    public Room createRoom(@RequestParam String name) {
         log.info("채팅방 생성: name="+name);
-        RoomDto res = redisRoomRepository.create(name);
+        Room res = redisRoomRepository.create(name);
         log.info("res: id="+res.getId());
         return res;
     }

@@ -1,13 +1,12 @@
 package com.example.chatservice.entity.chat;
 
 
+import java.io.Serializable;
+import java.time.LocalDateTime;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.annotation.Id;
-
-import java.io.Serializable;
-import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
 @Getter
@@ -15,7 +14,6 @@ public class Chat  implements Serializable {
 
     private static final long serialVersionUID = 1234678977089006638L;
 
-    @Id
     private String id;
     private String roomId;
     private String nickname;

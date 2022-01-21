@@ -1,6 +1,7 @@
 package com.example.chatservice.controller;
 
 import com.example.chatservice.dto.ChatDto;
+import com.example.chatservice.entity.chat.Chat;
 import com.example.chatservice.redis.RedisPublisher;
 import com.example.chatservice.redis.RedisRoomRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,10 +23,10 @@ public class RedisPubSubController {
     private final RedisRoomRepository redisRoomRepository;
 
     @MessageMapping("/chat/message")
-    public void message(ChatDto chatDto) throws Exception{
-        log.info("ws message:" + chatDto.getMessage());
-        redisRoomRepository.enter(chatDto.getRoomId());
-        redisPublisher.publish(redisRoomRepository.getTopic(chatDto.getRoomId()), chatDto);
+    public void message(Chat chat) throws Exception{
+        log.info("ws message:" + chat.getMessage());
+        redisRoomRepository.enter(chat.getRoomId());
+        redisPublisher.publish(redisRoomRepository.getTopic(chat.getRoomId()), chat);
     }
 }
 
