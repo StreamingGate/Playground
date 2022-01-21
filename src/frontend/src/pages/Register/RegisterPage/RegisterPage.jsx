@@ -1,6 +1,7 @@
-import React, { useEffect, useCallback, useState } from 'react';
+import React, { useEffect, useCallback, useState, useMemo } from 'react';
 
 import * as S from './RegisterPage.style';
+import { useForm } from '@utils/hook';
 
 import { Stepper } from '@components/dataDisplays';
 import RegisterFormStage1 from '../RegisterFormStages/RegisterFormStage1';
@@ -10,11 +11,27 @@ import RegisterFormStage3 from '../RegisterFormStages/RegisterFormStage3';
 const STAGE_STEP = 3;
 const initBtnContent = { prev: '취소', next: '다음' };
 
-function RegisterPage() {
-  const [btnContent, setBtnContent] = useState({ ...initBtnContent });
+const stage1InitInput = {
+  name: '',
+  email: '',
+  verify: '',
+};
 
+function RegisterPage() {
+  const { values, handleInputChange } = useForm({ ...stage1InitInput });
+
+  const [btnContent, setBtnContent] = useState({ ...initBtnContent });
   const [curStage, setCurState] = useState(1);
   const [isNextInActive, setNextInActive] = useState(false);
+
+  const stage1Input = useMemo(
+    () => ({
+      name: values.name,
+      email: values.email,
+      verify: values.verify,
+    }),
+    [values]
+  );
 
   useEffect(() => {
     const newBtnContent = { ...initBtnContent };
@@ -46,9 +63,9 @@ function RegisterPage() {
       case 3:
         return <RegisterFormStage3 />;
       default:
-        return <RegisterFormStage1 />;
+        return <RegisterFormStage1 values={stage1Input} onChange={handleInputChange} />;
     }
-  }, [curStage]);
+  }, [curStage, values]);
 
   return (
     <S.RegisterPageContainer>
