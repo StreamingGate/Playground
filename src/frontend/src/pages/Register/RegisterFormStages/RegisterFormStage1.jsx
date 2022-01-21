@@ -5,7 +5,7 @@ import * as S from './RegisterFormStages.style';
 
 import { Button } from '@components/buttons';
 
-function RegisterFormStage1({ values, onChange }) {
+function RegisterFormStage1({ values, errors, touched, onChange, onBlur }) {
   const { name, email, verify } = values;
   const [isVerify, setIsVerify] = useState(false);
 
@@ -17,11 +17,27 @@ function RegisterFormStage1({ values, onChange }) {
     <>
       <S.FormStageInputContainer>
         <S.InputLabel>이름</S.InputLabel>
-        <S.StageInput name='name' size='sm' fullWidth value={name} onChange={onChange} />
+        <S.StageInput
+          name='name'
+          size='sm'
+          fullWidth
+          value={name}
+          onChange={onChange}
+          onBlur={onBlur}
+        />
+        {touched.name && errors.name && <div>{errors.name}</div>}
       </S.FormStageInputContainer>
       <S.FormStageInputContainer>
         <S.InputLabel>이메일</S.InputLabel>
-        <S.StageInput name='email' size='sm' fullWidth value={email} onChange={onChange} />
+        <S.StageInput
+          name='email'
+          size='sm'
+          fullWidth
+          value={email}
+          onChange={onChange}
+          onBlur={onBlur}
+        />
+        {touched.email && errors.email && <div>{errors.email}</div>}
       </S.FormStageInputContainer>
       {!isVerify ? (
         <S.VerifyButtonContainer>
@@ -32,7 +48,15 @@ function RegisterFormStage1({ values, onChange }) {
       ) : (
         <S.FormStageInputContainer>
           <S.InputLabel>이메일 인증</S.InputLabel>
-          <S.StageInput name='verify' size='sm' fullWidth value={verify} onChange={onChange} />
+          <S.StageInput
+            name='verify'
+            size='sm'
+            fullWidth
+            value={verify}
+            onChange={onChange}
+            onBlur={onBlur}
+          />
+          {touched.email && errors.verify && <div>{errors.verify}</div>}
         </S.FormStageInputContainer>
       )}
     </>
