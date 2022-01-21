@@ -63,6 +63,7 @@ class PlayerCoordinator: Coordinator {
             parent.playContainerView.isHidden = true
             parent.playViewTopMargin.constant = 0
             parent.removePlayer()
+            vc.view.removeFromSuperview()
         }
     }
     

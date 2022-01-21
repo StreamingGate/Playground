@@ -31,6 +31,8 @@ class HomeListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.tableView.addSubview(playerView)
+        self.playerView.isUserInteractionEnabled = false
         guard let nav = self.navigationController as? HomeNavigationController else{ return }
         self.navVC = nav
     }
@@ -101,6 +103,9 @@ extension HomeListViewController: UITableViewDataSource, UITableViewDelegate {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "VideoListCell", for: indexPath) as? VideoListCell else { return UITableViewCell() }
         cell.setupUI(indexPath.row, middle)
         cell.channelTapHandler = {
+            self.playerView.player?.pause()
+            self.playerView.player?.replaceCurrentItem(with: nil)
+            self.playerView.player = nil
             self.navVC?.coordinator?.showChannel()
         }
         return cell
@@ -109,11 +114,14 @@ extension HomeListViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if middle == indexPath.row {
             self.playerView.player?.pause()
+            self.playerView.player?.replaceCurrentItem(with: nil)
             self.playerView.player = nil
         }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.playerView.player?.pause()
+        self.playerView.player?.replaceCurrentItem(with: nil)
         self.playerView.player = nil
         self.navVC?.coordinator?.showPlayer()
     }
@@ -135,11 +143,9 @@ extension HomeListViewController: UITableViewDataSource, UITableViewDelegate {
             self.middle = middleIndex
             self.playerView.player = nil
             let cell = tableView.cellForRow(at: IndexPath(row: middleIndex, section: 0))
-            self.tableView.addSubview(playerView)
             let width = UIScreen.main.bounds.width
             let height = width / 16 * 9
             playerView.frame = CGRect(x: cell?.frame.minX ?? 0, y: cell?.frame.minY ?? 0, width: width, height: height)
-            
             let url = URL(string: "https://bitmovin-a.akamaihd.net/content/art-of-motion_drm/m3u8s/11331.m3u8")!
             let avAsset = AVURLAsset(url: url)
             let item = AVPlayerItem(asset: avAsset)
