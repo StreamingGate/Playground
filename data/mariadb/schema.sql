@@ -16,7 +16,7 @@ create table friend (
     chat_room_id varchar(255),
     content varchar(5000),
     created_at datetime,
-    host_email varchar(30),
+    host_email varchar(255),
     like_cnt integer not null,
     report_cnt smallint not null,
     streaming_id varchar(255),
@@ -38,7 +38,7 @@ create table friend (
     file_name varchar(50),
     size bigint,
     state varchar(10),
-    uploader_email varchar(30),
+    uploader_email varchar(255),
     video_created_at datetime,
     primary key (id)
 ) engine = InnoDB create table users (
