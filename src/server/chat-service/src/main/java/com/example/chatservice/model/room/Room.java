@@ -21,10 +21,16 @@ public class Room implements Serializable {
     
     private String id;
     private String name;
-    private List<Chat> chats = new ArrayList<>();
+    private int userCnt;
+    private List<Chat> pinnedChats = new ArrayList<>();
 
     public Room(String name)  {
         this.id = UUID.randomUUID().toString();
         this.name = name;
+        this.userCnt = 0;
+    }
+
+    public void addUser(){
+        this.userCnt +=1;
     }
 }

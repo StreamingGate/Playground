@@ -4,9 +4,12 @@
     <h2 id="roomId"></h2>
 </div>
 <div >
-    <label >내용</label>
-    <input type="text" id="inputMsg">
-    <button  type="button" onClick="sendMessage()">보내기</button>
+    <label >채팅 내용</label><br>
+    <input type="text" id="inputMsg"> <button  type="button" onClick="sendMessage()">보내기</button><br>
+    <label >스트리머권한으로 고정 하기</label><br>
+    <input type="text" id="inputPin"> <button  type="button" onClick="pinMessage('STREAMER')">고정하기</button><br>
+    <label >시청자권한으로 고정 하기</label><br>
+    <input type="text" id="inputPin"> <button  type="button" onClick="pinMessage('VIEWER')">고정하기</button>
 </div>
 <ul id="msglist">
     
@@ -25,62 +28,71 @@
         roomId: localStorage.getItem('wschat.roomId'),
         room: {},
         sender: localStorage.getItem('wschat.sender'),
-        chats: []
+        pinnedChats: []
     }
 
     findRoom = function() {
         axios.get('/chat/room/'+data.roomId).then(response => { 
             // alert('response: '+ response);
             data.room = response.data.name;
-            data.chats = response.data.chats;
+            data.pinnedChats = response.data.pinnedChats;
+            console.log("resp:", response.data);
             console.log("roomName:",data.room);
-            console.log("chats:",JSON.stringify(data.chats));
+            console.log("pinnedChats:",JSON.stringify(data.pinnedChats));
 
             document.querySelector("#roomId").innerText = data.room;
 
-            
-            let recordedChats = "";
-            // for(let i=0; i<data.chats.length; i++){
-            //     const liElem = document.createElement("li");
-            //     liElem.innerText= "["+ data.chats[i].nickname + "] "+ data.chats[i].message;
-            //     msgList.append(liElem);
-            // }
-            
+            if(data.pinnedChats !== undefined) {
+                for (let i = 0; i < data.pinnedChats.length; i++) {
+                    const liElem = document.createElement("li");
+                    liElem.innerText = "[PINNED]" + data.pinnedChats[i].nickname + "-" + data.pinnedChats[i].message;
+                    msgList.append(liElem);
+                }
+            }
         });
     }
     sendMessage= () => {
         console.log("send btn");
-        inputMsg = document.querySelector("#inputMsg").value;
+        const inputMsg = document.querySelector("#inputMsg").value;
         ws.send("/app/chat/message", {}, JSON.stringify(
                 {
-                    roomId:data.roomId,
-                    nickname:data.sender,
+                    roomId: data.roomId,
+                    nickname: data.sender,
                     senderRole: "VIEWER",   // VIEWER, STREAMER
                     chatType: "NORMAL",     // NORMAL, PINNED
                     message: inputMsg,
                     timestamp: new Date()   // GMT(대한민국 표준시)
                 }));
-        this.message = '';
-    },
-    recvMessage= (chatDto) => {
-        console.log("reved msg");
-        
+    }
+    pinMessage = (senderRole) => {
+        console.log("pin btn");
+        const inputPin = document.querySelector("#inputPin").value;
+        ws.send("/app/chat/message", {}, JSON.stringify(
+                {
+                    roomId:data.roomId,
+                    nickname:data.sender,
+                    senderRole: senderRole,   // VIEWER, STREAMER
+                    chatType: "PINNED",     // NORMAL, PINNED
+                    message: inputPin,
+                    timestamp: new Date()   // GMT(대한민국 표준시)
+                }));
+    }
+    recvMessage= (chat) => {
+        console.log("recved msg");
         const liElem = document.createElement("li");
-        liElem.innerText = "["+ chatDto.nickname + "] "+ chatDto.message;
+        liElem.innerText = "["+ chat.nickname + "] "+ chat.message;
         msgList.append(liElem);
-    
     }
 
     findRoom();
-
 
     // pub/sub event
     ws.connect({}, function(frame) {
         ws.subscribe("/topic/chat/room/"+data.roomId, function(resp) {
             console.log("received");
-            const chatDto = JSON.parse(resp.body);
-            console.log("sub.......", message, "..........", chatDto, "........end");
-            recvMessage(chatDto);
+            const chat = JSON.parse(resp.body);
+            // console.log("sub.......", message, "..........", chat, "........end");
+            recvMessage(chat);
         });
     }, function(error) {
         alert("error "+error);

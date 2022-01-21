@@ -1,31 +1,31 @@
 package com.example.chatservice.stomp;
 
 
-import com.example.chatservice.redis.RedisRoomRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.stereotype.Component;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 @Slf4j
 @RequiredArgsConstructor
 @Component
 public class StompHandler implements ChannelInterceptor {
 
-    private final RedisRoomRepository redisRoomRepository;
+    // private final RedisRoomRepository redisRoomRepository;
 
     @Override
     public void postSend(Message message, MessageChannel channel, boolean sent) {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
-//        String sessionId = accessor.getSessionId();
         switch (accessor.getCommand()) {
             case SUBSCRIBE:
-                String roomId = accessor.getDestination().split("/")[-1];
+                String[] splited = accessor.getDestination().split("/");
+                String roomId = splited[splited.length-1];
                 log.info("roomId: " + roomId);
-                redisRoomRepository.enter(roomId);
+                // redisRoomRepository.enter(roomId);
                 break;
             case UNSUBSCRIBE:
                 log.info("unsubscribe....");

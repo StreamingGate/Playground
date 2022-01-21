@@ -20,7 +20,6 @@ public class Chat  implements Serializable {
     private SenderRole senderRole;
     private ChatType chatType;
     private String message;
-    private LocalDateTime timestamp;
 
     @Builder
     public Chat(String nickname, String roomId, SenderRole senderRole, ChatType chatType, String message, LocalDateTime timestamp) {
@@ -29,6 +28,5 @@ public class Chat  implements Serializable {
         this.senderRole = senderRole;
         this.chatType = chatType;
         this.message = message;
-        this.timestamp = timestamp;
     }
 }

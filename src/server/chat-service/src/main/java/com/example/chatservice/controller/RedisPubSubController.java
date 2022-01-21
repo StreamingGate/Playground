@@ -1,13 +1,20 @@
 package com.example.chatservice.controller;
 
-import com.example.chatservice.dto.ChatDto;
 import com.example.chatservice.model.chat.Chat;
+import com.example.chatservice.model.chat.ChatType;
 import com.example.chatservice.redis.RedisPublisher;
 import com.example.chatservice.redis.RedisRoomRepository;
+
+import com.example.exception.ErrorCode;
+import com.example.exception.ErrorResponse;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.support.ErrorMessage;
+import org.springframework.stereotype.Controller;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.stereotype.Controller;
+
+import static com.example.exception.ErrorCode.C001;
 
 
 /**
@@ -23,9 +30,20 @@ public class RedisPubSubController {
     private final RedisRoomRepository redisRoomRepository;
 
     @MessageMapping("/chat/message")
-    public void message(Chat chat) throws Exception{
+    public void message(Chat chat) throws Exception
+    {
         log.info("ws message:" + chat.getMessage());
-        redisRoomRepository.enter(chat.getRoomId());
+        if(chat.getChatType().equals(ChatType.PINNED)){
+            try{
+                int pinnedCnt = redisRoomRepository.addPinnedChat(chat);
+                log.info("pinnedCnt: " + pinnedCnt);
+            }catch(RuntimeException e){
+                e.printStackTrace();
+                redisPublisher.publish(redisRoomRepository.getTopic(chat.getRoomId()),
+                        new ErrorResponse(C001, C001.getMessage()));
+            }
+        }
+        redisRoomRepository.enter(chat.getRoomId()); // FIXME: StompHandler
         redisPublisher.publish(redisRoomRepository.getTopic(chat.getRoomId()), chat);
     }
 }

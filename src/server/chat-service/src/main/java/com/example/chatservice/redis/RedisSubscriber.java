@@ -1,15 +1,16 @@
 package com.example.chatservice.redis;
 
-import com.example.chatservice.dto.ChatDto;
 import com.example.chatservice.model.chat.Chat;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**<h1>RedisSubscriber</h1>
 * Redis에 메세지 발행이 되길 기다렸다가 발행되면 해당 메시지를 읽어 처리한다.
@@ -33,9 +34,9 @@ public class RedisSubscriber implements MessageListener {
            // redis에서 발행된 데이터를 받아 deserialize
            String publishMessage = (String) redisTemplate.getStringSerializer().deserialize(message.getBody());
            // ChatMessage 객채로 맵핑
-           Chat chatDto = objectMapper.readValue(publishMessage, Chat.class);
+           Chat chat = objectMapper.readValue(publishMessage, Chat.class);
            // Websocket 구독자에게 채팅 메시지 Send
-           messagingTemplate.convertAndSend("/topic/chat/room/" + chatDto.getRoomId(), chatDto);
+           messagingTemplate.convertAndSend("/topic/chat/room/" + chat.getRoomId(), chat);
        } catch (Exception e) {
            log.error(e.getMessage());
        }
