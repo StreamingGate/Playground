@@ -29,6 +29,7 @@ class LiveViewController: UIViewController {
     @IBOutlet weak var participantsNumLabel: UILabel!
     @IBOutlet weak var likeNumLabel: UILabel!
     @IBOutlet weak var switchButton: UIButton!
+    @IBOutlet weak var sendButton: UIButton!
     
     override var prefersStatusBarHidden: Bool {
         return true
@@ -53,6 +54,8 @@ class LiveViewController: UIViewController {
     }
     
     func setupUI() {
+        switchButton.setTitle("", for: .normal)
+        sendButton.setTitle("", for: .normal)
         liveSignLabel.font = UIFont.caption
         timeLabel.font = UIFont.caption
         participantsNumLabel.font = UIFont.caption
