@@ -43,6 +43,12 @@ export default {
     cursor: pointer;
     ${({ size }) => getButtonPadding(size)}
     ${props => getButtonColor(props)}
+    ${({ disabled }) =>
+      disabled &&
+      css`
+        cursor: auto;
+        opacity: 0.3;
+      `}
     width: ${({ fullWidth }) => (fullWidth ? '100%' : 'auto')};
   `,
 };
