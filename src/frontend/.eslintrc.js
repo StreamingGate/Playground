@@ -24,6 +24,7 @@ module.exports = {
     'react-hooks/exhaustive-deps': 'off',
     'import/order': 'off',
     'import/prefer-default-export': 'off',
+    'no-param-reassign': 'off',
   },
   overrides: [
     {
