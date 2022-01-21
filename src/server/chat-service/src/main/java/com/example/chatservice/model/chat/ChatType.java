@@ -1,4 +1,4 @@
-package com.example.chatservice.entity.chat;
+package com.example.chatservice.model.chat;
 
 public enum ChatType {
     PINNED, NORMAL

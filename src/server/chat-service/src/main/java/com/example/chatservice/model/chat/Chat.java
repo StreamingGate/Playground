@@ -1,4 +1,4 @@
-package com.example.chatservice.entity.chat;
+package com.example.chatservice.model.chat;
 
 
 import java.io.Serializable;

@@ -1,7 +1,7 @@
 package com.example.chatservice.controller;
 
 import com.example.chatservice.dto.ChatDto;
-import com.example.chatservice.entity.chat.Chat;
+import com.example.chatservice.model.chat.Chat;
 import com.example.chatservice.redis.RedisPublisher;
 import com.example.chatservice.redis.RedisRoomRepository;
 import lombok.RequiredArgsConstructor;

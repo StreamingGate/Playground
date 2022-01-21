@@ -1,7 +1,7 @@
 package com.example.chatservice.controller;
 
 import com.example.chatservice.dto.RoomDto;
-import com.example.chatservice.entity.room.Room;
+import com.example.chatservice.model.room.Room;
 import com.example.chatservice.redis.RedisRoomRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

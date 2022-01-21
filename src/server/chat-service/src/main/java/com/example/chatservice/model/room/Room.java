@@ -1,11 +1,11 @@
-package com.example.chatservice.entity.room;
+package com.example.chatservice.model.room;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import com.example.chatservice.entity.chat.Chat;
+import com.example.chatservice.model.chat.Chat;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

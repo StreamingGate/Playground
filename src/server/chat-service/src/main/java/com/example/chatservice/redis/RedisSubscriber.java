@@ -1,7 +1,7 @@
 package com.example.chatservice.redis;
 
 import com.example.chatservice.dto.ChatDto;
-import com.example.chatservice.entity.chat.Chat;
+import com.example.chatservice.model.chat.Chat;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
