@@ -10,30 +10,41 @@ export default function useForm({ initialValues, validSchema }) {
     }, {})
   );
 
+  useEffect(() => {}, [validSchema]);
+
   const checkError = async () => {
+    const validationErrors = {};
     try {
       await validSchema.validate(values, { abortEarly: false });
     } catch (error) {
       if (error instanceof ValidationError) {
-        const validationErrors = {};
         error.inner.forEach(err => {
           validationErrors[err.path] = err.message;
         });
-
-        setErrors(validationErrors);
       }
     }
+    setErrors(validationErrors);
   };
 
   useEffect(() => {
-    checkError();
-  }, [values]);
+    if (validSchema) {
+      checkError();
+    }
+  }, [values, validSchema]);
+
+  // args = [[name, value], ...]
+  const changeValue = (...args) => {
+    const newValues = { ...values };
+    args.forEach(([name, value]) => {
+      newValues[name] = value;
+    });
+
+    setValues(newValues);
+  };
 
   const handleInputChange = e => {
     const { name, value } = e.target;
-    const newValues = { ...values, [name]: value };
-
-    setValues(newValues);
+    changeValue([name, value]);
   };
 
   const handleInputBlur = e => {
@@ -45,5 +56,5 @@ export default function useForm({ initialValues, validSchema }) {
     }));
   };
 
-  return { values, errors, touched, handleInputChange, handleInputBlur };
+  return { values, errors, touched, changeValue, handleInputChange, handleInputBlur };
 }
