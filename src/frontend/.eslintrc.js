@@ -29,6 +29,7 @@ module.exports = {
     'react/prop-types': 'off',
     'no-shadow': 'off',
     'default-param-last': 'off',
+    'react/forbid-prop-types': 'off',
   },
   overrides: [
     {
