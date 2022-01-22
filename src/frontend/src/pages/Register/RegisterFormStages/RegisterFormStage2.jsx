@@ -67,8 +67,9 @@ function RegisterFormStage2({ values, errors, touched, onChange, onProfileChange
           value={nickName}
           onChange={onChange}
           onBlur={onBlur}
+          error={!!(touched.nickName && errors.nickName)}
+          helperText={errors.nickName}
         />
-        {touched.nickName && errors.nickName && <div>{errors.nickName}</div>}
       </S.FormStageInputContainer>
     </>
   );

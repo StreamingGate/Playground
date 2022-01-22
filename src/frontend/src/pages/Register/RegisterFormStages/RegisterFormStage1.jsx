@@ -33,8 +33,9 @@ function RegisterFormStage1({ values, errors, touched, onChange, onBlur }) {
           value={name}
           onChange={onChange}
           onBlur={onBlur}
+          error={!!(touched.name && errors.name)}
+          helperText={errors.name}
         />
-        {touched.name && errors.name && <div>{errors.name}</div>}
       </S.FormStageInputContainer>
       <S.FormStageInputContainer>
         <S.InputLabel>이메일</S.InputLabel>
@@ -45,8 +46,9 @@ function RegisterFormStage1({ values, errors, touched, onChange, onBlur }) {
           value={email}
           onChange={onChange}
           onBlur={onBlur}
+          error={!!(touched.email && errors.email)}
+          helperText={errors.email}
         />
-        {touched.email && errors.email && <div>{errors.email}</div>}
       </S.FormStageInputContainer>
       {!isVerify ? (
         <S.VerifyButtonContainer>
@@ -64,8 +66,9 @@ function RegisterFormStage1({ values, errors, touched, onChange, onBlur }) {
             value={verify}
             onChange={onChange}
             onBlur={onBlur}
+            error={!!(touched.email && errors.verify)}
+            helperText={errors.verify}
           />
-          {touched.email && errors.verify && <div>{errors.verify}</div>}
         </S.FormStageInputContainer>
       )}
     </>
