@@ -18,7 +18,7 @@ function RegisterFormState3({ values, errors, touched, onChange, onBlur }) {
           onChange={onChange}
           onBlur={onBlur}
         />
-        {touched.password && errors.passwords && <div>{errors.passwords}</div>}
+        {touched.password && errors.password && <div>{errors.password}</div>}
       </S.FormStageInputContainer>
       <S.FormStageInputContainer>
         <S.InputLabel>비밀번호 확인</S.InputLabel>
@@ -31,7 +31,7 @@ function RegisterFormState3({ values, errors, touched, onChange, onBlur }) {
           onChange={onChange}
           onBlur={onBlur}
         />
-        {touched.passwordCheck && errors.passwordsCheck && <div>{errors.passwordsCheck}</div>}
+        {touched.passwordCheck && errors.passwordCheck && <div>{errors.passwordCheck}</div>}
       </S.FormStageInputContainer>
     </>
   );
