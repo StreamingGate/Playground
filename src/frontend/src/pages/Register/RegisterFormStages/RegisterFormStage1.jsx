@@ -69,6 +69,10 @@ RegisterFormStage1.propTypes = {
     email: PropTypes.string,
     verify: PropTypes.string,
   }).isRequired,
+  errors: PropTypes.object.isRequired,
+  touched: PropTypes.object.isRequired,
+  onChange: PropTypes.func.isRequired,
+  onBlur: PropTypes.func.isRequired,
 };
 
 export default memo(RegisterFormStage1);
