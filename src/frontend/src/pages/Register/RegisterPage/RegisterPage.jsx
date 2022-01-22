@@ -1,7 +1,7 @@
-import React, { useEffect, useCallback, useState, useMemo } from 'react';
-import * as yup from 'yup';
+import React, { useEffect, useCallback, useState } from 'react';
 
 import * as S from './RegisterPage.style';
+import { validation } from '@utils/constant';
 import { useForm } from '@utils/hook';
 
 import { Stepper } from '@components/dataDisplays';
@@ -19,7 +19,6 @@ const stage1InitInput = {
 };
 
 const stage2InitInput = {
-  profileImage: '',
   nickName: '',
 };
 
@@ -28,47 +27,16 @@ const stage3InitInput = {
   passwordCheck: '',
 };
 
-const validSchema = yup.object().shape({
-  name: yup.string().required('이름을 입력해 주세요'),
-  email: yup
-    .string()
-    .required('이메일을 입력해 주세요')
-    .email('올바른 이메일 형식을 입력해 주세요'),
-  verify: yup.string().required('인증번호를 입력해 주세요'),
-  nickName: yup
-    .string()
-    .required('닉네임을 입력해 주세요')
-    .max(8, '최대 8글자까지 입력하실 수 있습니다'),
-  password: yup
-    .string()
-    .required('비밀번호를 입력해 주세요')
-    .matches(
-      /^(?=.*[a-z])(?=.*\d)[A-Za-z\d]{6,16}$/,
-      '영문 소문자와 숫자를 포함한 6~16자여야 합니다'
-    ),
-  passwordCheck: yup.string().oneOf([yup.ref('password'), null], '비밀번호가 일치하지 않습니다'),
-});
-
 function RegisterPage() {
-  const { values, errors, touched, handleInputChange, handleInputBlur } = useForm({
-    initialValues: { ...stage1InitInput, ...stage2InitInput, ...stage3InitInput },
-    validSchema,
-  });
-
-  // console.log(touched);
-
+  const [profileImage, setProfileImage] = useState('');
   const [btnContent, setBtnContent] = useState({ ...initBtnContent });
   const [curStage, setCurState] = useState(1);
   const [isNextInActive, setNextInActive] = useState(false);
 
-  const stage1Input = useMemo(
-    () => ({
-      name: values.name,
-      email: values.email,
-      verify: values.verify,
-    }),
-    [values]
-  );
+  const { values, errors, touched, handleInputChange, handleInputBlur } = useForm({
+    initialValues: { ...stage1InitInput, ...stage2InitInput, ...stage3InitInput },
+    validSchema: validation.register[curStage - 1],
+  });
 
   useEffect(() => {
     const newBtnContent = { ...initBtnContent };
@@ -93,16 +61,37 @@ function RegisterPage() {
     }
   };
 
+  const changeProfilImage = dataUrl => {
+    setProfileImage(dataUrl);
+  };
+
   const renderStage = useCallback(() => {
     switch (curStage) {
       case 2:
-        return <RegisterFormStage2 />;
+        return (
+          <RegisterFormStage2
+            values={{ ...values, profileImage }}
+            errors={errors}
+            touched={touched}
+            onChange={handleInputChange}
+            onProfileChange={changeProfilImage}
+            onBlur={handleInputBlur}
+          />
+        );
       case 3:
-        return <RegisterFormStage3 onPrev={handleClickPrevBtn} />;
+        return (
+          <RegisterFormStage3
+            values={values}
+            errors={errors}
+            touched={touched}
+            onChange={handleInputChange}
+            onBlur={handleInputBlur}
+          />
+        );
       default:
         return (
           <RegisterFormStage1
-            values={stage1Input}
+            values={values}
             errors={errors}
             touched={touched}
             onChange={handleInputChange}
@@ -110,7 +99,7 @@ function RegisterPage() {
           />
         );
     }
-  }, [curStage, values, touched]);
+  }, [curStage, values, profileImage, touched]);
 
   return (
     <S.RegisterPageContainer>
