@@ -1,4 +1,4 @@
-import React, { useState, memo } from 'react';
+import React, { useEffect, useState, memo } from 'react';
 import PropTypes from 'prop-types';
 
 import * as S from './RegisterFormStages.style';
@@ -8,6 +8,15 @@ import { Button } from '@components/buttons';
 function RegisterFormStage1({ values, errors, touched, onChange, onBlur }) {
   const { name, email, verify } = values;
   const [isVerify, setIsVerify] = useState(false);
+  const [isVerifyBtnDisable, setVerifyBtnDisable] = useState(true);
+
+  useEffect(() => {
+    const { name, email } = values;
+
+    if (name && !errors.name && email && !errors.email) {
+      setVerifyBtnDisable(false);
+    }
+  }, [errors]);
 
   const handleVerifyBtnClick = () => {
     setIsVerify(true);
@@ -41,7 +50,7 @@ function RegisterFormStage1({ values, errors, touched, onChange, onBlur }) {
       </S.FormStageInputContainer>
       {!isVerify ? (
         <S.VerifyButtonContainer>
-          <Button color='pgBlue' onClick={handleVerifyBtnClick}>
+          <Button color='pgBlue' disabled={isVerifyBtnDisable} onClick={handleVerifyBtnClick}>
             인증하기
           </Button>
         </S.VerifyButtonContainer>
