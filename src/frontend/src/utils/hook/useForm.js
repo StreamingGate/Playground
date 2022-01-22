@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ValidationError } from 'yup';
 
-export default function useForm({ initialValues, validSchema }) {
+export default function useForm({ initialValues, validSchema, onSubmit }) {
   const [values, setValues] = useState(initialValues);
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState(
@@ -56,5 +56,20 @@ export default function useForm({ initialValues, validSchema }) {
     }));
   };
 
-  return { values, errors, touched, changeValue, handleInputChange, handleInputBlur };
+  const handleSubmit = () => {
+    const notSubmit = Object.keys(errors).some(fieldName => errors[fieldName]);
+    if (notSubmit) {
+      const newTouched = { ...touched };
+      Object.keys(errors).forEach(fieldName => {
+        newTouched[fieldName] = true;
+      });
+      setTouched(newTouched);
+      return;
+    }
+    if (onSubmit && typeof onSubmit === 'function') {
+      onSubmit();
+    }
+  };
+
+  return { values, errors, touched, changeValue, handleInputChange, handleInputBlur, handleSubmit };
 }
