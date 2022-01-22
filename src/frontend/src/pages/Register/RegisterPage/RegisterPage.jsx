@@ -31,12 +31,6 @@ function RegisterPage() {
   const [profileImage, setProfileImage] = useState('');
   const [btnContent, setBtnContent] = useState({ ...initBtnContent });
   const [curStage, setCurState] = useState(1);
-  const [isNextInActive, setNextInActive] = useState(false);
-
-  const { values, errors, touched, handleInputChange, handleInputBlur } = useForm({
-    initialValues: { ...stage1InitInput, ...stage2InitInput, ...stage3InitInput },
-    validSchema: validation.register[curStage - 1],
-  });
 
   useEffect(() => {
     const newBtnContent = { ...initBtnContent };
@@ -49,15 +43,21 @@ function RegisterPage() {
     setBtnContent({ ...newBtnContent });
   }, [curStage]);
 
-  const handleClickPrevBtn = () => {
-    if (curStage > 1) {
-      setCurState(prev => prev - 1);
-    }
-  };
-
   const handleClickNextBtn = () => {
     if (curStage >= 1 && curStage < STAGE_STEP) {
       setCurState(prev => prev + 1);
+    }
+  };
+
+  const { values, errors, touched, handleInputChange, handleInputBlur, handleSubmit } = useForm({
+    initialValues: { ...stage1InitInput, ...stage2InitInput, ...stage3InitInput },
+    validSchema: validation.register[curStage - 1],
+    onSubmit: handleClickNextBtn,
+  });
+
+  const handleClickPrevBtn = () => {
+    if (curStage > 1) {
+      setCurState(prev => prev - 1);
     }
   };
 
@@ -99,7 +99,7 @@ function RegisterPage() {
           />
         );
     }
-  }, [curStage, values, profileImage, touched]);
+  }, [curStage, values, profileImage, touched, errors]);
 
   return (
     <S.RegisterPageContainer>
@@ -115,7 +115,7 @@ function RegisterPage() {
             <S.PrevButton variant='outlined' onClick={handleClickPrevBtn}>
               <S.PrevBtnContent type='subtitle'>{btnContent.prev}</S.PrevBtnContent>
             </S.PrevButton>
-            <S.NextButton color='pgBlue' disabled={isNextInActive} onClick={handleClickNextBtn}>
+            <S.NextButton color='pgBlue' onClick={handleSubmit}>
               <S.NextBtnContent type='subtitle'>{btnContent.next}</S.NextBtnContent>
             </S.NextButton>
           </S.FormActionContainer>
