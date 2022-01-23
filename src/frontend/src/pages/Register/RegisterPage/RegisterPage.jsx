@@ -3,6 +3,7 @@ import React, { useEffect, useCallback, useState } from 'react';
 import * as S from './RegisterPage.style';
 import { validation } from '@utils/constant';
 import { useForm } from '@utils/hook';
+import { useVerifyCode } from '@utils/hook/query';
 
 import { Stepper } from '@components/dataDisplays';
 import RegisterFormStage1 from '../RegisterFormStages/RegisterFormStage1';
@@ -32,29 +33,24 @@ function RegisterPage() {
   const [btnContent, setBtnContent] = useState({ ...initBtnContent });
   const [curStage, setCurState] = useState(1);
 
-  useEffect(() => {
-    const newBtnContent = { ...initBtnContent };
-    if (curStage !== 1) {
-      newBtnContent.prev = '이전';
-    }
-    if (curStage === STAGE_STEP) {
-      newBtnContent.next = '가입';
-    }
-    setBtnContent({ ...newBtnContent });
-  }, [curStage]);
+  const { values, errors, touched, changeValue, handleInputChange, handleInputBlur } = useForm({
+    initialValues: { ...stage1InitInput, ...stage2InitInput, ...stage3InitInput },
+    validSchema: validation.register[curStage - 1],
+  });
 
-  const handleClickNextBtn = () => {
+  const handleFormResponse = data => {
+    // 팝업 창으로 변경
+    if (data?.errorCode) {
+      alert(data.message);
+      return;
+    }
+
     if (curStage >= 1 && curStage < STAGE_STEP) {
       setCurState(prev => prev + 1);
     }
   };
 
-  const { values, errors, touched, changeValue, handleInputChange, handleInputBlur, handleSubmit } =
-    useForm({
-      initialValues: { ...stage1InitInput, ...stage2InitInput, ...stage3InitInput },
-      validSchema: validation.register[curStage - 1],
-      onSubmit: handleClickNextBtn,
-    });
+  const verifyCode = useVerifyCode(values.verify, handleFormResponse);
 
   const handleClickPrevBtn = () => {
     if (curStage > 1) {
@@ -68,6 +64,17 @@ function RegisterPage() {
   const changeProfilImage = dataUrl => {
     setProfileImage(dataUrl);
   };
+
+  useEffect(() => {
+    const newBtnContent = { ...initBtnContent };
+    if (curStage !== 1) {
+      newBtnContent.prev = '이전';
+    }
+    if (curStage === STAGE_STEP) {
+      newBtnContent.next = '가입';
+    }
+    setBtnContent({ ...newBtnContent });
+  }, [curStage]);
 
   const renderStage = useCallback(() => {
     switch (curStage) {
@@ -119,7 +126,7 @@ function RegisterPage() {
             <S.PrevButton variant='outlined' onClick={handleClickPrevBtn}>
               <S.PrevBtnContent type='subtitle'>{btnContent.prev}</S.PrevBtnContent>
             </S.PrevButton>
-            <S.NextButton color='pgBlue' onClick={handleSubmit}>
+            <S.NextButton color='pgBlue' onClick={verifyCode.refetch}>
               <S.NextBtnContent type='subtitle'>{btnContent.next}</S.NextBtnContent>
             </S.NextButton>
           </S.FormActionContainer>
