@@ -10,6 +10,7 @@ import com.example.chatservice.model.chat.Chat;
 import com.example.chatservice.model.chat.SenderRole;
 import com.example.chatservice.model.room.Room;
 
+import com.example.chatservice.utils.RedisMessaging;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
@@ -19,31 +20,27 @@ import org.springframework.stereotype.Repository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * <h1>RedisRoomRepository</h1>
+ * <pre>
+ *     Fields:
+ *     - opsHashRoom: 방 관리에 사용하는 Redis 연산자
+ *     - topics: 채팅방의 대화 메시지를 발행하기 위한 redis topic 정보. 서버별로 roomId에 매치되는 topic정보를 넣는다.
+ * </pre>
+ */
 @Slf4j
 @RequiredArgsConstructor
 @Repository
 public class RedisRoomRepository {
-    // 채팅방(topic)에 발행되는 메시지를 처리할 Listner
-    private final RedisMessageListenerContainer redisMessageListener;
-    // 구독 처리 서비스
-    private final RedisSubscriber redisSubscriber;
-    private final RedisTemplate<String, Object> redisTemplate;
-    private HashOperations<String, String, Room> opsHashRoom; 
     private static final String CHAT_ROOMS = "CHAT_ROOM";
-
-    // 채팅방의 대화 메시지를 발행하기 위한 redis topic 정보. 서버별로 roomId에 매치되는 topic정보를 넣는다.
+    private final RedisMessageListenerContainer redisMessageListener;
+    private final RedisSubscriber redisSubscriber;
+    private HashOperations<String, String, Room> opsHashRoom;
     private Map<String, ChannelTopic> topics;
-
-    // public RedisRoomRepository(RedisMessageListenerContainer redisMessageListenerContainer,
-    //                            RedisSubscriber redisSubscriber, RedisTemplate<String, Object> redisTemplate) {
-    //     this.redisMessageListener = redisMessageListenerContainer;
-    //     this.redisSubscriber= redisSubscriber;
-    //     this.redisTemplate = redisTemplate;
-    // }
 
     @PostConstruct
     private void init() {
-        opsHashRoom = redisTemplate.opsForHash();
+        opsHashRoom = RedisMessaging.getOpsHashRoom(); //FIXME @PostConstruct때문에 null뜸.
         topics = new HashMap<>();
     }
 
@@ -83,7 +80,7 @@ public class RedisRoomRepository {
         ChannelTopic topic = topics.get(roomId);
         if (topic == null) {
             topic = new ChannelTopic(roomId);
-            
+
             redisMessageListener.addMessageListener(redisSubscriber, topic);
             topics.put(roomId, topic);
         }

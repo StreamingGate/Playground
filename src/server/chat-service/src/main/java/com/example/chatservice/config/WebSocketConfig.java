@@ -2,9 +2,12 @@ package com.example.chatservice.config;
 
 
 import com.example.chatservice.stomp.StompHandler;
-
+import com.example.chatservice.utils.ClientMessaging;
+import com.example.chatservice.utils.RedisMessaging;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
@@ -15,30 +18,13 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
  * <h1>WebSocketConfig</h1>
  * Stomp를 사용하기 위해 Broker를 구현한다.
  */
-@EnableWebSocketMessageBroker
+@RequiredArgsConstructor
 @Configuration
+@EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
-    @Autowired
-    private StompHandler stompHandler;
-
-    // @Autowired
-    // private RedisMessageListenerContainer redisMessageListenerContainer;
-
-    // @Autowired
-    // private RedisSubscriber redisSubscriber;
-
-    
-    // @Bean
-    // public RedisRoomRepository redisRoomRepository() {
-    //     return new RedisRoomRepository(redisMessageListenerContainer, redisSubscriber,
-    //             new RedisTemplate<String, Object>());
-    // }
-
-    // @Bean
-    // public StompHandler stompHandler() {
-    //     return new StompHandler(redisRoomRepository());
-    // }
+    private final RedisMessaging redisMessaging; // Warning: Must be declared before StompHandler.java
+    private final StompHandler stompHandler;
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {

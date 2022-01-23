@@ -1,32 +1,28 @@
 package com.example.chatservice.redis;
 
-import com.example.chatservice.model.chat.Chat;
-
 import com.example.chatservice.exception.ErrorResponse;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.listener.ChannelTopic;
-import org.springframework.stereotype.Service;
-
+import com.example.chatservice.model.chat.Chat;
+import com.example.chatservice.utils.RedisMessaging;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.listener.ChannelTopic;
+import org.springframework.stereotype.Service;
 
 @Slf4j
 @RequiredArgsConstructor
 @Service
 public class RedisPublisher {
 
-   private final RedisTemplate<String, Object> redisTemplate;
-
    public void publish(ChannelTopic topic, Chat chat) {
        log.info("topic:" + topic.getTopic());
-       redisTemplate.convertAndSend(topic.getTopic(), chat);
+       RedisMessaging.publishTo(topic, chat);
    }
 
    /**
     * error handling
     */
    public void publish(ChannelTopic topic, ErrorResponse errorResponse) {
-    log.info("topic:" + topic.getTopic());
-    redisTemplate.convertAndSend(topic.getTopic(), errorResponse);
+        log.info("topic:" + topic.getTopic());
+       RedisMessaging.publishTo(topic, errorResponse);
    }
 }
