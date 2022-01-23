@@ -3,7 +3,7 @@ import React, { useEffect, useCallback, useState } from 'react';
 import * as S from './RegisterPage.style';
 import { validation } from '@utils/constant';
 import { useForm } from '@utils/hook';
-import { useVerifyCode, useVerifyNickName, useUserRegister } from '@utils/hook/query';
+import { useUserRegister } from '@utils/hook/query';
 
 import { Stepper } from '@components/dataDisplays';
 import RegisterFormStage1 from '../RegisterFormStages/RegisterFormStage1';
@@ -41,9 +41,9 @@ function RegisterPage() {
     }
   };
 
-  const verifyCode = useVerifyCode(handleSubmitResponse);
-  const verifyNickName = useVerifyNickName(handleSubmitResponse);
-  const userRegister = useUserRegister(handleSubmitResponse);
+  const verifyCode = useUserRegister('verify-code', handleSubmitResponse);
+  const verifyNickName = useUserRegister('verify-nickname', handleSubmitResponse);
+  const userRegister = useUserRegister('user-register', handleSubmitResponse);
 
   const handleFormRequest = values => {
     const { verify, nickName } = values;
