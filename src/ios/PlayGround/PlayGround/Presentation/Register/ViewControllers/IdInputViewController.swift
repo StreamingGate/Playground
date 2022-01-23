@@ -123,7 +123,7 @@ class IdInputViewController: UIViewController {
     }
     
     func isValidName(_ name: String) -> Bool {
-        let nameRegEx = "[가-힣A-Za-z]{1,}"
+        let nameRegEx = "[가-힣A-Za-z ]{1,}"
         let pred = NSPredicate(format:"SELF MATCHES %@", nameRegEx)
         return pred.evaluate(with: name)
     }
