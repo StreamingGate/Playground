@@ -1,5 +1,7 @@
 package com.example.userservice.controller;
 
+import com.example.userservice.dto.RequestMyinfo;
+import com.example.userservice.dto.RequestPwd;
 import com.example.userservice.service.UserService;
 import com.example.userservice.dto.RegisterUser;
 import com.example.userservice.dto.ResponseUser;
@@ -35,11 +37,20 @@ public class UserController {
     /* 정보수정 */
     @PutMapping("/users/{uuid}")
     public ResponseEntity<ResponseUser> update(@PathVariable("uuid") String uuid,
-                                                   @RequestBody RegisterUser registerUser) throws Exception{
+                                               @RequestBody RequestMyinfo requestMyinfo) throws Exception {
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        registerUser = userService.update(uuid,registerUser);
-        ResponseUser responseUser = mapper.map(registerUser,ResponseUser.class);
+        requestMyinfo = userService.update(uuid,requestMyinfo);
+        ResponseUser responseUser = mapper.map(requestMyinfo,ResponseUser.class);
         return ResponseEntity.status(HttpStatus.OK).body(responseUser);
+    }
+
+    /* 비밀번호 수정 */
+    @PutMapping("/users/{uuid}")
+    public ResponseEntity<Boolean> updatePwd(@PathVariable("uuid") String uuid,
+                                                  @RequestBody RequestPwd requestPwd) throws Exception {
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        boolean res = userService.updatePwd(uuid,requestPwd);
+        return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
     /* 회원 탈퇴 */
@@ -64,7 +75,7 @@ public class UserController {
 
     /* 비밀번호 찾기 인증코드 전송 */
     @PostMapping("/password")
-    public ResponseEntity<?> findPassword(@RequestParam(value = "email") String email,
+    public ResponseEntity<String> findPassword(@RequestParam(value = "email") String email,
                                                @RequestParam(value = "name") String name) {
         String res = userService.checkUser(name,email);
         return ResponseEntity.status(HttpStatus.OK).body(res);
@@ -76,6 +87,4 @@ public class UserController {
         boolean res = userService.checkNickName(nickName);
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
-
-    /*  */
 }

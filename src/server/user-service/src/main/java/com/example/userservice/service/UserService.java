@@ -1,6 +1,8 @@
 package com.example.userservice.service;
 
 import com.example.userservice.dto.RegisterUser;
+import com.example.userservice.dto.RequestMyinfo;
+import com.example.userservice.dto.RequestPwd;
 import com.example.userservice.dto.UserDto;
 import com.example.userservice.entity.User.UserEntity;
 import com.example.userservice.entity.User.UserRepository;
@@ -35,7 +37,6 @@ public class UserService implements UserDetailsService {
     private final ModelMapper mapper;
     private final JavaMailSender javaMailSender;
     private final RedisTemplate<String,Object> redisTemplate;
-    private final AmazonS3Service amazonS3Service;
 
     public String sendEmail(String address) {
         SimpleMailMessage message = new SimpleMailMessage();
@@ -56,16 +57,14 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public RegisterUser update(String uuid,RegisterUser requestDto) throws CustomUserException{
+    public RequestMyinfo update(String uuid, RequestMyinfo requestDto) throws CustomUserException{
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        UserEntity userEntity = userRepository.findByUuid(uuid);
+        UserEntity userEntity = userRepository.findByUuid(uuid).orElseThrow(()-> new CustomUserException(ErrorCode.U002));
         Date date = new Date();
         LocalDate localDate = new java.sql.Date(date.getTime()).toLocalDate();
-        if(checkNickName(requestDto.getNickName())) {
-            String bcryptPwd = "";
-            if(requestDto.getPassword() != null) bcryptPwd = bCryptPasswordEncoder.encode(requestDto.getPassword());
-            userEntity.update(requestDto,localDate,bcryptPwd);
-            requestDto = mapper.map(userEntity,RegisterUser.class);
+        if (checkNickName(requestDto.getNickName())){
+            userEntity.update(requestDto,localDate);
+            requestDto = mapper.map(userEntity,RequestMyinfo.class);
             return requestDto;
         }
         throw new CustomUserException(ErrorCode.U004);
@@ -73,7 +72,7 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public void delete(String uuid) {
-        UserEntity userEntity = userRepository.findByUuid(uuid);
+        UserEntity userEntity = userRepository.findByUuid(uuid).orElseThrow(()-> new CustomUserException(ErrorCode.U002));
         Date date = new Date();
         LocalDate localDate = new java.sql.Date(date.getTime()).toLocalDate();
         userEntity.delete(localDate);
@@ -115,7 +114,15 @@ public class UserService implements UserDetailsService {
         return Optional.of(!userRepository.findByNickName(nickName).isPresent()).orElseThrow(()-> new CustomUserException(ErrorCode.U004));
     }
 
-
+    @Transactional
+    public Boolean updatePwd(String uuid,RequestPwd requestPwd) throws CustomUserException {
+        UserEntity userEntity = userRepository.findByUuid(uuid).orElseThrow(()-> new CustomUserException(ErrorCode.U002));
+        Date date = new Date();
+        LocalDate localDate = new java.sql.Date(date.getTime()).toLocalDate();
+        String bcryptPwd = bCryptPasswordEncoder.encode(requestPwd.getPwd());
+        userEntity.updatePwd(bcryptPwd,localDate);
+        return true;
+    }
 
     @Transactional(readOnly = true)
     public UserDto getUserByEmail(String email) {
