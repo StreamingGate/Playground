@@ -4,13 +4,15 @@ import { ValidationError } from 'yup';
 export default function useForm({ initialValues, validSchema, onSubmit }) {
   const [values, setValues] = useState(initialValues);
   const [errors, setErrors] = useState({});
-  const [touched, setTouched] = useState(
-    Object.keys(initialValues).reduce((acc, name) => {
-      return { ...acc, [name]: false };
-    }, {})
-  );
+  const [touched, setTouched] = useState({});
 
-  useEffect(() => {}, [validSchema]);
+  useEffect(() => {
+    setTouched(
+      Object.keys(initialValues).reduce((acc, name) => {
+        return { ...acc, [name]: false };
+      }, {})
+    );
+  }, [validSchema]);
 
   const checkError = async () => {
     const validationErrors = {};
