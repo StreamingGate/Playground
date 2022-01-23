@@ -69,7 +69,7 @@ export default function useForm({ initialValues, validSchema, onSubmit }) {
       return;
     }
     if (onSubmit && typeof onSubmit === 'function') {
-      onSubmit();
+      onSubmit(values);
     }
   };
 
