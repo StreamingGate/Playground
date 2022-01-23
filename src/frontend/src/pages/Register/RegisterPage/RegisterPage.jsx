@@ -49,14 +49,18 @@ function RegisterPage() {
     }
   };
 
-  const { values, errors, touched, handleInputChange, handleInputBlur, handleSubmit } = useForm({
-    initialValues: { ...stage1InitInput, ...stage2InitInput, ...stage3InitInput },
-    validSchema: validation.register[curStage - 1],
-    onSubmit: handleClickNextBtn,
-  });
+  const { values, errors, touched, changeValue, handleInputChange, handleInputBlur, handleSubmit } =
+    useForm({
+      initialValues: { ...stage1InitInput, ...stage2InitInput, ...stage3InitInput },
+      validSchema: validation.register[curStage - 1],
+      onSubmit: handleClickNextBtn,
+    });
 
   const handleClickPrevBtn = () => {
     if (curStage > 1) {
+      if (curStage === 2) {
+        changeValue(['verify', '']);
+      }
       setCurState(prev => prev - 1);
     }
   };
