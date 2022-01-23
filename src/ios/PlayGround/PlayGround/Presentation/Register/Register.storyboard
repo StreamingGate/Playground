@@ -46,6 +46,12 @@
                                             <action selector="nameTextFieldEditingChanged:" destination="Y6W-OH-hqX" eventType="editingChanged" id="kAD-Gi-n6Q"/>
                                         </connections>
                                     </textField>
+                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="본명을 입력해주세요" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DeY-WQ-Tag">
+                                        <rect key="frame" x="0.0" y="0.0" width="354" height="0.0"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        <color key="textColor" systemColor="systemRedColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                             </stackView>
                             <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="비밀번호를 입력해주세요" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ZAk-jx-fmo">
@@ -292,6 +298,7 @@
                     <connections>
                         <outlet property="idFormatCheckLabel" destination="R3d-M3-OFo" id="epj-AC-V2d"/>
                         <outlet property="idTextField" destination="LLN-sI-RhG" id="nJV-Lv-W61"/>
+                        <outlet property="nameFormatCheckLabel" destination="DeY-WQ-Tag" id="YFI-CS-32q"/>
                         <outlet property="nameTextField" destination="b86-Q3-iaf" id="wn6-Xj-ULi"/>
                         <outlet property="nextButton" destination="v9p-Os-E8f" id="hQO-t4-MHU"/>
                         <outlet property="sendVerifyMailButton" destination="Xgz-Vh-R8m" id="6Qq-kY-TjT"/>

@@ -12,6 +12,7 @@ class IdInputViewController: UIViewController {
     
     // MARK: - Properties
     @IBOutlet weak var nameTextField: UITextField!
+    @IBOutlet weak var nameFormatCheckLabel: UILabel!
     @IBOutlet weak var idFormatCheckLabel: UILabel!
     @IBOutlet weak var idTextField: UITextField!
     @IBOutlet weak var sendVerifyMailButton: UIButton!
@@ -64,6 +65,7 @@ class IdInputViewController: UIViewController {
         }
         if let nameInfo = UserDefaults.standard.string(forKey: "onRegister-Name") {
             nameTextField.text = nameInfo
+            nameFormatCheckLabel.isHidden = isValidName(nameInfo)
         }
         self.sendButtonAvailability()
     }
@@ -87,6 +89,7 @@ class IdInputViewController: UIViewController {
         guard let nameInfo = nameTextField.text, nameInfo.isEmpty == false else {
             return
         }
+        nameFormatCheckLabel.isHidden = isValidName(nameInfo)
         UserDefaults.standard.set(true, forKey: "onRegister")
         UserDefaults.standard.set(nameInfo, forKey: "onRegister-Name")
     }
@@ -119,6 +122,12 @@ class IdInputViewController: UIViewController {
         return emailCheck.evaluate(with: input)
     }
     
+    func isValidName(_ name: String) -> Bool {
+        let nameRegEx = "[가-힣A-Za-z]{1,}"
+        let pred = NSPredicate(format:"SELF MATCHES %@", nameRegEx)
+        return pred.evaluate(with: name)
+    }
+    
     // 인증코드 textField 변경
     @IBAction func verifyNumTextFieldEditingChanged(_ sender: Any) {
         guard let verifyInputInfo = verifyNumTextField.text, verifyInputInfo.isEmpty == false else {
@@ -145,7 +154,7 @@ class IdInputViewController: UIViewController {
     // 인증하기 전송 버튼 활성화
     func sendButtonAvailability() {
         if let nameInfo = nameTextField.text, nameInfo.isEmpty == false, let emailInfo = idTextField.text, emailInfo.isEmpty == false {
-            if isValidEmail(input: emailInfo) {
+            if isValidEmail(input: emailInfo) && isValidName(nameInfo) {
                 sendVerifyMailButton.isEnabled = true
             } else {
                 sendVerifyMailButton.isEnabled = false
@@ -165,6 +174,7 @@ class IdInputViewController: UIViewController {
         nameTextField.resignFirstResponder()
         guard let idInfo = idTextField.text, idInfo.isEmpty == false else { return }
         sendVerifyMailButton.isEnabled = false
+        idFormatCheckLabel.isHidden = true
         UserServiceAPI.shared.sendEmailVerification(email: idInfo) { result in
             print("email send result = \(result)")
             if result == idInfo {
