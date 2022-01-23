@@ -2,6 +2,7 @@ import React, { useEffect, useState, memo, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import * as S from './RegisterFormStages.style';
+import { useVerifyEmaii } from '@utils/hook/query';
 
 import { Button } from '@components/buttons';
 
@@ -21,6 +22,18 @@ function RegisterFormStage1({ values, errors, touched, onChange, onBlur }) {
   const [countDown, setCountDown] = useState(parseSecond(limitTime.current));
   const [isVerify, setIsVerify] = useState(false);
   const [isVerifyBtnDisable, setVerifyBtnDisable] = useState(true);
+
+  const handleEmailSendSuccess = data => {
+    // 팝업창으로 변경
+    if (data?.errorCode) {
+      alert(data.message);
+      return;
+    }
+
+    setIsVerify(true);
+  };
+
+  const { refetch } = useVerifyEmaii(email, handleEmailSendSuccess);
 
   useEffect(() => {
     return () => {
@@ -54,10 +67,6 @@ function RegisterFormStage1({ values, errors, touched, onChange, onBlur }) {
     }
   }, [errors]);
 
-  const handleVerifyBtnClick = () => {
-    setIsVerify(true);
-  };
-
   return (
     <>
       <S.FormStageInputContainer>
@@ -88,7 +97,7 @@ function RegisterFormStage1({ values, errors, touched, onChange, onBlur }) {
       </S.FormStageInputContainer>
       {!isVerify ? (
         <S.VerifyButtonContainer>
-          <Button color='pgBlue' disabled={isVerifyBtnDisable} onClick={handleVerifyBtnClick}>
+          <Button color='pgBlue' disabled={isVerifyBtnDisable} onClick={refetch}>
             인증하기
           </Button>
         </S.VerifyButtonContainer>
