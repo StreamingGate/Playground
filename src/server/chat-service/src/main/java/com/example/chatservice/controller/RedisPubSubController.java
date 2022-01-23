@@ -1,16 +1,16 @@
 package com.example.chatservice.controller;
 
+import com.example.chatservice.exception.ErrorResponse;
 import com.example.chatservice.model.chat.Chat;
 import com.example.chatservice.model.chat.ChatType;
 import com.example.chatservice.redis.RedisPublisher;
 import com.example.chatservice.redis.RedisRoomRepository;
-
-import com.example.chatservice.exception.ErrorResponse;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.stereotype.Controller;
-
+import com.example.chatservice.utils.ClientMessaging;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.stereotype.Controller;
 
 import static com.example.chatservice.exception.ErrorCode.C001;
 
@@ -24,25 +24,23 @@ import static com.example.chatservice.exception.ErrorCode.C001;
 @Controller
 public class RedisPubSubController {
 
+    private static final String CHAT_DESTINATION="/topic/chat/room/";
     private final RedisPublisher redisPublisher;
     private final RedisRoomRepository redisRoomRepository;
 
-    @MessageMapping("/chat/message")
-    public void message(Chat chat) throws Exception
-    {
+    @MessageMapping("/chat/message/{roomId}")
+    public void message(@DestinationVariable String roomId, Chat chat) throws Exception {
         log.info("ws message:" + chat.getMessage());
-        if(chat.getChatType().equals(ChatType.PINNED)){
-            try{
-                int pinnedCnt = redisRoomRepository.addPinnedChat(chat);
+        try {
+            if (chat.getChatType().equals(ChatType.PINNED)) {
+                int pinnedCnt = redisRoomRepository.addPinnedChat(roomId, chat);
                 log.info("pinnedCnt: " + pinnedCnt);
-            }catch(RuntimeException e){
-                e.printStackTrace();
-                redisPublisher.publish(redisRoomRepository.getTopic(chat.getRoomId()),
-                        new ErrorResponse(C001, C001.getMessage()));
             }
+            redisPublisher.publish(redisRoomRepository.getTopic(roomId), chat);
+        } catch (IllegalArgumentException e) {
+            log.info(e.getMessage());
+            ClientMessaging.publish(CHAT_DESTINATION + roomId, new ErrorResponse(C001, C001.getMessage()));
         }
-        redisRoomRepository.enter(chat.getRoomId()); // FIXME: StompHandler
-        redisPublisher.publish(redisRoomRepository.getTopic(chat.getRoomId()), chat);
     }
 }
 

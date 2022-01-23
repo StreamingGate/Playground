@@ -40,7 +40,7 @@ public class RedisRoomRepository {
 
     @PostConstruct
     private void init() {
-        opsHashRoom = RedisMessaging.getOpsHashRoom(); //FIXME @PostConstruct때문에 null뜸.
+        opsHashRoom = RedisMessaging.getOpsHashRoom();
         topics = new HashMap<>();
     }
 
@@ -61,13 +61,11 @@ public class RedisRoomRepository {
         return room;
     }
 
-    public int addPinnedChat(Chat pinnedChat) throws IllegalArgumentException{
-        // 권한 확인
-        log.info("SenderRole: " + pinnedChat.getSenderRole());
-        if(!pinnedChat.getSenderRole().equals(SenderRole.STREAMER)){
-            throw new IllegalArgumentException("Sender Role is not invalid");
-        }
-        Room room = opsHashRoom.get(CHAT_ROOMS, pinnedChat.getRoomId());
+    public int addPinnedChat(String roomId, Chat pinnedChat) throws IllegalArgumentException{
+        if (!pinnedChat.getSenderRole().equals(SenderRole.STREAMER))
+            throw new IllegalArgumentException("Sender Role is not valid");
+
+        Room room = opsHashRoom.get(CHAT_ROOMS, roomId);
         room.getPinnedChats().add(pinnedChat);
         opsHashRoom.put(CHAT_ROOMS, room.getId(), room); //update
         return room.getPinnedChats().size();

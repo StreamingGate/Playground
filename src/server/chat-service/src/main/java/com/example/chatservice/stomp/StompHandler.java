@@ -25,11 +25,11 @@ public class StompHandler implements ChannelInterceptor {
             case SUBSCRIBE:
                 String[] splited = accessor.getDestination().split("/");
                 String roomId = splited[splited.length-1];
-                log.info("roomId: " + roomId);
+                log.info("destination: " + roomId);
                 redisRoomRepository.enter(roomId);
                 break;
             case UNSUBSCRIBE:
-                log.info("unsubscribe....");
+                log.info("unsubscribed....");
             case DISCONNECT: //disconnect() or 세션이 끊어졌을 때(페이지 이동, 브라우저 닫기 등)
                 log.info("disconnected....");
                 break;

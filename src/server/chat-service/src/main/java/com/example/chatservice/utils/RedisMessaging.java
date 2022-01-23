@@ -1,7 +1,6 @@
 package com.example.chatservice.utils;
 
 import com.example.chatservice.model.room.Room;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.core.HashOperations;
@@ -23,7 +22,6 @@ import org.springframework.stereotype.Component;
  * -> SimpMessageSendingOperations.java
  * </pre>
  */
-@Slf4j
 @Component
 public class RedisMessaging {
 
@@ -34,11 +32,11 @@ public class RedisMessaging {
         this.redisTemplate= redisTemplate;
     }
 
-    public static void publishTo(ChannelTopic topic, Object object){
+    public static void publish(ChannelTopic topic, Object object){
         redisTemplate.convertAndSend(topic.getTopic(), object);
     }
 
-    public static String deserializePublished(Message message){
+    public static String getPublishedMessage(Message message){
         return redisTemplate.getStringSerializer().deserialize(message.getBody());
     }
 

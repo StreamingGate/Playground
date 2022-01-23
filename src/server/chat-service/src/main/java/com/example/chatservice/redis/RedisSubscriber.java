@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -31,11 +30,11 @@ public class RedisSubscriber implements MessageListener {
    public void onMessage(Message message, byte[] pattern) {
        try {
            // redis에서 발행된 데이터를 받아 deserialize
-           String publishMessage = RedisMessaging.deserializePublished(message);
+           String publishMessage = RedisMessaging.getPublishedMessage(message);
            // ChatMessage 객채로 맵핑
            Chat chat = objectMapper.readValue(publishMessage, Chat.class);
            // Websocket 구독자에게 채팅 메시지 Send
-           ClientMessaging.publishTo("/topic/chat/room/" + chat.getRoomId(), chat);
+           ClientMessaging.publish("/topic/chat/room/" + chat.getRoomId(), chat);
        } catch (Exception e) {
            log.error(e.getMessage());
        }

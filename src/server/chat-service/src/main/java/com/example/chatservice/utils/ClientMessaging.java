@@ -23,7 +23,7 @@ public class ClientMessaging {
         log.info("init client:"+this.messagingTemplate);
     }
 
-    public static void publishTo(String destination, Object payload) {
+    public static void publish(String destination, Object payload) {
         messagingTemplate.convertAndSend(destination, payload);
     }
 }
