@@ -1,7 +1,7 @@
 package com.example.chatservice.controller;
 
 import com.example.chatservice.model.room.Room;
-import com.example.chatservice.redis.RedisRoomRepository;
+import com.example.chatservice.redis.RedisRoomService;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/chat")
 public class RoomController {
 
-    private final RedisRoomRepository redisRoomRepository;
+    private final RedisRoomService redisRoomRepository;
 
     @GetMapping("/room/{roomId}")
     @ResponseBody

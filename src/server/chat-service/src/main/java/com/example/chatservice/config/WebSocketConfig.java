@@ -2,12 +2,9 @@ package com.example.chatservice.config;
 
 
 import com.example.chatservice.stomp.StompHandler;
-import com.example.chatservice.utils.ClientMessaging;
 import com.example.chatservice.utils.RedisMessaging;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
@@ -28,14 +25,17 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/topic");
+        config.enableSimpleBroker("/topic", "/queue");
         config.setApplicationDestinationPrefixes("/app");
+        config.setUserDestinationPrefix("/user"); //특정 유저에게 보내는 사용자 path
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         // ws 엔드포인트 등록
         registry.addEndpoint("/ws").setAllowedOriginPatterns("*")
+                // 특정 유저에게 publish하기위해 유저의 sessionId를 저장해둔다.
+//                .setHandshakeHandler(new CustomHandshakeHandler())
                 .withSockJS();
     }
 

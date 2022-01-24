@@ -26,4 +26,8 @@ public class ClientMessaging {
     public static void publish(String destination, Object payload) {
         messagingTemplate.convertAndSend(destination, payload);
     }
+
+    public static void publishToUser(String user, String destination, Object payload) {
+        messagingTemplate.convertAndSendToUser(user, destination, payload);
+    }
 }

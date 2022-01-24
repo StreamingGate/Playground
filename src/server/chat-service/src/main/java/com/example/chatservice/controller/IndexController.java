@@ -3,7 +3,7 @@ package com.example.chatservice.controller;
 import java.util.List;
 
 import com.example.chatservice.model.room.Room;
-import com.example.chatservice.redis.RedisRoomRepository;
+import com.example.chatservice.redis.RedisRoomService;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class IndexController {
     
-    private final RedisRoomRepository redisRoomRepository;
+    private final RedisRoomService redisRoomRepository;
 
     @GetMapping("/room")
     public String rooms(Model model) {

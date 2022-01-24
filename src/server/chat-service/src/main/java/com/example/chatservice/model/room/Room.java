@@ -30,7 +30,13 @@ public class Room implements Serializable {
         this.userCnt = 0;
     }
 
-    public void addUser(){
+    public int addUser(){
         this.userCnt +=1;
+        return this.userCnt;
+    }
+
+    public int removeUser(){
+        this.userCnt-=1;
+        return this.userCnt;
     }
 }
