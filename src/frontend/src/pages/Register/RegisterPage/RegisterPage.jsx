@@ -8,7 +8,7 @@ import { useForm } from '@utils/hook';
 import { useUserRegister } from '@utils/hook/query';
 
 import { Stepper } from '@components/dataDisplays';
-import { AdviseModal } from '@components/feedbacks/modals';
+import { AdviseModal } from '@components/feedbacks/Modals';
 import RegisterFormStage1 from '../RegisterFormStages/RegisterFormStage1';
 import RegisterFormStage2 from '../RegisterFormStages/RegisterFormStage2';
 import RegisterFormStage3 from '../RegisterFormStages/RegisterFormStage3';

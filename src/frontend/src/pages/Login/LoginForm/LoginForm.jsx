@@ -10,7 +10,7 @@ import { useLogin } from '@utils/hook/query';
 import { Input } from '@components/forms';
 import { Typography } from '@components/cores';
 import { Button } from '@components/buttons';
-import { AdviseModal } from '@components/feedbacks/modals';
+import { AdviseModal } from '@components/feedbacks/Modals';
 
 const { loginPage } = placeholder;
 

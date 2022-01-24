@@ -6,7 +6,7 @@ import { modalService } from '@utils/service';
 import { useUserRegister } from '@utils/hook/query';
 
 import { Button } from '@components/buttons';
-import { AdviseModal } from '@components/feedbacks/modals';
+import { AdviseModal } from '@components/feedbacks/Modals';
 
 const VERIFY_TIME = 60 * 10;
 
