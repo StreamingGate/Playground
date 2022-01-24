@@ -23,13 +23,13 @@ public class IndexController {
     public String rooms(Model model) {
         List<Room> rooms = redisRoomRepository.findAll();
         model.addAttribute("rooms", rooms);
-        return "/room";
+        return "room";
     }
     
     @GetMapping("/room/enter/{roomId}")
     public String roomDetail(Model model, @PathVariable String roomId) {
         log.info("enter room....");
         model.addAttribute("roomId", roomId);
-        return "/roomdetail";
+        return "roomdetail";
     }
 }

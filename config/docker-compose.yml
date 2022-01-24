@@ -37,7 +37,7 @@ services:
     container_name: chat-service
     image: rlagksml99/chat-service
     ports:
-      - "50002:8080"
+      - "50002:50002"
     depends_on:
       - redis
     links:
