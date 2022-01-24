@@ -27,7 +27,7 @@ services:
 
   user-service:
     container_name: user-service
-    image: wodndl895/user-service:1.0
+    image: user-service:1.0
     ports:
       - "50001:50001"
     environment:

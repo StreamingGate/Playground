@@ -3,7 +3,9 @@ server:
 
 spring:
   profiles:
-    include: auth
+    include:
+      - auth
+      - s3
     active: local
   application:
     name: user-service
@@ -17,7 +19,7 @@ spring:
     username: root
     password: test
   redis:
-    host: localhost
+    host: redis
     port: 6379
 
   mail:
@@ -28,14 +30,11 @@ spring:
     properties.mail.smtp.auth: true
     properties.mail.smtp.starttls.enable: true
 
-
-eureka:
-  instance:
-    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
-  client:
-    fetch-registry: true
-    register-with-eureka: true
-    service-url:
-      defaultZone: http://localhost:8761/eureka
-
-
+#eureka:
+#  instance:
+#    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+#  client:
+#    fetch-registry: true
+#    register-with-eureka: true
+#    service-url:
+#      defaultZone: http://localhost:8761/eureka

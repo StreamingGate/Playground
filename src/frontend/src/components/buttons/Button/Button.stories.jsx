@@ -49,7 +49,7 @@ Variant.args = {
 const ColorTemplate = args => (
   <>
     <Button color='pgOrange' {...args} />
-    <Button color='youtubeBlue' {...args} />
+    <Button color='pgBlue' {...args} />
   </>
 );
 export const Color = ColorTemplate.bind({});
