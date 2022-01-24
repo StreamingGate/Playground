@@ -70,9 +70,12 @@ struct UserServiceAPI {
     }
     
     func sendEmailVerification(email: String, completion: @escaping (String)->Void) {
-        let url = URL(string: "http://localhost:50001/users/mail?email=\(email)")!
+        let url = URL(string: "http://localhost:50001/users/email")!
         var request = URLRequest(url: url)
+        let postData : [String: Any] = ["email": email]
+        let jsonData = try? JSONSerialization.data(withJSONObject: postData)
         request.httpMethod = "POST"
+        request.httpBody = jsonData
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             let successRange = 200 ..< 300
