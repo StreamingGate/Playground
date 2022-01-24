@@ -13,5 +13,5 @@ export const AdviseModalContent = styled.div`
 `;
 
 export const AdviseModalAction = styled.div`
-  text-align: right;
+  text-align: ${({ position }) => position};
 `;
