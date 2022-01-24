@@ -2,9 +2,11 @@ import React, { useEffect, useState, memo, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import * as S from './RegisterFormStages.style';
+import { modalService } from '@utils/service';
 import { useVerifyEmaii } from '@utils/hook/query';
 
 import { Button } from '@components/buttons';
+import AdviseModal from '../../../components/feedbacks/Modals/AdviseModal';
 
 const VERIFY_TIME = 60 * 10;
 
@@ -24,6 +26,7 @@ function RegisterFormStage1({ values, errors, touched, onChange, onBlur }) {
   const [isVerifyBtnDisable, setVerifyBtnDisable] = useState(true);
 
   const handleEmailSendSuccess = data => {
+    modalService.show(AdviseModal, { content: 'hello' });
     // 팝업창으로 변경
     if (data?.errorCode) {
       alert(data.message);

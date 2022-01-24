@@ -1,15 +1,13 @@
 import React from 'react';
 
+import S from './LoginForm.style';
+import { placeholder, validation } from '@utils/constant';
 import { useForm } from '@utils/hook';
 import { useLogin } from '@utils/hook/query';
 
 import { Input } from '@components/forms';
 import { Typography } from '@components/cores';
 import { Button } from '@components/buttons';
-
-import { placeholder, validation } from '@utils/constant';
-
-import S from './LoginForm.style';
 
 const { loginPage } = placeholder;
 

@@ -38,7 +38,7 @@ services:
     restart: always
     networks:
       - sg-network
-  
+
   service-discovery:
     container_name: service-discovery
     image: wodndl895/service-discovery:1.0
