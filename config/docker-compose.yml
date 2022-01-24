@@ -42,6 +42,8 @@ services:
   chat-service:
     container_name: chat-service
     image: rlagksml99/chat-service
+    environment:
+      eureka.client.serviceUrl.defaultZone: http://service-discovery:8761/eureka/
     depends_on:
       - redis
     links:
@@ -58,7 +60,7 @@ services:
     networks:
       - sg-network
   apigateway-service:
-    image: wodndl895/apigateway:1.0
+    image: api-gateway:1.0
     ports:
       - "8000:8000"
     environment:
