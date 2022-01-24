@@ -1,4 +1,5 @@
 import React from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
 import RegisterPage from './RegisterPage';
@@ -15,7 +16,9 @@ export default {
   decorators: [
     Story => (
       <QueryClientProvider client={queryClient}>
-        <Story />
+        <Router>
+          <Story />
+        </Router>
       </QueryClientProvider>
     ),
   ],
