@@ -121,8 +121,8 @@ class NickNameInputViewController: UIViewController {
         nextButton.isEnabled = false
         UserServiceAPI.shared.nicknameDuplicateCheck(nickname: nickNameInfo) { result in
             print("nickname check result = \(result)")
-            if result {
-                RegisterHelper.shared.nickName = nickNameInfo
+            if let nickname = result["nickname"] as? String, nickname != "failed" {
+                RegisterHelper.shared.nickName = nickname
                 DispatchQueue.main.async {
                     self.nextButton.isEnabled = true
                     guard let pwVC = UIStoryboard(name: "Register", bundle: nil).instantiateViewController(withIdentifier: "PwInputViewController") as? PwInputViewController else { return }
