@@ -122,7 +122,7 @@ struct UserServiceAPI {
     }
     
     func checkVerificationCode(code: String, completion: @escaping (String)->Void) {
-        let original = "http://localhost:50001/users/mail?code=\(code)"
+        let original = "http://localhost:50001/users/email?code=\(code)"
         // 한글이 들어간 경우를 위해서
         guard let target = original.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
             // 인코딩중 에러가 발생함
