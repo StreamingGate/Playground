@@ -1,4 +1,6 @@
 spring.profiles.active: local
+server:
+  port: 50002
 spring:
   devtools:
     livereload:
