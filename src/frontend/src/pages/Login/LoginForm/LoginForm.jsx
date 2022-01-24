@@ -76,7 +76,7 @@ function LoginForm() {
       <S.RegisterContainer>
         <Typography type='caption'>계정이 없으신가요?</Typography>
         <Typography type='highlightCaption'>
-          <S.RegisterLink to='/'>가입하기</S.RegisterLink>
+          <S.RegisterLink to='/register'>가입하기</S.RegisterLink>
         </Typography>
       </S.RegisterContainer>
     </S.Form>
