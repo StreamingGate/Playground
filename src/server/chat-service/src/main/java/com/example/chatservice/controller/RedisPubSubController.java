@@ -14,10 +14,9 @@ import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Controller;
-
 import java.security.Principal;
-
 import static com.example.chatservice.exception.ErrorCode.C001;
+
 
 
 /**
@@ -27,17 +26,16 @@ import static com.example.chatservice.exception.ErrorCode.C001;
 @Slf4j
 @RequiredArgsConstructor
 @Controller
-public class RedisPubSubController {     // TODO : Scheduling
+public class RedisPubSubController {    /* TODO: Scheduling 적용 */
 
     private static final String CHAT_DESTINATION="/topic/chat/room/";
     private static final String USER_CNT_DESTINATION="/topic/user-cnt/room/";
     private static final String ERROR_DESTINATION="/queue/errors";
     private final RedisRoomService redisRoomService;
 
-    // TODO : 일반 채팅, 채팅 고정 분리하기
+    /* TODO: 일반 채팅, 채팅 고정 분리하기 */
     @MessageMapping("/chat/message/{roomId}")
     public void message(@DestinationVariable String roomId, Chat chat) throws Exception{
-        log.info("ws message:" + chat.getMessage());
         try {
             if (chat.getChatType().equals(ChatType.PINNED)) {
                 int pinnedCnt = redisRoomService.addPinnedChat(roomId, chat);
@@ -54,7 +52,6 @@ public class RedisPubSubController {     // TODO : Scheduling
     /** client에서 채팅방 나가기 직전에 보낸다 **/
     @MessageMapping("/user-cnt/room/{roomId}/exit")
     public void exit(@DestinationVariable String roomId) throws Exception{
-        log.info("exited...");
         int userCnt = redisRoomService.exit(roomId);
         ClientMessaging.publish(USER_CNT_DESTINATION+roomId, userCnt);
     }
@@ -65,4 +62,3 @@ public class RedisPubSubController {     // TODO : Scheduling
 //        ClientMessaging.publish(CHAT_DESTINATION + roomId, userCnt);
 //    }
 }
-

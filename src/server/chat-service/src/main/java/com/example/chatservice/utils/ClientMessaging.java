@@ -20,7 +20,6 @@ public class ClientMessaging {
     @Autowired
     public ClientMessaging(SimpMessageSendingOperations messagingTemplate){
         this.messagingTemplate = messagingTemplate;
-        log.info("init client:"+this.messagingTemplate);
     }
 
     public static void publish(String destination, Object payload) {

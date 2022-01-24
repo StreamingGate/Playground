@@ -27,7 +27,7 @@ public class StompHandler implements ChannelInterceptor {
                 splited = accessor.getDestination().split("/");
                 if (splited[2].equals("chat")) {
                     roomId = splited[splited.length - 1];
-                    log.info("destination: " + roomId);
+                    log.info("subscribe destination: " + roomId);
                     redisRoomService.enter(roomId);
                 }
                 break;

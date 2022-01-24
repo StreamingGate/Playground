@@ -4,7 +4,6 @@ package com.example.chatservice.model.chat;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-
 import java.io.Serializable;
 
 @RequiredArgsConstructor

@@ -12,7 +12,6 @@ import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +29,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Service
 public class RedisRoomService {
+
     private static final String CHAT_ROOMS = "CHAT_ROOM";
     private final RedisMessageListenerContainer redisMessageListener;
     private final RedisSubscriber redisSubscriber;
@@ -100,7 +100,6 @@ public class RedisRoomService {
 
     public ChannelTopic getTopic(String roomId) {
         ChannelTopic ct = topics.get(roomId);
-        log.info("ChannelTopic: " + ct);
         if (ct != null) log.info("ChannelTopic: " + ct.getTopic());
         return ct;
     }

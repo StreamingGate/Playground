@@ -2,7 +2,6 @@ package com.example.chatservice.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-
 import java.io.Serializable;
 
 @AllArgsConstructor
