@@ -27,4 +27,18 @@ const register = [
   }),
 ];
 
-export default { register };
+const login = yup.object().shape({
+  email: yup
+    .string()
+    .required('이메일을 입력해 주세요')
+    .email('올바른 이메일 형식을 입력해 주세요'),
+  password: yup
+    .string()
+    .required('비밀번호를 입력해 주세요')
+    .matches(
+      /^(?=.*[a-z])(?=.*\d)[A-Za-z\d]{6,16}$/,
+      '영문 소문자와 숫자를 포함한 6~16자여야 합니다'
+    ),
+});
+
+export default { register, login };
