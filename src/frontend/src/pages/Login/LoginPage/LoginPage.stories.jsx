@@ -1,7 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { QueryClientProvider, QueryClient } from 'react-query';
 
 import LoginPage from './LoginPage';
+
+const queryClient = new QueryClient();
 
 export default {
   title: 'Page/Login',
@@ -9,9 +12,11 @@ export default {
   parameters: { controls: { hideNoControlsWarning: true } },
   decorators: [
     Story => (
-      <Router>
-        <Story />
-      </Router>
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <Story />
+        </Router>
+      </QueryClientProvider>
     ),
   ],
 };
