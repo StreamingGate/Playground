@@ -35,7 +35,7 @@ create table live_viewer (
     live_room_id bigint,
     user_id bigint,
     primary key (id)
-) engine = InnoDB; 
+) engine = InnoDB;
 create table metadata (
     id bigint not null auto_increment,
     file_link TEXT,
