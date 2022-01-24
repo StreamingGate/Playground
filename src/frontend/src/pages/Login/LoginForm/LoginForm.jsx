@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { useForm } from '@utils/hook';
+import { useLogin } from '@utils/hook/query';
 
 import { Input } from '@components/forms';
 import { Typography } from '@components/cores';
@@ -13,10 +14,26 @@ import S from './LoginForm.style';
 const { loginPage } = placeholder;
 
 function LoginForm() {
+  const handleLoginResponse = data => {
+    // 팝업 창으로 변경
+    if (data?.errorCode) {
+      alert(data.message);
+      return;
+    }
+
+    alert('로그인 성공');
+  };
+
+  const { mutate } = useLogin(handleLoginResponse);
+
+  const handleLoginRequest = values => {
+    mutate(values);
+  };
+
   const { values, errors, touched, handleInputChange, handleInputBlur, handleSubmit } = useForm({
     initialValues: { email: '', password: '' },
     validSchema: validation.login,
-    onSubmit: () => console.log('hi'),
+    onSubmit: handleLoginRequest,
   });
 
   return (
