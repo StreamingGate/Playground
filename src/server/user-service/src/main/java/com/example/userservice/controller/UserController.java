@@ -49,6 +49,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(uuid);
     }
     /* 이메일 인증코드 전송 */
+    /* TODO : param -> body */
     @PostMapping("/users/mail")
     public ResponseEntity<String> checkMail(@RequestParam(value = "email") String email) throws Exception{
         String res = userService.checkEmail(email);
@@ -75,4 +76,6 @@ public class UserController {
         boolean res = userService.checkNickName(nickName);
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
+
+    /*  */
 }

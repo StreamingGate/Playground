@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const Dotenv = require('dotenv-webpack');
 
 const babelPluginsDev = ['babel-plugin-styled-components', '@babel/plugin-transform-runtime'];
@@ -90,6 +91,13 @@ module.exports = (env, args) => {
         template: './index.html',
       }),
       new Dotenv(),
+      // new BundleAnalyzerPlugin({
+      //   analyzerMode: 'static',
+      //   reportFilename: 'bundle-report.html',
+      //   openAnalyzer: false,
+      //   generateStatsFile: true,
+      //   statsFilename: 'bundle-stats.json',
+      // }),
     ],
   };
 };

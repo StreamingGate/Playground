@@ -1,16 +1,16 @@
 PODS:
-  - ACThumbnailGenerator-Swift (1.0.1)
+  - SwiftKeychainWrapper (4.0.1)
 
 DEPENDENCIES:
-  - ACThumbnailGenerator-Swift
+  - SwiftKeychainWrapper
 
 SPEC REPOS:
   trunk:
-    - ACThumbnailGenerator-Swift
+    - SwiftKeychainWrapper
 
 SPEC CHECKSUMS:
-  ACThumbnailGenerator-Swift: 4c619a2ab32f005762c79a9a91ac61b092ab5e7e
+  SwiftKeychainWrapper: 807ba1d63c33a7d0613288512399cd1eda1e470c
 
-PODFILE CHECKSUM: 0bc7de5a80f02e8815aa44517621e7ff06a9e8bc
+PODFILE CHECKSUM: 7be505ffa04971298522e0601cd7e55deaab079f
 
 COCOAPODS: 1.11.2

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import ButtonStyle from './Button.style';
 
-function Button({ variant, children, color, size, fullWidth, onClick, className }) {
+function Button({ className, variant, children, color, size, fullWidth, onClick, disabled }) {
   return (
     <ButtonStyle.B
       className={className}
@@ -13,6 +13,7 @@ function Button({ variant, children, color, size, fullWidth, onClick, className 
       size={size}
       fullWidth={fullWidth}
       onClick={onClick}
+      disabled={disabled}
     >
       {children}
     </ButtonStyle.B>
@@ -23,10 +24,11 @@ Button.propTypes = {
   className: PropTypes.string,
   variant: PropTypes.oneOf(['contained', 'outlined']),
   children: PropTypes.node,
-  color: PropTypes.oneOf(['youtubeRed', 'youtubeBlue', 'pgOrange']),
+  color: PropTypes.oneOf(['youtubeRed', 'pgBlue', 'pgOrange']),
   size: PropTypes.oneOf(['sm', 'md', 'lg']),
   fullWidth: PropTypes.bool,
   onClick: PropTypes.func,
+  disabled: PropTypes.bool,
 };
 
 Button.defaultProps = {
@@ -37,6 +39,7 @@ Button.defaultProps = {
   size: 'md',
   fullWidth: false,
   onClick: null,
+  disabled: false,
 };
 
 export default Button;
