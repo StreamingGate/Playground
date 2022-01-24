@@ -41,7 +41,7 @@ services:
 
   chat-service:
     container_name: chat-service
-    image: rlagksml99/chat-service
+    image: rlagksml99/chat-service:latest
     environment:
       eureka.client.serviceUrl.defaultZone: http://service-discovery:8761/eureka/
     depends_on:
