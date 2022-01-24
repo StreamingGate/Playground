@@ -21,8 +21,7 @@ services:
     ports:
       - "6379:6379"
     networks:
-      sg-network:
-        ipv4_address: 172.19.0.3
+      - sg-network
 
   user-service:
     container_name: user-service
