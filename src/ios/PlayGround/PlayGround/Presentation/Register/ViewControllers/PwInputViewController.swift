@@ -125,10 +125,19 @@ class PwInputViewController: UIViewController{
         }
         let binaryImage = imageData.base64EncodedString()
         
-        UserServiceAPI.shared.register(email: emailInfo, name: nameInfo, nickName: nicknameInfo, password: pwInfo, profileImage: "test") { userInfo in
-            print("register result = \(userInfo)")
-            DispatchQueue.main.async {
-                self.dismiss(animated: true, completion: nil)
+        UserServiceAPI.shared.register(email: emailInfo, name: nameInfo, nickName: nicknameInfo, password: pwInfo, profileImage: binaryImage) { userInfo in
+            print("register result = \(String(describing: userInfo ?? nil))")
+            if userInfo?.email == emailInfo {
+                DispatchQueue.main.async {
+                    let alert = UIAlertController(title: "", message: "회원가입이 완료되었습니다", preferredStyle: .alert)
+                    let action = UIAlertAction(title: "로그인 페이지로 이동", style: .default) { _ in
+                        self.registerButton.isEnabled = true
+                        self.dismiss(animated: true, completion: nil)
+                    }
+                    alert.addAction(action)
+                    self.present(alert, animated: true, completion: nil)
+                }
+            } else {
             }
         }
     }
