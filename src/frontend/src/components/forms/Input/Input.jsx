@@ -19,7 +19,7 @@ const Input = forwardRef((props, ref) => {
     ...rest
   } = props;
   return (
-    <div>
+    <S.InputContainer>
       <S.Input
         className={className}
         ref={ref}
@@ -34,7 +34,7 @@ const Input = forwardRef((props, ref) => {
         {...rest}
       />
       {error && <S.HelperText type='caption'>{helperText}</S.HelperText>}
-    </div>
+    </S.InputContainer>
   );
 });
 

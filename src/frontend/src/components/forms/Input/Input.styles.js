@@ -55,6 +55,10 @@ const getInputOutline = props => {
   }
 };
 
+export const InputContainer = styled.div`
+  width: 100%;
+`;
+
 export const Input = styled.input`
   font-size: ${props => props.theme.fontSizes[props.fontSize]};
   border: 1px solid ${({ theme }) => theme.colors.placeHolder};
