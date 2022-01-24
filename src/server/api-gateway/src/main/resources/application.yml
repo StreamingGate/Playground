@@ -18,7 +18,8 @@ spring:
         cors-configurations:
           '[/**]':
             allowedOrigins:
-              - "http://localhost:3000"
+              - "http://localhost:8080"
+              - "http://localhost:63669"
             allowCredentials: true
             allowedHeaders:
               - x-requested-with
@@ -51,8 +52,8 @@ spring:
         - id: user-service
           uri: lb://USER-SERVICE
           predicates:
-            - Path=/user-service/users/**
+            - Path=/user-service/**
             - Method=POST,GET,DELETE,PUT
           filters:
-            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+            - RewritePath=/user-service(?<segment>/?.*), /$\{segment}
 #            - AuthenticationFilter

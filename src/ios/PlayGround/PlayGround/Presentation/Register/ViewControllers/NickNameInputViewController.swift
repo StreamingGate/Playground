@@ -11,30 +11,42 @@ import Photos
 
 class NickNameInputViewController: UIViewController {
     
-    // MARK: Properties
+    // MARK: - Properties
     @IBOutlet weak var nextButton: UIButton!
     @IBOutlet weak var nickNameTextField: UITextField!
     @IBOutlet weak var nickNameValidCheckLabel: UILabel!
     @IBOutlet weak var selectButton: UIButton!
     @IBOutlet weak var defaultImageButton: UIButton!
     @IBOutlet weak var profileView: UIView!
+    @IBOutlet weak var step1View: UIView!
+    @IBOutlet weak var step2View: UIView!
+    @IBOutlet weak var step3View: UIView!
     let firstCharacterLabel = UILabel()
     let imagePicker = UIImagePickerController()
     let profileImageView = UIImageView()
     var nameInfo: String = ""
     
-    // MARK: Life Cycle
+    // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         self.imagePicker.sourceType = .photoLibrary
         self.imagePicker.allowsEditing = true
         self.imagePicker.delegate = self
-        self.style()
-        self.layout()
+        self.setupUI()
+        self.setupProfileImageLayout()
     }
     
-    // MARK: Life Cycle
-    func style() {
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        let image = profileView.snapshotView(afterScreenUpdates: true)?.takeScreenshot()
+        RegisterHelper.shared.profileImage = image
+    }
+    
+    // MARK: - UI Setting
+    func setupUI() {
+        step1View.layer.cornerRadius = 10
+        step2View.layer.cornerRadius = 10
+        step3View.layer.cornerRadius = 10
         profileView.backgroundColor = UIColor.placeHolder
         profileView.layer.cornerRadius = 50
         nextButton.layer.cornerRadius = 5
@@ -53,7 +65,8 @@ class NickNameInputViewController: UIViewController {
         profileImageView.layer.masksToBounds = true
     }
     
-    func layout() {
+    // 기본 이미지 및 사진 파일을 위한 레이아웃 설정
+    func setupProfileImageLayout() {
         self.profileView.addSubview(firstCharacterLabel)
         self.profileView.addSubview(profileImageView)
         NSLayoutConstraint.activate([
@@ -67,31 +80,19 @@ class NickNameInputViewController: UIViewController {
         ])
     }
     
-    @IBAction func selectButtonDidTap(_ sender: Any) {
-        self.present(self.imagePicker, animated: true, completion: nil)
-    }
-    
-    @IBAction func defaultImageButtonDidTap(_ sender: Any) {
-        profileImageView.isHidden = true
-        profileView.layer.cornerRadius = 0
-        let image = profileView.snapshotView(afterScreenUpdates: true)?.takeScreenshot()
-        profileView.layer.cornerRadius = 50
-        savePhotoLibrary(image: image!)
-    }
-    
-    // MARK: Nickname Input
+    // MARK: - Nickname Input
     @IBAction func nickNameTextFieldEditingChanged(_ sender: Any) {
         guard let nickNameInfo = nickNameTextField.text, nickNameInfo.isEmpty == false else {
             nickNameValidCheckLabel.isHidden = false
-            nickNameValidCheckLabel.text = "최대 6글자까지 입력하실 수 있습니다"
+            nickNameValidCheckLabel.text = "최대 8글자까지 입력하실 수 있습니다"
             nickNameValidCheckLabel.textColor = UIColor.systemRed
             nextButton.isEnabled = false
             return
         }
-        if nickNameInfo.count > 6 {
+        if nickNameInfo.count > 8 {
             nickNameTextField.deleteBackward()
             nickNameValidCheckLabel.isHidden = false
-            nickNameValidCheckLabel.text = "최대 6글자까지 입력하실 수 있습니다"
+            nickNameValidCheckLabel.text = "최대 8글자까지 입력하실 수 있습니다"
             nickNameValidCheckLabel.textColor = UIColor.systemRed
         } else {
             nickNameValidCheckLabel.isHidden = true
@@ -99,11 +100,45 @@ class NickNameInputViewController: UIViewController {
         }
     }
     
-    // MARK: Button Action
-    // 다음
+    // MARK: - Button Action
+    // 파일에서 선택 버튼
+    @IBAction func selectButtonDidTap(_ sender: Any) {
+        self.present(self.imagePicker, animated: true, completion: nil)
+    }
+    
+    // 기본 이미지로 변경 버튼
+    @IBAction func defaultImageButtonDidTap(_ sender: Any) {
+        profileImageView.isHidden = true
+        profileView.layer.cornerRadius = 0
+        let image = profileView.snapshotView(afterScreenUpdates: true)?.takeScreenshot()
+        profileView.layer.cornerRadius = 50
+        RegisterHelper.shared.profileImage = image
+    }
+    
+    // 다음 버튼
     @IBAction func nextButtonDidTap(_ sender: Any) {
         guard let nickNameInfo = nickNameTextField.text, nickNameInfo.isEmpty == false else { return }
         nextButton.isEnabled = false
+        UserServiceAPI.shared.nicknameDuplicateCheck(nickname: nickNameInfo) { result in
+            print("nickname check result = \(result)")
+            if result {
+                RegisterHelper.shared.nickName = nickNameInfo
+                DispatchQueue.main.async {
+                    self.nextButton.isEnabled = true
+                    guard let pwVC = UIStoryboard(name: "Register", bundle: nil).instantiateViewController(withIdentifier: "PwInputViewController") as? PwInputViewController else { return }
+                    self.navigationController?.pushViewController(pwVC, animated: true)
+                }
+            } else {
+                // 오류
+                DispatchQueue.main.async {
+                    self.nickNameValidCheckLabel.isHidden = false
+                    self.nickNameValidCheckLabel.text = "새 닉네임을 입력해주세요"
+                    self.nickNameValidCheckLabel.textColor = UIColor.systemRed
+                    self.simpleAlert(message: "이미 사용 중인 닉네임입니다")
+                    self.nextButton.isEnabled = true
+                }
+            }
+        }
     }
     
     // 뒤로 가기
@@ -112,47 +147,8 @@ class NickNameInputViewController: UIViewController {
     }
 }
 
-extension NickNameInputViewController {
-    func savePhotoLibrary(image: UIImage) {
-        PHPhotoLibrary.requestAuthorization { status in
-            if status == .authorized {
-                PHPhotoLibrary.shared().performChanges({
-                    PHAssetChangeRequest.creationRequestForAsset(from: image)
-                }, completionHandler: { (_, error) in
-                    DispatchQueue.main.async {
-                        let alert1 = UIAlertController(title: "", message: "이미지가 저장되었습니다.", preferredStyle: .alert)
-                        let action11 = UIAlertAction(title: "OK", style: .default, handler: nil)
-                        alert1.addAction(action11)
-                        self.present(alert1, animated: true, completion: nil)
-                    }
-                })
-            } else {
-                print("Not determined")
-                DispatchQueue.main.async {
-                    self.alertToEncouragePhotoLibraryAccessWhenApplicationStarts()
-                }
-            }
-        }
-    }
-    
-    func alertToEncouragePhotoLibraryAccessWhenApplicationStarts() {
-        let cameraUnavailableAlertController = UIAlertController (title: "사진 접근 권한", message: "캡쳐를 위해서는 사진 권한을 허용해주세요.", preferredStyle: .alert)
-
-        let settingsAction = UIAlertAction(title: "설정 가기", style: .destructive) { (_) -> Void in
-            let settingsUrl = NSURL(string:UIApplication.openSettingsURLString)
-            if let url = settingsUrl {
-                UIApplication.shared.open(url as URL, options: [:], completionHandler: nil)
-            }
-        }
-        let cancelAction = UIAlertAction(title: "취소", style: .default, handler: nil)
-        cameraUnavailableAlertController .addAction(settingsAction)
-        cameraUnavailableAlertController .addAction(cancelAction)
-        self.present(cameraUnavailableAlertController, animated: true, completion: nil)
-    }
-}
-
+// MARK: - Profile Image Pick
 extension NickNameInputViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         var newImage: UIImage? = nil
         if let possibleImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
@@ -160,8 +156,9 @@ extension NickNameInputViewController: UIImagePickerControllerDelegate, UINaviga
         } else if let possibleImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             newImage = possibleImage
         }
-        self.profileView.isHidden = false
+        self.profileImageView.isHidden = false
         self.profileImageView.image = newImage
+        RegisterHelper.shared.profileImage = newImage
         picker.dismiss(animated: true, completion: nil)
     }
 }

@@ -18,12 +18,10 @@ class PlayerView: UIView {
         }
     }
     
-    
     var playerLayer: AVPlayerLayer {
         return layer as! AVPlayerLayer
     }
     
-    // Override UIView property
     override static var layerClass: AnyClass {
         return AVPlayerLayer.self
     }

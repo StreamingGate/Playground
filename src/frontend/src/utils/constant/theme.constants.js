@@ -32,6 +32,7 @@ const colors = {
   background: '#F3F3F3',
   pgOrange: '#FFBD13',
   pgBlue: '#4286F5',
+  pgMint: '#93E9F4',
 };
 
 const theme = { fontSizes, fontWeights, colors };

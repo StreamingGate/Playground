@@ -30,15 +30,14 @@ const VariantTemplate = args => (
 );
 export const Variant = VariantTemplate.bind({});
 Variant.args = {
-  size: 'small',
+  size: 'sm',
 };
 
 const SizeTemplate = args => (
   <>
-    <Input size='small' variant='contained' {...args} />
-    <Input size='large' variant='contained' {...args} />
-    <Input size='small' variant='standard' {...args} />
-    <Input size='large' variant='standard' {...args} />
+    <Input size='sm' variant='contained' {...args} />
+    <Input size='md' variant='contained' {...args} />
+    <Input size='lg' variant='contained' {...args} />
   </>
 );
 export const Size = SizeTemplate.bind({});

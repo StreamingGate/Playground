@@ -6,5 +6,5 @@ target 'PlayGround' do
   use_frameworks!
 
   # Pods for PlayGround
-  pod 'ACThumbnailGenerator-Swift'
+  pod 'SwiftKeychainWrapper'
 end

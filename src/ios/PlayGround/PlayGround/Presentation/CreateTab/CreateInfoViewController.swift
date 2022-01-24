@@ -26,6 +26,7 @@ class createInfoViewController: UIViewController {
     @IBOutlet weak var loadingView: UIView!
     @IBOutlet weak var loadingLabel: UILabel!
     @IBOutlet weak var loadingCancelButton: UIButton!
+    @IBOutlet weak var closeButton: UIButton!
     
     @IBOutlet weak var cameraView: CameraView!
     @IBOutlet weak var cameraViewTopMargin: NSLayoutConstraint!
@@ -64,6 +65,9 @@ class createInfoViewController: UIViewController {
     }
     
     func setupUI() {
+        closeButton.setTitle("", for: .normal)
+        
+        
         currentAccountLabel.font = UIFont.bottomTab
         currentAccountLabel.textColor = UIColor.background
         accountNicknameLabel.font = UIFont.Component

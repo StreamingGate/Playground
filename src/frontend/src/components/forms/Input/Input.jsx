@@ -1,22 +1,25 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import PropTypes from 'prop-types';
 
 import InputStyle from './Input.styles';
 
-function Input({
-  className,
-  type,
-  placeholder,
-  value,
-  size,
-  variant,
-  fontSize,
-  fullWidth,
-  onChange,
-}) {
+const Input = forwardRef((props, ref) => {
+  const {
+    className,
+    type,
+    placeholder,
+    value,
+    size,
+    variant,
+    fontSize,
+    fullWidth,
+    onChange,
+    ...rest
+  } = props;
   return (
     <InputStyle.Input
       className={className}
+      ref={ref}
       type={type}
       placeholder={placeholder}
       value={value}
@@ -25,16 +28,17 @@ function Input({
       fullWidth={fullWidth}
       fontSize={fontSize}
       onChange={onChange}
+      {...rest}
     />
   );
-}
+});
 
 Input.propTypes = {
   className: PropTypes.string,
-  type: PropTypes.oneOf(['text', 'password']),
+  type: PropTypes.oneOf(['text', 'password', 'file']),
   placeholder: PropTypes.string,
   value: PropTypes.string,
-  size: PropTypes.oneOf(['small', 'large']),
+  size: PropTypes.oneOf(['sm', 'md', 'lg']),
   variant: PropTypes.oneOf(['outlined', 'standard']),
   fontSize: PropTypes.oneOf([
     'title',
@@ -56,7 +60,7 @@ Input.defaultProps = {
   type: 'text',
   placeholder: '',
   value: undefined,
-  size: 'small',
+  size: 'md',
   variant: 'outlined',
   fontSize: 'content',
   fullWidth: false,
