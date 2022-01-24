@@ -28,10 +28,14 @@ export default {
     height: 40px;
   `,
   InputContainer: styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
     margin: 30px 0 40px;
-    & > input:first-child {
+    /* & > input:first-child {
       margin-bottom: 10px;
-    }
+    } */
   `,
   RegisterContainer: styled.div`
     display: flex;

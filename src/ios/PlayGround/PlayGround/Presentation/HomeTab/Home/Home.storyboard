@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -203,8 +204,7 @@
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fxJ-dR-lK1">
                                                     <rect key="frame" x="5" y="243" width="43" height="43"/>
-                                                    <state key="normal" title="Button"/>
-                                                    <buttonConfiguration key="configuration" style="plain"/>
+                                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                     <connections>
                                                         <action selector="channelProfileDidTap:" destination="fQd-2O-qXP" eventType="touchUpInside" id="w8m-gO-xan"/>
                                                     </connections>
@@ -273,6 +273,8 @@
                     <navigationItem key="navigationItem" id="brS-Yp-x05"/>
                     <connections>
                         <outlet property="collectionView" destination="9W6-XU-bEX" id="Jee-ZX-W0V"/>
+                        <outlet property="friendButton" destination="c1E-NM-kP2" id="D8f-Mk-roL"/>
+                        <outlet property="noticeButton" destination="ZHh-b5-SP3" id="VOx-6f-ABI"/>
                         <outlet property="searchButton" destination="zGe-nL-jcQ" id="DTG-om-4ff"/>
                         <outlet property="tableView" destination="SYh-TW-QxE" id="qih-fr-Uzx"/>
                     </connections>

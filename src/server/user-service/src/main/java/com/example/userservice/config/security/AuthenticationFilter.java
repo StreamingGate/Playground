@@ -54,9 +54,9 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                                             Authentication authResult) throws IOException, ServletException {
         String userEmail = ((User)authResult.getPrincipal()).getUsername();
         UserDto userDto = userService.getUserByEmail(userEmail);
-
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, DELETE, PUT");
-        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With,observe,Content-Length");
+        response.setHeader("Access-Control-Allow-Headers", "Content-Type,Access-Control-Allow-Headers, " +
+                "Authorization,Accept,X-Requested-With,observe,Content-Length");
         response.setHeader("Access-Control-Expose-Headers","uuid,token");
         if(request.getMethod().equals(HttpMethod.OPTIONS.name())) {
             response.setStatus(HttpStatus.OK.value());

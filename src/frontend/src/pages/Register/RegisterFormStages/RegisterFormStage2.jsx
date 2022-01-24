@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
 
 import * as S from './RegisterFormStages.style';
 import { theme } from '@utils/constant';
@@ -6,11 +7,11 @@ import { mediaService } from '@utils/service';
 
 import { Typography } from '@components/cores';
 
-function RegisterFormStage2() {
+function RegisterFormStage2({ values, errors, touched, onChange, onProfileChange, onBlur }) {
+  const { nickName, profileImage } = values;
+
   const defaultProfileImg = useRef('');
   const profileInputRef = useRef(null);
-
-  const [imageUrl, setImageUrl] = useState('');
 
   useEffect(() => {
     defaultProfileImg.current = mediaService.createImageFromInitials(
@@ -18,21 +19,21 @@ function RegisterFormStage2() {
       theme.colors.pgOrange,
       '#ffffff'
     );
-    setImageUrl(defaultProfileImg.current);
+    onProfileChange(defaultProfileImg.current);
   }, []);
 
   const handleProfileSelectBtnClick = () => {
     profileInputRef.current.click();
   };
 
-  const handleProfileInputChange = async () => {
-    const dataUrl = await mediaService.getImagePreviewURl(profileInputRef.current);
-    setImageUrl(dataUrl);
-  };
-
   const handleResetProfileBtnClick = () => {
     profileInputRef.current.value = '';
-    setImageUrl(defaultProfileImg.current);
+    onProfileChange(defaultProfileImg.current);
+  };
+
+  const handleProfileInputChange = async () => {
+    const dataUrl = await mediaService.getImagePreviewURl(profileInputRef.current);
+    onProfileChange(dataUrl);
   };
 
   return (
@@ -40,7 +41,7 @@ function RegisterFormStage2() {
       <S.FormStageInputContainer>
         <S.InputLabel>프로필</S.InputLabel>
         <S.ProfilInputContainer>
-          <S.ProfilePreview src={imageUrl} />
+          <S.ProfilePreview src={profileImage} />
           <S.ProfileInput
             type='file'
             accept='.jpg, .jpeg, .png'
@@ -59,10 +60,31 @@ function RegisterFormStage2() {
       </S.FormStageInputContainer>
       <S.FormStageInputContainer>
         <S.InputLabel>닉네임</S.InputLabel>
-        <S.StageInput size='sm' fullWidth />
+        <S.StageInput
+          name='nickName'
+          size='sm'
+          fullWidth
+          value={nickName}
+          onChange={onChange}
+          onBlur={onBlur}
+          error={!!(touched.nickName && errors.nickName)}
+          helperText={errors.nickName}
+        />
       </S.FormStageInputContainer>
     </>
   );
 }
+
+RegisterFormStage2.propTypes = {
+  values: PropTypes.shape({
+    profileImage: PropTypes.string,
+    nickName: PropTypes.string,
+  }).isRequired,
+  errors: PropTypes.object.isRequired,
+  touched: PropTypes.object.isRequired,
+  onChange: PropTypes.func.isRequired,
+  onBlur: PropTypes.func.isRequired,
+  onProfileChange: PropTypes.func.isRequired,
+};
 
 export default RegisterFormStage2;

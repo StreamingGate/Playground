@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -141,8 +142,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="ex3-9N-fQ7"/>
                                 </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <connections>
                                     <action selector="viewedVideoButtonDidTap:" destination="oGT-qv-d4N" eventType="touchUpInside" id="gIs-lT-oMb"/>
                                 </connections>
@@ -164,8 +164,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="Ala-lf-vkk"/>
                                 </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <connections>
                                     <action selector="likedVideoButtonDidTap:" destination="oGT-qv-d4N" eventType="touchUpInside" id="Xhp-sb-vSK"/>
                                 </connections>
@@ -187,8 +186,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="XTA-uD-ZFO"/>
                                 </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <connections>
                                     <action selector="myVideoButtonDidTap:" destination="oGT-qv-d4N" eventType="touchUpInside" id="X4W-nO-6ay"/>
                                 </connections>
@@ -202,8 +200,7 @@
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rQZ-fq-ZaW">
                                 <rect key="frame" x="369" y="52.5" width="40" height="40"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <connections>
                                     <action selector="profileDidTap:" destination="oGT-qv-d4N" eventType="touchUpInside" id="Tqk-A9-8MO"/>
                                 </connections>
@@ -290,8 +287,9 @@
                                     <constraint firstAttribute="width" constant="24" id="36P-mY-1ID"/>
                                     <constraint firstAttribute="width" secondItem="vPT-jh-Xtt" secondAttribute="height" multiplier="1:1" id="Q8E-US-UTB"/>
                                 </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" image="leftChevron_black"/>
+                                <color key="tintColor" systemColor="labelColor"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="leftChevron_black"/>
                                 <connections>
                                     <action selector="backButtonDidTap:" destination="Bhx-fe-Jvb" eventType="touchUpInside" id="BMr-dj-Gwo"/>
                                 </connections>
@@ -465,10 +463,7 @@
                                     <constraint firstAttribute="width" constant="70" id="ULp-aW-idl"/>
                                 </constraints>
                                 <color key="tintColor" name="YoutubeBlue"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain">
-                                    <attributedString key="attributedTitle"/>
-                                </buttonConfiguration>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <connections>
                                     <action selector="editButtonDidTap:" destination="2se-Cf-mH3" eventType="touchUpInside" id="i6h-hk-RSR"/>
                                 </connections>
@@ -497,8 +492,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="Xt9-wb-s2D"/>
                                 </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <connections>
                                     <action selector="logOutButtonDidTap:" destination="2se-Cf-mH3" eventType="touchUpInside" id="2yP-oz-q4u"/>
                                 </connections>
@@ -586,8 +580,9 @@
                                     <constraint firstAttribute="width" constant="24" id="7jJ-0S-gF6"/>
                                     <constraint firstAttribute="width" secondItem="65s-2z-a3A" secondAttribute="height" multiplier="1:1" id="Gfn-ne-c7B"/>
                                 </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" image="leftChevron_black"/>
+                                <color key="tintColor" systemColor="labelColor"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="leftChevron_black"/>
                                 <connections>
                                     <action selector="backButtonDidTap:" destination="2se-Cf-mH3" eventType="touchUpInside" id="jEX-dp-H3w"/>
                                 </connections>
@@ -652,8 +647,8 @@
                                     <constraint firstAttribute="width" secondItem="jM0-RI-YAY" secondAttribute="height" multiplier="1:1" id="TRk-zJ-fAg"/>
                                     <constraint firstAttribute="width" constant="24" id="W3U-lg-trf"/>
                                 </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" image="leftChevron_black"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="leftChevron_black"/>
                                 <connections>
                                     <action selector="backButtonDidTap:" destination="KVG-wW-OMv" eventType="touchUpInside" id="4Ye-sb-jJI"/>
                                 </connections>
@@ -680,8 +675,9 @@
                                     <constraint firstAttribute="width" secondItem="KEV-vX-7qV" secondAttribute="height" multiplier="1:1" id="PDu-53-Z95"/>
                                     <constraint firstAttribute="width" constant="60" id="p6M-rH-wFh"/>
                                 </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" image="camera_white"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="camera_white"/>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="닉네임" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JbH-1B-8th">
                                 <rect key="frame" x="30" y="197.5" width="45" height="21"/>
@@ -793,6 +789,9 @@
         <namedColor name="onlineGreen">
             <color red="0.31400001049041748" green="0.59200000762939453" blue="0.32199999690055847" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

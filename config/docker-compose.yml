@@ -1,6 +1,6 @@
 version: "3"
 services:
-  mariadb:
+  pg-mariadb:
     container_name: pg-mariadb
     image: mariadb
     hostname: pg-mariadb
@@ -12,8 +12,7 @@ services:
     ports:
       - "3306:3306"
     networks:
-      sg-network:
-        ipv4_address: 172.18.0.3
+      - sg-network
 
   redis:
     container_name: redis
@@ -22,29 +21,44 @@ services:
     ports:
       - "6379:6379"
     networks:
-      sg-network:
-        ipv4_address: 172.18.0.4
+      - sg-network
 
   user-service:
     container_name: user-service
-    image: user-service:1.0
-    ports:
-      - "50001:50001"
+    image: wodndl895/user-service:1.0
     environment:
       spring.datasource.url: jdbc:mariadb://pg-mariadb:3306/playground
+      eureka.client.serviceUrl.defaultZone: http://service-discovery:8761/eureka/
     depends_on:
-      #- pg-mariadb
+      - pg-mariadb
       - redis
     links:
-      #- pg-mariadb
+      - pg-mariadb
       - redis
     restart: always
     networks:
-      sg-network:
-        ipv4_address: 172.18.0.2
+      - sg-network
+
+  service-discovery:
+    container_name: service-discovery
+    image: wodndl895/service-discovery:1.0
+    ports:
+      - "8761:8761"
+    networks:
+      - sg-network
+  apigateway-service:
+    image: wodndl895/apigateway:1.0
+    ports:
+      - "8000:8000"
+    environment:
+      eureka.client.serviceUrl.defaultZone: http://service-discovery:8761/eureka/
+    depends_on:
+      - service-discovery
+    networks:
+      - sg-network
 
 networks:
   sg-network:
     name: sg-network
     external: true
-
+    driver: bridge

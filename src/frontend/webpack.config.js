@@ -90,7 +90,9 @@ module.exports = (env, args) => {
       new HtmlWebpackPlugin({
         template: './index.html',
       }),
-      new Dotenv(),
+      new Dotenv({
+        path: '.env',
+      }),
       // new BundleAnalyzerPlugin({
       //   analyzerMode: 'static',
       //   reportFilename: 'bundle-report.html',
