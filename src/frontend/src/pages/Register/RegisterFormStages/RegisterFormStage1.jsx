@@ -6,7 +6,7 @@ import { modalService } from '@utils/service';
 import { useVerifyEmaii } from '@utils/hook/query';
 
 import { Button } from '@components/buttons';
-import AdviseModal from '../../../components/feedbacks/Modals/AdviseModal';
+import { AdviseModal } from '@components/feedbacks/modals';
 
 const VERIFY_TIME = 60 * 10;
 
@@ -26,13 +26,12 @@ function RegisterFormStage1({ values, errors, touched, onChange, onBlur }) {
   const [isVerifyBtnDisable, setVerifyBtnDisable] = useState(true);
 
   const handleEmailSendSuccess = data => {
-    modalService.show(AdviseModal, { content: 'hello' });
-    // 팝업창으로 변경
     if (data?.errorCode) {
-      alert(data.message);
+      modalService.show(AdviseModal, { content: data.message });
       return;
     }
 
+    modalService.show(AdviseModal, { content: '인증메일을 전송했습니다' });
     setIsVerify(true);
   };
 
