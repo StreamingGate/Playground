@@ -11,9 +11,6 @@ services:
       - "../data/mariadb:/docker-entrypoint-initdb.d/:ro"
     ports:
       - "3306:3306"
-    networks:
-      sg-network:
-        ipv4_address: 172.18.0.3
 
   redis:
     container_name: redis
@@ -21,9 +18,6 @@ services:
     image: redis:latest
     ports:
       - "6379:6379"
-    networks:
-      sg-network:
-        ipv4_address: 172.18.0.4
 
   user-service:
     container_name: user-service
@@ -33,32 +27,20 @@ services:
     environment:
       spring.datasource.url: jdbc:mariadb://pg-mariadb:3306/playground
     depends_on:
-      #- pg-mariadb
+      - pg-mariadb
       - redis
     links:
-      #- pg-mariadb
+      - pg-mariadb
       - redis
     restart: always
-    networks:
-      sg-network:
-        ipv4_address: 172.18.0.2
 
   chat-service:
     container_name: chat-service
     image: rlagksml99/chat-service
     ports:
-      - "50002:8080"
+      - "50002:50002"
     depends_on:
       - redis
     links:
       - redis
     restart: always
-    networks:
-      sg-network:
-        ipv4_address: 172.20.0.5
-
-networks:
-  sg-network:
-    name: sg-network
-    external: true
-
