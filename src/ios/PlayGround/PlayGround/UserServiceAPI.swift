@@ -12,7 +12,7 @@ struct UserServiceAPI {
     
     let userServiceUrl = "http://localhost:8000/user-service"
     
-    func register(email: String, name: String, nickName: String, password: String, profileImage: String, completion: @escaping (UserInfo)->Void) {
+    func register(email: String, name: String, nickName: String, password: String, profileImage: String, completion: @escaping (UserInfo?)->Void) {
         let url = URL(string: "\(userServiceUrl)/users")!
         var request = URLRequest(url: url)
         let postData : [String: Any] = ["email": email, "name" : name, "nickName": nickName, "password": password, "profileImage": profileImage]
@@ -24,6 +24,7 @@ struct UserServiceAPI {
             let successRange = 200 ..< 300
             guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode), let resultData = data else {
                 print("\(error?.localizedDescription ?? "no error") \((response as? HTTPURLResponse)?.statusCode ?? 0)")
+                completion(nil)
                 return
             }
             
@@ -33,6 +34,7 @@ struct UserServiceAPI {
                 completion(response)
             } catch let error {
                 print("---> error while register: \(error.localizedDescription)")
+                completion(nil)
                 return
             }
             

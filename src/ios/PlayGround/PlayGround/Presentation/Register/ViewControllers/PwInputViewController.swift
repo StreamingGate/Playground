@@ -115,7 +115,7 @@ class PwInputViewController: UIViewController{
     // 가입하기
     @IBAction func registerButtonDidTap(_ sender: Any) {
         guard let pwInfo = pwTextField.text, pwInfo.isEmpty == false, let emailInfo = RegisterHelper.shared.email, let nameInfo = RegisterHelper.shared.name, let nicknameInfo = RegisterHelper.shared.nickName, let profileImage = RegisterHelper.shared.profileImage, var imageData = profileImage.pngData() else { return }
-        
+        registerButton.isEnabled = false
         var quality: CGFloat = 1
         while imageData.count >= 1572864 {
             quality -= 0.1
@@ -138,6 +138,10 @@ class PwInputViewController: UIViewController{
                     self.present(alert, animated: true, completion: nil)
                 }
             } else {
+                DispatchQueue.main.async {
+                    self.registerButton.isEnabled = true
+                    self.simpleAlert(message: "회원가입이 완료되지 않았습니다")
+                }
             }
         }
     }
