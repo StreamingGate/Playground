@@ -114,7 +114,17 @@ class PwInputViewController: UIViewController{
     // MARK: - Button Action
     // 가입하기
     @IBAction func registerButtonDidTap(_ sender: Any) {
-        guard let pwInfo = pwTextField.text, pwInfo.isEmpty == false, let emailInfo = RegisterHelper.shared.email, let nameInfo = RegisterHelper.shared.name, let nicknameInfo = RegisterHelper.shared.nickName, let profileImage = RegisterHelper.shared.profileImage else { return }
+        guard let pwInfo = pwTextField.text, pwInfo.isEmpty == false, let emailInfo = RegisterHelper.shared.email, let nameInfo = RegisterHelper.shared.name, let nicknameInfo = RegisterHelper.shared.nickName, let profileImage = RegisterHelper.shared.profileImage, var imageData = profileImage.pngData() else { return }
+        
+        var quality: CGFloat = 1
+        while imageData.count >= 1572864 {
+            quality -= 0.1
+            if let newData = profileImage.jpegData(compressionQuality: quality) {
+                imageData = newData
+            }
+        }
+        let binaryImage = imageData.base64EncodedString()
+        
         UserServiceAPI.shared.register(email: emailInfo, name: nameInfo, nickName: nicknameInfo, password: pwInfo, profileImage: "test") { userInfo in
             print("register result = \(userInfo)")
             DispatchQueue.main.async {
