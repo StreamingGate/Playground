@@ -3,22 +3,19 @@ import axios from 'axios';
 
 // /users
 const postUserRegister = async values => {
-  console.log(values);
   const { data } = await axios.post(`${process.env.REACT_APP_API}/users`, { values });
   return data;
 };
 
 // /users/mail?code=#
 const postVerifyCode = async code => {
-  console.log(code);
-  const { data } = await axios.post(`${process.env.REACT_APP_API}/posts`);
+  const { data } = await axios.get(`${process.env.REACT_APP_API}/users/mail?code=${code}`);
   return data;
 };
 
 // /nickname?nickname={nickname}
 const postVerifyNickName = async nickName => {
-  console.log(nickName);
-  const { data } = await axios.post(`${process.env.REACT_APP_API}/posts`);
+  const { data } = await axios.get(`${process.env.REACT_APP_API}/nickname?nickname=${nickName}`);
   return data;
 };
 
