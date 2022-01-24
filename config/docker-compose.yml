@@ -11,18 +11,12 @@ services:
       - "../data/mariadb:/docker-entrypoint-initdb.d/:ro"
     ports:
       - "3306:3306"
-    networks:
-      sg-network:
-        ipv4_address: 172.20.0.3
 
   redis:
     container_name: redis
     image: redis:latest
     ports:
       - "6379:6379"
-    networks:
-      sg-network:
-        ipv4_address: 172.20.0.4
 
   user-service:
     container_name: user-service
@@ -38,9 +32,6 @@ services:
       - pg-mariadb
       - redis
     restart: always
-    networks:
-      sg-network:
-        ipv4_address: 172.20.0.2
 
   chat-service:
     container_name: chat-service
@@ -52,12 +43,3 @@ services:
     links:
       - redis
     restart: always
-    networks:
-      sg-network:
-        ipv4_address: 172.20.0.5
-
-networks:
-  sg-network:
-    name: sg-network
-    external: true
-
