@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -230,7 +231,7 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CoR-vL-7Hn">
-                                        <rect key="frame" x="118" y="0.0" width="43.5" height="24"/>
+                                        <rect key="frame" x="118" y="0.0" width="39.5" height="24"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="people_fill_white" translatesAutoresizingMaskIntoConstraints="NO" id="eku-Fk-ZL7">
                                                 <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
@@ -240,7 +241,7 @@
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wyX-bO-47j">
-                                                <rect key="frame" x="29" y="2" width="14.5" height="20.5"/>
+                                                <rect key="frame" x="29" y="2" width="10.5" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
@@ -256,7 +257,7 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fhl-aJ-Z2I">
-                                        <rect key="frame" x="169.5" y="0.0" width="39.5" height="24"/>
+                                        <rect key="frame" x="165.5" y="0.0" width="43.5" height="24"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="thumbUp_fill_white" translatesAutoresizingMaskIntoConstraints="NO" id="ZYq-lp-fRn">
                                                 <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
@@ -266,7 +267,7 @@
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eUi-0O-d5r">
-                                                <rect key="frame" x="29" y="2" width="10.5" height="20.5"/>
+                                                <rect key="frame" x="29" y="2" width="14.5" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
@@ -325,6 +326,7 @@
                         <outlet property="liveSignLabel" destination="v1C-kq-OIg" id="Vcx-Oh-ba3"/>
                         <outlet property="liveSignRedView" destination="gA7-fu-3O5" id="lZw-1D-n43"/>
                         <outlet property="participantsNumLabel" destination="wyX-bO-47j" id="TcX-xF-cCf"/>
+                        <outlet property="sendButton" destination="EzI-1T-t2U" id="c2w-AS-ga4"/>
                         <outlet property="switchButton" destination="QBh-bM-uel" id="Hci-qx-8ok"/>
                         <outlet property="timeBlackView" destination="Cek-A3-oPz" id="uRm-ED-tBh"/>
                         <outlet property="timeLabel" destination="7Gs-WI-jpy" id="yux-CW-af8"/>

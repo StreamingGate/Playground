@@ -137,6 +137,8 @@ class PlayViewController: UIViewController {
     
     // MARK: - UI Setting
     func setupUI() {
+        stretchButton.setTitle("", for: .normal)
+        chatSendButton.setTitle("", for: .normal)
         self.view.backgroundColor = UIColor.black
         titleLabel.font = UIFont.Component
         viewLabel.font = UIFont.caption

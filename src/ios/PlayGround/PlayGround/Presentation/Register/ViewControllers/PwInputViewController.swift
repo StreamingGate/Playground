@@ -52,7 +52,7 @@ class PwInputViewController: UIViewController{
             pwCheckValidLabel.text = "비밀번호를 확인해주세요"
             pwCheckValidLabel.textColor = UIColor.systemRed
         } else {
-            pwValidLabel.text = "영문 소문자와 숫자가 포함한 6~16자"
+            pwValidLabel.text = "영문 소문자와 숫자를 포함한 6~16자"
             pwValidLabel.textColor = UIColor.systemRed
             pwCheckValidLabel.isHidden = true
             pwCheckTextField.isEnabled = false

@@ -12,6 +12,8 @@ import AVFoundation
 class HomeListViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchButton: UIButton!
+    @IBOutlet weak var noticeButton: UIButton!
+    @IBOutlet weak var friendButton: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
     var selectedIndex = 0
     
@@ -31,6 +33,7 @@ class HomeListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupUI()
         self.tableView.addSubview(playerView)
         self.playerView.isUserInteractionEnabled = false
         guard let nav = self.navigationController as? HomeNavigationController else{ return }
@@ -40,6 +43,12 @@ class HomeListViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         AppUtility.lockOrientation(.portrait)
+    }
+    
+    func setupUI() {
+        searchButton.setTitle("", for: .normal)
+        noticeButton.setTitle("", for: .normal)
+        friendButton.setTitle("", for: .normal)
     }
     
     @IBAction func noticeButtonDidTap(_ sender: Any) {

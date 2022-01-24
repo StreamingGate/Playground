@@ -91,13 +91,13 @@ module.exports = (env, args) => {
         template: './index.html',
       }),
       new Dotenv(),
-      new BundleAnalyzerPlugin({
-        analyzerMode: 'static',
-        reportFilename: 'bundle-report.html',
-        openAnalyzer: false,
-        generateStatsFile: true,
-        statsFilename: 'bundle-stats.json',
-      }),
+      // new BundleAnalyzerPlugin({
+      //   analyzerMode: 'static',
+      //   reportFilename: 'bundle-report.html',
+      //   openAnalyzer: false,
+      //   generateStatsFile: true,
+      //   statsFilename: 'bundle-stats.json',
+      // }),
     ],
   };
 };
