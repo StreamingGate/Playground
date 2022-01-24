@@ -121,7 +121,7 @@ class NickNameInputViewController: UIViewController {
         nextButton.isEnabled = false
         UserServiceAPI.shared.nicknameDuplicateCheck(nickname: nickNameInfo) { result in
             print("nickname check result = \(result)")
-            if let nickname = result["nickname"] as? String, nickname != "failed" {
+            if let nickname = result["nickName"] as? String, nickname != "failed" {
                 RegisterHelper.shared.nickName = nickname
                 DispatchQueue.main.async {
                     self.nextButton.isEnabled = true

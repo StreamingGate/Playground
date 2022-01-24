@@ -113,7 +113,7 @@ struct UserServiceAPI {
             let successRange = 200 ..< 300
             guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode), let resultData = data else {
                 print("\(error?.localizedDescription ?? "no error") \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
-                completion(["nickname" : "failed"])
+                completion(["nickName" : "failed"])
                 return
             }
             
@@ -121,7 +121,7 @@ struct UserServiceAPI {
             if let result = responseJSON as? [String: Any] {
                 completion(result)
             } else {
-                completion(["nickname" : "failed"])
+                completion(["nickName" : "failed"])
             }
         }
         task.resume()
