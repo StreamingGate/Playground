@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import * as S from './RegisterFormStages.style';
 import { modalService } from '@utils/service';
-import { useVerifyEmaii } from '@utils/hook/query';
+import { useUserRegister } from '@utils/hook/query';
 
 import { Button } from '@components/buttons';
 import { AdviseModal } from '@components/feedbacks/modals';
@@ -35,7 +35,11 @@ function RegisterFormStage1({ values, errors, touched, onChange, onBlur }) {
     setIsVerify(true);
   };
 
-  const { refetch } = useVerifyEmaii(email, handleEmailSendSuccess);
+  const { mutate } = useUserRegister('verify-email', handleEmailSendSuccess);
+
+  const handleEmailRequest = () => {
+    mutate(email);
+  };
 
   useEffect(() => {
     return () => {
@@ -99,7 +103,7 @@ function RegisterFormStage1({ values, errors, touched, onChange, onBlur }) {
       </S.FormStageInputContainer>
       {!isVerify ? (
         <S.VerifyButtonContainer>
-          <Button color='pgBlue' disabled={isVerifyBtnDisable} onClick={refetch}>
+          <Button color='pgBlue' disabled={isVerifyBtnDisable} onClick={handleEmailRequest}>
             인증하기
           </Button>
         </S.VerifyButtonContainer>
