@@ -1,12 +1,21 @@
 spring.profiles.active: local
 server:
-  port: 50002
+  port: 0
 spring:
   devtools:
     livereload:
       enabled: true
     restart:
       enabled: false
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
 ---
 spring.config.activate.on-profile: local
 spring:

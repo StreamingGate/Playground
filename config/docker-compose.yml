@@ -38,7 +38,18 @@ services:
     restart: always
     networks:
       - sg-network
-  
+
+  chat-service:
+    container_name: chat-service
+    image: rlagksml99/chat-service
+    depends_on:
+      - redis
+    links:
+      - redis
+    restart: always
+    networks:
+      - sg-network
+
   service-discovery:
     container_name: service-discovery
     image: wodndl895/service-discovery:1.0
