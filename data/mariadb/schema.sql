@@ -11,7 +11,7 @@ create table friend_wait (
     nickname_receiver varchar(8),
     nickname_sender varchar(8),
     primary key (id)
-) engine = InnoDB;
+) engine = InnoDB; 
 create table live_room (
     id bigint not null auto_increment,
     category varchar(10),
@@ -26,7 +26,7 @@ create table live_room (
     title varchar(100),
     users_id bigint,
     primary key (id)
-) engine = InnoDB; 
+) engine = InnoDB;
 create table live_viewer (
     id bigint not null auto_increment,
     disliked bit not null,
@@ -35,7 +35,7 @@ create table live_viewer (
     live_room_id bigint,
     user_id bigint,
     primary key (id)
-) engine = InnoDB; 
+) engine = InnoDB;
 create table metadata (
     id bigint not null auto_increment,
     file_link TEXT,

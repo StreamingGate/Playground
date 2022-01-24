@@ -11,6 +11,8 @@ services:
       - "../data/mariadb:/docker-entrypoint-initdb.d/:ro"
     ports:
       - "3306:3306"
+    networks:
+      - sg-network
 
   redis:
     container_name: redis
@@ -18,14 +20,15 @@ services:
     image: redis:latest
     ports:
       - "6379:6379"
+    networks:
+      - sg-network
 
   user-service:
     container_name: user-service
-    image: user-service:1.0
-    ports:
-      - "50001:50001"
+    image: wodndl895/user-service:1.0
     environment:
       spring.datasource.url: jdbc:mariadb://pg-mariadb:3306/playground
+      eureka.client.serviceUrl.defaultZone: http://service-discovery:8761/eureka/
     depends_on:
       - pg-mariadb
       - redis
@@ -33,14 +36,29 @@ services:
       - pg-mariadb
       - redis
     restart: always
-
-  chat-service:
-    container_name: chat-service
-    image: rlagksml99/chat-service
+    networks:
+      - sg-network
+  
+  service-discovery:
+    container_name: service-discovery
+    image: wodndl895/service-discovery:1.0
     ports:
-      - "50002:50002"
+      - "8761:8761"
+    networks:
+      - sg-network
+  apigateway-service:
+    image: wodndl895/apigateway:1.0
+    ports:
+      - "8000:8000"
+    environment:
+      eureka.client.serviceUrl.defaultZone: http://service-discovery:8761/eureka/
     depends_on:
-      - redis
-    links:
-      - redis
-    restart: always
+      - service-discovery
+    networks:
+      - sg-network
+
+networks:
+  sg-network:
+    name: sg-network
+    external: true
+    driver: bridge

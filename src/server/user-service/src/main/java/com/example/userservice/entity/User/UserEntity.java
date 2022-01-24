@@ -1,6 +1,7 @@
 package com.example.userservice.entity.User;
 
 import com.example.userservice.dto.RegisterUser;
+import com.example.userservice.dto.RequestMyinfo;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -77,11 +78,14 @@ public class UserEntity {
                 .build();
     }
 
-    public void update(RegisterUser requestDto, LocalDate modifiedAt,String ecryptpwd) {
+    public void update(RequestMyinfo requestDto, LocalDate modifiedAt) {
         this.nickName = requestDto.getNickName() == null ? nickName : requestDto.getNickName();
-        this.pwd = ecryptpwd == null ? pwd : ecryptpwd;
         this.profileImage = requestDto.getProfileImage() == null ? profileImage : requestDto.getProfileImage();
         this.modifiedAt = modifiedAt;
+    }
+
+    public void updatePwd(String bcryptPwd, LocalDate modifiedAt) {
+        this.pwd = bcryptPwd;
     }
 
     public void delete(LocalDate deletedAt) {
