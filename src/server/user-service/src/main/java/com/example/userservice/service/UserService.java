@@ -1,9 +1,6 @@
 package com.example.userservice.service;
 
-import com.example.userservice.dto.RegisterUser;
-import com.example.userservice.dto.RequestMyinfo;
-import com.example.userservice.dto.RequestPwd;
-import com.example.userservice.dto.UserDto;
+import com.example.userservice.dto.*;
 import com.example.userservice.entity.User.UserEntity;
 import com.example.userservice.entity.User.UserRepository;
 import com.example.userservice.exceptionhandler.customexception.CustomUserException;
@@ -57,12 +54,13 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public RequestMyinfo update(String uuid, RequestMyinfo requestDto) throws CustomUserException{
+    public RequestMyinfo update(String uuid, RequestMyinfo requestDto) throws CustomUserException {
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         UserEntity userEntity = userRepository.findByUuid(uuid).orElseThrow(()-> new CustomUserException(ErrorCode.U002));
         Date date = new Date();
         LocalDate localDate = new java.sql.Date(date.getTime()).toLocalDate();
-        if (checkNickName(requestDto.getNickName())){
+        NicknameDto nicknameDto = mapper.map(requestDto, NicknameDto.class);
+        if (checkNickName(nicknameDto) != null){
             userEntity.update(requestDto,localDate);
             requestDto = mapper.map(userEntity,RequestMyinfo.class);
             return requestDto;
@@ -71,7 +69,7 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public void delete(String uuid) {
+    public void delete(String uuid) throws CustomUserException {
         UserEntity userEntity = userRepository.findByUuid(uuid).orElseThrow(()-> new CustomUserException(ErrorCode.U002));
         Date date = new Date();
         LocalDate localDate = new java.sql.Date(date.getTime()).toLocalDate();
@@ -79,53 +77,56 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional(readOnly = true)
-    public String checkEmail(String email) throws CustomUserException{
-        if(!userRepository.findByEmail(email).isPresent()) {
-            String randomCode = sendEmail(email);
+    public EmailDto checkEmail(EmailDto email) throws CustomUserException {
+        if(!userRepository.findByEmail(email.getEmail()).isPresent()) {
+            String randomCode = sendEmail(email.getEmail());
             // 만약 n번의 요청할시, 인증코드를 overwrite
-            redisTemplate.opsForValue().set(randomCode,email,60*10L, TimeUnit.SECONDS);
+            redisTemplate.opsForValue().set(randomCode,email.getEmail(),60*10L, TimeUnit.SECONDS);
             return email;
         }
         throw new CustomUserException(ErrorCode.U001);
     }
 
     @Transactional(readOnly = true)
-    public String checkUser(String name,String email) throws CustomUserException {
-        if(userRepository.findByNameAndEmail(name,email).isPresent()) {
-            String randomCode = sendEmail(email);
-            redisTemplate.opsForValue().set(randomCode,email,60*10L, TimeUnit.SECONDS);
-            return email;
+    public PwdDto checkUser(PwdDto pwdDto) throws CustomUserException {
+        if(userRepository.findByNameAndEmail(pwdDto.getName(),pwdDto.getEmail()).isPresent()) {
+            String randomCode = sendEmail(pwdDto.getEmail());
+            redisTemplate.opsForValue().set(randomCode,pwdDto.getEmail(),60*10L, TimeUnit.SECONDS);
+            return pwdDto;
         }
         throw new CustomUserException(ErrorCode.U005);
     }
 
     @Transactional
-    public String checkCode(String code) throws CustomUserException{
+    public String checkCode(String code) throws CustomUserException {
         String email = (String) redisTemplate.opsForValue().get(code);
         if (email != null) {
             redisTemplate.delete(code);
-            return email;
+            return code;
         }
         throw new CustomUserException(ErrorCode.U003);
     }
 
     @Transactional(readOnly = true)
-    public boolean checkNickName(String nickName) throws CustomUserException {
-        return Optional.of(!userRepository.findByNickName(nickName).isPresent()).orElseThrow(()-> new CustomUserException(ErrorCode.U004));
+    public NicknameDto checkNickName(NicknameDto nickName) throws CustomUserException {
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        NicknameDto responseNickname = mapper.map(nickName,NicknameDto.class);
+        if(!userRepository.findByNickName(nickName.getNickName()).isPresent()) return responseNickname;
+        throw new CustomUserException(ErrorCode.U004);
     }
 
     @Transactional
-    public Boolean updatePwd(String uuid,RequestPwd requestPwd) throws CustomUserException {
+    public PwdDto updatePwd(String uuid, PwdDto pwdDto) throws CustomUserException {
         UserEntity userEntity = userRepository.findByUuid(uuid).orElseThrow(()-> new CustomUserException(ErrorCode.U002));
         Date date = new Date();
         LocalDate localDate = new java.sql.Date(date.getTime()).toLocalDate();
-        String bcryptPwd = bCryptPasswordEncoder.encode(requestPwd.getPwd());
+        String bcryptPwd = bCryptPasswordEncoder.encode(pwdDto.getPassword());
         userEntity.updatePwd(bcryptPwd,localDate);
-        return true;
+        return pwdDto;
     }
 
     @Transactional(readOnly = true)
-    public UserDto getUserByEmail(String email) {
+    public UserDto getUserByEmail(String email) throws CustomUserException {
         UserEntity userEntity = userRepository.findByEmail(email).orElseThrow(()-> new CustomUserException(ErrorCode.U002));
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         UserDto userDto = mapper.map(userEntity,UserDto.class);
