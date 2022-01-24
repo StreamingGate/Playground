@@ -1,25 +1,33 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import S from './LoginForm.style';
 import { placeholder, validation } from '@utils/constant';
+import { modalService, lStorageService } from '@utils/service';
 import { useForm } from '@utils/hook';
 import { useLogin } from '@utils/hook/query';
 
 import { Input } from '@components/forms';
 import { Typography } from '@components/cores';
 import { Button } from '@components/buttons';
+import { AdviseModal } from '@components/feedbacks/modals';
 
 const { loginPage } = placeholder;
 
 function LoginForm() {
+  const navigate = useNavigate();
+
   const handleLoginResponse = data => {
-    // 팝업 창으로 변경
     if (data?.errorCode) {
-      alert(data.message);
+      modalService.show(AdviseModal, { content: data.message });
       return;
     }
-
-    alert('로그인 성공');
+    const {
+      headers: { token, uuid },
+    } = data;
+    lStorageService.setItem('token', token);
+    lStorageService.setItem('uuid', uuid);
+    navigate('/home');
   };
 
   const { mutate } = useLogin(handleLoginResponse);
