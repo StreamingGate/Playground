@@ -7,7 +7,6 @@ import { modalService, lStorageService } from '@utils/service';
 import { useForm } from '@utils/hook';
 import { useLogin } from '@utils/hook/query';
 
-import { Input } from '@components/forms';
 import { Typography } from '@components/cores';
 import { Button } from '@components/buttons';
 import { AdviseModal } from '@components/feedbacks/Modals';
@@ -46,7 +45,7 @@ function LoginForm() {
     <S.Form>
       <S.Logo />
       <S.InputContainer>
-        <Input
+        <S.LoginInput
           name='email'
           size='lg'
           fullWidth
@@ -57,7 +56,7 @@ function LoginForm() {
           error={!!(touched.email && errors.email)}
           helperText={errors.email}
         />
-        <Input
+        <S.LoginInput
           name='password'
           type='password'
           size='lg'

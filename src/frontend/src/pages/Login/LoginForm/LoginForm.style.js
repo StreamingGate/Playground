@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-import { VerticalLogo } from '@components/cores';
-
 import { breakPoint } from '@utils/constant';
+
+import { Input } from '@components/forms';
+import { VerticalLogo } from '@components/cores';
 
 const { queries } = breakPoint;
 
@@ -23,20 +24,25 @@ export default {
       height: 100%;
     }
   `,
+
   Logo: styled(VerticalLogo)`
     width: 172px;
     height: 40px;
   `,
+
   InputContainer: styled.div`
     display: flex;
     flex-direction: column;
     gap: 20px;
     width: 100%;
     margin: 30px 0 40px;
-    /* & > input:first-child {
-      margin-bottom: 10px;
-    } */
   `,
+
+  LoginInput: styled(Input)`
+    border: none;
+    background-color: ${({ theme }) => theme.colors.background};
+  `,
+
   RegisterContainer: styled.div`
     display: flex;
     gap: 5px;
