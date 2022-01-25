@@ -35,7 +35,7 @@ function RegisterFormStage1({ values, errors, touched, onChange, onBlur }) {
     setIsVerify(true);
   };
 
-  const { mutate } = useUserRegister('verify-email', handleEmailSendSuccess);
+  const { mutate, isLoading } = useUserRegister('verify-email', handleEmailSendSuccess);
 
   const handleEmailRequest = () => {
     mutate(email);
@@ -46,6 +46,10 @@ function RegisterFormStage1({ values, errors, touched, onChange, onBlur }) {
       clearInterval(timer.current);
     };
   }, []);
+
+  useEffect(() => {
+    setVerifyBtnDisable(isLoading);
+  }, [isLoading]);
 
   useEffect(() => {
     if (isVerify) {
