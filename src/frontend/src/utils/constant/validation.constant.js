@@ -2,7 +2,10 @@ import * as yup from 'yup';
 
 const register = [
   yup.object().shape({
-    name: yup.string().required('이름을 입력해 주세요'),
+    name: yup
+      .string()
+      .required('이름을 입력해 주세요')
+      .matches(/[가-힣A-Za-z ]{1,}/, '본명을 입력해 주세요'),
     email: yup
       .string()
       .required('이메일을 입력해 주세요')
