@@ -34,6 +34,7 @@ public class UserService implements UserDetailsService {
     private final ModelMapper mapper;
     private final JavaMailSender javaMailSender;
     private final RedisTemplate<String,Object> redisTemplate;
+    private final AmazonS3Service amazonS3Service;
 
     public String sendEmail(String address) {
         SimpleMailMessage message = new SimpleMailMessage();
@@ -50,6 +51,7 @@ public class UserService implements UserDetailsService {
         String uuid =  UUID.randomUUID().toString();
         String bcryptPwd = bCryptPasswordEncoder.encode(userDto.getPassword());
         userRepository.save(UserEntity.create(userDto,uuid,bcryptPwd));
+        userDto.setProfileImage(amazonS3Service.upload(userDto.getProfileImage(),uuid));
         return userDto;
     }
 
@@ -60,7 +62,11 @@ public class UserService implements UserDetailsService {
         Date date = new Date();
         LocalDate localDate = new java.sql.Date(date.getTime()).toLocalDate();
         NicknameDto nicknameDto = mapper.map(requestDto, NicknameDto.class);
-        if (checkNickName(nicknameDto) != null){
+        if (requestDto.getProfileImage() != null) {
+            amazonS3Service.delete(uuid);
+            requestDto.setProfileImage(amazonS3Service.upload(requestDto.getProfileImage(),uuid));
+        }
+        if (checkNickName(nicknameDto.getNickName()) != null) {
             userEntity.update(requestDto,localDate);
             requestDto = mapper.map(userEntity,RequestMyinfo.class);
             return requestDto;
@@ -102,16 +108,14 @@ public class UserService implements UserDetailsService {
         String email = (String) redisTemplate.opsForValue().get(code);
         if (email != null) {
             redisTemplate.delete(code);
-            return code;
+            return email;
         }
         throw new CustomUserException(ErrorCode.U003);
     }
 
     @Transactional(readOnly = true)
-    public NicknameDto checkNickName(NicknameDto nickName) throws CustomUserException {
-        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        NicknameDto responseNickname = mapper.map(nickName,NicknameDto.class);
-        if(!userRepository.findByNickName(nickName.getNickName()).isPresent()) return responseNickname;
+    public String checkNickName(String nickName) throws CustomUserException {
+        if(!userRepository.findByNickName(nickName).isPresent()) return nickName;
         throw new CustomUserException(ErrorCode.U004);
     }
 

@@ -7,48 +7,45 @@ import com.example.userservice.exceptionhandler.customexception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.io.*;
+import java.util.Base64;
 
 @Component
 @RequiredArgsConstructor
 public class AmazonS3Service {
     private static final String CLOUD_FRONT_DOMAIN_NAME = "https://d8knntbqcc7jf.cloudfront.net/";
+    private static final String dirName = "profiles/";
     private final AmazonS3 amazonS3;
 
-    @Value("{cloud.aws.s3.bucket}")
+    @Value("${cloud.aws.s3.bucket}")
     private String bucket;
-    /* TODO: string으로 들어오는 data를 S3로 저장 */
-    public String uploadRename(MultipartFile file, String reName,String dirName) throws IOException {
-//        S3Object o = amazonS3.getObject(new GetObjectRequest(bucket,));
-//        delete();
-        amazonS3.putObject(new PutObjectRequest(bucket,reName, (File) null)
+
+    public String upload(String data, String reName) throws CustomUserException {
+        byte[] bytes = Base64.getDecoder().decode(data);
+        InputStream inputStream = new ByteArrayInputStream(bytes);
+        ObjectMetadata metadata = new ObjectMetadata();
+        metadata.setContentLength(bytes.length);
+        metadata.setContentType("image/png");
+        metadata.setCacheControl("public, max-age=31536000");
+        amazonS3.putObject(new PutObjectRequest(bucket, dirName+reName, inputStream, metadata)
                 .withCannedAcl(CannedAccessControlList.PublicRead));
         return getUrl(dirName,reName);
     }
 
     public String getUrl(String dirName,String fileName) throws CustomUserException {
         try {
-            return CLOUD_FRONT_DOMAIN_NAME+dirName+"/"+fileName;
+            return CLOUD_FRONT_DOMAIN_NAME+dirName+fileName;
         } catch (CustomUserException e){
             throw new CustomUserException(ErrorCode.U006);
         }
     }
 
-    public void delete(String fileName) {
-        amazonS3.deleteObject(new DeleteObjectRequest(bucket,fileName));
+    public void delete(String fileName) throws CustomUserException {
+        try {
+            amazonS3.deleteObject(new DeleteObjectRequest(bucket,dirName+fileName));
+        } catch (CustomUserException e) {
+            throw new CustomUserException(ErrorCode.U006);
+        }
     }
 
-//    public File fileInput(String dirName, String fileName) throws IOException {
-//        InputStream resource = new FileInputStream(CLOUD_FRONT_DOMAIN_NAME+dirName+"/"+fileName);
-//        File convertFile = new File(fileName);
-//        if (convertFile.createNewFile()) {
-//            try (FileOutputStream fos = new FileOutputStream(convertFile)){
-//                fos.write(resource.readAllBytes());
-//            }
-//            return convertFile;
-//        }
-//        return convertFile;
-//    }
 }
