@@ -1,25 +1,32 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import S from './LoginForm.style';
 import { placeholder, validation } from '@utils/constant';
+import { modalService, lStorageService } from '@utils/service';
 import { useForm } from '@utils/hook';
 import { useLogin } from '@utils/hook/query';
 
-import { Input } from '@components/forms';
 import { Typography } from '@components/cores';
 import { Button } from '@components/buttons';
+import { AdviseModal } from '@components/feedbacks/Modals';
 
 const { loginPage } = placeholder;
 
 function LoginForm() {
+  const navigate = useNavigate();
+
   const handleLoginResponse = data => {
-    // 팝업 창으로 변경
     if (data?.errorCode) {
-      alert(data.message);
+      modalService.show(AdviseModal, { content: data.message });
       return;
     }
-
-    alert('로그인 성공');
+    const {
+      headers: { token, uuid },
+    } = data;
+    lStorageService.setItem('token', token);
+    lStorageService.setItem('uuid', uuid);
+    navigate('/home');
   };
 
   const { mutate } = useLogin(handleLoginResponse);
@@ -38,7 +45,7 @@ function LoginForm() {
     <S.Form>
       <S.Logo />
       <S.InputContainer>
-        <Input
+        <S.LoginInput
           name='email'
           size='lg'
           fullWidth
@@ -49,7 +56,7 @@ function LoginForm() {
           error={!!(touched.email && errors.email)}
           helperText={errors.email}
         />
-        <Input
+        <S.LoginInput
           name='password'
           type='password'
           size='lg'
@@ -68,7 +75,7 @@ function LoginForm() {
       <S.RegisterContainer>
         <Typography type='caption'>계정이 없으신가요?</Typography>
         <Typography type='highlightCaption'>
-          <S.RegisterLink to='/'>가입하기</S.RegisterLink>
+          <S.RegisterLink to='/register'>가입하기</S.RegisterLink>
         </Typography>
       </S.RegisterContainer>
     </S.Form>

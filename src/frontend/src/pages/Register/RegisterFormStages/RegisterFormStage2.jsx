@@ -8,14 +8,14 @@ import { mediaService } from '@utils/service';
 import { Typography } from '@components/cores';
 
 function RegisterFormStage2({ values, errors, touched, onChange, onProfileChange, onBlur }) {
-  const { nickName, profileImage } = values;
+  const { name, nickName, profileImage } = values;
 
   const defaultProfileImg = useRef('');
   const profileInputRef = useRef(null);
 
   useEffect(() => {
     defaultProfileImg.current = mediaService.createImageFromInitials(
-      'Alpha',
+      name,
       theme.colors.pgOrange,
       '#ffffff'
     );

@@ -1,9 +1,7 @@
 import React from 'react';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 import RegisterPage from './RegisterPage';
-
-const queryClient = new QueryClient();
 
 export default {
   title: 'Page/Register',
@@ -14,9 +12,9 @@ export default {
   },
   decorators: [
     Story => (
-      <QueryClientProvider client={queryClient}>
+      <Router>
         <Story />
-      </QueryClientProvider>
+      </Router>
     ),
   ],
 };

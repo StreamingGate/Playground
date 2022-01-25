@@ -1,11 +1,14 @@
 import React, { useEffect, useCallback, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import * as S from './RegisterPage.style';
+import { modalService } from '@utils/service';
 import { validation } from '@utils/constant';
 import { useForm } from '@utils/hook';
 import { useUserRegister } from '@utils/hook/query';
 
 import { Stepper } from '@components/dataDisplays';
+import { AdviseModal } from '@components/feedbacks/Modals';
 import RegisterFormStage1 from '../RegisterFormStages/RegisterFormStage1';
 import RegisterFormStage2 from '../RegisterFormStages/RegisterFormStage2';
 import RegisterFormStage3 from '../RegisterFormStages/RegisterFormStage3';
@@ -23,21 +26,27 @@ const initialInput = {
 };
 
 function RegisterPage() {
+  const navigate = useNavigate();
+
   const [profileImage, setProfileImage] = useState('');
   const [btnContent, setBtnContent] = useState({ ...initBtnContent });
   const [curStage, setCurState] = useState(1);
 
   const handleSubmitResponse = data => {
-    // 팝업 창으로 변경
     if (data?.errorCode) {
-      alert(data.message);
+      modalService.show(AdviseModal, { content: data.message });
       return;
     }
 
     if (curStage >= 1 && curStage < STAGE_STEP) {
       setCurState(prev => prev + 1);
     } else if (curStage >= STAGE_STEP) {
-      alert('회원가입 완료');
+      modalService.show(AdviseModal, {
+        content: '회원가입이 완료되었습니다',
+        btnContent: '로그인 페이지로 이동',
+        btnPos: 'center',
+        onClick: () => navigate('/login'),
+      });
     }
   };
 
@@ -56,7 +65,7 @@ function RegisterPage() {
         verifyNickName.mutate(nickName);
         break;
       case 3:
-        userRegister.mutate(values);
+        userRegister.mutate({ ...values, profileImage });
         break;
       default:
         break;

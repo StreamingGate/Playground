@@ -1,22 +1,26 @@
 import { useMutation } from 'react-query';
 import axios from 'axios';
 
-// /users
 const postUserRegister = async values => {
-  const { data } = await axios.post(`${process.env.REACT_APP_API}/user-service/users`, { values });
+  const { data } = await axios.post(`${process.env.REACT_APP_API}/user-service/users`, {
+    ...values,
+  });
   return data;
 };
 
-// /users/mail?code=#
-const postVerifyCode = async code => {
+const postVerifyEmail = async email => {
+  const { data } = await axios.post(`${process.env.REACT_APP_API}/user-service/email`, { email });
+  return data;
+};
+
+const getVerifyCode = async code => {
   const { data } = await axios.get(`${process.env.REACT_APP_API}/user-service/email?code=${code}`);
   return data;
 };
 
-// /nickname?nickname={nickname}
-const postVerifyNickName = async nickName => {
+const getVerifyNickName = async nickName => {
   const { data } = await axios.get(
-    `${process.env.REACT_APP_API}/user-service/nickname?nickName=${nickName}`
+    `${process.env.REACT_APP_API}/user-service/nickname?nickname=${nickName}`
   );
   return data;
 };
@@ -25,10 +29,13 @@ export default function useUserRegister(type, onSuccess) {
   let requestFn = null;
   switch (type) {
     case 'verify-code':
-      requestFn = postVerifyCode;
+      requestFn = getVerifyCode;
       break;
     case 'verify-nickname':
-      requestFn = postVerifyNickName;
+      requestFn = getVerifyNickName;
+      break;
+    case 'verify-email':
+      requestFn = postVerifyEmail;
       break;
     default:
       requestFn = postUserRegister;

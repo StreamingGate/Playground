@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 
 import * as S from './RegisterFormStages.style';
 import { modalService } from '@utils/service';
-import { useVerifyEmaii } from '@utils/hook/query';
+import { useUserRegister } from '@utils/hook/query';
 
 import { Button } from '@components/buttons';
-import AdviseModal from '../../../components/feedbacks/Modals/AdviseModal';
+import { AdviseModal } from '@components/feedbacks/Modals';
 
 const VERIFY_TIME = 60 * 10;
 
@@ -26,23 +26,30 @@ function RegisterFormStage1({ values, errors, touched, onChange, onBlur }) {
   const [isVerifyBtnDisable, setVerifyBtnDisable] = useState(true);
 
   const handleEmailSendSuccess = data => {
-    modalService.show(AdviseModal, { content: 'hello' });
-    // 팝업창으로 변경
     if (data?.errorCode) {
-      alert(data.message);
+      modalService.show(AdviseModal, { content: data.message });
       return;
     }
 
+    modalService.show(AdviseModal, { content: '인증메일을 전송했습니다' });
     setIsVerify(true);
   };
 
-  const { refetch } = useVerifyEmaii(email, handleEmailSendSuccess);
+  const { mutate, isLoading } = useUserRegister('verify-email', handleEmailSendSuccess);
+
+  const handleEmailRequest = () => {
+    mutate(email);
+  };
 
   useEffect(() => {
     return () => {
       clearInterval(timer.current);
     };
   }, []);
+
+  useEffect(() => {
+    setVerifyBtnDisable(isLoading);
+  }, [isLoading]);
 
   useEffect(() => {
     if (isVerify) {
@@ -100,7 +107,7 @@ function RegisterFormStage1({ values, errors, touched, onChange, onBlur }) {
       </S.FormStageInputContainer>
       {!isVerify ? (
         <S.VerifyButtonContainer>
-          <Button color='pgBlue' disabled={isVerifyBtnDisable} onClick={refetch}>
+          <Button color='pgBlue' disabled={isVerifyBtnDisable} onClick={handleEmailRequest}>
             인증하기
           </Button>
         </S.VerifyButtonContainer>
