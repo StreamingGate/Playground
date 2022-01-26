@@ -9,14 +9,15 @@ import Foundation
 import UIKit
 
 class ErrorCodeConverter {
-    func parse(_ result: String) -> errorCode {
-        if result.contains("U001") {
+    func parse(_ result: [String: Any]) -> errorCode {
+        let error = result["errorCode"] as? String
+        if error == "U001" {
             return errorCode.U001
-        } else if result.contains("U002") {
+        } else if error == "U002" {
             return errorCode.U002
-        } else if result.contains("U003") {
+        } else if error == "U003" {
             return errorCode.U003
-        } else if result.contains("U004") {
+        } else if error == "U004" {
             return errorCode.U004
         } else {
             return errorCode.U005

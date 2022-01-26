@@ -10,8 +10,10 @@ import Foundation
 struct UserServiceAPI {
     static let shared = UserServiceAPI()
     
-    func register(email: String, name: String, nickName: String, password: String, profileImage: String, completion: @escaping (UserInfo)->Void) {
-        let url = URL(string: "http://localhost:50001/users")!
+    let userServiceUrl = "http://localhost:8000/user-service"
+    
+    func register(email: String, name: String, nickName: String, password: String, profileImage: String, completion: @escaping (UserInfo?)->Void) {
+        let url = URL(string: "\(userServiceUrl)/users")!
         var request = URLRequest(url: url)
         let postData : [String: Any] = ["email": email, "name" : name, "nickName": nickName, "password": password, "profileImage": profileImage]
         let jsonData = try? JSONSerialization.data(withJSONObject: postData)
@@ -22,6 +24,7 @@ struct UserServiceAPI {
             let successRange = 200 ..< 300
             guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode), let resultData = data else {
                 print("\(error?.localizedDescription ?? "no error") \((response as? HTTPURLResponse)?.statusCode ?? 0)")
+                completion(nil)
                 return
             }
             
@@ -31,6 +34,7 @@ struct UserServiceAPI {
                 completion(response)
             } catch let error {
                 print("---> error while register: \(error.localizedDescription)")
+                completion(nil)
                 return
             }
             
@@ -46,7 +50,7 @@ struct UserServiceAPI {
     }
     
     func login(email: String, password: String, timezone: String, fcmtoken: String, completion: @escaping ([String:Any])->Void) {
-        let url = URL(string: "http://localhost:50001/login")!
+        let url = URL(string: "\(userServiceUrl)/login")!
         var request = URLRequest(url: url)
         let postData : [String: Any] = ["email": email, "password": password]
         let jsonData = try? JSONSerialization.data(withJSONObject: postData)
@@ -69,29 +73,34 @@ struct UserServiceAPI {
         task.resume()
     }
     
-    func sendEmailVerification(email: String, completion: @escaping (String)->Void) {
-        let url = URL(string: "http://localhost:50001/users/mail?email=\(email)")!
+    func sendEmailVerification(email: String, completion: @escaping ([String: Any])->Void) {
+        let url = URL(string: "\(userServiceUrl)/email")!
         var request = URLRequest(url: url)
+        let postData : [String: Any] = ["email": email]
+        let jsonData = try? JSONSerialization.data(withJSONObject: postData)
         request.httpMethod = "POST"
+        request.httpBody = jsonData
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             let successRange = 200 ..< 300
             guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode), let resultData = data else {
                 print("\(error?.localizedDescription ?? "no error") \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
-                completion("error")
+                completion(["email" : "failed"])
                 return
             }
-            if let resultString = String(data: resultData, encoding: .utf8) {
-                completion(resultString)
+            
+            let responseJSON = try? JSONSerialization.jsonObject(with: resultData, options: [])
+            if let result = responseJSON as? [String: Any] {
+                completion(result)
             } else {
-                completion("error")
+                completion(["email" : "failed"])
             }
         }
         task.resume()
     }
     
-    func nicknameDuplicateCheck(nickname: String, completion: @escaping (Bool)->Void) {
-        let original = "http://localhost:50001/nickname?nickname=\(nickname)"
+    func nicknameDuplicateCheck(nickname: String, completion: @escaping ([String: Any])->Void) {
+        let original = "\(userServiceUrl)/nickname?nickname=\(nickname)"
         // 한글이 들어간 경우를 위해서
         guard let target = original.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
             // 인코딩중 에러가 발생함
@@ -106,20 +115,22 @@ struct UserServiceAPI {
             let successRange = 200 ..< 300
             guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode), let resultData = data else {
                 print("\(error?.localizedDescription ?? "no error") \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
-                completion(false)
+                completion(["nickName" : "failed"])
                 return
             }
-            if let resultBoolean = String(data: resultData, encoding: .utf8).flatMap(Bool.init) {
-                completion(resultBoolean)
+            
+            let responseJSON = try? JSONSerialization.jsonObject(with: resultData, options: [])
+            if let result = responseJSON as? [String: Any] {
+                completion(result)
             } else {
-                completion(false)
+                completion(["nickName" : "failed"])
             }
         }
         task.resume()
     }
     
-    func checkVerificationCode(code: String, completion: @escaping (String)->Void) {
-        let original = "http://localhost:50001/users/mail?code=\(code)"
+    func checkVerificationCode(code: String, completion: @escaping ([String: Any])->Void) {
+        let original = "\(userServiceUrl)/email?code=\(code)"
         // 한글이 들어간 경우를 위해서
         guard let target = original.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
             // 인코딩중 에러가 발생함
@@ -134,13 +145,15 @@ struct UserServiceAPI {
             let successRange = 200 ..< 300
             guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode), let resultData = data else {
                 print("\(error?.localizedDescription ?? "no error") \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
-                completion("error")
+                completion(["email" : "failed"])
                 return
             }
-            if let resultString = String(data: resultData, encoding: .utf8) {
-                completion(resultString)
+            
+            let responseJSON = try? JSONSerialization.jsonObject(with: resultData, options: [])
+            if let result = responseJSON as? [String: Any] {
+                completion(result)
             } else {
-                completion("error")
+                completion(["email" : "failed"])
             }
         }
         task.resume()
