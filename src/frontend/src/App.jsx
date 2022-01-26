@@ -15,6 +15,7 @@ import HomePage from '@pages/Home';
 import VideoPlayPage from '@pages/VideoPlay';
 import ChannelPage from '@pages/Channel';
 import MyPage from '@pages/My';
+import TestPage from '@pages/Test';
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,7 @@ function App() {
                 <Route path='video-play/:id' element={<VideoPlayPage />} />
                 <Route path='channel/:id' element={<ChannelPage />} />
                 <Route path='mypage/:type' element={<MyPage />} />
+                <Route path='test' element={<TestPage />} />
               </Route>
             </Routes>
           </Router>
