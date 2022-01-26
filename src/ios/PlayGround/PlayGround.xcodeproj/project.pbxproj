@@ -65,6 +65,8 @@
 		49E6BE372791951D000E475C /* FriendListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E6BE362791951D000E475C /* FriendListViewController.swift */; };
 		49E6BE3927919C7A000E475C /* FriendPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E6BE3827919C7A000E475C /* FriendPopUpViewController.swift */; };
 		49E6BE3E2791A7C1000E475C /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E6BE3D2791A7C1000E475C /* SearchViewController.swift */; };
+		49E72FD127A166E300DFBCC3 /* GatewayManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E72FD027A166E300DFBCC3 /* GatewayManager.swift */; };
+		49E72FD327A168C600DFBCC3 /* ChatServiceAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E72FD227A168C600DFBCC3 /* ChatServiceAPI.swift */; };
 		49E7374927906331000BC3FF /* Tab.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49E7374827906330000BC3FF /* Tab.storyboard */; };
 		49E7374B2790644C000BC3FF /* CustomTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E7374A2790644C000BC3FF /* CustomTabViewController.swift */; };
 		49E8E899278BB4C2003AD1DF /* HorizontalVideoListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E8E898278BB4C2003AD1DF /* HorizontalVideoListCell.swift */; };
@@ -144,6 +146,8 @@
 		49E6BE362791951D000E475C /* FriendListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendListViewController.swift; sourceTree = "<group>"; };
 		49E6BE3827919C7A000E475C /* FriendPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendPopUpViewController.swift; sourceTree = "<group>"; };
 		49E6BE3D2791A7C1000E475C /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		49E72FD027A166E300DFBCC3 /* GatewayManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GatewayManager.swift; sourceTree = "<group>"; };
+		49E72FD227A168C600DFBCC3 /* ChatServiceAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatServiceAPI.swift; sourceTree = "<group>"; };
 		49E7374827906330000BC3FF /* Tab.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Tab.storyboard; sourceTree = "<group>"; };
 		49E7374A2790644C000BC3FF /* CustomTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabViewController.swift; sourceTree = "<group>"; };
 		49E8E898278BB4C2003AD1DF /* HorizontalVideoListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalVideoListCell.swift; sourceTree = "<group>"; };
@@ -322,8 +326,10 @@
 				49B9C9C4277ACE9F006AE134 /* LaunchScreen.storyboard */,
 				49B9C9C7277ACE9F006AE134 /* Info.plist */,
 				4907709A27979A1D00ADD8E8 /* UserServiceAPI.swift */,
-				490770A42797F7A300ADD8E8 /* ErrorCodeConverter.swift */,
 				4907709C27979A2800ADD8E8 /* UserDataModel.swift */,
+				49E72FD227A168C600DFBCC3 /* ChatServiceAPI.swift */,
+				49E72FD027A166E300DFBCC3 /* GatewayManager.swift */,
+				490770A42797F7A300ADD8E8 /* ErrorCodeConverter.swift */,
 			);
 			path = PlayGround;
 			sourceTree = "<group>";
@@ -587,6 +593,7 @@
 				49E8E89E278BB5B0003AD1DF /* CameraView.swift in Sources */,
 				49D7A0B927840595001CAC60 /* RegisterNavigationController.swift in Sources */,
 				496279D627828BB3005A2BDC /* PlayExplainViewController.swift in Sources */,
+				49E72FD127A166E300DFBCC3 /* GatewayManager.swift in Sources */,
 				49D7A0B727840595001CAC60 /* IdInputViewController.swift in Sources */,
 				4935FD44277C0ED100760675 /* ChatCell.swift in Sources */,
 				49D7A0AC2783ECAD001CAC60 /* AppUtility.swift in Sources */,
@@ -609,6 +616,7 @@
 				49E6BE31279100BC000E475C /* HomeNavigationController.swift in Sources */,
 				49818AC52780C63F00C0C956 /* MyPageViewController.swift in Sources */,
 				4935FD42277C0E4D00760675 /* ChattingViewController.swift in Sources */,
+				49E72FD327A168C600DFBCC3 /* ChatServiceAPI.swift in Sources */,
 				49EA4E0E279461B200A038E3 /* Coordinator.swift in Sources */,
 				4907709F2797AC8C00ADD8E8 /* RegisterHelper.swift in Sources */,
 				49E6BE3927919C7A000E475C /* FriendPopUpViewController.swift in Sources */,
