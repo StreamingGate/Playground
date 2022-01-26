@@ -11,9 +11,15 @@ function Test() {
   const [peer, setPeer] = useState(null);
   const [rtpCapabilities, setRtpCapabilities] = useState(null);
   const [sendTranportParams, setSendTransPortParams] = useState(null);
+
   const [device, setDevice] = useState(null);
+  const [recDevice, setRecDevice] = useState(null);
+
   const [producerTransPort, setProducerTransport] = useState(null);
+  const [consumerTransPort, setConsumerTransPort] = useState(null);
+
   const [producer, setProducer] = useState(null);
+  const [consumer, setConsumer] = useState(null);
 
   const videoRef = useRef(null);
 
@@ -71,7 +77,7 @@ function Test() {
 
   useEffect(() => {
     const tempTransprot = new ProtoClient.WebSocketTransport(
-      'wss://streaminggate.shop:443/?roomId=test1&peerId=test2'
+      'wss://3.20.252.143/?roomId=test2&peerId=5pwtwn57'
     );
     const tempPeer = new ProtoClient.Peer(tempTransprot);
 
@@ -97,16 +103,25 @@ function Test() {
         routerRtpCapabilities: rtpCapabilities,
       });
 
-      console.log('!!!!!!!!!!!!!!!!!!!!!');
-      console.log(testDevice);
-      console.log('!!!!!!!!!!!!!!!!!!!!!');
-
       setDevice(testDevice);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleCreateRevDevice = async () => {
+    try {
+      const tempRecDevice = new mediasoupClient.Device();
+      await tempRecDevice.load({
+        routerRtpCapabilities: rtpCapabilities,
+      });
+
+      setRecDevice(tempRecDevice);
 
       await peer.request('join', {
-        // displayName: 'test',
-        rtpCapabilities: testDevice.rtpCapabilities,
-        sctpCapabilities: testDevice.sctpCapabilities,
+        display: 'consumer',
+        rtpCapabilities: tempRecDevice.rtpCapabilities,
+        sctpCapabilities: tempRecDevice.sctpCapabilities,
       });
     } catch (error) {
       console.log(error);
@@ -121,15 +136,13 @@ function Test() {
         consuming: false,
       });
 
-      console.log('~~~~~~~~~~~~~~~~~~~~~');
-      console.log(test);
-      console.log('~~~~~~~~~~~~~~~~~~~~~');
+      await peer.request('join', {
+        displayName: 'producer',
+        rtpCapabilities: device.rtpCapabilities,
+        sctpCapabilities: device.sctpCapabilities,
+      });
 
       const testProducerTransPort = device.createSendTransport(test);
-
-      console.log('#######################');
-      console.log(testProducerTransPort);
-      console.log('#######################');
 
       testProducerTransPort.on('connect', async ({ dtlsParameters }, callback, errback) => {
         try {
@@ -161,6 +174,40 @@ function Test() {
     }
   };
 
+  const handleCreateRecTransport = async () => {
+    try {
+      const test = await peer.request('createWebRtcTransport', {
+        forceTcp: true,
+        producing: false,
+        consuming: true,
+      });
+
+      await peer.request('join', {
+        display: 'consumer',
+        rtpCapabilities: recDevice.rtpCapabilities,
+        sctpCapabilities: recDevice.sctpCapabilities,
+      });
+
+      const testConsumerTransPort = recDevice.createRecvTransport(test);
+
+      testConsumerTransPort.on('connect', async ({ dtlsParameters }, callback, errback) => {
+        try {
+          peer.request('connectWebRtcTransport', {
+            transportId: testConsumerTransPort.id,
+            dtlsParameters,
+          });
+          callback();
+        } catch (error) {
+          errback(error);
+        }
+      });
+
+      setConsumerTransPort(testConsumerTransPort);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   const handleConnectSendTransport = async () => {
     const testProducer = await producerTransPort.produce(params);
 
@@ -175,6 +222,10 @@ function Test() {
     setProducer(testProducer);
   };
 
+  const handleConnectRecTransport = async () => {
+    const testConsumer = await consumerTransPort.consume(params);
+  };
+
   return (
     <>
       <video ref={videoRef} autoPlay></video>
@@ -183,6 +234,9 @@ function Test() {
       <Button onClick={handelCreateDevice}>CreateDevice</Button>
       <Button onClick={handleCreateSendTransport}>Create Send Transport</Button>
       <Button onClick={handleConnectSendTransport}>Connect Send Transport,</Button>
+      <br />
+      <Button onClick={handleCreateRevDevice}>Create Rec Device</Button>
+      <Button onClick={handleCreateRecTransport}>Create Rec Transport</Button>
     </>
   );
 }
