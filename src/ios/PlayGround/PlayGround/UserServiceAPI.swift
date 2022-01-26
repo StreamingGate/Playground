@@ -10,7 +10,7 @@ import Foundation
 struct UserServiceAPI {
     static let shared = UserServiceAPI()
     
-    let userServiceUrl = "http://localhost:8000/user-service"
+    let userServiceUrl = "http://\(GatewayManager.shared.gatewayAddress)/user-service"
     
     func register(email: String, name: String, nickName: String, password: String, profileImage: String, completion: @escaping (UserInfo?)->Void) {
         let url = URL(string: "\(userServiceUrl)/users")!
