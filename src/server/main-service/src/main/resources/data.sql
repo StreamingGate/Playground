@@ -18,8 +18,8 @@ VALUES (1, 0, 0, 3, 1),
        (2, 0, 0, 4, 1);
 
 -- 1(2 hits)
-INSERT INTO live_room(id, title, host_nickname, users_id, hits, like_cnt, report_cnt, thumbnail, category, created_at)
-VALUES (1, 'live_room1', 'nick2', 2, 0, 0, 0, 'https://cdn.the-scientist.com/assets/articleNo/65065/aImg/29449/image-of-the-day-jasper-the-cat-t.jpg', 'KPOP', '2022-01-27T11:0:0');
+INSERT INTO live_room(id, title, host_nickname, users_id, like_cnt, report_cnt, thumbnail, category, created_at)
+VALUES (1, 'live_room1', 'nick2', 2, 0, 0, 'https://cdn.the-scientist.com/assets/articleNo/65065/aImg/29449/image-of-the-day-jasper-the-cat-t.jpg', 'KPOP', '2022-01-27T11:0:0');
 
 INSERT INTO live_viewer(id, liked, disliked, last_viewed_at, live_room_id, user_id)
 VALUES (1, 0, 0, '2022-01-27T11:10:0', 1, 3),

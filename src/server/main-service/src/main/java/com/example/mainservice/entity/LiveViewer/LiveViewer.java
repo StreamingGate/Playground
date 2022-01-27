@@ -16,6 +16,8 @@ import com.example.mainservice.entity.User.UserEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @NoArgsConstructor
 @Getter
 @Entity
@@ -28,8 +30,13 @@ public class LiveViewer {
     @Column(length=10)
     private Role role;
 
-    private boolean liked;
-    private boolean disliked;
+    private boolean liked = false;
+
+    private boolean disliked = false;
+
+    private LocalDateTime likedAt;
+
+    private LocalDateTime lastViewedAt;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -38,4 +45,20 @@ public class LiveViewer {
     @ManyToOne
     @JoinColumn(name = "live_room_id")
     private LiveRoom liveRoom;
+
+    public LiveViewer(UserEntity userEntity, LiveRoom liveRoom) {
+        this.userEntity = userEntity;
+        this.liveRoom = liveRoom;
+        userEntity.getLiveViewers().add(this);
+        liveRoom.getLiveViewers().add(this);
+    }
+
+    public void setLiked(boolean liked) {
+        this.liked = liked;
+        this.likedAt = LocalDateTime.now();
+    }
+
+    public void setDisliked(boolean disliked) {
+        this.disliked = disliked;
+    }
 }

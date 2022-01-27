@@ -1,11 +1,9 @@
 package com.example.mainservice.entity.FriendWait;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
+import com.example.mainservice.entity.User.UserEntity;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -19,8 +17,23 @@ public class FriendWait {
     private Long id;
 
     @Column(length = 8)
-    private String nicknameSender;
+    private String senderNickname;
 
-    @Column(length = 8)
-    private String nicknameReceiver;
+    @Column(length = 36)
+    private String senderUuid;
+
+    @Column(columnDefinition = "TEXT")
+    private String senderProfileImage;
+
+    @ManyToOne
+    @JoinColumn(name = "users_id")
+    private UserEntity userEntity; //friends들이 나를 참조
+
+    @Builder
+    public FriendWait(String senderNickname, String senderUuid, String senderProfileImage, UserEntity userEntity){
+        this.senderNickname = senderNickname;
+        this.senderUuid = senderUuid;
+        this.senderProfileImage = senderProfileImage;
+        this.userEntity = userEntity;
+    }
 }
