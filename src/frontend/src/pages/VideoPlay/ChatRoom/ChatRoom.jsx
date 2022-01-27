@@ -32,7 +32,7 @@ function ChatRoom() {
       </S.ChatRoomHeader>
       <S.ChaListContainer>
         {chatData.map(chatInfo => (
-          <ChatDialog key={chatInfo.id} chatInfo={chatInfo} />
+          <ChatDialog key={JSON.stringify(chatInfo)} chatInfo={chatInfo} />
         ))}
       </S.ChaListContainer>
       <S.ChatInputContainer>
