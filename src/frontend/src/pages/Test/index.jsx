@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 import ProtoClient from 'protoo-client';
 
+import { v4 as uuidv4 } from 'uuid';
+
 import { Button } from '@components/buttons';
 
 const mediasoupClient = require('mediasoup-client');
@@ -26,7 +28,6 @@ function Test() {
   const streamSuccess = async stream => {
     videoRef.current.srcObject = stream;
     const track = stream.getVideoTracks()[0];
-    console.log(track);
     setParams({
       track,
       encodings: [
@@ -77,10 +78,10 @@ function Test() {
 
   useEffect(() => {
     const tempTransprot = new ProtoClient.WebSocketTransport(
-      'wss://3.20.252.143/?roomId=test2&peerId=5pwtwn57'
+      `wss://18.117.206.241/?roomId=zgbfzgu4&peerId=${uuidv4()}`
     );
     const tempPeer = new ProtoClient.Peer(tempTransprot);
-
+    console.log(tempPeer);
     setTransport(tempTransprot);
     setPeer(tempPeer);
   }, []);
@@ -117,12 +118,6 @@ function Test() {
       });
 
       setRecDevice(tempRecDevice);
-
-      await peer.request('join', {
-        display: 'consumer',
-        rtpCapabilities: tempRecDevice.rtpCapabilities,
-        sctpCapabilities: tempRecDevice.sctpCapabilities,
-      });
     } catch (error) {
       console.log(error);
     }
@@ -135,6 +130,8 @@ function Test() {
         producing: true,
         consuming: false,
       });
+
+      console.log(test);
 
       await peer.request('join', {
         displayName: 'producer',
@@ -182,6 +179,8 @@ function Test() {
         consuming: true,
       });
 
+      console.log(test);
+
       await peer.request('join', {
         display: 'consumer',
         rtpCapabilities: recDevice.rtpCapabilities,
@@ -209,6 +208,7 @@ function Test() {
   };
 
   const handleConnectSendTransport = async () => {
+    await peer.request('consume', { foo: 'a' });
     const testProducer = await producerTransPort.produce(params);
 
     testProducer.on('trackended', () => {
@@ -223,7 +223,10 @@ function Test() {
   };
 
   const handleConnectRecTransport = async () => {
+    // await peer.request('consume', { foo: 'a' });
     const testConsumer = await consumerTransPort.consume(params);
+    console.log(testConsumer);
+    setConsumer(testConsumer);
   };
 
   return (
@@ -237,6 +240,7 @@ function Test() {
       <br />
       <Button onClick={handleCreateRevDevice}>Create Rec Device</Button>
       <Button onClick={handleCreateRecTransport}>Create Rec Transport</Button>
+      <Button onClick={handleConnectRecTransport}>Connect Send Transport</Button>
     </>
   );
 }
