@@ -40,7 +40,7 @@ function ChatRoom() {
           value={values.message}
           onChange={handleInputChange}
         />
-        <IconButton onClick={handleSendBtnClick}>
+        <IconButton onClick={handleSendBtnClick} disabled={!values.message}>
           <S.SendIcon />
         </IconButton>
       </S.ChatInputContainer>
