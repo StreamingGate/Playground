@@ -72,6 +72,7 @@ class PlayViewController: UIViewController {
     
     @IBOutlet weak var safeBottomView: UIView!
     @IBOutlet weak var safeBottomViewHeight: NSLayoutConstraint!
+    var chatDelegate: ChatSendDelegate?
     
     // orientation transition
     var portraitLayout: [NSLayoutConstraint] = []
@@ -293,6 +294,7 @@ class PlayViewController: UIViewController {
     func connectChatView() {
         guard let chattingVC = UIStoryboard(name: "Chat", bundle: nil).instantiateViewController(withIdentifier: "ChattingViewController") as? ChattingViewController else { return }
         self.addChild(chattingVC)
+        self.chatDelegate = chattingVC
         self.chatContainerView.addSubview((chattingVC.view)!)
         chattingVC.view.frame = self.chatContainerView.bounds
         chattingVC.didMove(toParent: self)
@@ -343,6 +345,14 @@ class PlayViewController: UIViewController {
     
     @IBAction func playPauseButtonDidTap(_ sender: Any) {
         togglePlay()
+    }
+    
+    @IBAction func chatSendButtonDidTap(_ sender: Any) {
+        chatTextView.resignFirstResponder()
+        guard let message = chatTextView.text, message.isEmpty == false else { return }
+        chatTextView.text = ""
+        chatPlaceHolderLabel.isHidden = false
+        self.chatDelegate?.sendChatMessage(nickname: "test", message: message, senderRole: "VIEWER", chatType: "NORMAL")
     }
     
     func togglePlay() {
@@ -569,5 +579,3 @@ extension PlayViewController {
         }
     }
 }
-
-

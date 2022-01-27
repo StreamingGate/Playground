@@ -106,3 +106,9 @@ extension ChattingViewController: UITableViewDataSource, UITableViewDelegate {
         return UITableView.automaticDimension
     }
 }
+
+extension ChattingViewController: ChatSendDelegate {
+    func sendChatMessage(nickname: String, message: String, senderRole: String, chatType: String) {
+        viewModel.sendMessage(message: message, nickname: nickname, type: chatType, role: senderRole)
+    }
+}

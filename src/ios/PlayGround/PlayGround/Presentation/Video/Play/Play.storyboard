@@ -384,6 +384,9 @@
                                         </constraints>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" image="send_blueCircle"/>
+                                        <connections>
+                                            <action selector="chatSendButtonDidTap:" destination="zL7-Q9-x2b" eventType="touchUpInside" id="vLV-Yg-enC"/>
+                                        </connections>
                                     </button>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Qe2-mD-WFT">
                                         <rect key="frame" x="20" y="18" width="25" height="25"/>
