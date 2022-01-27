@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 import * as S from './ChatRoom.style';
 import { useSocket, useForm } from '@utils/hook';
@@ -8,8 +9,14 @@ import { IconButton } from '@components/buttons';
 import { ChatDialog } from '@components/dataDisplays';
 
 function ChatRoom() {
+  const chatListContainer = useRef(null);
   const { chatData, sendChatMessage } = useSocket('ba59100a-85f7-42dc-8508-0df112a0cf3f');
   const { values, handleInputChange, changeValue } = useForm({ initialValues: { message: '' } });
+
+  useEffect(() => {
+    const currentHeight = chatListContainer.current.scrollHeight;
+    chatListContainer.current.scroll(0, currentHeight);
+  }, [chatData]);
 
   const handleSendBtn = e => {
     if (!values.message) {
@@ -30,9 +37,9 @@ function ChatRoom() {
           <S.ChatRoomPeople>6.7천명</S.ChatRoomPeople>
         </S.ChatMetaContainer>
       </S.ChatRoomHeader>
-      <S.ChaListContainer>
+      <S.ChaListContainer ref={chatListContainer}>
         {chatData.map(chatInfo => (
-          <ChatDialog key={JSON.stringify(chatInfo)} chatInfo={chatInfo} />
+          <ChatDialog key={uuidv4()} chatInfo={chatInfo} />
         ))}
       </S.ChaListContainer>
       <S.ChatInputContainer>
