@@ -1,7 +1,7 @@
 import React from 'react';
 
 import * as S from './ChatRoom.style';
-import { useSocket } from '@utils/hook';
+import { useSocket, useForm } from '@utils/hook';
 
 import { Input } from '@components/forms';
 import { IconButton } from '@components/buttons';
@@ -9,9 +9,11 @@ import { ChatDialog } from '@components/dataDisplays';
 
 function ChatRoom() {
   const { chatData, sendChatMessage } = useSocket('ba59100a-85f7-42dc-8508-0df112a0cf3f');
+  const { values, handleInputChange, changeValue } = useForm({ initialValues: { message: '' } });
 
   const handleSendBtnClick = () => {
-    sendChatMessage();
+    sendChatMessage(values.message);
+    changeValue(['message', '']);
   };
 
   return (
@@ -30,7 +32,14 @@ function ChatRoom() {
       </S.ChaListContainer>
       <S.ChatInputContainer>
         <S.UserProfile />
-        <Input fullWidth variant='standard' placeholder='닉네임으로 채팅하기' />
+        <Input
+          name='message'
+          fullWidth
+          variant='standard'
+          placeholder='닉네임으로 채팅하기'
+          value={values.message}
+          onChange={handleInputChange}
+        />
         <IconButton onClick={handleSendBtnClick}>
           <S.SendIcon />
         </IconButton>
