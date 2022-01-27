@@ -9,7 +9,7 @@ export default function useSocket(roomId) {
   const recvChatMessage = message => {
     const { body } = message;
 
-    setChatData(prev => [...prev, JSON.stringify(body)]);
+    setChatData(prev => [...prev, JSON.parse(body)]);
   };
 
   useEffect(() => {
@@ -23,7 +23,7 @@ export default function useSocket(roomId) {
       newClient.subscribe(`/topic/chat/room/${roomId}`, recvChatMessage);
     };
 
-    setStompClient(stompClient);
+    setStompClient(newClient);
 
     newClient.activate();
 
@@ -35,7 +35,13 @@ export default function useSocket(roomId) {
   const sendChatMessage = message => {
     stompClient.publish({
       destination: `/app/chat/message/${roomId}`,
-      body: JSON.stringify(message),
+      body: JSON.stringify({
+        roomId,
+        nickname: 'test',
+        senderRole: 'VIEWER',
+        chatType: 'NORMAL',
+        message,
+      }),
     });
   };
 
