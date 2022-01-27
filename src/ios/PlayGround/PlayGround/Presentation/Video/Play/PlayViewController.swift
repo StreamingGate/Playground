@@ -70,6 +70,9 @@ class PlayViewController: UIViewController {
     @IBOutlet weak var chatContainerViewLeading: NSLayoutConstraint!
     @IBOutlet weak var chatContainerViewCenterX: NSLayoutConstraint!
     
+    @IBOutlet weak var safeBottomView: UIView!
+    @IBOutlet weak var safeBottomViewHeight: NSLayoutConstraint!
+    
     // orientation transition
     var portraitLayout: [NSLayoutConstraint] = []
     var landscapeLayout: [NSLayoutConstraint] = []
@@ -83,6 +86,12 @@ class PlayViewController: UIViewController {
 
     
     // MARK: - View Life Cycle
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        safeBottom = self.parent?.view.safeAreaInsets.bottom ?? 0
+        safeBottomViewHeight.constant = safeBottom
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         prepareAnimation()
@@ -551,7 +560,7 @@ extension PlayViewController {
         guard let userInfo = noti.userInfo else { return }
         guard let keyboardFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {return}
         if noti.name == UIResponder.keyboardWillShowNotification {
-            let adjustmentHeight = keyboardFrame.height - view.safeAreaInsets.bottom
+            let adjustmentHeight = keyboardFrame.height - safeBottom
             chatViewBottom.constant = adjustmentHeight
             self.view.layoutIfNeeded()
         } else {
