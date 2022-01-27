@@ -24,6 +24,10 @@ class ChatServiceAPI {
         socketClient.subscribe(destination: "/topic/chat/room/\(roomId)")
     }
     
+    func disconnectToSocket() {
+        socketClient.disconnect()
+    }
+    
     func sendMessage(roomId: String, nickname: String, role: String, type: String, message: String) {
         socketClient.sendJSONForDict(dict: ["roomId": roomId, "nickname": nickname, "senderRole" : role, "chatType" : type, "message" : message] as NSDictionary, toDestination: "/app/chat/message/\(roomId)")
     }

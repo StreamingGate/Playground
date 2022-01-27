@@ -24,6 +24,11 @@ class ChattingViewController: UIViewController {
         setupUI()
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        viewModel.disconnectToSocket()
+    }
+    
     // MARK: - UI Setting
     func setupUI() {
         titleLabel.font = UIFont.Component

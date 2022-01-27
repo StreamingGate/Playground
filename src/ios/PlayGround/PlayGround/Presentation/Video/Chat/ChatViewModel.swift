@@ -18,6 +18,10 @@ class ChatViewModel {
         ChatServiceAPI.shared.connectToSocket(viewModel: self)
     }
     
+    func disconnectToSocket() {
+        ChatServiceAPI.shared.disconnectToSocket()
+    }
+    
     func sendMessage(message: String, nickname: String, type: String, role: String) {
         ChatServiceAPI.shared.sendMessage(roomId: self.roomId, nickname: nickname, role: role, type: type, message: message)
     }
