@@ -12,7 +12,7 @@ import Combine
 
 class ChatViewModel {
     @Published var chatList: [ChatData] = []
-    var roomId = "e48b352a-111f-4b49-8a86-4ba9e6be3495"
+    var roomId = ""
     
     func connectToSocket() {
         ChatServiceAPI.shared.connectToSocket(viewModel: self)

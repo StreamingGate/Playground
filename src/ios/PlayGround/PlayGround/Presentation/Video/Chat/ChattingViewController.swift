@@ -15,10 +15,13 @@ class ChattingViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     let viewModel = ChatViewModel()
     private var cancellable: Set<AnyCancellable> = []
+    var isBottomFocused = true
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        // 추후에 실제 roomId로 변경
+        viewModel.roomId = "e48b352a-111f-4b49-8a86-4ba9e6be3495"
         viewModel.connectToSocket()
         bingViewModelData()
         setupUI()
@@ -41,6 +44,9 @@ class ChattingViewController: UIViewController {
             .sink { [weak self] list in
                 guard let self = self else { return }
                 self.tableView.reloadData()
+                if self.isBottomFocused {
+                    self.tableView.scrollToBottom()
+                }
             }.store(in: &cancellable)
     }
 }
@@ -57,10 +63,21 @@ extension ChattingViewController: UITableViewDataSource, UITableViewDelegate {
         return cell
     }
     
+    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        // 스크롤이 하단이 아닐 경우 새 메세지가 왔을 때 하단으로 자동 스크롤되지 않도록
+        if (viewModel.chatList.count - 1) == indexPath.row {
+            isBottomFocused = false
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        // 스크롤이 하단일 경우 새 메세지가 왔을 때 하단으로 자동 스크롤되도록
+        if (viewModel.chatList.count - 1) == indexPath.row {
+            isBottomFocused = true
+        }
+    }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }
 }
-
-
-
