@@ -1,32 +1,19 @@
 import React from 'react';
 
 import * as S from './ChatRoom.style';
+import { useSocket } from '@utils/hook';
 
 import { Input } from '@components/forms';
 import { IconButton } from '@components/buttons';
 import { ChatDialog } from '@components/dataDisplays';
 
-const dummyChatList = [
-  { id: 1, timeStamp: '오후 2:30', userName: 'test', message: '이것은 채팅이다.' },
-  { id: 2, timeStamp: '오후 2:30', userName: 'test', message: '이것은 채팅이다.' },
-  {
-    id: 3,
-    timeStamp: '오후 2:30',
-    userName: 'test',
-    message:
-      '이것은 채팅이다. 이것은 채팅이다.이것은 채팅이다.이것은 채팅이다.이것은 채팅이다.이것은 채팅이다.이것은 채팅이다.이것은 채팅이다.이것은 채팅이다.이것은 채팅이다.이것은 채팅이다.이것은 채팅이다.이것은 채팅이다.이것은 채팅이다.이것은 채팅이다.이것은 채팅이다.이것은 채팅이다.이것은 채팅이다.',
-  },
-  { id: 4, timeStamp: '오후 2:30', userName: 'test', message: '이것은 채팅이다.' },
-  { id: 5, timeStamp: '오후 2:30', userName: 'test', message: '이것은 채팅이다.' },
-  { id: 6, timeStamp: '오후 2:30', userName: 'test', message: '이것은 채팅이다.' },
-  { id: 7, timeStamp: '오후 2:30', userName: 'test', message: '이것은 채팅이다.' },
-  { id: 8, timeStamp: '오후 2:30', userName: 'test', message: '이것은 채팅이다.' },
-  { id: 9, timeStamp: '오후 2:30', userName: 'test', message: '이것은 채팅이다.' },
-  { id: 10, timeStamp: '오후 2:30', userName: 'test', message: '이것은 채팅이다.' },
-  { id: 11, timeStamp: '오후 2:30', userName: 'test', message: '이것은 채팅이다.' },
-];
-
 function ChatRoom() {
+  const { chatData, sendChatMessage } = useSocket('ba59100a-85f7-42dc-8508-0df112a0cf3f');
+
+  const handleSendBtnClick = () => {
+    sendChatMessage();
+  };
+
   return (
     <S.ChatRoomContainer>
       <S.ChatRoomHeader>
@@ -37,14 +24,14 @@ function ChatRoom() {
         </S.ChatMetaContainer>
       </S.ChatRoomHeader>
       <S.ChaListContainer>
-        {dummyChatList.map(chatInfo => (
+        {chatData.map(chatInfo => (
           <ChatDialog key={chatInfo.id} chatInfo={chatInfo} />
         ))}
       </S.ChaListContainer>
       <S.ChatInputContainer>
         <S.UserProfile />
         <Input fullWidth variant='standard' placeholder='닉네임으로 채팅하기' />
-        <IconButton>
+        <IconButton onClick={handleSendBtnClick}>
           <S.SendIcon />
         </IconButton>
       </S.ChatInputContainer>
