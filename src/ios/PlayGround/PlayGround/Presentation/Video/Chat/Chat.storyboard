@@ -45,11 +45,11 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3uN-yT-dcl">
-                                <rect key="frame" x="0.0" y="110" width="414" height="15"/>
+                                <rect key="frame" x="0.0" y="110" width="414" height="0.0"/>
                                 <color key="backgroundColor" name="Background"/>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="1Xe-EY-7oi">
-                                <rect key="frame" x="0.0" y="125" width="414" height="737"/>
+                                <rect key="frame" x="0.0" y="110" width="414" height="752"/>
                                 <color key="backgroundColor" name="Background"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ChatCell" rowHeight="55" id="PE6-Pp-X4V" customClass="ChatCell" customModule="PlayGround" customModuleProvider="target">
@@ -120,7 +120,7 @@
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="1Xe-EY-7oi" secondAttribute="bottom" id="27n-Oe-KBE"/>
                             <constraint firstItem="hQ0-xD-JfU" firstAttribute="top" secondItem="LhH-UG-kIU" secondAttribute="bottom" constant="13" id="2hw-IS-9lj"/>
                             <constraint firstItem="LhH-UG-kIU" firstAttribute="leading" secondItem="TlI-ST-bXZ" secondAttribute="trailing" constant="3" id="34A-WP-xff"/>
-                            <constraint firstItem="1Xe-EY-7oi" firstAttribute="top" secondItem="hQ0-xD-JfU" secondAttribute="bottom" constant="15" id="5TN-xJ-btk"/>
+                            <constraint firstItem="1Xe-EY-7oi" firstAttribute="top" secondItem="hQ0-xD-JfU" secondAttribute="bottom" id="5TN-xJ-btk"/>
                             <constraint firstItem="hQ0-xD-JfU" firstAttribute="centerX" secondItem="vDu-zF-Fre" secondAttribute="centerX" id="5c6-lX-31P"/>
                             <constraint firstItem="1Xe-EY-7oi" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="6SM-Wi-1ZB"/>
                             <constraint firstItem="FJR-ZY-W8I" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="CM7-FW-Sob"/>

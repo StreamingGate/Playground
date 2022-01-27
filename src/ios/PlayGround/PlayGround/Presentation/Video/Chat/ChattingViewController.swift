@@ -37,6 +37,7 @@ class ChattingViewController: UIViewController {
         titleLabel.font = UIFont.Component
         viewerLabel.font = UIFont.caption
         viewerLabel.textColor = UIColor.customDarkGray
+        tableView.contentInset = UIEdgeInsets(top: 15, left: 0, bottom: 0, right: 0)
     }
     
     func bingViewModelData() {
