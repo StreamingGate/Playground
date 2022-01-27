@@ -1,5 +1,5 @@
 import React from 'react';
-import ScrollDown from '@assets/icons/ScrollDown';
+import ScrollDown from '@assets/icons/ScrollDown.svg';
 
 import withSvgIcon from './withSvgIcon';
 
