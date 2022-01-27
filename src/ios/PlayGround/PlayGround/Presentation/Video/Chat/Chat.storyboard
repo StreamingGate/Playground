@@ -113,6 +113,24 @@
                                     <outlet property="delegate" destination="Y6W-OH-hqX" id="vSt-cC-ycA"/>
                                 </connections>
                             </tableView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.0" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bottomArrow_blueCircle" translatesAutoresizingMaskIntoConstraints="NO" id="JuM-Ad-Z0x">
+                                <rect key="frame" x="192" y="812" width="30" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="30" id="ATY-px-agy"/>
+                                    <constraint firstAttribute="width" secondItem="JuM-Ad-Z0x" secondAttribute="height" multiplier="1:1" id="UmZ-lq-dG3"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kfy-OQ-wjZ">
+                                <rect key="frame" x="182" y="802" width="50" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="Kfy-OQ-wjZ" secondAttribute="height" multiplier="1:1" id="Aev-lb-8yw"/>
+                                    <constraint firstAttribute="width" constant="50" id="Wjz-p5-gIx"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <connections>
+                                    <action selector="bottomScrollButtonDidTap:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="NO7-Wc-YQy"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -123,7 +141,11 @@
                             <constraint firstItem="1Xe-EY-7oi" firstAttribute="top" secondItem="hQ0-xD-JfU" secondAttribute="bottom" id="5TN-xJ-btk"/>
                             <constraint firstItem="hQ0-xD-JfU" firstAttribute="centerX" secondItem="vDu-zF-Fre" secondAttribute="centerX" id="5c6-lX-31P"/>
                             <constraint firstItem="1Xe-EY-7oi" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="6SM-Wi-1ZB"/>
+                            <constraint firstItem="Kfy-OQ-wjZ" firstAttribute="centerX" secondItem="vDu-zF-Fre" secondAttribute="centerX" id="9nx-wk-uAX"/>
+                            <constraint firstItem="JuM-Ad-Z0x" firstAttribute="centerY" secondItem="Kfy-OQ-wjZ" secondAttribute="centerY" id="9sI-6F-6JR"/>
+                            <constraint firstItem="JuM-Ad-Z0x" firstAttribute="centerX" secondItem="Kfy-OQ-wjZ" secondAttribute="centerX" id="Atc-2d-C2c"/>
                             <constraint firstItem="FJR-ZY-W8I" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="CM7-FW-Sob"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="Kfy-OQ-wjZ" secondAttribute="bottom" constant="10" id="Fwb-jh-aEO"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="leading" secondItem="3uN-yT-dcl" secondAttribute="leading" id="MDx-Pd-e7W"/>
                             <constraint firstItem="3uN-yT-dcl" firstAttribute="centerX" secondItem="vDu-zF-Fre" secondAttribute="centerX" id="Mha-6m-MQA"/>
                             <constraint firstItem="LhH-UG-kIU" firstAttribute="centerY" secondItem="TlI-ST-bXZ" secondAttribute="centerY" id="NLa-dh-9dU"/>
@@ -137,6 +159,8 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="bottomScrollButton" destination="Kfy-OQ-wjZ" id="7av-Vt-a57"/>
+                        <outlet property="bottomScrollImageView" destination="JuM-Ad-Z0x" id="2EL-Cg-1j1"/>
                         <outlet property="tableView" destination="1Xe-EY-7oi" id="PvO-V1-SdF"/>
                         <outlet property="titleLabel" destination="FJR-ZY-W8I" id="aiq-y8-oxe"/>
                         <outlet property="viewerLabel" destination="LhH-UG-kIU" id="FNf-rc-PuO"/>
@@ -148,6 +172,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="bottomArrow_blueCircle" width="30" height="30"/>
         <image name="person_darkGray" width="14" height="14"/>
         <namedColor name="Background">
             <color red="0.95300000905990601" green="0.95300000905990601" blue="0.95300000905990601" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

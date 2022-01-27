@@ -15,7 +15,9 @@ class ChattingViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     let viewModel = ChatViewModel()
     private var cancellable: Set<AnyCancellable> = []
-    var isBottomFocused = true
+    @Published var isBottomFocused = true
+    @IBOutlet weak var bottomScrollImageView: UIImageView!
+    @IBOutlet weak var bottomScrollButton: UIButton!
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
@@ -49,6 +51,24 @@ class ChattingViewController: UIViewController {
                     self.tableView.scrollToBottom()
                 }
             }.store(in: &cancellable)
+        $isBottomFocused.receive(on: DispatchQueue.main, options: nil)
+            .sink { [weak self] isFocused in
+                guard let self = self else { return }
+                UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 2, initialSpringVelocity: 2, options: .showHideTransitionViews, animations: {
+                    if isFocused {
+                        self.bottomScrollButton.alpha = 0
+                        self.bottomScrollImageView.alpha = 0
+                    } else {
+                        self.bottomScrollButton.alpha = 1
+                        self.bottomScrollImageView.alpha = 1
+                    }
+                }, completion: nil)
+            }.store(in: &cancellable)
+    }
+    
+    @IBAction func bottomScrollButtonDidTap(_ sender: Any) {
+        self.tableView.scrollToBottom()
+        isBottomFocused = true
     }
 }
 
