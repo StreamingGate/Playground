@@ -67,6 +67,9 @@
 		49E6BE3E2791A7C1000E475C /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E6BE3D2791A7C1000E475C /* SearchViewController.swift */; };
 		49E72FD127A166E300DFBCC3 /* GatewayManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E72FD027A166E300DFBCC3 /* GatewayManager.swift */; };
 		49E72FD327A168C600DFBCC3 /* ChatServiceAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E72FD227A168C600DFBCC3 /* ChatServiceAPI.swift */; };
+		49E72FF527A23F8C00DFBCC3 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E72FF427A23F8C00DFBCC3 /* ChatViewModel.swift */; };
+		49E72FF727A253DA00DFBCC3 /* DataHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E72FF627A253DA00DFBCC3 /* DataHelper.swift */; };
+		49E72FF927A256EE00DFBCC3 /* ChatDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E72FF827A256EE00DFBCC3 /* ChatDataModel.swift */; };
 		49E7374927906331000BC3FF /* Tab.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49E7374827906330000BC3FF /* Tab.storyboard */; };
 		49E7374B2790644C000BC3FF /* CustomTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E7374A2790644C000BC3FF /* CustomTabViewController.swift */; };
 		49E8E899278BB4C2003AD1DF /* HorizontalVideoListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E8E898278BB4C2003AD1DF /* HorizontalVideoListCell.swift */; };
@@ -148,6 +151,9 @@
 		49E6BE3D2791A7C1000E475C /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		49E72FD027A166E300DFBCC3 /* GatewayManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GatewayManager.swift; sourceTree = "<group>"; };
 		49E72FD227A168C600DFBCC3 /* ChatServiceAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatServiceAPI.swift; sourceTree = "<group>"; };
+		49E72FF427A23F8C00DFBCC3 /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
+		49E72FF627A253DA00DFBCC3 /* DataHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataHelper.swift; sourceTree = "<group>"; };
+		49E72FF827A256EE00DFBCC3 /* ChatDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatDataModel.swift; sourceTree = "<group>"; };
 		49E7374827906330000BC3FF /* Tab.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Tab.storyboard; sourceTree = "<group>"; };
 		49E7374A2790644C000BC3FF /* CustomTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabViewController.swift; sourceTree = "<group>"; };
 		49E8E898278BB4C2003AD1DF /* HorizontalVideoListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalVideoListCell.swift; sourceTree = "<group>"; };
@@ -192,6 +198,7 @@
 		492C62262795372B00AE546E /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				49E72FF627A253DA00DFBCC3 /* DataHelper.swift */,
 				4907709E2797AC8C00ADD8E8 /* RegisterHelper.swift */,
 				490770A02797E8D100ADD8E8 /* UserManager.swift */,
 				49D7A0AB2783ECAD001CAC60 /* AppUtility.swift */,
@@ -278,6 +285,7 @@
 				4935FD3E277BDF5F00760675 /* Chat.storyboard */,
 				4935FD41277C0E4D00760675 /* ChattingViewController.swift */,
 				4935FD43277C0ED100760675 /* ChatCell.swift */,
+				49E72FF427A23F8C00DFBCC3 /* ChatViewModel.swift */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -322,14 +330,10 @@
 			isa = PBXGroup;
 			children = (
 				492C62272795377D00AE546E /* Presentation */,
+				49E72FFC27A2573800DFBCC3 /* Network */,
 				49B9C9C2277ACE9F006AE134 /* Assets.xcassets */,
 				49B9C9C4277ACE9F006AE134 /* LaunchScreen.storyboard */,
 				49B9C9C7277ACE9F006AE134 /* Info.plist */,
-				4907709A27979A1D00ADD8E8 /* UserServiceAPI.swift */,
-				4907709C27979A2800ADD8E8 /* UserDataModel.swift */,
-				49E72FD227A168C600DFBCC3 /* ChatServiceAPI.swift */,
-				49E72FD027A166E300DFBCC3 /* GatewayManager.swift */,
-				490770A42797F7A300ADD8E8 /* ErrorCodeConverter.swift */,
 			);
 			path = PlayGround;
 			sourceTree = "<group>";
@@ -396,6 +400,35 @@
 				49E6BE3D2791A7C1000E475C /* SearchViewController.swift */,
 			);
 			path = Search;
+			sourceTree = "<group>";
+		};
+		49E72FFA27A256FA00DFBCC3 /* UserService */ = {
+			isa = PBXGroup;
+			children = (
+				4907709A27979A1D00ADD8E8 /* UserServiceAPI.swift */,
+				4907709C27979A2800ADD8E8 /* UserDataModel.swift */,
+			);
+			path = UserService;
+			sourceTree = "<group>";
+		};
+		49E72FFB27A2570200DFBCC3 /* ChatService */ = {
+			isa = PBXGroup;
+			children = (
+				49E72FD227A168C600DFBCC3 /* ChatServiceAPI.swift */,
+				49E72FF827A256EE00DFBCC3 /* ChatDataModel.swift */,
+			);
+			path = ChatService;
+			sourceTree = "<group>";
+		};
+		49E72FFC27A2573800DFBCC3 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				49E72FFA27A256FA00DFBCC3 /* UserService */,
+				49E72FFB27A2570200DFBCC3 /* ChatService */,
+				49E72FD027A166E300DFBCC3 /* GatewayManager.swift */,
+				490770A42797F7A300ADD8E8 /* ErrorCodeConverter.swift */,
+			);
+			path = Network;
 			sourceTree = "<group>";
 		};
 		49E8E89A278BB500003AD1DF /* ViewControllers */ = {
@@ -618,15 +651,18 @@
 				4935FD42277C0E4D00760675 /* ChattingViewController.swift in Sources */,
 				49E72FD327A168C600DFBCC3 /* ChatServiceAPI.swift in Sources */,
 				49EA4E0E279461B200A038E3 /* Coordinator.swift in Sources */,
+				49E72FF927A256EE00DFBCC3 /* ChatDataModel.swift in Sources */,
 				4907709F2797AC8C00ADD8E8 /* RegisterHelper.swift in Sources */,
 				49E6BE3927919C7A000E475C /* FriendPopUpViewController.swift in Sources */,
 				492C622C27954F9800AE546E /* UIView+takeScreenshot.swift in Sources */,
+				49E72FF527A23F8C00DFBCC3 /* ChatViewModel.swift in Sources */,
 				49EC9A022782033E00DE4F79 /* CreatePopOverViewController.swift in Sources */,
 				492C62232795325000AE546E /* HomeTabCoordinator.swift in Sources */,
 				492C622E27955F6C00AE546E /* Player.swift in Sources */,
 				49EC9A06278205D200DE4F79 /* UIView+RoundCorners.swift in Sources */,
 				490770A52797F7A300ADD8E8 /* ErrorCodeConverter.swift in Sources */,
 				490770A32797EA7A00ADD8E8 /* KeyChainWrapper+Key.swift in Sources */,
+				49E72FF727A253DA00DFBCC3 /* DataHelper.swift in Sources */,
 				492C62212795323700AE546E /* CreateTabCoordinator.swift in Sources */,
 				492C621B279531F200AE546E /* AccountEditCoordinator.swift in Sources */,
 				49F18C54278F2EED00EBDCF8 /* PlayViewController.swift in Sources */,
