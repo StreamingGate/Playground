@@ -49,8 +49,9 @@
                                             <constraint firstAttribute="width" constant="24" id="TFM-Wl-oPv"/>
                                             <constraint firstAttribute="width" secondItem="aOM-mK-z29" secondAttribute="height" multiplier="1:1" id="TX4-2g-H5N"/>
                                         </constraints>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" image="chevronDown_white"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" image="chevronDown_white"/>
                                         <connections>
                                             <action selector="minimizeButtonDidTap:" destination="zL7-Q9-x2b" eventType="touchUpInside" id="Vrl-P5-qlO"/>
                                         </connections>
@@ -60,8 +61,9 @@
                                         <constraints>
                                             <constraint firstAttribute="width" constant="24" id="sws-s0-NNg"/>
                                         </constraints>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" image="pause_white"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" image="pause_white"/>
                                         <connections>
                                             <action selector="playPauseButtonDidTap:" destination="zL7-Q9-x2b" eventType="touchUpInside" id="7dI-XS-hvS"/>
                                         </connections>
@@ -72,8 +74,9 @@
                                             <constraint firstAttribute="width" secondItem="zbm-Dr-h03" secondAttribute="height" multiplier="1:1" id="Qeg-Mj-GL5"/>
                                             <constraint firstAttribute="width" constant="24" id="ns1-mR-PYe"/>
                                         </constraints>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" image="enlarge_white"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" image="enlarge_white"/>
                                         <connections>
                                             <action selector="enlargeButtonDidTap:" destination="zL7-Q9-x2b" eventType="touchUpInside" id="gH1-Bq-3L0"/>
                                         </connections>

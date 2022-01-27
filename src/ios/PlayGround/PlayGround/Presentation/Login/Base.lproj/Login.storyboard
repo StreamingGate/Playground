@@ -65,13 +65,20 @@
                                     <action selector="logInButtonDidTap:" destination="DfO-Qw-ZAC" eventType="touchUpInside" id="K08-Kv-8hQ"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="비밀번호를 잊어버리셨나요?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SfE-7r-x6V">
+                                <rect key="frame" x="228.5" y="435.5" width="134" height="15"/>
+                                <fontDescription key="fontDescription" name="AppleSDGothicNeo-Regular" family="Apple SD Gothic Neo" pointSize="12"/>
+                                <color key="textColor" name="PlaceHolder"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LQS-lT-Qiw">
                                 <rect key="frame" x="216.5" y="429" width="157.5" height="28.5"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="157.5" id="yVQ-9h-P1m"/>
+                                    <constraint firstAttribute="height" constant="28.5" id="zp2-km-cSd"/>
+                                </constraints>
                                 <color key="tintColor" name="PlaceHolder"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="비밀번호를 잊어버리셨나요?" titleAlignment="trailing">
-                                    <fontDescription key="titleFontDescription" name="AppleSDGothicNeo-Regular" family="Apple SD Gothic Neo" pointSize="12"/>
-                                </buttonConfiguration>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                             </button>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="682-Ja-2sM">
                                 <rect key="frame" x="50" y="436" width="20" height="14"/>
@@ -149,6 +156,7 @@
                         <constraints>
                             <constraint firstItem="RV8-1B-51i" firstAttribute="leading" secondItem="GlJ-6C-z9m" secondAttribute="leading" constant="50" id="0Tk-X4-oRr"/>
                             <constraint firstItem="AuS-9N-Vlj" firstAttribute="leading" secondItem="Fw4-Cw-eon" secondAttribute="leading" id="0fK-8n-Izr"/>
+                            <constraint firstItem="SfE-7r-x6V" firstAttribute="centerY" secondItem="LQS-lT-Qiw" secondAttribute="centerY" id="2Am-Rg-cTO"/>
                             <constraint firstItem="fQ8-1e-wCS" firstAttribute="centerY" secondItem="MR5-ji-5KR" secondAttribute="centerY" id="2ma-je-7vn"/>
                             <constraint firstItem="LQS-lT-Qiw" firstAttribute="top" secondItem="mRC-hw-J5a" secondAttribute="bottom" constant="5" id="47I-P5-FMj"/>
                             <constraint firstItem="LQS-lT-Qiw" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Kya-lL-rg3" secondAttribute="trailing" constant="20" id="4CC-S1-T9S"/>
@@ -168,6 +176,7 @@
                             <constraint firstItem="RV8-1B-51i" firstAttribute="top" secondItem="mRC-hw-J5a" secondAttribute="bottom" constant="70" id="Wlt-d6-O3d"/>
                             <constraint firstItem="RV8-1B-51i" firstAttribute="centerX" secondItem="GlJ-6C-z9m" secondAttribute="centerX" id="Xys-dE-ZTZ"/>
                             <constraint firstItem="bJR-9Z-Ine" firstAttribute="centerX" secondItem="mRC-hw-J5a" secondAttribute="centerX" id="YQL-jf-qIX"/>
+                            <constraint firstItem="SfE-7r-x6V" firstAttribute="centerX" secondItem="LQS-lT-Qiw" secondAttribute="centerX" id="Yov-Mk-WBm"/>
                             <constraint firstItem="fQ8-1e-wCS" firstAttribute="centerX" secondItem="MR5-ji-5KR" secondAttribute="centerX" constant="-35" id="ZOU-gH-mpS"/>
                             <constraint firstItem="ddc-Ji-6XU" firstAttribute="top" secondItem="GlJ-6C-z9m" secondAttribute="top" constant="100" id="d1K-fi-OhA"/>
                             <constraint firstItem="fr2-gX-hpJ" firstAttribute="trailing" secondItem="Kya-lL-rg3" secondAttribute="trailing" constant="10" id="e1l-s0-rTC"/>
