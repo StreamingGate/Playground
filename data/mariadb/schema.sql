@@ -1,3 +1,9 @@
+create table friend
+(
+    users_id  bigint not null,
+    friend_id bigint not null,
+    primary key (users_id, friend_id)
+) engine=InnoDB;
 create table friend_wait
 (
     id                   bigint not null auto_increment,
@@ -9,18 +15,18 @@ create table friend_wait
 ) engine=InnoDB;
 create table live_room
 (
-    id           bigint   not null auto_increment,
-    category     varchar(10),
-    chat_room_id varchar(255),
-    content      varchar(5000),
-    created_at   datetime,
-    host_email   varchar(255),
-    like_cnt     integer  not null,
-    report_cnt   smallint not null,
-    streaming_id varchar(255),
-    thumbnail    TEXT,
-    title        varchar(100),
-    users_id     bigint,
+    id            bigint   not null auto_increment,
+    category      varchar(10),
+    chat_room_id  varchar(255),
+    content       varchar(5000),
+    created_at    datetime,
+    host_nickname varchar(255),
+    like_cnt      integer  not null,
+    report_cnt    smallint not null,
+    streaming_id  varchar(255),
+    thumbnail     TEXT,
+    title         varchar(100),
+    users_id      bigint,
     primary key (id)
 ) engine=InnoDB;
 create table live_viewer
@@ -30,7 +36,6 @@ create table live_viewer
     last_viewed_at datetime,
     liked          bit    not null,
     liked_at       datetime,
-    role           varchar(10),
     live_room_id   bigint,
     user_id        bigint,
     primary key (id)
@@ -44,6 +49,14 @@ create table metadata
     state            varchar(10),
     uploader_email   varchar(255),
     video_created_at datetime,
+    primary key (id)
+) engine=InnoDB;
+create table notification
+(
+    id        bigint not null auto_increment,
+    content   varchar(255),
+    noti_type varchar(255),
+    users_id  bigint,
     primary key (id)
 ) engine=InnoDB;
 create table users
@@ -61,22 +74,22 @@ create table users
     state         varchar(255),
     time_zone     varchar(255),
     uuid          varchar(36),
-    friend_id     bigint,
     primary key (id)
 ) engine=InnoDB;
 create table video
 (
-    id          bigint   not null auto_increment,
-    category    varchar(10),
-    content     varchar(5000),
-    created_at  datetime,
-    hits        integer  not null,
-    like_cnt    integer  not null,
-    report_cnt  smallint not null,
-    thumbnail   TEXT,
-    title       varchar(100),
-    metadata_id bigint,
-    users_id    bigint,
+    id                bigint   not null auto_increment,
+    category          varchar(10),
+    content           varchar(5000),
+    created_at        datetime,
+    hits              integer  not null,
+    like_cnt          integer  not null,
+    report_cnt        smallint not null,
+    thumbnail         TEXT,
+    title             varchar(100),
+    uploader_nickname varchar(255),
+    metadata_id       bigint,
+    users_id          bigint,
     primary key (id)
 ) engine=InnoDB;
 create table viewed_history
@@ -93,6 +106,10 @@ create table viewed_history
 ) engine=InnoDB;
 alter table users
     add constraint UK_6dotkott2kjsp8vw4d0m25fb7 unique (email);
+alter table friend
+    add constraint FK5j28qgyvon52ycu9sfieraerm foreign key (friend_id) references users (id);
+alter table friend
+    add constraint FK77hwidnt50k76utjsr02f15dx foreign key (users_id) references users (id);
 alter table friend_wait
     add constraint FK5m461lrdbrvaajjaj3v0upu1h foreign key (users_id) references users (id);
 alter table live_room
@@ -101,8 +118,8 @@ alter table live_viewer
     add constraint FK6swae88o8jsovsq1hbk50kvg6 foreign key (live_room_id) references live_room (id);
 alter table live_viewer
     add constraint FKovjr1pogd7rjlfah9i13dm2o5 foreign key (user_id) references users (id);
-alter table users
-    add constraint FKr07ew5trbi379x7a0jqga5pw8 foreign key (friend_id) references users (id);
+alter table notification
+    add constraint FKcvhy30biu2isnx5ovm0i9i7b7 foreign key (users_id) references users (id);
 alter table video
     add constraint FKlq8ktyke2jim62cq0gnu2ys3s foreign key (metadata_id) references metadata (id);
 alter table video
