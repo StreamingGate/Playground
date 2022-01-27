@@ -11,9 +11,14 @@ function ChatRoom() {
   const { chatData, sendChatMessage } = useSocket('ba59100a-85f7-42dc-8508-0df112a0cf3f');
   const { values, handleInputChange, changeValue } = useForm({ initialValues: { message: '' } });
 
-  const handleSendBtnClick = () => {
-    sendChatMessage(values.message);
-    changeValue(['message', '']);
+  const handleSendBtn = e => {
+    if (!values.message) {
+      return;
+    }
+    if (e.key === 'Enter' || e.type === 'click') {
+      sendChatMessage(values.message);
+      changeValue(['message', '']);
+    }
   };
 
   return (
@@ -36,11 +41,12 @@ function ChatRoom() {
           name='message'
           fullWidth
           variant='standard'
+          onKeyUp={handleSendBtn}
           placeholder='닉네임으로 채팅하기'
           value={values.message}
           onChange={handleInputChange}
         />
-        <IconButton onClick={handleSendBtnClick} disabled={!values.message}>
+        <IconButton onClick={handleSendBtn} disabled={!values.message}>
           <S.SendIcon />
         </IconButton>
       </S.ChatInputContainer>
