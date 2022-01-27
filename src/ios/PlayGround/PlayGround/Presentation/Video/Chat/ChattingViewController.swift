@@ -23,7 +23,7 @@ class ChattingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // 추후에 실제 roomId로 변경
-        viewModel.roomId = "26987c20-bd57-4559-9590-55209ed9ce1e"
+        viewModel.roomId = "ae0a8eb9-ff2c-4256-8be7-f8a9e84a3afa"
         viewModel.connectToSocket()
         bingViewModelData()
         setupUI()
@@ -87,7 +87,11 @@ extension ChattingViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         // 스크롤이 하단이 아닐 경우 새 메세지가 왔을 때 하단으로 자동 스크롤되지 않도록
         if (viewModel.chatList.count - 1) == indexPath.row {
-            isBottomFocused = false
+            if viewModel.isMaximum == true {
+                viewModel.isMaximum = false
+            } else {
+                isBottomFocused = false
+            }
         }
     }
     

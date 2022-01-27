@@ -13,6 +13,7 @@ import Combine
 class ChatViewModel {
     @Published var chatList: [ChatData] = []
     var roomId = ""
+    var isMaximum = false
     
     func connectToSocket() {
         ChatServiceAPI.shared.connectToSocket(viewModel: self)
@@ -33,7 +34,16 @@ extension ChatViewModel: StompClientLibDelegate {
             print("cannot unwrap")
             return
         }
-        self.chatList.append(chatData)
+        // 최대 500개까지만 보여지도록
+        if chatList.count < 500 {
+            self.chatList.append(chatData)
+        } else {
+            isMaximum = true
+            var newList = self.chatList
+            newList.append(chatData)
+            newList.removeFirst()
+            self.chatList = newList
+        }
     }
     
     func stompClientDidDisconnect(client: StompClientLib!) {
