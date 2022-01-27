@@ -49,6 +49,8 @@ services:
     links:
       - redis
     restart: always
+    ports:
+      - "8888:8888"
     networks:
       - sg-network
 
@@ -60,7 +62,7 @@ services:
     networks:
       - sg-network
   apigateway-service:
-    image: api-gateway:1.0
+    image: wodndl895/api-gateway:1.0
     ports:
       - "8000:8000"
     environment:

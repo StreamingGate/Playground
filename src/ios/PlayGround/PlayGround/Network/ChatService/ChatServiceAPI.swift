@@ -12,7 +12,7 @@ class ChatServiceAPI {
     static let shared = ChatServiceAPI()
     var socketClient = StompClientLib()
     
-    let chatServiceUrl = "ws://\(GatewayManager.shared.gatewayAddress)/chat-service/ws/websocket"
+    let chatServiceUrl = "ws://localhost:8888/ws/websocket"
     
     func connectToSocket(viewModel: ChatViewModel) {
         let url = NSURL(string: chatServiceUrl)!
