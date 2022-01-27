@@ -15,5 +15,4 @@ public interface VideoRepository extends JpaRepository<Video, Long>{
 
     @Query("SELECT v FROM Video v WHERE v.category =:category ORDER BY v.createdAt DESC")
     List<Video> findAllByCategory(@Param("category") Category category, Pageable pageable);
-
 }

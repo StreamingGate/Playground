@@ -7,15 +7,17 @@ import com.example.mainservice.entity.Notification.Notification;
 import com.example.mainservice.entity.Video.Video;
 import com.example.mainservice.entity.ViewdHistory.ViewedHistory;
 import com.example.mainservice.exceptionHandler.customexception.CustomMainException;
+import com.example.mainservice.exceptionHandler.customexception.ErrorCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
+@Slf4j
 @NoArgsConstructor
 @Getter
 @Entity(name = "users")
@@ -63,40 +65,50 @@ public class UserEntity {
     private LocalDate lastAt;
 
     @OneToMany(mappedBy = "userEntity")
-    private List<LiveViewer> liveViewers;
+    private List<LiveViewer> liveViewers = new LinkedList<>();
 
     @OneToMany(mappedBy = "userEntity")
-    private List<Video> videos;
+    private List<Video> videos = new LinkedList<>();
 
     @OneToMany(mappedBy = "userEntity")
-    private List<ViewedHistory> viewedHistories;
+    private List<ViewedHistory> viewedHistories = new LinkedList<>();
 
     @OneToMany(mappedBy = "userEntity")
-    private List<LiveRoom> liveRooms;
+    private List<LiveRoom> liveRooms = new ArrayList<>();
 
     @OneToMany(mappedBy = "userEntity")
-    private List<Notification> notifications;
+    private List<Notification> notifications = new LinkedList<>();
 
     @OneToMany(mappedBy = "userEntity")
-    private List<FriendWait> friendWaits;
+    private List<FriendWait> friendWaits = new LinkedList<>();
 
-    /**=============Friend=============**/
-    @ManyToOne
-    @JoinColumn(name = "friend_id")
-    private UserEntity friend; //friends들이 나를 참조
+    /**
+     * =============Friend=============
+     **/
+    @ManyToMany
+    @JoinTable(
+            name = "friend",
+            joinColumns = @JoinColumn(name = "users_id"),
+            inverseJoinColumns = @JoinColumn(name = "friend_id")
+    )
+    private Set<UserEntity> friends = new HashSet<>();
 
-    @OneToMany(mappedBy = "friend")
-    private List<UserEntity> friends;
-    /**================================**/
+    @ManyToMany(mappedBy = "friends") //나를 친구로 추가한 사람들
+    private Set<UserEntity> beFriend = new HashSet<>();
+    /**
+     * ================================
+     **/
 
-    public void addFriend(UserEntity target) {
-        if(target==null || target==this || friends.contains(target)) throw new IllegalArgumentException();
+    public void addFriend(UserEntity target) throws CustomMainException {
+        if (target == null || target == this) return;
+        if (friends.contains(target)) throw new CustomMainException(ErrorCode.F003);
         this.friends.add(target);
         target.getFriends().add(this);
     }
 
-    public void deleteFriend(UserEntity target) {
-        if(target==null || target==this || !friends.contains(target)) throw new IllegalArgumentException();
+    public void deleteFriend(UserEntity target) throws CustomMainException {
+        if (target == null || target == this) return;
+        if (!friends.contains(target)) throw new CustomMainException(ErrorCode.F004);
         this.friends.remove(target);
         target.getFriends().remove(this);
     }

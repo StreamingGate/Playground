@@ -26,10 +26,6 @@ public class LiveViewer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    @Column(length=10)
-    private Role role;
-
     private boolean liked = false;
 
     private boolean disliked = false;

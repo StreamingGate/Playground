@@ -18,12 +18,13 @@ import java.util.Map;
 public class FriendController {
 
     private static final String TARGET_MAP_KEY = "target";
+    private static final String SENDER_MAP_KEY = "sender";
     private static final String RESPONSE_MAP_KEY = "result";
-    private FriendService friendService;
+    private final FriendService friendService;
 
     @GetMapping("/{uuid}")
-    public ResponseEntity<List<FriendDto>> getFriendList(@PathVariable("uuid") String uuid) throws Exception {
-        return ResponseEntity.ok(friendService.getFriendList(uuid));
+    public ResponseEntity<Map<String, List<FriendDto>>> getFriendList(@PathVariable("uuid") String uuid) throws Exception {
+        return ResponseEntity.ok(Map.of(RESPONSE_MAP_KEY, friendService.getFriendList(uuid)));
     }
 
     @PostMapping("/{uuid}")
@@ -36,14 +37,14 @@ public class FriendController {
 
     @DeleteMapping("/{uuid}")
     public ResponseEntity<Map<String, String>> deleteFriend(@PathVariable("uuid") String uuid,
-                                                            @RequestParam("target") Map<String, String> map) throws Exception {
+                                                            @RequestBody Map<String, String> map) throws Exception {
         String result = friendService.deleteFriend(uuid, map.get(TARGET_MAP_KEY));
         return ResponseEntity.ok(Map.of(RESPONSE_MAP_KEY, result));
     }
 
     @GetMapping("/manage/{uuid}")
-    public ResponseEntity<List<FriendWaitDto>> getFriendWaitList(@PathVariable("uuid") String uuid) throws Exception {
-        return ResponseEntity.ok(friendService.getFriendWaitList(uuid));
+    public ResponseEntity<Map<String, List<FriendWaitDto>>> getFriendWaitList(@PathVariable("uuid") String uuid) throws Exception {
+        return ResponseEntity.ok(Map.of(RESPONSE_MAP_KEY, friendService.getFriendWaitList(uuid)));
     }
 
     /**
@@ -52,14 +53,16 @@ public class FriendController {
     @PostMapping("/manage/{uuid}")
     public ResponseEntity<Map<String, String>> allowFriendRequest(@PathVariable("uuid") String uuid,
                                                                   @RequestBody Map<String, String> map) throws Exception {
-        String result = friendService.allowFriendRequest(uuid, map.get(TARGET_MAP_KEY));
+        String senderUuid = map.get(SENDER_MAP_KEY);
+        String result = friendService.allowFriendRequest(uuid, senderUuid);
         return ResponseEntity.ok(Map.of(RESPONSE_MAP_KEY, result));
     }
 
     @DeleteMapping("/manage/{uuid}")
     public ResponseEntity<Map<String, String>> refuseFriendRequest(@PathVariable("uuid") String uuid,
                                                                    @RequestBody Map<String, String> map) throws Exception {
-        String result = friendService.refuseFriendRequest(uuid, map.get(TARGET_MAP_KEY));
+        String senderUuid = map.get(SENDER_MAP_KEY);
+        String result = friendService.refuseFriendRequest(uuid, senderUuid);
         return ResponseEntity.ok(Map.of(RESPONSE_MAP_KEY, result));
     }
 

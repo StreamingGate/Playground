@@ -6,6 +6,8 @@ import com.example.mainservice.entity.LiveRoom.LiveRoom;
 import com.example.mainservice.entity.LiveRoom.LiveRoomRepository;
 import com.example.mainservice.entity.LiveViewer.LiveViewer;
 import com.example.mainservice.entity.LiveViewer.LiveViewerRepository;
+import com.example.mainservice.entity.Notification.Notification;
+import com.example.mainservice.entity.Notification.NotificationRepository;
 import com.example.mainservice.entity.User.UserEntity;
 import com.example.mainservice.entity.User.UserRepository;
 import com.example.mainservice.entity.Video.Video;
@@ -19,7 +21,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,10 +38,11 @@ public class MainService {
     private final UserRepository userRepository;
     private final ViewedRepository viewedRepository;
     private final LiveViewerRepository liveViewerRepository;
+    private final NotificationRepository notificationRepository;
     private final ModelMapper mapper;
 
     @Transactional(readOnly = true)
-    public HomeList getVideoList(Category category, int page, int size) {
+    public VideoListDto getVideoList(Category category, int page, int size) throws Exception{
         List<VideoDto> videoDtos = null;
         List<LiveRoomDto> liveRoomDtos = null;
         Pageable pageable = PageRequest.of(page, size);
@@ -59,8 +61,8 @@ public class MainService {
                     .map(liveRoom -> mapper.map(liveRoom, LiveRoomDto.class))
                     .collect(Collectors.toList());
         }
-        HomeList homeList = new HomeList(videoDtos, liveRoomDtos); /* TODO: 내부 필드 List로 응답되는지 검증 필요 */
-        return homeList;
+        VideoListDto videoListDto = new VideoListDto(videoDtos, liveRoomDtos);
+        return videoListDto;
     }
 
     @Transactional(readOnly = true)
@@ -87,18 +89,17 @@ public class MainService {
         return RESPONSE_SUCCESS;
     }
 
-    @Transactional(readOnly = true)
-    public SearchedList searchVideoByKeyword(String keyword, Category category, int page, int size) throws Exception {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
-        List<Video> videos = videoRepository.findAllByCategory(category, pageable);
-        List<LiveRoom> liveRooms = liveRoomRepository.findAllByCategory(category, pageable);
-        return new SearchedList(videos, liveRooms); /* TODO: 내부 필드 List로 응답되는지 검증 필요 */
-    }
+    /* TODO : elastic search로 구현 */
+//    @Transactional(readOnly = true)
+//    public SearchedList searchVideoByKeyword(String keyword, int page, int size) throws Exception {
+//        return null;
+//    }
 
     private void actionToVideo(VideoActionDto dto, boolean isCancel) throws Exception {
         ViewedHistory viewedHistory = viewedRepository.findByVideoIdAndUserUuid(dto.getUuid(), dto.getId()).orElse(null);
+        UserEntity user = userRepository.findByUuid(dto.getUuid()).orElseThrow(() -> new CustomMainException(ErrorCode.U002));
         if (viewedHistory == null) { //봤지만 처음 저장하는 경우
-            UserEntity user = userRepository.findByUuid(dto.getUuid())
+            user = userRepository.findByUuid(dto.getUuid())
                     .orElseThrow(() -> new CustomMainException(ErrorCode.U002));
             Video video = videoRepository.findById(dto.getId())
                     .orElseThrow(() -> new CustomMainException(ErrorCode.V001));
@@ -116,8 +117,8 @@ public class MainService {
             } else {
                 viewedHistory.setLiked(true);
                 video.addLikeCnt(1);
+                notificationRepository.save(Notification.createLikes(user, video)); /* TODO push알림으로 수정하기 */
             }
-
         } else if (dto.getAction() == VideoActionDto.ACTION.DISLIKE) {
             if (isCancel) viewedHistory.setDisliked(false);
             else viewedHistory.setDisliked(true);
@@ -127,8 +128,9 @@ public class MainService {
     private void actionToLiveRoom(VideoActionDto dto, boolean isCancel) throws Exception {
         LiveViewer liveViewer = liveViewerRepository.findByLiveRoomIdAndUserUuid(dto.getUuid(), dto.getId())
                 .orElse(null);
+        UserEntity user = userRepository.findByUuid(dto.getUuid()).orElseThrow(() -> new CustomMainException(ErrorCode.U002));
         if (liveViewer == null) {
-            UserEntity user = userRepository.findByUuid(dto.getUuid())
+            user = userRepository.findByUuid(dto.getUuid())
                     .orElseThrow(() -> new CustomMainException(ErrorCode.U002));
             LiveRoom liveRoom = liveRoomRepository.findById(dto.getId())
                     .orElseThrow(() -> new CustomMainException(ErrorCode.L001));
@@ -145,6 +147,7 @@ public class MainService {
             } else {
                 liveViewer.setLiked(true);
                 liveRoom.addLikeCnt(1);
+
             }
         } else if (dto.getAction() == VideoActionDto.ACTION.DISLIKE) {
             if (isCancel) liveViewer.setDisliked(false);

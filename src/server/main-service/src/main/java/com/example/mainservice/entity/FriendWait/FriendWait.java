@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 import com.example.mainservice.entity.User.UserEntity;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -29,6 +30,14 @@ public class FriendWait {
     @JoinColumn(name = "users_id")
     private UserEntity userEntity; //friends들이 나를 참조
 
+    public static FriendWait create(UserEntity user, UserEntity target){
+        return FriendWait.builder()
+                .senderUuid(user.getUuid())
+                .senderNickname(user.getNickName())
+                .senderProfileImage(user.getProfileImage())
+                .userEntity(target)
+                .build();
+    }
     @Builder
     public FriendWait(String senderNickname, String senderUuid, String senderProfileImage, UserEntity userEntity){
         this.senderNickname = senderNickname;

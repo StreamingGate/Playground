@@ -1,19 +1,18 @@
 package com.example.mainservice.entity.Video;
 
-import com.example.mainservice.exceptionHandler.customexception.CustomMainException;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
-
 import com.example.mainservice.entity.Category;
 import com.example.mainservice.entity.Metadata.Metadata;
 import com.example.mainservice.entity.User.UserEntity;
 import com.example.mainservice.entity.ViewdHistory.ViewedHistory;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Slf4j
 @NoArgsConstructor
 @Getter
 @Entity
@@ -61,13 +60,15 @@ public class Video {
     }
 
     public void addReportCnt(int reportCnt){
-        if(reportCnt != 1 || reportCnt != -1) throw new IllegalArgumentException("잘못된 신수가 업데이트됩니다.");
+        if(reportCnt != 1 && reportCnt != -1) log.error("잘못된 신고 수가 업데이트됩니다. parameter:"+reportCnt);
         this.reportCnt+=reportCnt;
+        if(this.reportCnt<0) this.reportCnt = 0;
     }
 
     public void addLikeCnt(int likeCnt){
-        if(likeCnt != 1 || likeCnt != -1) throw new IllegalArgumentException("잘못된 좋아요 수가 업데이트됩니다.");
+        if(likeCnt != 1 && likeCnt != -1) log.error("잘못된 좋아요 수가 업데이트됩니다. parameter:"+likeCnt);
         this.likeCnt+=likeCnt;
+        if(this.likeCnt<0) this.likeCnt = 0;
     }
 
 }
