@@ -57,3 +57,10 @@ spring:
           filters:
             - RewritePath=/user-service(?<segment>/?.*), /$\{segment}
 #            - AuthenticationFilter
+        - id: main-service
+          uri: lb://MAIN-SERVICE
+          predicates:
+            - Path=/main-service/**
+            - Method=POST,GET,DELETE,PUT
+          filters:
+            - RewritePath=/main-service(?<segment>/?.*), /$\{segment}

@@ -8,7 +8,8 @@ services:
       MYSQL_DATABASE: playground
       MYSQL_ROOT_PASSWORD: test
     volumes:
-      - "../data/mariadb:/docker-entrypoint-initdb.d/:ro"
+      - "../data/mariadb/schema.sql:/docker-entrypoint-initdb.d/1.sql:ro"
+      - "../data/mariadb/data.sql:/docker-entrypoint-initdb.d/2.sql:ro"
     ports:
       - "3306:3306"
     networks:
@@ -35,6 +36,19 @@ services:
     links:
       - pg-mariadb
       - redis
+    restart: always
+    networks:
+      - sg-network
+
+  main-service:
+    container_name: main-service
+    image: rlagksml99/main-service:latest
+    environment:
+      eureka.client.serviceUrl.defaultZone: http://service-discovery:8761/eureka/
+    depends_on:
+      - pg-mariadb
+    links:
+      - pg-mariadb
     restart: always
     networks:
       - sg-network
