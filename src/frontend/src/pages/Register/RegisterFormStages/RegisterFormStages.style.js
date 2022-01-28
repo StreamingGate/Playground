@@ -14,6 +14,7 @@ export const InputLabel = styled(Typography)`
 `;
 
 export const StageInput = styled(Input)`
+  position: relative;
   border: none;
   background-color: ${({ theme }) => theme.colors.background};
 `;
@@ -21,6 +22,17 @@ export const StageInput = styled(Input)`
 // Stage 1
 export const VerifyButtonContainer = styled.div`
   text-align: right;
+`;
+
+export const EmailVerifyInputContainer = styled.div`
+  position: relative;
+`;
+
+export const Timer = styled(Typography)`
+  position: absolute;
+  top: 10px;
+  right: 5px;
+  color: ${({ theme }) => theme.colors.placeHolder};
 `;
 
 // Stage 2
