@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import * as S from './ChatRoom.style';
@@ -9,13 +9,36 @@ import { IconButton } from '@components/buttons';
 import { ChatDialog } from '@components/dataDisplays';
 
 function ChatRoom() {
-  const chatListContainer = useRef(null);
+  const chatListContainerRef = useRef(null);
   const { chatData, sendChatMessage } = useSocket('ba59100a-85f7-42dc-8508-0df112a0cf3f');
   const { values, handleInputChange, changeValue } = useForm({ initialValues: { message: '' } });
 
+  const [isShowScrollBtm, setShowScrollBtm] = useState(false);
+
+  const handleChatListScroll = () => {
+    const chatListContainerDom = chatListContainerRef.current;
+
+    const currentScrollHeight = chatListContainerDom.scrollHeight;
+    const currentScrollPos = chatListContainerDom.scrollTop + chatListContainerDom.clientHeight;
+
+    if (currentScrollHeight - currentScrollPos >= 35) {
+      setShowScrollBtm(true);
+    } else {
+      setShowScrollBtm(false);
+    }
+  };
+
   useEffect(() => {
-    const currentHeight = chatListContainer.current.scrollHeight;
-    chatListContainer.current.scroll(0, currentHeight);
+    chatListContainerRef.current.addEventListener('scroll', handleChatListScroll);
+
+    return () => {
+      chatListContainerRef.current.removeEventListener('scroll', handleChatListScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    const currentHeight = chatListContainerRef.current.scrollHeight;
+    chatListContainerRef.current.scroll(0, currentHeight);
   }, [chatData]);
 
   const handleSendBtn = e => {
@@ -37,7 +60,7 @@ function ChatRoom() {
           <S.ChatRoomPeople>6.7천명</S.ChatRoomPeople>
         </S.ChatMetaContainer>
       </S.ChatRoomHeader>
-      <S.ChaListContainer ref={chatListContainer}>
+      <S.ChaListContainer ref={chatListContainerRef}>
         {chatData.map(chatInfo => (
           <ChatDialog key={uuidv4()} chatInfo={chatInfo} />
         ))}
