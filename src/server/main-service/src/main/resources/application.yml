@@ -7,12 +7,8 @@ spring:
     generate-ddl: true
     show-sql: true
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-    defer-datasource-initialization: true
     hibernate:
-      ddl-auto: create
-  sql:
-    init:
-      mode: always
+      ddl-auto: none
 eureka:
   instance:
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}

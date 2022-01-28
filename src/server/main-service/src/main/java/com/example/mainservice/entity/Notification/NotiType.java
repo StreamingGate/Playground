@@ -7,9 +7,9 @@ import lombok.Getter;
 
 @Getter
 public enum NotiType {
-    STREAMING("{sender:'%s', profileImage:'%s', title:'%s', roomId:%d}"),
-    FRIEND_REQUEST("{sender:'%s', profileImage':'%s'}"),
-    LIKES("{sender:'%s', profileImage:'%s', title:'%s', videoId:%d}");
+    STREAMING("{\"sender\":\"%s\", \"profileImage\":\"%s\", \"title\":\"%s\", \"roomId\":%d}"),
+    FRIEND_REQUEST("{\"sender\":\"%s\", \"profileImage\":\"%s\"}"),
+    LIKES("{\"sender\":\"%s\", \"profileImage\":\"%s\", \"title\":\"%s\", \"videoId\":%d}");
 
     private String template;
 

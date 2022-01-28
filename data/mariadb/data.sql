@@ -47,4 +47,4 @@ VALUES (1, 0, 0, '2022-01-27T11:10:0', 1, 3),
 
 -- notification
 INSERT INTO notification(id, noti_type, content, users_id)
-VALUES (1, 'STREAMING', "{sender:'nick1', profileImage:'https://www.1xbetkrs.com/wp-content/uploads/2020/03/2-3.jpg', title:'live_room1', roomId:1}", 3);
+VALUES (1, 'STREAMING', "{\"sender\":\"nick1\", \"profileImage\":\"https://www.1xbetkrs.com/wp-content/uploads/2020/03/2-3.jpg\", \"title\":\"live_room1\", \"roomId\":1}", 3);
