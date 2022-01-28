@@ -1,13 +1,8 @@
 package com.example.mainservice.dto;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@NoArgsConstructor
-@Setter
-@Getter
+@Data
 public class VideoActionDto {
     private long id;
     private int type;       //type of id(0: video, 1: roomId)

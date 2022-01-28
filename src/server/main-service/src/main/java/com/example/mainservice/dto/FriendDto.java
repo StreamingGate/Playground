@@ -1,15 +1,10 @@
 package com.example.mainservice.dto;
 
 import com.example.mainservice.entity.User.UserEntity;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @AllArgsConstructor
-@NoArgsConstructor
-@Setter
-@Getter
+@Data
 public class FriendDto {
 
     private String nickname;

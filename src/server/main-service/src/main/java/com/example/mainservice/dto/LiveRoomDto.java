@@ -3,6 +3,7 @@ package com.example.mainservice.dto;
 import com.example.mainservice.entity.Category;
 import com.example.mainservice.entity.LiveRoom.LiveRoom;
 import com.sun.istack.NotNull;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,9 +11,7 @@ import org.modelmapper.ModelMapper;
 
 import java.time.LocalDateTime;
 
-@NoArgsConstructor
-@Setter
-@Getter
+@Data
 public class LiveRoomDto {
     private Long id;
     private String title;

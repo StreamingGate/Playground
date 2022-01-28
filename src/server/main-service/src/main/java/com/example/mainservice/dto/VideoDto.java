@@ -2,6 +2,7 @@ package com.example.mainservice.dto;
 
 import com.example.mainservice.entity.Category;
 import com.example.mainservice.entity.Video.Video;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,9 +10,7 @@ import org.modelmapper.ModelMapper;
 
 import java.time.LocalDateTime;
 
-@NoArgsConstructor
-@Setter
-@Getter
+@Data
 public class VideoDto {
 
     private Long id;
