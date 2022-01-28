@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { Typography, Person, Send } from '@components/cores';
+import { Typography, Person, Send, ScrollDown } from '@components/cores';
 import { Avatar } from '@components/dataDisplays';
 
 export const ChatRoomContainer = styled.div`
@@ -38,11 +38,28 @@ export const ChaListContainer = styled.ul`
   display: flex;
   flex-direction: column;
   gap: 15px;
+  position: relative;
   height: 240px;
   overflow: auto;
   padding: 20px 20px 0px 20px;
   border-top: 1px solid ${({ theme }) => theme.colors.separator};
   border-bottom: 1px solid ${({ theme }) => theme.colors.separator};
+`;
+
+export const ScrollDownBtnContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  bottom: 5px;
+  left: 0;
+  right: 0;
+`;
+
+export const ScrollDownBtn = styled(ScrollDown)`
+  width: 30px;
+  height: 30px;
+  min-width: none;
+  cursor: pointer;
 `;
 
 export const ChatInputContainer = styled.div`

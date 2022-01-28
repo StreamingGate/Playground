@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
+import axios from 'axios'
+
 import * as S from './ChatRoom.style';
 import { useSocket, useForm } from '@utils/hook';
 
@@ -27,6 +29,10 @@ function ChatRoom() {
       setShowScrollBtm(false);
     }
   };
+
+  const temp = async () => {
+    await axios.get('http://localhost:8000')
+  }
 
   useEffect(() => {
     chatListContainerRef.current.addEventListener('scroll', handleChatListScroll);
@@ -61,6 +67,11 @@ function ChatRoom() {
         </S.ChatMetaContainer>
       </S.ChatRoomHeader>
       <S.ChaListContainer ref={chatListContainerRef}>
+        {isShowScrollBtm && (
+          <S.ScrollDownBtnContainer>
+            <S.ScrollDownBtn />
+          </S.ScrollDownBtnContainer>
+        )}
         {chatData.map(chatInfo => (
           <ChatDialog key={uuidv4()} chatInfo={chatInfo} />
         ))}
