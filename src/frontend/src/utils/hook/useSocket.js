@@ -37,7 +37,7 @@ export default function useSocket(roomId) {
       destination: `/app/chat/message/${roomId}`,
       body: JSON.stringify({
         roomId,
-        nickname: 'test',
+        nickname: '이것은 아이디다',
         senderRole: 'VIEWER',
         chatType: 'NORMAL',
         message,
