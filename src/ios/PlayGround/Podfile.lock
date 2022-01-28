@@ -1,16 +1,24 @@
 PODS:
+  - SocketRocket (0.6.0)
+  - StompClientLib (1.4.1):
+    - SocketRocket
   - SwiftKeychainWrapper (4.0.1)
 
 DEPENDENCIES:
+  - StompClientLib
   - SwiftKeychainWrapper
 
 SPEC REPOS:
   trunk:
+    - SocketRocket
+    - StompClientLib
     - SwiftKeychainWrapper
 
 SPEC CHECKSUMS:
+  SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
+  StompClientLib: ac40390e9660c574675f1c933bec81c8e2811a4f
   SwiftKeychainWrapper: 807ba1d63c33a7d0613288512399cd1eda1e470c
 
-PODFILE CHECKSUM: 7be505ffa04971298522e0601cd7e55deaab079f
+PODFILE CHECKSUM: f8228eeb7105d0e985ec633802c15fc15944fbe5
 
 COCOAPODS: 1.11.2

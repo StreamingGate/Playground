@@ -14,12 +14,14 @@ class ChatCell: UITableViewCell {
     @IBOutlet weak var nicknameLabel: UILabel!
     @IBOutlet weak var contentLabel: UILabel!
     
-    func setupUI() {
+    func setupUI(info: ChatData) {
         profileImageView.backgroundColor = UIColor.placeHolder
-        profileImageView.layer.cornerRadius = 33 / 2
+        profileImageView.layer.cornerRadius = 15
         timeLabel.font = UIFont.bottomTab
         nicknameLabel.font = UIFont.highlightCaption
         nicknameLabel.textColor = UIColor.placeHolder
-        contentLabel.font = UIFont.caption
+        contentLabel.font = UIFont.Content
+        contentLabel.text = info.message
+        nicknameLabel.text = info.nickname
     }
 }

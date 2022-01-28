@@ -7,4 +7,5 @@ target 'PlayGround' do
 
   # Pods for PlayGround
   pod 'SwiftKeychainWrapper'
+  pod "StompClientLib"
 end
