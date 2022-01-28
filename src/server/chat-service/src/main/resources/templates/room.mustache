@@ -30,12 +30,12 @@
             let params = new URLSearchParams();
             params.append("name", roomName);
             console.log(params)
-            axios.post('/chat-service/chat/room', params)
+            axios.post('/chat/room', params)
             .then(
                 response => {
                     console.log('---',response.data);
                     document.querySelector("#roomName").innerText ='';
-                    window.location.href="/chat-service/chat/room";
+                    window.location.href="/chat/room";
                 }
             )
             .catch( response => {
@@ -49,6 +49,6 @@
         const sender = prompt('대화명을 입력해 주세요.');
         localStorage.setItem('wschat.sender',sender);
         localStorage.setItem('wschat.roomId',roomId);
-        location.href="/chat-service/chat/room/enter/"+roomId;
+        location.href="/chat/room/enter/"+roomId;
     };
 </script>
