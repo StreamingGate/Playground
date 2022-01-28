@@ -38,7 +38,10 @@ function ChatRoom() {
 
   useEffect(() => {
     const currentHeight = chatListContainerRef.current.scrollHeight;
-    chatListContainerRef.current.scroll(0, currentHeight);
+
+    if (!isShowScrollBtm) {
+      chatListContainerRef.current.scroll(0, currentHeight);
+    }
   }, [chatData]);
 
   const handleSendBtn = e => {
