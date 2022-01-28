@@ -70,6 +70,10 @@ class PlayViewController: UIViewController {
     @IBOutlet weak var chatContainerViewLeading: NSLayoutConstraint!
     @IBOutlet weak var chatContainerViewCenterX: NSLayoutConstraint!
     
+    @IBOutlet weak var safeBottomView: UIView!
+    @IBOutlet weak var safeBottomViewHeight: NSLayoutConstraint!
+    var chatDelegate: ChatSendDelegate?
+    
     // orientation transition
     var portraitLayout: [NSLayoutConstraint] = []
     var landscapeLayout: [NSLayoutConstraint] = []
@@ -83,6 +87,12 @@ class PlayViewController: UIViewController {
 
     
     // MARK: - View Life Cycle
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        safeBottom = self.parent?.view.safeAreaInsets.bottom ?? 0
+        safeBottomViewHeight.constant = safeBottom
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         prepareAnimation()
@@ -284,6 +294,7 @@ class PlayViewController: UIViewController {
     func connectChatView() {
         guard let chattingVC = UIStoryboard(name: "Chat", bundle: nil).instantiateViewController(withIdentifier: "ChattingViewController") as? ChattingViewController else { return }
         self.addChild(chattingVC)
+        self.chatDelegate = chattingVC
         self.chatContainerView.addSubview((chattingVC.view)!)
         chattingVC.view.frame = self.chatContainerView.bounds
         chattingVC.didMove(toParent: self)
@@ -334,6 +345,14 @@ class PlayViewController: UIViewController {
     
     @IBAction func playPauseButtonDidTap(_ sender: Any) {
         togglePlay()
+    }
+    
+    @IBAction func chatSendButtonDidTap(_ sender: Any) {
+        chatTextView.resignFirstResponder()
+        guard let message = chatTextView.text, message.isEmpty == false else { return }
+        chatTextView.text = ""
+        chatPlaceHolderLabel.isHidden = false
+        self.chatDelegate?.sendChatMessage(nickname: "test", message: message, senderRole: "VIEWER", chatType: "NORMAL")
     }
     
     func togglePlay() {
@@ -551,7 +570,7 @@ extension PlayViewController {
         guard let userInfo = noti.userInfo else { return }
         guard let keyboardFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {return}
         if noti.name == UIResponder.keyboardWillShowNotification {
-            let adjustmentHeight = keyboardFrame.height - view.safeAreaInsets.bottom
+            let adjustmentHeight = keyboardFrame.height - safeBottom
             chatViewBottom.constant = adjustmentHeight
             self.view.layoutIfNeeded()
         } else {
@@ -560,5 +579,3 @@ extension PlayViewController {
         }
     }
 }
-
-

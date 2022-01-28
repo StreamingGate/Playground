@@ -15,7 +15,6 @@ import java.util.Map;
 
 @Slf4j
 @RestController
-@CrossOrigin(origins = "http://localhost:8080")
 public class UserController {
     private final UserService userService;
     private final ModelMapper mapper;
@@ -72,9 +71,9 @@ public class UserController {
     /* 인증코드 확인 */
     @GetMapping("/email")
     public ResponseEntity<Map<String,String>> checkCode(@RequestParam(value = "code") String code) throws Exception {
-        String resultCode = userService.checkCode(code);
+        String resultEmail = userService.checkCode(code);
         Map<String,String> res = new HashMap<>();
-        res.put("code",resultCode);
+        res.put("email",resultEmail);
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
@@ -89,8 +88,10 @@ public class UserController {
 
     /* 닉네임 중복체크 */
     @GetMapping("/nickname")
-    public ResponseEntity<NicknameDto> checkNickName(@RequestParam(value = "nickName") NicknameDto nickName) throws Exception {
-        NicknameDto result = userService.checkNickName(nickName);
-        return ResponseEntity.status(HttpStatus.OK).body(result);
+    public ResponseEntity<Map<String,String>> checkNickName(@RequestParam(value = "nickname") String nickName) throws Exception {
+        String resultNickname = userService.checkNickName(nickName);
+        Map<String,String> res = new HashMap<>();
+        res.put("nickName",resultNickname);
+        return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 }

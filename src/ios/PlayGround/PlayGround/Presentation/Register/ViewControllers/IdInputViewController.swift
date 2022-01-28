@@ -177,7 +177,7 @@ class IdInputViewController: UIViewController {
         idFormatCheckLabel.isHidden = true
         UserServiceAPI.shared.sendEmailVerification(email: idInfo) { result in
             print("email send result = \(result)")
-            if result == idInfo {
+            if result["email"] as? String == idInfo {
                 DispatchQueue.main.async {
                     self.sendVerifyMailButton.isHidden = true
                     self.verifyNumTextField.isHidden = false
@@ -211,7 +211,7 @@ class IdInputViewController: UIViewController {
         nextButton.isEnabled = false
         UserServiceAPI.shared.checkVerificationCode(code: verifyInput) { result in
             print("code check result = \(result)")
-            if result == emailInput {
+            if result["email"] as? String == emailInput {
                 RegisterHelper.shared.email = emailInput
                 RegisterHelper.shared.name = nameInput
                 RegisterHelper.shared.isVerified = true

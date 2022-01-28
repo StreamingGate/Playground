@@ -49,8 +49,9 @@
                                             <constraint firstAttribute="width" constant="24" id="TFM-Wl-oPv"/>
                                             <constraint firstAttribute="width" secondItem="aOM-mK-z29" secondAttribute="height" multiplier="1:1" id="TX4-2g-H5N"/>
                                         </constraints>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" image="chevronDown_white"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" image="chevronDown_white"/>
                                         <connections>
                                             <action selector="minimizeButtonDidTap:" destination="zL7-Q9-x2b" eventType="touchUpInside" id="Vrl-P5-qlO"/>
                                         </connections>
@@ -60,8 +61,9 @@
                                         <constraints>
                                             <constraint firstAttribute="width" constant="24" id="sws-s0-NNg"/>
                                         </constraints>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" image="pause_white"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" image="pause_white"/>
                                         <connections>
                                             <action selector="playPauseButtonDidTap:" destination="zL7-Q9-x2b" eventType="touchUpInside" id="7dI-XS-hvS"/>
                                         </connections>
@@ -72,8 +74,9 @@
                                             <constraint firstAttribute="width" secondItem="zbm-Dr-h03" secondAttribute="height" multiplier="1:1" id="Qeg-Mj-GL5"/>
                                             <constraint firstAttribute="width" constant="24" id="ns1-mR-PYe"/>
                                         </constraints>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" image="enlarge_white"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" image="enlarge_white"/>
                                         <connections>
                                             <action selector="enlargeButtonDidTap:" destination="zL7-Q9-x2b" eventType="touchUpInside" id="gH1-Bq-3L0"/>
                                         </connections>
@@ -381,6 +384,9 @@
                                         </constraints>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" image="send_blueCircle"/>
+                                        <connections>
+                                            <action selector="chatSendButtonDidTap:" destination="zL7-Q9-x2b" eventType="touchUpInside" id="vLV-Yg-enC"/>
+                                        </connections>
                                     </button>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Qe2-mD-WFT">
                                         <rect key="frame" x="20" y="18" width="25" height="25"/>
@@ -413,6 +419,13 @@
                                     <constraint firstItem="bU7-JT-1nv" firstAttribute="top" secondItem="SOH-HM-MYK" secondAttribute="top" id="jhp-yJ-8AB"/>
                                     <constraint firstItem="9ux-Rl-nYc" firstAttribute="leading" secondItem="SOH-HM-MYK" secondAttribute="leading" constant="55" id="oet-FV-UqR"/>
                                     <constraint firstAttribute="trailing" secondItem="TGg-mc-7vl" secondAttribute="trailing" constant="20" id="yaL-3S-kOo"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9wx-Cn-ZFu">
+                                <rect key="frame" x="0.0" y="862" width="414" height="34"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="34" id="zNw-w9-rtl"/>
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ckV-PD-W2u">
@@ -456,12 +469,15 @@
                             <constraint firstItem="u2M-AS-nkI" firstAttribute="leading" secondItem="O9k-78-gSx" secondAttribute="leading" id="PvT-3s-vOT"/>
                             <constraint firstItem="YG8-9c-nRp" firstAttribute="leading" secondItem="O9k-78-gSx" secondAttribute="leading" id="Q8r-7l-VEH"/>
                             <constraint firstItem="cV8-tH-dwF" firstAttribute="centerX" secondItem="O9k-78-gSx" secondAttribute="centerX" id="QqS-cr-zqP"/>
+                            <constraint firstItem="9wx-Cn-ZFu" firstAttribute="top" secondItem="SOH-HM-MYK" secondAttribute="bottom" id="RqR-Ff-OiT"/>
                             <constraint firstItem="yqi-XC-h5e" firstAttribute="top" secondItem="O9k-78-gSx" secondAttribute="top" priority="999" id="S62-GT-XAz"/>
                             <constraint firstItem="z4m-dy-jqD" firstAttribute="centerY" secondItem="yqi-XC-h5e" secondAttribute="centerY" id="SA2-5j-sob"/>
                             <constraint firstItem="LRj-f8-gzh" firstAttribute="top" secondItem="yqi-XC-h5e" secondAttribute="top" id="TPa-Zm-rWr"/>
                             <constraint firstItem="QMm-yw-Spv" firstAttribute="leading" secondItem="O9k-78-gSx" secondAttribute="leading" id="TQU-sY-1UK"/>
+                            <constraint firstItem="9wx-Cn-ZFu" firstAttribute="centerX" secondItem="SOH-HM-MYK" secondAttribute="centerX" id="WO6-ao-a0b"/>
                             <constraint firstItem="u2M-AS-nkI" firstAttribute="top" secondItem="cV8-tH-dwF" secondAttribute="bottom" id="WmX-fa-eXM"/>
                             <constraint firstItem="O9k-78-gSx" firstAttribute="bottom" secondItem="SOH-HM-MYK" secondAttribute="bottom" id="Xyf-My-VIO"/>
+                            <constraint firstItem="9wx-Cn-ZFu" firstAttribute="leading" secondItem="SOH-HM-MYK" secondAttribute="leading" id="Yb8-Rs-SyO"/>
                             <constraint firstItem="LRj-f8-gzh" firstAttribute="leading" secondItem="yqi-XC-h5e" secondAttribute="leading" id="YuO-TV-3ZY"/>
                             <constraint firstItem="yqi-XC-h5e" firstAttribute="centerX" secondItem="O9k-78-gSx" secondAttribute="centerX" priority="750" id="ZZ4-Fk-jH1"/>
                             <constraint firstItem="LRj-f8-gzh" firstAttribute="centerX" secondItem="yqi-XC-h5e" secondAttribute="centerX" id="f8w-oc-jN1"/>
@@ -511,6 +527,8 @@
                         <outlet property="playViewSingleTap" destination="QGS-uA-Xj7" id="xHD-m0-0KG"/>
                         <outlet property="playViewTop" destination="S62-GT-XAz" id="qIm-Mw-v25"/>
                         <outlet property="playViewWidth" destination="v2O-eg-KOu" id="vaK-bl-PQP"/>
+                        <outlet property="safeBottomView" destination="9wx-Cn-ZFu" id="Yjc-CZ-c12"/>
+                        <outlet property="safeBottomViewHeight" destination="zNw-w9-rtl" id="Jrh-Ql-hNF"/>
                         <outlet property="seekbar" destination="XbX-Kr-dZU" id="0Nw-Bg-kO5"/>
                         <outlet property="separatorView" destination="wpe-05-P7u" id="dQ7-EI-RxE"/>
                         <outlet property="stackView" destination="AsF-jZ-9Y1" id="mcp-4k-CRe"/>
@@ -560,7 +578,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1590" y="52"/>
+            <point key="canvasLocation" x="1589.8550724637682" y="51.5625"/>
         </scene>
         <!--Play Explain View Controller-->
         <scene sceneID="4rj-sD-25D">

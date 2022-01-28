@@ -45,6 +45,13 @@ class HomeListViewController: UIViewController {
         AppUtility.lockOrientation(.portrait)
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        self.playerView.player?.pause()
+        self.playerView.player?.replaceCurrentItem(with: nil)
+        self.playerView.player = nil
+    }
+    
     func setupUI() {
         searchButton.setTitle("", for: .normal)
         noticeButton.setTitle("", for: .normal)

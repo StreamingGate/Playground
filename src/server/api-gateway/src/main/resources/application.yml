@@ -57,17 +57,10 @@ spring:
           filters:
             - RewritePath=/user-service(?<segment>/?.*), /$\{segment}
 #            - AuthenticationFilter
-        - id: chat-service
-          uri: lb://CHAT-SERVICE
+        - id: main-service
+          uri: lb://MAIN-SERVICE
           predicates:
-            - Path=/chat-service/**
+            - Path=/main-service/**
             - Method=POST,GET,DELETE,PUT
           filters:
-            - RewritePath=/chat-service/(?<segment>/?.*), /$\{segment}
-        - id: chat-service
-          uri: lb://CHAT-SERVICE
-          predicates:
-            - Path=/chat-service/chat/room/**
-            - Method=POST,GET,DELETE,PUT
-          filters:
-            - RewritePath=/chat-service/(?<segment>/?.*), /$\{segment}
+            - RewritePath=/main-service(?<segment>/?.*), /$\{segment}
