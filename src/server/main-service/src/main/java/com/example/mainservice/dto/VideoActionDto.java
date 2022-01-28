@@ -1,5 +1,6 @@
 package com.example.mainservice.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,5 +16,13 @@ public class VideoActionDto {
 
     public enum ACTION{
         REPORT, LIKE, DISLIKE
+    }
+
+    @Builder
+    public VideoActionDto(long id, int type, ACTION action, String uuid){
+        this.id = id;
+        this.type = type;
+        this.action =action;
+        this.uuid = uuid;
     }
 }

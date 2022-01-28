@@ -48,17 +48,17 @@ public class MainService {
         Pageable pageable = PageRequest.of(page, size);
         if (category == Category.ALL) {
             videoDtos = videoRepository.findAll(pageable).getContent().stream()
-                    .map(video -> mapper.map(video, VideoDto.class))
+                    .map(video -> VideoDto.fromEntity(mapper, video))
                     .collect(Collectors.toList());
             liveRoomDtos = liveRoomRepository.findAll(pageable).getContent().stream()
-                    .map(liveRoom -> mapper.map(liveRoom, LiveRoomDto.class))
+                    .map(liveRoom -> LiveRoomDto.fromEntity(mapper, liveRoom))
                     .collect(Collectors.toList());
         } else {
             videoDtos = videoRepository.findAllByCategory(category, pageable).stream()
-                    .map(video -> mapper.map(video, VideoDto.class))
+                    .map(video -> VideoDto.fromEntity(mapper, video))
                     .collect(Collectors.toList());
             liveRoomDtos = liveRoomRepository.findAllByCategory(category, pageable).stream()
-                    .map(liveRoom -> mapper.map(liveRoom, LiveRoomDto.class))
+                    .map(liveRoom -> LiveRoomDto.fromEntity(mapper, liveRoom))
                     .collect(Collectors.toList());
         }
         VideoListDto videoListDto = new VideoListDto(videoDtos, liveRoomDtos);

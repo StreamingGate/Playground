@@ -91,10 +91,10 @@ public class UserEntity {
             joinColumns = @JoinColumn(name = "users_id"),
             inverseJoinColumns = @JoinColumn(name = "friend_id")
     )
-    private Set<UserEntity> friends = new HashSet<>();
+    private List<UserEntity> friends = new ArrayList<>();
 
     @ManyToMany(mappedBy = "friends") //나를 친구로 추가한 사람들
-    private Set<UserEntity> beFriend = new HashSet<>();
+    private List<UserEntity> beFriend = new ArrayList<>();
     /**
      * ================================
      **/
