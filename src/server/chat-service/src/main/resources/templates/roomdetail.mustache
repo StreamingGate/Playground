@@ -24,7 +24,7 @@
 <!-- JavaScript -->
 <script>
     // websocket & stomp initialize
-    let sock = new SockJS("/chat-service/ws");
+    let sock = new SockJS("/ws");
     let ws = Stomp.over(sock);
     let roomTitle = document.querySelector("#roomId");
     let msgList = document.querySelector("#msglist");
@@ -39,7 +39,7 @@
     }
 
     findRoom = function () {
-        axios.get('/chat-service/chat/room/' + data.roomId).then(response => {
+        axios.get('/chat/room/' + data.roomId).then(response => {
             data.room = response.data.name;
             data.pinnedChats = response.data.pinnedChats;
             console.log("resp:", response.data);
