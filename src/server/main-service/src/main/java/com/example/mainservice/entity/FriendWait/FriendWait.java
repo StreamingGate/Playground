@@ -1,13 +1,10 @@
 package com.example.mainservice.entity.FriendWait;
 
-import javax.persistence.*;
-
 import com.example.mainservice.entity.User.UserEntity;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
+import javax.persistence.*;
 
 @NoArgsConstructor
 @Getter
