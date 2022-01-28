@@ -25,7 +25,7 @@ class ChattingViewController: UIViewController {
         // 추후에 실제 roomId로 변경
         viewModel.roomId = "ae0a8eb9-ff2c-4256-8be7-f8a9e84a3afa"
         viewModel.connectToSocket()
-        bingViewModelData()
+        bindViewModelData()
         setupUI()
     }
     
@@ -42,7 +42,7 @@ class ChattingViewController: UIViewController {
         tableView.contentInset = UIEdgeInsets(top: 15, left: 0, bottom: 0, right: 0)
     }
     
-    func bingViewModelData() {
+    func bindViewModelData() {
         viewModel.$chatList.receive(on: RunLoop.main)
             .sink { [weak self] list in
                 guard let self = self else { return }
