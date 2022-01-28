@@ -49,7 +49,7 @@ export const ChaListContainer = styled.ul`
 export const ScrollDownBtnContainer = styled.div`
   display: flex;
   justify-content: center;
-  position: absolute;
+  position: sticky;
   bottom: 5px;
   left: 0;
   right: 0;

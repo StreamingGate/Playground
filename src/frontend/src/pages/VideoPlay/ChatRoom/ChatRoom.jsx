@@ -1,8 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-import axios from 'axios'
-
 import * as S from './ChatRoom.style';
 import { useSocket, useForm } from '@utils/hook';
 
@@ -12,7 +10,7 @@ import { ChatDialog } from '@components/dataDisplays';
 
 function ChatRoom() {
   const chatListContainerRef = useRef(null);
-  const { chatData, sendChatMessage } = useSocket('ba59100a-85f7-42dc-8508-0df112a0cf3f');
+  const { chatData, sendChatMessage } = useSocket('cd902733-8126-4219-afef-ccd0b0300813');
   const { values, handleInputChange, changeValue } = useForm({ initialValues: { message: '' } });
 
   const [isShowScrollBtm, setShowScrollBtm] = useState(false);
@@ -29,10 +27,6 @@ function ChatRoom() {
       setShowScrollBtm(false);
     }
   };
-
-  const temp = async () => {
-    await axios.get('http://localhost:8000')
-  }
 
   useEffect(() => {
     chatListContainerRef.current.addEventListener('scroll', handleChatListScroll);
@@ -67,14 +61,14 @@ function ChatRoom() {
         </S.ChatMetaContainer>
       </S.ChatRoomHeader>
       <S.ChaListContainer ref={chatListContainerRef}>
+        {chatData.map(chatInfo => (
+          <ChatDialog key={uuidv4()} chatInfo={chatInfo} />
+        ))}
         {isShowScrollBtm && (
           <S.ScrollDownBtnContainer>
             <S.ScrollDownBtn />
           </S.ScrollDownBtnContainer>
         )}
-        {chatData.map(chatInfo => (
-          <ChatDialog key={uuidv4()} chatInfo={chatInfo} />
-        ))}
       </S.ChaListContainer>
       <S.ChatInputContainer>
         <S.UserProfile />
