@@ -51,6 +51,14 @@ function ChatRoom() {
     }
   };
 
+  const handleScrollToBtmBtnClick = () => {
+    const currentHeight = chatListContainerRef.current.scrollHeight;
+    chatListContainerRef.current.scroll({
+      top: currentHeight,
+      behavior: 'smooth',
+    });
+  };
+
   return (
     <S.ChatRoomContainer>
       <S.ChatRoomHeader>
@@ -66,7 +74,7 @@ function ChatRoom() {
         ))}
         {isShowScrollBtm && (
           <S.ScrollDownBtnContainer>
-            <S.ScrollDownBtn />
+            <S.ScrollDownBtn onClick={handleScrollToBtmBtnClick} />
           </S.ScrollDownBtnContainer>
         )}
       </S.ChaListContainer>
