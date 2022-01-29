@@ -8,6 +8,8 @@ import { Input } from '@components/forms';
 import { IconButton } from '@components/buttons';
 import { ChatDialog } from '@components/dataDisplays';
 
+const MAX_LENGTH = 200;
+
 function ChatRoom() {
   const chatListContainerRef = useRef(null);
   const { chatData, sendChatMessage } = useSocket('cd902733-8126-4219-afef-ccd0b0300813');
@@ -81,21 +83,26 @@ function ChatRoom() {
           </S.ScrollDownBtnContainer>
         )}
       </S.ChaListContainer>
-      <S.ChatInputContainer>
+      <S.ChatInputController>
         <S.UserProfile />
-        <Input
-          name='message'
-          fullWidth
-          variant='standard'
-          onKeyUp={handleSendBtn}
-          placeholder='닉네임으로 채팅하기'
-          value={values.message}
-          onChange={handleInputChange}
-        />
+        <S.ChatInputContainer>
+          <Input
+            name='message'
+            fullWidth
+            variant='standard'
+            onKeyUp={handleSendBtn}
+            placeholder='닉네임으로 채팅하기'
+            value={values.message}
+            onChange={handleInputChange}
+          />
+          <S.InputCharCount>
+            {values.message.length}/{MAX_LENGTH}
+          </S.InputCharCount>
+        </S.ChatInputContainer>
         <IconButton onClick={handleSendBtn} disabled={!values.message}>
           <S.SendIcon />
         </IconButton>
-      </S.ChatInputContainer>
+      </S.ChatInputController>
     </S.ChatRoomContainer>
   );
 }

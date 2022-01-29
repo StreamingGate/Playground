@@ -62,16 +62,26 @@ export const ScrollDownBtn = styled(ScrollDown)`
   cursor: pointer;
 `;
 
-export const ChatInputContainer = styled.div`
+export const ChatInputController = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 15px 20px 30px;
+  padding: 15px 20px;
   background-color: #ffffff;
 `;
 
 export const UserProfile = styled(Avatar)`
   flex-shrink: 0;
+`;
+
+export const ChatInputContainer = styled.div`
+  width: 100%;
+  margin-top: 20px;
+  text-align: right;
+`;
+
+export const InputCharCount = styled(Typography)`
+  color: ${({ theme }) => theme.colors.placeHolder};
 `;
 
 export const SendIcon = styled(Send)`
