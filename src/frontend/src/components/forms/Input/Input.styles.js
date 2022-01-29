@@ -55,11 +55,7 @@ const getInputOutline = props => {
   }
 };
 
-export const InputContainer = styled.div`
-  width: 100%;
-`;
-
-export const Input = styled.input`
+const inputStyles = css`
   font-size: ${props => props.theme.fontSizes[props.fontSize]};
   border: 1px solid ${({ theme }) => theme.colors.placeHolder};
   width: ${({ fullWidth }) => (fullWidth ? '100%' : 'auto')};
@@ -70,6 +66,19 @@ export const Input = styled.input`
   &::placeholder {
     color: ${({ theme }) => theme.colors.placeHolder};
   }
+`;
+
+export const InputContainer = styled.div`
+  width: 100%;
+`;
+
+export const Input = styled.input`
+  ${inputStyles}
+`;
+
+export const TextArea = styled.textarea`
+  ${inputStyles}
+  resize: none;
 `;
 
 export const HelperText = styled(Typography)`
