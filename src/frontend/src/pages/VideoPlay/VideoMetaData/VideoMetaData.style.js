@@ -71,8 +71,7 @@ export const ContentOverview = styled(Typography)`
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
   overflow: hidden;
-  text-overflow: ellopsis;
-  width: 60%;
+  text-overflow: ellipsis;
 `;
 
 export const SubScribeBtn = styled(Button)`
