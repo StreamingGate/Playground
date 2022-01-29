@@ -88,10 +88,12 @@ function ChatRoom() {
         <S.ChatInputContainer>
           <Input
             name='message'
+            placeholder='닉네임으로 채팅하기'
             fullWidth
             variant='standard'
+            multiLine
+            maxLength={MAX_LENGTH}
             onKeyUp={handleSendBtn}
-            placeholder='닉네임으로 채팅하기'
             value={values.message}
             onChange={handleInputChange}
           />
