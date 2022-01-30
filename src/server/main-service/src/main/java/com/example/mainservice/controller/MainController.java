@@ -22,13 +22,16 @@ public class MainController {
     private final MainService mainService;
 
     /**
-     * @param lastId value must be -1 for initial home view (or must be same or bigger than 0)
+     * <pre>
+     * {lastVideoId, lastLiveRoomId} value must be -1 for initial home view (or must be same or bigger than 0)
+     * </pre>
      */
     @GetMapping("/list")
     public ResponseEntity<VideoListDto> getHomeList(@RequestParam("category") String category,
-                                                    @RequestParam("last-id") int lastId,
+                                                    @RequestParam("last-video") long lastVideoId,
+                                                    @RequestParam("last-live") long lastLiveRoomId,
                                                     @RequestParam("size") int size) throws Exception {
-        return ResponseEntity.ok(mainService.getHomeList(Category.valueOf(category), lastId, size));
+        return ResponseEntity.ok(mainService.getHomeList(Category.valueOf(category), lastVideoId, lastLiveRoomId, size));
     }
 
     @GetMapping("/notification/{uuid}")

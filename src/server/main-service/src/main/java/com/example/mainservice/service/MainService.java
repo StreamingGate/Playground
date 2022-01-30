@@ -43,9 +43,9 @@ public class MainService {
     private final ModelMapper mapper;
 
     @Transactional(readOnly = true)
-    public VideoListDto getHomeList(Category category, long lastId, int size) throws Exception{
-        List<VideoDto> videoDtos = getVideoList(category, lastId, size);
-        List<LiveRoomDto> liveRoomDtos = getLiveRoomList(category, lastId, size);
+    public VideoListDto getHomeList(Category category, long lastVideoId, long lastLiveRoomId, int size) throws Exception{
+        List<VideoDto> videoDtos = getVideoList(category, lastVideoId, size);
+        List<LiveRoomDto> liveRoomDtos = getLiveRoomList(category, lastLiveRoomId, size);
         VideoListDto videoListDto = new VideoListDto(videoDtos, liveRoomDtos);
         return videoListDto;
     }
