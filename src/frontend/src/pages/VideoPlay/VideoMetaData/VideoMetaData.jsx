@@ -52,7 +52,7 @@ function VideoMetaData() {
               5편처럼 빠르게 지나간다. 그런데 어느 순간 그린델왈드가 유럽에서 자취를 감추게 된다.
             </S.ContentOverview>
             <S.ExpandContenOverviewBtn variant='text' onClick={handleExpandBtnClick}>
-              더보기
+              {isOverviewExpand ? '간략히' : '더보기'}
             </S.ExpandContenOverviewBtn>
           </div>
         </S.VideoSubInfo>
