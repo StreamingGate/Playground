@@ -1,5 +1,10 @@
 spring.profiles.active: local
 spring:
+  datasource:
+    url: jdbc:mariadb://pg-mariadb:3306/playground?serverTimezone=Asia/Seoul&characterEncoding=utf8
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: root
+    password: test
   application:
     name: main-service
   jpa:
@@ -18,23 +23,10 @@ eureka:
     service-url:
       defaultZone: http://localhost:8761/eureka
 ---
+spring.config.activate.on-profile: local
 server:
   port: 8080
-spring.config.activate.on-profile: local
-spring:
-  datasource:
-    url: jdbc:mariadb://localhost:3306/playground?serverTimezone=Asia/Seoul&characterEncoding=utf8
-    driver-class-name: org.mariadb.jdbc.Driver
-    username: root
-    password: test
-
 ---
+spring.config.activate.on-profile: develop
 server:
   port: 0
-spring.config.activate.on-profile: develop
-spring:
-  datasource:
-    url: jdbc:mariadb://pg-mariadb:3306/playground?serverTimezone=Asia/Seoul&characterEncoding=utf8
-    driver-class-name: org.mariadb.jdbc.Driver
-    username: root
-    password: test
