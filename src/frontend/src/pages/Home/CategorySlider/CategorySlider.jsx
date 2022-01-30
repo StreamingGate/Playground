@@ -30,11 +30,16 @@ function CategorySlider() {
 
   const { sideNavState } = useContext(MainLayoutContext);
 
+  const [categoryToggle, setCategoryToggle] = useState([]);
   const [scrollDist, setScrollDist] = useState(0);
   const [isShowNextBtn, setShowNextBtn] = useState(true);
 
   useEffect(() => {
     intialLastCategoryPos.current = lastCateogriesRef.current.getBoundingClientRect().right;
+
+    const initCategoryToggle = new Array(dummyCateogry.length).fill(false);
+    initCategoryToggle[0] = true;
+    setCategoryToggle(initCategoryToggle);
   }, []);
 
   useEffect(() => {
@@ -54,6 +59,25 @@ function CategorySlider() {
     setScrollDist(prev => prev - MOVING_DIR);
   };
 
+  const handleCategoryChipClick = selectedIdx => () => {
+    const newCategoryToggle = [...categoryToggle];
+
+    if (newCategoryToggle[selectedIdx]) {
+      newCategoryToggle[0] = true;
+      newCategoryToggle[selectedIdx] = false;
+    } else {
+      newCategoryToggle.forEach((_, idx) => {
+        if (idx === selectedIdx) {
+          newCategoryToggle[idx] = true;
+        } else {
+          newCategoryToggle[idx] = false;
+        }
+      });
+    }
+
+    setCategoryToggle(newCategoryToggle);
+  };
+
   return (
     <S.CategorySliderContainer sideNavState={sideNavState}>
       {scrollDist !== 0 && <S.ArrowLeftIcon onClick={handleArrowLeftBtnClick} />}
@@ -64,6 +88,8 @@ function CategorySlider() {
               key={id}
               content={category}
               ref={idx === arr.length - 1 ? lastCateogriesRef : null}
+              isSelected={categoryToggle[idx]}
+              onClick={handleCategoryChipClick(idx)}
             />
           ))}
         </S.Categories>
