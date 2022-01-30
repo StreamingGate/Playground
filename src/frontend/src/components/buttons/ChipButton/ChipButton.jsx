@@ -1,11 +1,16 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import PropTypes from 'prop-types';
 
 import * as S from './ChipButton.style';
 
-function ChipButton({ content, isSelected }) {
-  return <S.ChipButton isSelected={isSelected}>{content}</S.ChipButton>;
-}
+const ChipButton = forwardRef((props, ref) => {
+  const { content, isSelected } = props;
+  return (
+    <S.ChipButton ref={ref} isSelected={isSelected}>
+      {content}
+    </S.ChipButton>
+  );
+});
 
 ChipButton.propTypes = {
   content: PropTypes.string.isRequired,
