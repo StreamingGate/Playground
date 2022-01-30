@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext, useRef, useEffect } from 'react';
 
 import * as S from './CategorySlider.style';
 import { MainLayoutContext } from '@utils/context';
@@ -21,17 +21,54 @@ const dummyCateogry = [
   { id: 12, category: 'This is Test' },
 ];
 
+const MOVING_DIR = 150;
+
 function CategorySlider() {
+  const categoryContainerRef = useRef(null);
+  const lastCateogriesRef = useRef(null);
+  const intialLastCategoryPos = useRef(null);
+
   const { sideNavState } = useContext(MainLayoutContext);
+
+  const [scrollDist, setScrollDist] = useState(0);
+  const [isShowNextBtn, setShowNextBtn] = useState(true);
+
+  useEffect(() => {
+    intialLastCategoryPos.current = lastCateogriesRef.current.getBoundingClientRect().right;
+  }, []);
+
+  useEffect(() => {
+    const categoryContainerPos = categoryContainerRef.current.getBoundingClientRect().right;
+    if (categoryContainerPos >= intialLastCategoryPos.current + scrollDist) {
+      setShowNextBtn(false);
+    } else {
+      setShowNextBtn(true);
+    }
+  }, [scrollDist]);
+
+  const handleArrowLeftBtnClick = () => {
+    setScrollDist(prev => prev + MOVING_DIR);
+  };
+
+  const handleArrowRightBtnClick = () => {
+    setScrollDist(prev => prev - MOVING_DIR);
+  };
+
   return (
     <S.CategorySliderContainer sideNavState={sideNavState}>
-      <S.ArrowLeftIcon />
-      <S.CategoryContainer>
-        {dummyCateogry.map(({ id, category }) => (
-          <ChipButton key={id} content={category} />
-        ))}
+      {scrollDist !== 0 && <S.ArrowLeftIcon onClick={handleArrowLeftBtnClick} />}
+      <S.CategoryContainer ref={categoryContainerRef}>
+        <S.Categories xPos={scrollDist}>
+          {dummyCateogry.map(({ id, category }, idx, arr) => (
+            <ChipButton
+              key={id}
+              content={category}
+              ref={idx === arr.length - 1 ? lastCateogriesRef : null}
+            />
+          ))}
+        </S.Categories>
       </S.CategoryContainer>
-      <S.ArrowRightIcon />
+      {isShowNextBtn && <S.ArrowRightIcon onClick={handleArrowRightBtnClick} />}
     </S.CategorySliderContainer>
   );
 }
