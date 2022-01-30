@@ -47,12 +47,19 @@ function ChatRoom() {
   }, [chatData]);
 
   const handleSendBtn = e => {
-    if (!values.message) {
+    const { message } = values;
+    if (!message || message.length > MAX_LENGTH) {
       return;
     }
     if (e.key === 'Enter' || e.type === 'click') {
-      sendChatMessage(values.message);
+      sendChatMessage(message);
       changeValue(['message', '']);
+    }
+  };
+
+  const handleInputLineBreak = e => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
     }
   };
 
@@ -92,12 +99,12 @@ function ChatRoom() {
             fullWidth
             variant='standard'
             multiLine
-            maxLength={MAX_LENGTH}
+            onKeyPress={handleInputLineBreak}
             onKeyUp={handleSendBtn}
             value={values.message}
             onChange={handleInputChange}
           />
-          <S.InputCharCount isLimit={values.message.length >= MAX_LENGTH}>
+          <S.InputCharCount isLimit={values.message.length > MAX_LENGTH}>
             {values.message.length}/{MAX_LENGTH}
           </S.InputCharCount>
         </S.ChatInputContainer>
