@@ -97,7 +97,7 @@ function ChatRoom() {
             value={values.message}
             onChange={handleInputChange}
           />
-          <S.InputCharCount>
+          <S.InputCharCount isLimit={values.message.length >= MAX_LENGTH}>
             {values.message.length}/{MAX_LENGTH}
           </S.InputCharCount>
         </S.ChatInputContainer>

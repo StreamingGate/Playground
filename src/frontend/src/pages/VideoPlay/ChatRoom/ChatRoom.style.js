@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { ThemeConsumer } from 'styled-components';
 
 import { Typography, Person, Send, ScrollDown } from '@components/cores';
 import { Avatar } from '@components/dataDisplays';
@@ -81,7 +81,7 @@ export const ChatInputContainer = styled.div`
 `;
 
 export const InputCharCount = styled(Typography)`
-  color: ${({ theme }) => theme.colors.placeHolder};
+  color: ${({ theme, isLimit }) => (isLimit ? 'red' : theme.colors.placeHolder)};
 `;
 
 export const SendIcon = styled(Send)`
