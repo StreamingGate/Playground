@@ -42,6 +42,8 @@ export const CategoryContainer = styled.div`
 export const Categories = styled.div`
   display: flex;
   gap: 10px;
+  transition: transform 0.15s cubic-bezier(0.05, 0, 0, 1);
+  will-change: transform;
   transform: ${({ xPos }) => `translateX(${xPos}px)`};
 `;
 
