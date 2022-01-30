@@ -33,12 +33,16 @@ export const CategorySliderContainer = styled.div`
 `;
 
 export const CategoryContainer = styled.div`
-  display: flex;
-  gap: 10px;
   width: 80%;
   margin: 0 auto;
   white-space: nowrap;
   overflow-x: hidden;
+`;
+
+export const Categories = styled.div`
+  display: flex;
+  gap: 10px;
+  transform: ${({ xPos }) => `translateX(${xPos}px)`};
 `;
 
 export const ArrowLeftIcon = styled(ArrowLeft)`
