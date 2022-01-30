@@ -26,7 +26,7 @@ const getInputBorder = props => {
     case 'standard':
       return css`
         border: none;
-        border-bottom: 2px solid ${theme.colors.placeHolder};
+        border-bottom: 1px solid ${theme.colors.separator};
 
         &:focus {
           border-bottom-color: ${theme.colors.youtubeBlue};
