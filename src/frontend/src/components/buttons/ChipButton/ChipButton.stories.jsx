@@ -7,6 +7,7 @@ export default {
   component: ChipButton,
   args: {
     content: 'K-POP',
+    isSelected: false,
   },
 };
 
