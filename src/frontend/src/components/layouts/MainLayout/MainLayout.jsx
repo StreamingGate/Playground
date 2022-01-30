@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
+import PropTypes from 'prop-types';
 import { Outlet } from 'react-router-dom';
 
 import { MainLayoutContext } from '@utils/context';
@@ -15,7 +16,7 @@ const { screenSize } = breakPoint;
 
 const sideComponentInitState = { open: false, backdrop: false };
 
-function MainLayout() {
+function MainLayout({ children }) {
   const { innerWidth } = useWindowSize();
 
   const [sideNavState, setSideNavState] = useState({ ...sideComponentInitState });
@@ -68,6 +69,7 @@ function MainLayout() {
       <SideNavigation />
       <S.MainContentContainer sideNavState={sideNavState}>
         <Outlet />
+        {children !== undefined && children}
       </S.MainContentContainer>
       <SideFriendList />
       <S.FriendListToggleBtn onClick={handleToggleSideFriend} isShow={sideFriendState.open}>
@@ -76,5 +78,13 @@ function MainLayout() {
     </MainLayoutContext.Provider>
   );
 }
+
+MainLayout.propTypes = {
+  children: PropTypes.element,
+};
+
+MainLayout.defaultProps = {
+  children: undefined,
+};
 
 export default MainLayout;
