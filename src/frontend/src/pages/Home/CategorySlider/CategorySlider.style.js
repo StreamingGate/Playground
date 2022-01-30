@@ -1,8 +1,12 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+
+import { breakPoint } from '@utils/constant';
+
+const { queries } = breakPoint;
 
 export const CategorySliderContainer = styled.div`
   position: fixed;
-  left: var(--side-nav-bar-width);
+  left: 0;
   right: var(--side-friend-list-width);
   z-index: 1;
   height: 60px;
@@ -10,4 +14,15 @@ export const CategorySliderContainer = styled.div`
   background-color: #ffffff;
   border-top: ${({ theme }) => `1px solid ${theme.colors.separator}`};
   border-bottom: ${({ theme }) => `1px solid ${theme.colors.separator}`};
+
+  ${({ sideNavState }) =>
+    sideNavState.open &&
+    !sideNavState.backdrop &&
+    css`
+      left: var(--side-nav-bar-width);
+    `}
+
+  @media (${queries.laptopMax}) {
+    right: 0;
+  }
 `;
