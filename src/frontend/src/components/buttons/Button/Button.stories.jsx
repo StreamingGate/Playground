@@ -38,6 +38,7 @@ const VariantTemplate = args => (
   <>
     <Button variant='contained' {...args} />
     <Button variant='outlined' {...args} />
+    <Button variant='text' {...args} />
   </>
 );
 export const Variant = VariantTemplate.bind({});
