@@ -75,7 +75,7 @@ export const UserProfile = styled(Avatar)`
 `;
 
 export const ChatInputContainer = styled.div`
-  width: 100%;
+  width: 90%;
   margin-top: 20px;
   text-align: right;
 `;
