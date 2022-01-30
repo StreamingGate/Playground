@@ -26,3 +26,12 @@ export const CategorySliderContainer = styled.div`
     right: 0;
   }
 `;
+
+export const CategoryContainer = styled.div`
+  display: flex;
+  gap: 10px;
+  width: 80%;
+  margin: 0 auto;
+  white-space: nowrap;
+  overflow-x: hidden;
+`;
