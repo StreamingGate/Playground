@@ -12,10 +12,9 @@ export default {
   decorators: [
     (Story, rest) => {
       const { args } = rest;
-      console.log(args);
       return (
         <Router>
-          <MainLayoutContext.Provider value={{ sideNavState: { open: true, backdrop: false } }}>
+          <MainLayoutContext.Provider value={{ ...args.ctx }}>
             <MainLayout>
               <Story />
             </MainLayout>
@@ -26,7 +25,7 @@ export default {
   ],
   parameters: {
     layout: 'fullscreen',
-    controls: { hideNoControlsWarning: true },
+    controls: { hideNoControlsWarning: true, exclude: ['ctx'] },
   },
   args: {
     ctx: { sideNavState: { open: true, backdrop: false } },
