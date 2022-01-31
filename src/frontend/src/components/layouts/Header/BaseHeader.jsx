@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 
-import S from './Header.style';
+import * as S from './Header.style';
 import { HeaderContext, MainLayoutContext } from '@utils/context';
 
 import { IconButton } from '@components/buttons';
@@ -23,20 +23,27 @@ function BaseHeader() {
         <S.HambergurIconButton onClick={onToggleSideNav}>
           <HamburgerBar />
         </S.HambergurIconButton>
-        <S.VerticalLogo />
+        <S.VerticalLogoIcon />
       </S.HeaderLeftDiv>
       <SearchForm />
       <S.HeaderRightDiv>
         <S.SearchBarIconButton onClick={onToggle}>
           <Search />
         </S.SearchBarIconButton>
-        <IconButton onClick={handleAddButtonToggle}>
-          {isAddButtonToggle ? <AddFullCircle /> : <AddEmptyCircle />}
-        </IconButton>
-        <IconButton>
-          <Alarm />
-        </IconButton>
-        <S.HeaderAvatar />
+        <div>
+          <IconButton onClick={handleAddButtonToggle}>
+            {isAddButtonToggle ? <AddFullCircle /> : <AddEmptyCircle />}
+          </IconButton>
+          <S.AddVideoMenuContainer></S.AddVideoMenuContainer>
+        </div>
+        <div>
+          <IconButton>
+            <Alarm />
+          </IconButton>
+        </div>
+        <div>
+          <S.HeaderAvatar />
+        </div>
       </S.HeaderRightDiv>
     </>
   );
