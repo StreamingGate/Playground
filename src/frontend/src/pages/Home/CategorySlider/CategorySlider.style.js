@@ -13,7 +13,6 @@ export const CategorySliderContainer = styled.div`
   position: fixed;
   left: 0;
   right: var(--side-friend-list-width);
-  z-index: 1;
   height: 60px;
   padding: var(---category-slider-padding) 0px;
   background-color: #ffffff;

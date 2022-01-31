@@ -5,7 +5,7 @@ import { Typography } from '@components/cores';
 export default {
   SideFriendListContainer: styled.div`
     position: fixed;
-    z-index: 2;
+    z-index: 1;
     top: var(--head-height);
     right: 0;
     width: var(--side-friend-list-width);
@@ -31,6 +31,7 @@ export default {
         top: 0;
         bottom: 0;
         height: 100vh;
+        z-index: 2;
       `}
   `,
   SideFriendListHeader: styled(Typography)`

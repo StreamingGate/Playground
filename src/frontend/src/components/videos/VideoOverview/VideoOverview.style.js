@@ -13,6 +13,7 @@ const lineEllipsis = css`
 
 export const ThumbNailContainer = styled.div`
   position: relative;
+  z-index: -1;
 `;
 
 export const RealTimeIcon = styled(RealTimeMark)`
