@@ -1,6 +1,6 @@
 import React, { useContext, useState, useCallback, useRef } from 'react';
 
-import S from './SideFriendList.style';
+import * as S from './SideFriendList.style';
 import { MainLayoutContext } from '@utils/context';
 
 import FriendItem from './FriendItem';
