@@ -5,9 +5,9 @@ import * as S from './SideFriendList.style';
 
 import { Avatar } from '@components/dataDisplays';
 
-function FriendItem({ isOnline, profileImgSrc, onClick, name, onMouseOver }) {
+function FriendItem({ isOnline, profileImgSrc, onClick, name }) {
   return (
-    <S.FriendItem onMouseOver={onMouseOver} onClick={onClick}>
+    <S.FriendItem onClick={onClick}>
       <Avatar size='xs' imgSrc={!profileImgSrc ? undefined : profileImgSrc} />
       <S.FriendName type='caption'>{name}</S.FriendName>
     </S.FriendItem>

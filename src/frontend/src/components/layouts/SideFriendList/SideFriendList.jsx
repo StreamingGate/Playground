@@ -1,4 +1,4 @@
-import React, { useContext, useState, useCallback, useRef } from 'react';
+import React, { useContext, useState, useRef } from 'react';
 
 import * as S from './SideFriendList.style';
 import { MainLayoutContext } from '@utils/context';
