@@ -158,9 +158,18 @@
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J38-vs-nkq">
                                                     <rect key="frame" x="0.0" y="0.0" width="414" height="233"/>
+                                                    <subviews>
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="zpA-av-Vyq">
+                                                            <rect key="frame" x="0.0" y="0.0" width="414" height="233"/>
+                                                        </imageView>
+                                                    </subviews>
                                                     <color key="backgroundColor" name="Separator"/>
                                                     <constraints>
+                                                        <constraint firstItem="zpA-av-Vyq" firstAttribute="top" secondItem="J38-vs-nkq" secondAttribute="top" id="IXH-uU-Zj1"/>
                                                         <constraint firstAttribute="width" secondItem="J38-vs-nkq" secondAttribute="height" multiplier="16:9" priority="750" id="IaP-Ma-zCt"/>
+                                                        <constraint firstItem="zpA-av-Vyq" firstAttribute="centerX" secondItem="J38-vs-nkq" secondAttribute="centerX" id="PAB-sZ-Y2t"/>
+                                                        <constraint firstItem="zpA-av-Vyq" firstAttribute="centerY" secondItem="J38-vs-nkq" secondAttribute="centerY" id="Pdh-pz-nkd"/>
+                                                        <constraint firstItem="zpA-av-Vyq" firstAttribute="leading" secondItem="J38-vs-nkq" secondAttribute="leading" id="d2q-pV-Etu"/>
                                                     </constraints>
                                                 </view>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="liveSign" translatesAutoresizingMaskIntoConstraints="NO" id="Suu-l4-YDW">
@@ -193,15 +202,6 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1명 시청 중" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yxb-VC-CdG">
-                                                    <rect key="frame" x="102.5" y="272" width="75" height="14"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="14" id="Ff2-L1-Gb1"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fxJ-dR-lK1">
                                                     <rect key="frame" x="5" y="243" width="43" height="43"/>
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
@@ -211,7 +211,6 @@
                                                 </button>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="yxb-VC-CdG" firstAttribute="centerY" secondItem="3OY-zH-JXZ" secondAttribute="centerY" id="1MT-o4-7tw"/>
                                                 <constraint firstItem="rJb-gZ-83I" firstAttribute="top" secondItem="J38-vs-nkq" secondAttribute="bottom" constant="15" id="4hr-q8-9LF"/>
                                                 <constraint firstItem="fxJ-dR-lK1" firstAttribute="leading" secondItem="rJb-gZ-83I" secondAttribute="leading" constant="-5" id="68p-QE-6TE"/>
                                                 <constraint firstItem="fxJ-dR-lK1" firstAttribute="centerY" secondItem="rJb-gZ-83I" secondAttribute="centerY" id="CqD-eZ-J2K"/>
@@ -219,9 +218,9 @@
                                                 <constraint firstItem="J38-vs-nkq" firstAttribute="centerX" secondItem="bt1-6J-pBJ" secondAttribute="centerX" id="JW1-Mo-fKX"/>
                                                 <constraint firstItem="Suu-l4-YDW" firstAttribute="bottom" secondItem="J38-vs-nkq" secondAttribute="bottom" constant="-10" id="McM-9s-Azw"/>
                                                 <constraint firstItem="f45-AV-TzK" firstAttribute="top" secondItem="rJb-gZ-83I" secondAttribute="top" constant="-2" id="Oyc-gb-u5u"/>
+                                                <constraint firstAttribute="bottom" secondItem="3OY-zH-JXZ" secondAttribute="bottom" constant="23" id="PZe-n9-YKu"/>
                                                 <constraint firstItem="rJb-gZ-83I" firstAttribute="leading" secondItem="bt1-6J-pBJ" secondAttribute="leading" constant="10" id="YCs-jH-QiK"/>
                                                 <constraint firstItem="fxJ-dR-lK1" firstAttribute="top" secondItem="rJb-gZ-83I" secondAttribute="top" constant="-5" id="ZkL-ZN-PYA"/>
-                                                <constraint firstAttribute="bottom" secondItem="yxb-VC-CdG" secondAttribute="bottom" constant="23" id="bTE-pm-tdd"/>
                                                 <constraint firstItem="3OY-zH-JXZ" firstAttribute="top" secondItem="f45-AV-TzK" secondAttribute="bottom" constant="2" id="bqJ-Pu-cEz"/>
                                                 <constraint firstItem="Suu-l4-YDW" firstAttribute="trailing" secondItem="J38-vs-nkq" secondAttribute="trailing" constant="-10" id="dDF-J6-dZa"/>
                                                 <constraint firstAttribute="trailing" secondItem="f45-AV-TzK" secondAttribute="trailing" constant="15" id="dob-mr-RRe"/>
@@ -229,7 +228,6 @@
                                                 <constraint firstItem="3OY-zH-JXZ" firstAttribute="leading" secondItem="f45-AV-TzK" secondAttribute="leading" id="tGq-7v-1P5"/>
                                                 <constraint firstItem="J38-vs-nkq" firstAttribute="top" secondItem="bt1-6J-pBJ" secondAttribute="top" id="tsj-ep-gWn"/>
                                                 <constraint firstItem="fxJ-dR-lK1" firstAttribute="centerX" secondItem="rJb-gZ-83I" secondAttribute="centerX" id="zDL-VN-29S"/>
-                                                <constraint firstItem="yxb-VC-CdG" firstAttribute="leading" secondItem="3OY-zH-JXZ" secondAttribute="trailing" constant="3" id="zaZ-4M-bOW"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
@@ -237,8 +235,8 @@
                                             <outlet property="nicknameLabel" destination="3OY-zH-JXZ" id="J5h-HD-8EC"/>
                                             <outlet property="playView" destination="J38-vs-nkq" id="S6r-Wr-QtY"/>
                                             <outlet property="profileImageView" destination="rJb-gZ-83I" id="riT-JL-6sQ"/>
+                                            <outlet property="thumbnailImageView" destination="zpA-av-Vyq" id="0g9-ys-G7z"/>
                                             <outlet property="titleLabel" destination="f45-AV-TzK" id="SqY-Mc-aj7"/>
-                                            <outlet property="viewLabel" destination="yxb-VC-CdG" id="0zz-xk-Ugo"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
