@@ -69,6 +69,7 @@ class PlayViewController: UIViewController {
     @IBOutlet weak var chatContainerViewTop: NSLayoutConstraint!
     @IBOutlet weak var chatContainerViewLeading: NSLayoutConstraint!
     @IBOutlet weak var chatContainerViewCenterX: NSLayoutConstraint!
+    @IBOutlet weak var chatCountLabel: UILabel!
     
     @IBOutlet weak var safeBottomView: UIView!
     @IBOutlet weak var safeBottomViewHeight: NSLayoutConstraint!
@@ -352,6 +353,8 @@ class PlayViewController: UIViewController {
         guard let message = chatTextView.text, message.isEmpty == false else { return }
         chatTextView.text = ""
         chatPlaceHolderLabel.isHidden = false
+        chatCountLabel.textColor = UIColor.placeHolder
+        chatCountLabel.text = "0/200"
         self.chatDelegate?.sendChatMessage(nickname: "test", message: message, senderRole: "VIEWER", chatType: "NORMAL")
     }
     
@@ -557,10 +560,30 @@ extension PlayViewController: UITextViewDelegate {
     
     func textViewDidChange(_ textView: UITextView) {
         chatPlaceHolderLabel.isHidden = !(textView.text.count == 0)
+        if textView.text.count > 200 {
+            textView.deleteBackward()
+            chatCountLabel.textColor = UIColor.red
+            return
+        }
+        chatCountLabel.textColor = UIColor.placeHolder
+        chatCountLabel.text = "\(textView.text.count)/200"
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
         chatPlaceHolderLabel.isHidden = !(textView.text.count == 0)
+    }
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if text == "\n" {
+            textView.resignFirstResponder()
+            guard let message = chatTextView.text, message.isEmpty == false else { return false }
+            chatTextView.text = ""
+            chatPlaceHolderLabel.isHidden = false
+            chatCountLabel.textColor = UIColor.placeHolder
+            chatCountLabel.text = "0/200"
+            self.chatDelegate?.sendChatMessage(nickname: "test", message: message, senderRole: "VIEWER", chatType: "NORMAL")
+            return false
+        }
+        return true
     }
 }
 

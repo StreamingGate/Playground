@@ -78,8 +78,8 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="채팅 내용" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kO7-A1-XNy">
-                                                    <rect key="frame" x="165" y="8" width="229" height="35"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" text="채팅 내용" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kO7-A1-XNy">
+                                                    <rect key="frame" x="201" y="8" width="193" height="35"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -89,7 +89,7 @@
                                             <constraints>
                                                 <constraint firstItem="MeX-58-tGG" firstAttribute="leading" secondItem="xqC-eh-qNo" secondAttribute="trailing" constant="8" symbolic="YES" id="7Nl-On-yY6"/>
                                                 <constraint firstItem="MeX-58-tGG" firstAttribute="centerY" secondItem="xqC-eh-qNo" secondAttribute="centerY" id="EQ0-gJ-J7a"/>
-                                                <constraint firstItem="kO7-A1-XNy" firstAttribute="leading" secondItem="xqC-eh-qNo" secondAttribute="trailing" constant="115" id="JRp-5k-XNe"/>
+                                                <constraint firstItem="kO7-A1-XNy" firstAttribute="leading" secondItem="3BX-bp-beZ" secondAttribute="trailing" constant="14" id="FMI-xh-HBh"/>
                                                 <constraint firstAttribute="trailing" secondItem="kO7-A1-XNy" secondAttribute="trailing" constant="20" id="Pdq-18-1va"/>
                                                 <constraint firstItem="3BX-bp-beZ" firstAttribute="centerY" secondItem="MeX-58-tGG" secondAttribute="centerY" id="YkM-ac-SyK"/>
                                                 <constraint firstAttribute="bottom" secondItem="kO7-A1-XNy" secondAttribute="bottom" constant="12" id="ZEW-ty-Vpj"/>
@@ -168,7 +168,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-54" y="155"/>
+            <point key="canvasLocation" x="-55.072463768115945" y="154.6875"/>
         </scene>
     </scenes>
     <resources>
