@@ -14,6 +14,7 @@ function SideFriendList({ friends }) {
       <BackDrop
         isOpen={sideFriendState.open && sideFriendState.backdrop}
         onClick={onToggleSideFriend}
+        zIndex={2}
       />
       <S.SideFriendListContainer state={sideFriendState}>
         <S.SideFriendListHeader type='highlightCaption'>친구 목록</S.SideFriendListHeader>
