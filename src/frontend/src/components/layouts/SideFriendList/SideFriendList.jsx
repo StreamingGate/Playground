@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import PropTypes from 'prop-types';
 
 import S from './SideFriendList.style';
 import { MainLayoutContext } from '@utils/context';
@@ -7,7 +6,22 @@ import { MainLayoutContext } from '@utils/context';
 import FriendItem from './FriendItem';
 import { BackDrop } from '@components/feedbacks';
 
-function SideFriendList({ friends }) {
+const dummyFriends = [
+  { isOnline: false, profileImgSrc: '', name: '김하늬' },
+  { isOnline: false, profileImgSrc: '', name: '서채희' },
+  { isOnline: false, profileImgSrc: '', name: '이우재' },
+  { isOnline: false, profileImgSrc: '', name: 'Daniel Radcliffe' },
+  { isOnline: false, profileImgSrc: '', name: 'Emma Watson' },
+  { isOnline: false, profileImgSrc: '', name: 'Tom Holland' },
+  { isOnline: false, profileImgSrc: '', name: 'Rupert Grint' },
+  { isOnline: false, profileImgSrc: '', name: '황예지' },
+  { isOnline: false, profileImgSrc: '', name: '강슬기' },
+  { isOnline: false, profileImgSrc: '', name: '차정원' },
+  { isOnline: false, profileImgSrc: '', name: '신류진' },
+  { isOnline: false, profileImgSrc: '', name: '이이경' },
+];
+
+function SideFriendList() {
   const { sideFriendState, onToggleSideFriend } = useContext(MainLayoutContext);
   return (
     <>
@@ -19,7 +33,7 @@ function SideFriendList({ friends }) {
       <S.SideFriendListContainer state={sideFriendState}>
         <S.SideFriendListHeader type='highlightCaption'>친구 목록</S.SideFriendListHeader>
         <S.FriendList>
-          {friends.map(({ isOnline, profileImgSrc, name }) => (
+          {dummyFriends.map(({ isOnline, profileImgSrc, name }) => (
             // 추후 profileImgSrc로 변경
             <FriendItem key={name} isOnline={isOnline} profileImgSrc={profileImgSrc} name={name} />
           ))}
@@ -28,19 +42,5 @@ function SideFriendList({ friends }) {
     </>
   );
 }
-
-SideFriendList.propTypes = {
-  friends: PropTypes.arrayOf(
-    PropTypes.shape({
-      isOnline: PropTypes.bool,
-      profileImgSrc: PropTypes.string,
-      name: PropTypes.string,
-    })
-  ),
-};
-
-SideFriendList.defaultProps = {
-  friends: [],
-};
 
 export default SideFriendList;
