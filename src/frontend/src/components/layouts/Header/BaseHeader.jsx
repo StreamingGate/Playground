@@ -13,6 +13,7 @@ import {
   Search,
   MyVideo,
   LiveStreaming,
+  Logout,
 } from '@components/cores';
 import SearchForm from './SearchForm';
 
@@ -21,6 +22,7 @@ function BaseHeader() {
   const { onToggleSideNav } = useContext(MainLayoutContext);
 
   const [isAddButtonToggle, setAddButtonToggle] = useState(false);
+  const [isProfileBtnToggle, setProfileBtnToggle] = useState(false);
 
   const handleAddButtonToggle = () => {
     setAddButtonToggle(prev => !prev);
@@ -43,7 +45,7 @@ function BaseHeader() {
           <IconButton onClick={handleAddButtonToggle}>
             {isAddButtonToggle ? <AddFullCircle /> : <AddEmptyCircle />}
           </IconButton>
-          <S.AddVideoMenuContainer>
+          <S.AddVideoDropdownContainer>
             {isAddButtonToggle && (
               <S.AddVideoMenus>
                 <S.AddVideoMenu>
@@ -56,7 +58,7 @@ function BaseHeader() {
                 </S.AddVideoMenu>
               </S.AddVideoMenus>
             )}
-          </S.AddVideoMenuContainer>
+          </S.AddVideoDropdownContainer>
         </div>
         <div>
           <IconButton>
@@ -65,6 +67,23 @@ function BaseHeader() {
         </div>
         <div>
           <S.HeaderAvatar />
+          <S.ProfileDropdownContainer>
+            <S.ProfileDropdown>
+              <S.UserProfileInfo>
+                <S.UserAvartar size='xl' />
+                <S.UserName>
+                  <Typography type='content'>닉네임</Typography>
+                  <S.ModifyUserInfoBtn variant='text'>
+                    <Typography type='caption'>정보 수정</Typography>
+                  </S.ModifyUserInfoBtn>
+                </S.UserName>
+                <S.LogoutButtonContainer variant='text'>
+                  <S.LogoutBtnIcon />
+                  <Typography type='component'>로그아웃</Typography>
+                </S.LogoutButtonContainer>
+              </S.UserProfileInfo>
+            </S.ProfileDropdown>
+          </S.ProfileDropdownContainer>
         </div>
       </S.HeaderRightDiv>
     </>
