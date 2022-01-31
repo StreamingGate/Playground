@@ -137,11 +137,13 @@ export const UserName = styled.div`
 export const ModifyUserInfoBtn = styled(Button)`
   color: ${({ theme }) => theme.colors.pgBlue};
   margin-left: -18px;
+  font-size: ${({ theme }) => theme.fontSizes.caption};
 `;
 
-export const LogoutButtonContainer = styled(Button)`
+export const LogoutButton = styled(Button)`
   display: flex;
   color: ${({ theme }) => theme.colors.placeHolder};
+  font-size: ${({ theme }) => theme.fontSizes.component};
 `;
 
 export const LogoutBtnIcon = styled(Logout)`
@@ -149,6 +151,40 @@ export const LogoutBtnIcon = styled(Logout)`
   & > path {
     stroke: ${({ theme }) => theme.colors.placeHolder};
   }
+`;
+
+export const FriendListContainer = styled.div`
+  padding: 15px 15px 0px 15px;
+`;
+
+export const FriendListTitle = styled(Typography)`
+  color: ${({ theme }) => theme.colors.placeHolder};
+  margin-bottom: 20px;
+`;
+
+export const FriendList = styled.ul`
+  height: 270px;
+  overflow: auto;
+`;
+
+export const FriendInfo = styled.li`
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+`;
+
+export const FriendAvatar = styled(Avatar)`
+  margin-right: 10px;
+`;
+
+export const FriendName = styled(Typography)`
+  flex-grow: 1;
+`;
+
+export const FriendDeleteBtn = styled(Button)`
+  color: ${({ theme }) => theme.colors.pgRed};
+  font-size: ${({ theme }) => theme.fontSizes.highlightCaption};
+  align-self: flex-end;
 `;
 
 export const SearchBarAvatar = styled(Avatar)`

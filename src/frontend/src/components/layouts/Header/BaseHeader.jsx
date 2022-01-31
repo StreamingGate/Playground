@@ -13,9 +13,18 @@ import {
   Search,
   MyVideo,
   LiveStreaming,
-  Logout,
 } from '@components/cores';
 import SearchForm from './SearchForm';
+
+const dummyFriends = [
+  { id: 1, name: '김하늬' },
+  { id: 2, name: '서채희' },
+  { id: 3, name: '이우재' },
+  { id: 4, name: '이이경' },
+  { id: 5, name: '이수현' },
+  { id: 6, name: 'Daniel Radcliffe' },
+  { id: 7, name: 'Emma Watson' },
+];
 
 function BaseHeader() {
   const { onToggle } = useContext(HeaderContext);
@@ -73,15 +82,25 @@ function BaseHeader() {
                 <S.UserAvartar size='xl' />
                 <S.UserName>
                   <Typography type='content'>닉네임</Typography>
-                  <S.ModifyUserInfoBtn variant='text'>
-                    <Typography type='caption'>정보 수정</Typography>
-                  </S.ModifyUserInfoBtn>
+                  <S.ModifyUserInfoBtn variant='text'>정보 수정</S.ModifyUserInfoBtn>
                 </S.UserName>
-                <S.LogoutButtonContainer variant='text'>
+                <S.LogoutButton variant='text'>
                   <S.LogoutBtnIcon />
-                  <Typography type='component'>로그아웃</Typography>
-                </S.LogoutButtonContainer>
+                  로그아웃
+                </S.LogoutButton>
               </S.UserProfileInfo>
+              <S.FriendListContainer>
+                <S.FriendListTitle type='highlightCaption'>친구목록</S.FriendListTitle>
+                <S.FriendList>
+                  {dummyFriends.map(({ id, name }) => (
+                    <S.FriendInfo key={id}>
+                      <S.FriendAvatar tyep='sm' />
+                      <S.FriendName type='caption'>{name}</S.FriendName>
+                      <S.FriendDeleteBtn variant='text'>삭제</S.FriendDeleteBtn>
+                    </S.FriendInfo>
+                  ))}
+                </S.FriendList>
+              </S.FriendListContainer>
             </S.ProfileDropdown>
           </S.ProfileDropdownContainer>
         </div>
