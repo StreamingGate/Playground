@@ -80,7 +80,11 @@ function CategorySlider() {
 
   return (
     <S.CategorySliderContainer sideNavState={sideNavState}>
-      {scrollDist !== 0 && <S.ArrowLeftIcon onClick={handleArrowLeftBtnClick} />}
+      {scrollDist !== 0 && (
+        <S.LeftArrowButtonContainer>
+          <S.ArrowLeftIcon onClick={handleArrowLeftBtnClick} />
+        </S.LeftArrowButtonContainer>
+      )}
       <S.CategoryContainer ref={categoryContainerRef}>
         <S.Categories xPos={scrollDist}>
           {dummyCateogry.map(({ id, category }, idx, arr) => (
@@ -94,7 +98,11 @@ function CategorySlider() {
           ))}
         </S.Categories>
       </S.CategoryContainer>
-      {isShowNextBtn && <S.ArrowRightIcon onClick={handleArrowRightBtnClick} />}
+      {isShowNextBtn && (
+        <S.RightArrowButtonContainer>
+          <S.ArrowRightIcon onClick={handleArrowRightBtnClick} />
+        </S.RightArrowButtonContainer>
+      )}
     </S.CategorySliderContainer>
   );
 }

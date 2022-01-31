@@ -47,14 +47,25 @@ export const Categories = styled.div`
   transform: ${({ xPos }) => `translateX(${xPos}px)`};
 `;
 
-export const ArrowLeftIcon = styled(ArrowLeft)`
+export const ArrowLeftIcon = styled(ArrowLeft)``;
+
+export const ArrowRightIcon = styled(ArrowRight)``;
+
+export const LeftArrowButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 100%;
   position: absolute;
+  left: 7%;
+  z-index: 1;
   cursor: pointer;
+  background: linear-gradient(90deg, #ffffff 76.27%, rgba(255, 255, 255, 0) 100%);
 `;
 
-export const ArrowRightIcon = styled(ArrowRight)`
-  position: absolute;
-  top: var(--category-slider-padding);
-  right: 0;
-  cursor: pointer;
+export const RightArrowButtonContainer = styled(LeftArrowButtonContainer)`
+  left: auto;
+  right: 7%;
+  background: linear-gradient(270deg, #ffffff 76.27%, rgba(255, 255, 255, 0) 100%);
 `;
