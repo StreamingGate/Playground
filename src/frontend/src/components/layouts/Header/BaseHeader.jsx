@@ -4,7 +4,16 @@ import * as S from './Header.style';
 import { HeaderContext, MainLayoutContext } from '@utils/context';
 
 import { IconButton } from '@components/buttons';
-import { HamburgerBar, AddEmptyCircle, Alarm, Search, AddFullCircle } from '@components/cores';
+import {
+  Typography,
+  HamburgerBar,
+  AddEmptyCircle,
+  AddFullCircle,
+  Alarm,
+  Search,
+  MyVideo,
+  LiveStreaming,
+} from '@components/cores';
 import SearchForm from './SearchForm';
 
 function BaseHeader() {
@@ -34,7 +43,20 @@ function BaseHeader() {
           <IconButton onClick={handleAddButtonToggle}>
             {isAddButtonToggle ? <AddFullCircle /> : <AddEmptyCircle />}
           </IconButton>
-          <S.AddVideoMenuContainer></S.AddVideoMenuContainer>
+          <S.AddVideoMenuContainer>
+            {isAddButtonToggle && (
+              <S.AddVideoMenus>
+                <S.AddVideoMenu>
+                  <MyVideo />
+                  <Typography type='component'>동영상 업로드</Typography>
+                </S.AddVideoMenu>
+                <S.AddVideoMenu>
+                  <LiveStreaming />
+                  <Typography type='component'>실시간 스트리밍 시작</Typography>
+                </S.AddVideoMenu>
+              </S.AddVideoMenus>
+            )}
+          </S.AddVideoMenuContainer>
         </div>
         <div>
           <IconButton>

@@ -12,7 +12,7 @@ const { queries } = breakPoint;
 export const Header = styled.header`
   display: flex;
   position: fixed;
-  z-index: 1;
+  z-index: 2;
   left: 0;
   right: 0;
   align-items: center;
@@ -80,7 +80,29 @@ export const SearchBarIconButton = styled(IconButton)`
   }
 `;
 
-export const AddVideoMenuContainer = styled.div``;
+export const AddVideoMenuContainer = styled.div`
+  position: relative;
+  top: 0;
+  margin-left: -200px; ;
+`;
+
+export const AddVideoMenus = styled.ul`
+  position: absolute;
+  width: 100%;
+  background-color: #ffffff;
+  padding: 9px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+`;
+
+export const AddVideoMenu = styled.li`
+  display: flex;
+  gap: 15px;
+  padding: 8px 4px;
+  cursor: pointer;
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.background};
+  }
+`;
 
 export const SearchBarAvatar = styled(Avatar)`
   margin-left: 25px;
