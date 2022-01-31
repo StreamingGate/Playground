@@ -22,3 +22,4 @@ export { default as ScrollDown } from './Icons/ScrollDown';
 export { default as ArrowLeft } from './Icons/ArrowLeft';
 export { default as ArrowRight } from './Icons/ArrowRight';
 export { default as AddFullCircle } from './Icons/AddFullCircle';
+export { default as LiveStreaming } from './Icons/LiveStreaming';
