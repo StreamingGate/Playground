@@ -2,12 +2,16 @@ package com.example.chatservice.model.chat;
 
 
 import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import java.io.Serializable;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@RequiredArgsConstructor
-@Getter
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+
+@NoArgsConstructor
+@Data
 public class Chat implements Serializable {
 
     private static final long serialVersionUID = 1234678977089006638L;
@@ -17,6 +21,7 @@ public class Chat implements Serializable {
     private SenderRole senderRole;
     private ChatType chatType;
     private String message;
+    private LocalDateTime pstTime = ZonedDateTime.now(ZoneId.of("America/Los_Angeles")).toLocalDateTime();
 
     @Builder
     public Chat(String nickname, String roomId, SenderRole senderRole, ChatType chatType, String message) {
@@ -25,5 +30,6 @@ public class Chat implements Serializable {
         this.senderRole = senderRole;
         this.chatType = chatType;
         this.message = message;
+        this.pstTime = ZonedDateTime.now(ZoneId.of("America/Los_Angeles")).toLocalDateTime();
     }
 }
