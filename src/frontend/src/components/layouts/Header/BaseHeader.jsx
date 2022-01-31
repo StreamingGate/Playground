@@ -1,15 +1,21 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 
 import S from './Header.style';
 import { HeaderContext, MainLayoutContext } from '@utils/context';
 
 import { IconButton } from '@components/buttons';
-import { HamburgerBar, AddEmptyCircle, Alarm, Search } from '@components/cores';
+import { HamburgerBar, AddEmptyCircle, Alarm, Search, AddFullCircle } from '@components/cores';
 import SearchForm from './SearchForm';
 
 function BaseHeader() {
   const { onToggle } = useContext(HeaderContext);
   const { onToggleSideNav } = useContext(MainLayoutContext);
+
+  const [isAddButtonToggle, setAddButtonToggle] = useState(false);
+
+  const handleAddButtonToggle = () => {
+    setAddButtonToggle(prev => !prev);
+  };
 
   return (
     <>
@@ -24,8 +30,8 @@ function BaseHeader() {
         <S.SearchBarIconButton onClick={onToggle}>
           <Search />
         </S.SearchBarIconButton>
-        <IconButton>
-          <AddEmptyCircle />
+        <IconButton onClick={handleAddButtonToggle}>
+          {isAddButtonToggle ? <AddFullCircle /> : <AddEmptyCircle />}
         </IconButton>
         <IconButton>
           <Alarm />
