@@ -30,11 +30,14 @@ function BaseHeader() {
   const { onToggle } = useContext(HeaderContext);
   const { onToggleSideNav } = useContext(MainLayoutContext);
 
-  const [isAddButtonToggle, setAddButtonToggle] = useState(false);
-  const [isProfileBtnToggle, setProfileBtnToggle] = useState(false);
+  const [toggleState, setToggleState] = useState({ addVideo: false, profile: false });
 
   const handleAddButtonToggle = () => {
-    setAddButtonToggle(prev => !prev);
+    setToggleState(prev => ({ profile: false, addVideo: !prev.addVideo }));
+  };
+
+  const handleProfileBtnToggle = () => {
+    setToggleState(prev => ({ addVideo: false, profile: !prev.profile }));
   };
 
   return (
@@ -52,10 +55,10 @@ function BaseHeader() {
         </S.SearchBarIconButton>
         <div>
           <IconButton onClick={handleAddButtonToggle}>
-            {isAddButtonToggle ? <AddFullCircle /> : <AddEmptyCircle />}
+            {toggleState.addVideo ? <AddFullCircle /> : <AddEmptyCircle />}
           </IconButton>
           <S.AddVideoDropdownContainer>
-            {isAddButtonToggle && (
+            {toggleState.addVideo && (
               <S.AddVideoMenus>
                 <S.AddVideoMenu>
                   <MyVideo />
@@ -75,33 +78,35 @@ function BaseHeader() {
           </IconButton>
         </div>
         <div>
-          <S.HeaderAvatar />
+          <S.HeaderAvatar onClick={handleProfileBtnToggle} />
           <S.ProfileDropdownContainer>
-            <S.ProfileDropdown>
-              <S.UserProfileInfo>
-                <S.UserAvartar size='xl' />
-                <S.UserName>
-                  <Typography type='content'>닉네임</Typography>
-                  <S.ModifyUserInfoBtn variant='text'>정보 수정</S.ModifyUserInfoBtn>
-                </S.UserName>
-                <S.LogoutButton variant='text'>
-                  <S.LogoutBtnIcon />
-                  로그아웃
-                </S.LogoutButton>
-              </S.UserProfileInfo>
-              <S.FriendListContainer>
-                <S.FriendListTitle type='highlightCaption'>친구목록</S.FriendListTitle>
-                <S.FriendList>
-                  {dummyFriends.map(({ id, name }) => (
-                    <S.FriendInfo key={id}>
-                      <S.FriendAvatar tyep='sm' />
-                      <S.FriendName type='caption'>{name}</S.FriendName>
-                      <S.FriendDeleteBtn variant='text'>삭제</S.FriendDeleteBtn>
-                    </S.FriendInfo>
-                  ))}
-                </S.FriendList>
-              </S.FriendListContainer>
-            </S.ProfileDropdown>
+            {toggleState.profile && (
+              <S.ProfileDropdown>
+                <S.UserProfileInfo>
+                  <S.UserAvartar size='xl' />
+                  <S.UserName>
+                    <Typography type='content'>닉네임</Typography>
+                    <S.ModifyUserInfoBtn variant='text'>정보 수정</S.ModifyUserInfoBtn>
+                  </S.UserName>
+                  <S.LogoutButton variant='text'>
+                    <S.LogoutBtnIcon />
+                    로그아웃
+                  </S.LogoutButton>
+                </S.UserProfileInfo>
+                <S.FriendListContainer>
+                  <S.FriendListTitle type='highlightCaption'>친구목록</S.FriendListTitle>
+                  <S.FriendList>
+                    {dummyFriends.map(({ id, name }) => (
+                      <S.FriendInfo key={id}>
+                        <S.FriendAvatar tyep='sm' />
+                        <S.FriendName type='caption'>{name}</S.FriendName>
+                        <S.FriendDeleteBtn variant='text'>삭제</S.FriendDeleteBtn>
+                      </S.FriendInfo>
+                    ))}
+                  </S.FriendList>
+                </S.FriendListContainer>
+              </S.ProfileDropdown>
+            )}
           </S.ProfileDropdownContainer>
         </div>
       </S.HeaderRightDiv>
