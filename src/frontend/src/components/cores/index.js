@@ -19,3 +19,8 @@ export { default as ThumbDown } from './Icons/ThumbDown';
 export { default as Share } from './Icons/Share';
 export { default as Report } from './Icons/Report';
 export { default as ScrollDown } from './Icons/ScrollDown';
+export { default as ArrowLeft } from './Icons/ArrowLeft';
+export { default as ArrowRight } from './Icons/ArrowRight';
+export { default as AddFullCircle } from './Icons/AddFullCircle';
+export { default as LiveStreaming } from './Icons/LiveStreaming';
+export { default as Logout } from './Icons/Logout';

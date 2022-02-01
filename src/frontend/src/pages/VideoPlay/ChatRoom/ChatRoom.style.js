@@ -1,4 +1,4 @@
-import styled, { ThemeConsumer } from 'styled-components';
+import styled from 'styled-components';
 
 import { Typography, Person, Send, ScrollDown } from '@components/cores';
 import { Avatar } from '@components/dataDisplays';

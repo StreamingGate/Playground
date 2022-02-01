@@ -13,6 +13,7 @@ const lineEllipsis = css`
 
 export const ThumbNailContainer = styled.div`
   position: relative;
+  z-index: -1;
 `;
 
 export const RealTimeIcon = styled(RealTimeMark)`
@@ -55,7 +56,7 @@ export const VideoMetaContainer = styled.div`
   }
 `;
 
-export const ViedeoOverviewContainer = styled.ul`
+export const ViedeoOverviewContainer = styled.li`
   display: flex;
   flex-direction: ${({ direction }) => (direction === 'vertical' ? 'column' : 'row')};
   gap: 10px;

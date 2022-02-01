@@ -25,7 +25,11 @@ export default {
     },
   },
   args: {
-    ctx: { onToggleSideNav: undefined },
+    ctx: {
+      onToggleSideNav: undefined,
+      onToggleModal: undefined,
+      modalState: { addVideo: false, profile: false, friend: false },
+    },
   },
 };
 
