@@ -36,13 +36,14 @@ struct MainServiceAPI {
                 decoder.dateDecodingStrategy = .millisecondsSince1970
                 let response = try decoder.decode(HomeList.self, from: resultData)
                 completion(["result": 1, "data": response])
+                completion(["result": "success", "data": response])
             } catch let error {
                 print("---> error while loading home list: \(error.localizedDescription)")
                 let responseJSON = try? JSONSerialization.jsonObject(with: resultData, options: [])
                 if let result = responseJSON as? [String: Any] {
                     completion(result)
                 } else {
-                    completion(["result" : 0])
+                    completion(["result": "failed"])
                 }
             }
         }
