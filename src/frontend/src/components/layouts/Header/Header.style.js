@@ -92,6 +92,7 @@ export const AddVideoMenus = styled.ul`
   background-color: #ffffff;
   padding: 9px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  z-index: 1;
 `;
 
 export const AddVideoMenu = styled.li`
@@ -114,6 +115,7 @@ export const ProfileDropdown = styled.div`
   width: 100%;
   background-color: #ffffff;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  z-index: 1;
 `;
 
 export const UserProfileInfo = styled.div`
