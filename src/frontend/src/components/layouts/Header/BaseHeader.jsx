@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 
 import * as S from './Header.style';
 import { HeaderContext, MainLayoutContext } from '@utils/context';
@@ -33,6 +33,19 @@ function BaseHeader() {
 
   const [toggleState, setToggleState] = useState({ addVideo: false, profile: false });
 
+  const handleAllModalClose = () => {
+    setToggleState({ profile: false, addVideo: false });
+  };
+
+  useEffect(() => {
+    if (toggleState.addVideo || toggleState.profile) {
+      window.addEventListener('click', handleAllModalClose);
+    }
+    return () => {
+      window.removeEventListener('click', handleAllModalClose);
+    };
+  }, [toggleState]);
+
   const handleAddButtonToggle = () => {
     setToggleState(prev => ({ profile: false, addVideo: !prev.addVideo }));
   };
@@ -61,11 +74,11 @@ function BaseHeader() {
           <S.AddVideoDropdownContainer>
             {toggleState.addVideo && (
               <>
-                <BackDrop
+                {/* <BackDrop
                   isOpen={toggleState.addVideo}
                   backgroundColor='rgba(255, 255, 255, 0)'
                   onClick={handleAddButtonToggle}
-                />
+                /> */}
                 <S.AddVideoMenus>
                   <S.AddVideoMenu>
                     <MyVideo />
@@ -90,11 +103,11 @@ function BaseHeader() {
           <S.ProfileDropdownContainer>
             {toggleState.profile && (
               <>
-                <BackDrop
+                {/* <BackDrop
                   isOpen={toggleState.profile}
                   backgroundColor='rgba(255, 255, 255, 0)'
                   onClick={handleProfileBtnToggle}
-                />
+                /> */}
                 <S.ProfileDropdown>
                   <S.UserProfileInfo>
                     <S.UserAvartar size='xl' />

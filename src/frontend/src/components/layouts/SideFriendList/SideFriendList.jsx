@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef } from 'react';
+import React, { useEffect, useContext, useState, useRef } from 'react';
 
 import * as S from './SideFriendList.style';
 import { MainLayoutContext } from '@utils/context';
@@ -39,6 +39,19 @@ function SideFriendList() {
   const [friendBottomPos, setFriendBottomPos] = useState(0);
   const [isFriendModalToggle, setFriendModalToggle] = useState(false);
 
+  const handleFriendModalClose = () => {
+    setFriendModalToggle(false);
+  };
+
+  useEffect(() => {
+    if (isFriendModalToggle) {
+      window.addEventListener('click', handleFriendModalClose);
+    }
+    return () => {
+      window.removeEventListener('click', handleFriendModalClose);
+    };
+  }, [isFriendModalToggle]);
+
   const handleFriendItemClick = idx => e => {
     const { currentTarget } = e;
     const friendModalHeight = friendModalRef.current.getBoundingClientRect().height;
@@ -58,6 +71,10 @@ function SideFriendList() {
       setFriendModalToggle(true);
       setSelectedFriendIdx(idx);
     }
+  };
+
+  const handleViewWithFriendBtnClick = e => {
+    e.stopPropagation();
   };
 
   return (
@@ -81,25 +98,19 @@ function SideFriendList() {
             />
           ))}
         </S.FriendList>
-        <>
-          <BackDrop
-            isOpen={isFriendModalToggle}
-            backgroundColor='rgba(255, 255, 255, 0)'
-            onClick={() => setFriendModalToggle(false)}
-          />
-          <S.FriendModalContainer
-            ref={friendModalRef}
-            top={friendBottomPos}
-            isShow={isFriendModalToggle}
-          >
-            <S.FriendAvatar size='lg' />
-            <S.FriendModalRightDiv>
-              <S.FriendModalName type='highlightCaption'>친구이름</S.FriendModalName>
-              <S.FriendVideoName type='caption'>시청 중인 영상제목</S.FriendVideoName>
-              <S.PlayWithFriendBtn>영상 같이 시청하기</S.PlayWithFriendBtn>
-            </S.FriendModalRightDiv>
-          </S.FriendModalContainer>
-        </>
+        <S.FriendModalContainer
+          ref={friendModalRef}
+          top={friendBottomPos}
+          isShow={isFriendModalToggle}
+          onClick={handleViewWithFriendBtnClick}
+        >
+          <S.FriendAvatar size='lg' />
+          <S.FriendModalRightDiv>
+            <S.FriendModalName type='highlightCaption'>친구이름</S.FriendModalName>
+            <S.FriendVideoName type='caption'>시청 중인 영상제목</S.FriendVideoName>
+            <S.PlayWithFriendBtn>영상 같이 시청하기</S.PlayWithFriendBtn>
+          </S.FriendModalRightDiv>
+        </S.FriendModalContainer>
       </S.SideFriendListContainer>
     </>
   );

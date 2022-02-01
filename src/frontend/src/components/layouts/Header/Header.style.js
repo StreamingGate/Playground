@@ -156,7 +156,7 @@ export const LogoutBtnIcon = styled(Logout)`
 `;
 
 export const FriendListContainer = styled.div`
-  padding: 15px 15px 0px 15px;
+  padding: 15px 0px 0px 15px;
 `;
 
 export const FriendListTitle = styled(Typography)`
