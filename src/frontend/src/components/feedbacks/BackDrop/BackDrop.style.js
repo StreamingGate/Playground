@@ -17,7 +17,8 @@ export default {
       css`
         visibility: visible;
         opacity: 0.6;
-        background-color: ${({ theme }) => theme.colors.customDarkGray};
+        background-color: ${({ theme, backgroundColor }) =>
+          backgroundColor && theme.colors.customDarkGray};
       `}
   `,
 };
