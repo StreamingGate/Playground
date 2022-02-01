@@ -1,0 +1,14 @@
+cloud:
+  aws:
+    stack:
+      auto: false
+    region:
+      static: ap-northeast-2
+    credentials:
+      access-key: AKIAXYE4LDC4T5KAW5UU
+      secret-key: 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
+aws:
+  s3:
+    image:
+      bucket: playground
+      use-dir: video
