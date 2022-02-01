@@ -7,10 +7,11 @@ import lombok.*;
 @Data
 public class FriendDto {
 
+    private String uuid;
     private String nickname;
     private String profileImage;
 
     public static FriendDto from(UserEntity userEntity) {
-        return new FriendDto(userEntity.getNickName(), userEntity.getProfileImage());
+        return new FriendDto(userEntity.getUuid(), userEntity.getNickName(), userEntity.getProfileImage());
     }
 }
