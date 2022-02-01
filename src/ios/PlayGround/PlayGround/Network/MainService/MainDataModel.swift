@@ -46,3 +46,43 @@ struct GeneralVideo: Codable {
         case chatRoomId
     }
 }
+
+enum Action: String {
+    case Like = "LIKE"
+    case Dislike = "DISLIKE"
+    case Report = "REPORT"
+}
+
+struct Notice: Codable {
+    let notiType: String
+    let content: String
+    
+    enum CodingKeys: String, CodingKey {
+        case notiType
+        case content
+    }
+}
+
+struct Friend: Codable {
+    let nickname: String
+    let profileImage: String
+    let uuid: String
+    
+    enum CodingKeys: String, CodingKey {
+        case nickname
+        case profileImage
+        case uuid
+    }
+}
+
+struct FriendRequest: Codable {
+    let uuid: String
+    let nickname: String
+    let profileImage: String
+    
+    enum CodingKeys: String, CodingKey {
+        case uuid
+        case nickname
+        case profileImage
+    }
+}
