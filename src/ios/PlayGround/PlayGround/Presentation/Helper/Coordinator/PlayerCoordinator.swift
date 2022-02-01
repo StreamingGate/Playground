@@ -26,6 +26,10 @@ class PlayerCoordinator: Coordinator {
                 vc is PlayViewController
             }) as? PlayViewController {
                 print("exist")
+                guard let currentInfo = playVC.viewModel.currentInfo, let newInfo = info else { return }
+                if currentInfo.id != newInfo.id {
+                    playVC.viewModel.currentInfo = info
+                }
                 playVC.isMinimized = false
                 mainVC.playViewTopMargin.constant = 0
                 mainVC.tabBarHeight.constant = 0
@@ -39,9 +43,9 @@ class PlayerCoordinator: Coordinator {
             } else {
                 print("new")
                 guard let playVC = UIStoryboard(name: "Play", bundle: nil).instantiateViewController(withIdentifier: "PlayViewController" ) as? PlayViewController else { return }
+                playVC.viewModel.currentInfo = info
                 playVC.coordinator = self
                 mainVC.addChild(playVC)
-                playVC.viewModel.currentInfo = info
                 mainVC.playContainerView.addSubview((playVC.view)!)
                 playVC.view.frame = mainVC.playContainerView.bounds
                 playVC.didMove(toParent: mainVC)

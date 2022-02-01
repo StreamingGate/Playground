@@ -86,6 +86,7 @@ class PlayViewController: UIViewController {
     // transition handler
     var coordinator: PlayerCoordinator?
 
+    let viewModel = PlayViewModel()
     
     // MARK: - View Life Cycle
     override func viewDidLayoutSubviews() {
@@ -179,15 +180,16 @@ class PlayViewController: UIViewController {
         miniChannelNameLabel.translatesAutoresizingMaskIntoConstraints = false
         miniPlayPauseButton.translatesAutoresizingMaskIntoConstraints = false
         miniCloseButton.translatesAutoresizingMaskIntoConstraints = false
-        setPlayer()
-        connectChatView()
     }
     
     
     // MARK: - Player, SeekBar, Gesture setting
-    func setPlayer() {
+    func setPlayer(urlInfo: String) {
         //player
-        let url = URL(string: "https://bitmovin-a.akamaihd.net/content/art-of-motion_drm/m3u8s/11331.m3u8")!
+        guard let url = URL(string: urlInfo) else {
+            print("invalid url")
+            return
+        }
         let avAsset = AVURLAsset(url: url)
         let item = AVPlayerItem(asset: avAsset)
         self.player.replaceCurrentItem(with: item)
@@ -221,7 +223,7 @@ class PlayViewController: UIViewController {
         let time : CMTime = CMTimeMakeWithSeconds(interval, preferredTimescale: Int32(NSEC_PER_SEC))
         self.timeObserver = playView.player?.addPeriodicTimeObserver(forInterval: time, queue: nil, using: {time in
             // seekbar update
-            let duration = CMTimeGetSeconds(self.playView.player!.currentItem!.duration)
+            let duration = CMTimeGetSeconds(item.duration)
             let time = CMTimeGetSeconds(self.playView.player!.currentTime())
             let value = Float(self.seekbar.maximumValue - self.seekbar.minimumValue) * Float(time) / Float(duration) + Float(self.seekbar.minimumValue)
             self.seekbar.value = value
@@ -315,6 +317,18 @@ class PlayViewController: UIViewController {
                     self.playViewWidth.constant = UIScreen.main.bounds.width
                     AppUtility.lockOrientation(.all)
                 }
+            }.store(in: &cancellable)
+        self.viewModel.$currentInfo.receive(on: DispatchQueue.main, options: nil)
+            .sink { [weak self] currentInfo in
+                guard let self = self, let info = currentInfo else { return }
+                self.titleLabel.text = info.title
+                self.categoryLabel.text = "#\(self.viewModel.categoryDic[info.category] ?? "기타")"
+                self.channelNicknameLabel.text = (info.uploaderNickname == nil) ? info.hostNickname : info.uploaderNickname
+                self.miniTitleLabel.text = info.title
+                self.miniChannelNameLabel.text = (info.uploaderNickname == nil) ? info.hostNickname : info.uploaderNickname
+        //        channelProfileImageView.downloadImageFrom(link: info., contentMode: <#T##UIView.ContentMode#>)
+                self.setPlayer(urlInfo: info.fileLink ?? "")
+                self.connectChatView()
             }.store(in: &cancellable)
     }
     
