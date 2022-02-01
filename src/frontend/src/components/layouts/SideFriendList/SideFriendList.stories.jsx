@@ -26,7 +26,12 @@ export default {
     },
   },
   args: {
-    ctx: { sideFriendState: { open: true, backdrop: false }, onToggleSideFriend: undefined },
+    ctx: {
+      sideFriendState: { open: true, backdrop: false },
+      onToggleSideFriend: undefined,
+      onToggleModal: undefined,
+      modalState: { addVideo: false, profile: false, friend: false },
+    },
   },
 };
 
