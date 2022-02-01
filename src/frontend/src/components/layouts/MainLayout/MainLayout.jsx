@@ -15,12 +15,27 @@ import { Friends } from '@components/cores';
 const { screenSize } = breakPoint;
 
 const sideComponentInitState = { open: false, backdrop: false };
+const modalInitState = { addVideo: false, profile: false, friend: false };
 
 function MainLayout({ children }) {
   const { innerWidth } = useWindowSize();
 
   const [sideNavState, setSideNavState] = useState({ ...sideComponentInitState });
   const [sideFriendState, setSideFriendState] = useState({ ...sideComponentInitState });
+  const [modalState, setModalState] = useState({ ...modalInitState });
+
+  const handleModalClose = () => {
+    setModalState({ ...modalInitState });
+  };
+
+  useEffect(() => {
+    if (modalState.addVideo || modalState.profile || modalState.friend) {
+      window.addEventListener('click', handleModalClose);
+    }
+    return () => {
+      window.removeEventListener('click', handleModalClose);
+    };
+  }, [modalState]);
 
   const setInitNavState = () => {
     // wide laptop 사이즈 보다 작을때 backdrop true!!
@@ -53,14 +68,29 @@ function MainLayout({ children }) {
     setSideFriendState(prev => ({ ...prev, open: !prev.open }));
   };
 
+  const handleModalToggle = e => {
+    const { currentTarget } = e;
+    e.stopPropagation();
+    const { name } = currentTarget.dataset;
+
+    if (modalState[name]) {
+      setModalState(prev => ({ ...prev, [name]: false }));
+    } else {
+      const newModalState = { ...modalInitState };
+      setModalState({ ...newModalState, [name]: true });
+    }
+  };
+
   const mainLayoutContextValue = useMemo(
     () => ({
       sideNavState,
       sideFriendState,
+      modalState,
       onToggleSideNav: handleToggleSideNav,
       onToggleSideFriend: handleToggleSideFriend,
+      onToggleModal: handleModalToggle,
     }),
-    [sideNavState, sideFriendState]
+    [sideNavState, sideFriendState, modalState]
   );
 
   return (

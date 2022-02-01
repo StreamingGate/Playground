@@ -7,7 +7,7 @@ function IconButton({ className, name, size, disabled, children, onClick }) {
   return (
     <S.Button
       className={className}
-      name={name}
+      data-name={name}
       type='button'
       size={size}
       disabled={disabled}

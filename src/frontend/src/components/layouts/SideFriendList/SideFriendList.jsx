@@ -33,7 +33,8 @@ const dummyFriends = [
 
 function SideFriendList() {
   const friendModalRef = useRef(null);
-  const { sideFriendState, onToggleSideFriend } = useContext(MainLayoutContext);
+  const { sideFriendState, onToggleSideFriend, onToggleModal, modalState } =
+    useContext(MainLayoutContext);
 
   const [selectedFriendIdx, setSelectedFriendIdx] = useState(-1);
   const [friendBottomPos, setFriendBottomPos] = useState(0);
@@ -57,9 +58,9 @@ function SideFriendList() {
     const friendModalHeight = friendModalRef.current.getBoundingClientRect().height;
     const currentTargetPos = currentTarget.getBoundingClientRect();
 
-    if (isFriendModalToggle && selectedFriendIdx === idx) {
+    if (modalState.friend && selectedFriendIdx === idx) {
       setSelectedFriendIdx(idx);
-      setFriendModalToggle(false);
+      onToggleModal(e);
     } else {
       if (idx === dummyFriends.length - 1) {
         setFriendBottomPos(currentTargetPos.bottom - friendModalHeight);
@@ -68,7 +69,7 @@ function SideFriendList() {
           currentTargetPos.y + currentTargetPos.height / 2 - friendModalHeight / 2
         );
       }
-      setFriendModalToggle(true);
+      onToggleModal(e);
       setSelectedFriendIdx(idx);
     }
   };
@@ -91,6 +92,7 @@ function SideFriendList() {
             // 추후 profileImgSrc로 변경
             <FriendItem
               key={name}
+              dataSet='friend'
               isOnline={isOnline}
               profileImgSrc={profileImgSrc}
               name={name}
@@ -101,7 +103,7 @@ function SideFriendList() {
         <S.FriendModalContainer
           ref={friendModalRef}
           top={friendBottomPos}
-          isShow={isFriendModalToggle}
+          isShow={modalState.friend}
           onClick={handleViewWithFriendBtnClick}
         >
           <S.FriendAvatar size='lg' />
