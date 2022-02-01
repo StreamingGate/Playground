@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -42,29 +43,56 @@ public class MainService {
     private final ModelMapper mapper;
 
     @Transactional(readOnly = true)
-    public VideoListDto getVideoList(Category category, int page, int size) throws Exception{
-        List<VideoDto> videoDtos = null;
-        List<LiveRoomDto> liveRoomDtos = null;
-        Pageable pageable = PageRequest.of(page, size);
-        if (category == Category.ALL) {
-            videoDtos = videoRepository.findAll(pageable).getContent().stream()
-                    .map(video -> VideoDto.fromEntity(mapper, video))
-                    .collect(Collectors.toList());
-            liveRoomDtos = liveRoomRepository.findAll(pageable).getContent().stream()
-                    .map(liveRoom -> LiveRoomDto.fromEntity(mapper, liveRoom))
-                    .collect(Collectors.toList());
-        } else {
-            videoDtos = videoRepository.findAllByCategory(category, pageable).stream()
-                    .map(video -> VideoDto.fromEntity(mapper, video))
-                    .collect(Collectors.toList());
-            liveRoomDtos = liveRoomRepository.findAllByCategory(category, pageable).stream()
-                    .map(liveRoom -> LiveRoomDto.fromEntity(mapper, liveRoom))
-                    .collect(Collectors.toList());
-        }
+    public VideoListDto getHomeList(Category category, long lastVideoId, long lastLiveRoomId, int size) throws Exception{
+        List<VideoDto> videoDtos = getVideoList(category, lastVideoId, size);
+        List<LiveRoomDto> liveRoomDtos = getLiveRoomList(category, lastLiveRoomId, size);
         VideoListDto videoListDto = new VideoListDto(videoDtos, liveRoomDtos);
         return videoListDto;
     }
 
+    private List<VideoDto> getVideoList(Category category, long lastId, int size) throws Exception{
+        Stream<Video> videoDtoStream = null;
+        Pageable pageable = PageRequest.of(0, size);
+        if (category == Category.ALL) {
+            if(lastId == -1){
+                videoDtoStream = videoRepository.findAll(pageable).getContent().stream();
+            }
+            else {
+                videoDtoStream = videoRepository.findAll(lastId, pageable).getContent().stream();
+            }
+        } else {
+            if(lastId == -1){
+                videoDtoStream = videoRepository.findAllByCategory(category, pageable).stream();
+            }
+            else {
+                videoDtoStream = videoRepository.findAllByCategory(category, lastId, pageable).stream();
+            }
+        }
+        return videoDtoStream.map(video -> VideoDto.fromEntity(mapper, video))
+                .collect(Collectors.toList());
+    }
+
+    public List<LiveRoomDto> getLiveRoomList(Category category, long lastId, int size) throws Exception{
+        Pageable pageable = PageRequest.of(0, size);
+        Stream<LiveRoom> liveRoomDtoStream = null;
+        if (category == Category.ALL) {
+            if(lastId == -1){
+                liveRoomDtoStream = liveRoomRepository.findAll(pageable).getContent().stream();
+            }
+            else {
+                liveRoomDtoStream = liveRoomRepository.findAll(lastId, pageable).getContent().stream();
+            }
+        } else {
+            if(lastId == -1){
+                liveRoomDtoStream = liveRoomRepository.findAllByCategory(category, pageable).stream();
+            }
+            else {
+                liveRoomDtoStream = liveRoomRepository.findAllByCategory(category, lastId, pageable).stream();
+            }
+        }
+        return liveRoomDtoStream.map(liveRoom -> LiveRoomDto.fromEntity(mapper, liveRoom))
+                .collect(Collectors.toList());
+    }
     @Transactional(readOnly = true)
     public List<NotificationDto> getNotificationList(String uuid) throws Exception {
         UserEntity user = userRepository.findByUuid(uuid).orElseThrow(() -> new CustomMainException(ErrorCode.U002));
