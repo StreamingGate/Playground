@@ -170,7 +170,7 @@ extension HomeListViewController: UITableViewDataSource, UITableViewDelegate {
         self.playerView.player?.pause()
         self.playerView.player?.replaceCurrentItem(with: nil)
         self.playerView.player = nil
-        self.navVC?.coordinator?.showPlayer()
+        self.navVC?.coordinator?.showPlayer(info: viewModel.homeList[indexPath.row])
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

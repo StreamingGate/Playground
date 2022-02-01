@@ -67,7 +67,7 @@ extension ChannelViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let navVC = self.navigationController as? HomeNavigationController else{ return }
-        navVC.coordinator?.showPlayer()
+        navVC.coordinator?.showPlayer(info: nil)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

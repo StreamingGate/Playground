@@ -18,7 +18,7 @@ class PlayerCoordinator: Coordinator {
         self.parentCoordinator = parent
     }
 
-    func start() {
+    func start(info: GeneralVideo?) {
         DispatchQueue.main.async {
             guard let mainVC = self.parentCoordinator?.navigation.viewControllers.last as? CustomTabViewController else { return }
             mainVC.playContainerView.isHidden = false
@@ -41,6 +41,7 @@ class PlayerCoordinator: Coordinator {
                 guard let playVC = UIStoryboard(name: "Play", bundle: nil).instantiateViewController(withIdentifier: "PlayViewController" ) as? PlayViewController else { return }
                 playVC.coordinator = self
                 mainVC.addChild(playVC)
+                playVC.viewModel.currentInfo = info
                 mainVC.playContainerView.addSubview((playVC.view)!)
                 playVC.view.frame = mainVC.playContainerView.bounds
                 playVC.didMove(toParent: mainVC)
@@ -107,6 +108,7 @@ class PlayerCoordinator: Coordinator {
     
     func showExplain(vc: PlayViewController) {
         guard let explainVC = UIStoryboard(name: "Play", bundle: nil).instantiateViewController(withIdentifier: "PlayExplainViewController") as? PlayExplainViewController else { return }
+        explainVC.viewModel.currentInfo = vc.viewModel.currentInfo
         vc.addChild(explainVC)
         vc.explainContainerView.addSubview((explainVC.view)!)
         explainVC.view.frame = vc.explainContainerView.bounds
