@@ -194,7 +194,7 @@ extension HomeListViewController: UITableViewDataSource, UITableViewDelegate {
             let width = UIScreen.main.bounds.width
             let height = width / 16 * 9
             playerView.frame = CGRect(x: cell?.frame.minX ?? 0, y: cell?.frame.minY ?? 0, width: width, height: height)
-            let url = URL(string: "https://bitmovin-a.akamaihd.net/content/art-of-motion_drm/m3u8s/11331.m3u8")!
+            guard let fileLink = viewModel.homeList[middleIndex].fileLink, let url = URL(string: fileLink) else { return }
             let avAsset = AVURLAsset(url: url)
             let item = AVPlayerItem(asset: avAsset)
             player.replaceCurrentItem(with: item)
