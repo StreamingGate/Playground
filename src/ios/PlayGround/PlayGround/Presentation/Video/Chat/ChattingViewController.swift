@@ -23,7 +23,7 @@ class ChattingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // 추후에 실제 roomId로 변경
-        viewModel.roomId = "ae0a8eb9-ff2c-4256-8be7-f8a9e84a3afa"
+        viewModel.roomId = "05e354e8-61bd-4764-96f7-7ebb4ac845de"
         viewModel.connectToSocket()
         bingViewModelData()
         setupUI()
