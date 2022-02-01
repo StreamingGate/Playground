@@ -19,7 +19,7 @@ class HomeViewModel {
     
     func loadAllList() {
         MainServiceAPI.shared.getAllList(lastVideoId: lastVideoId, lastLiveId: lastLiveId, category: selectedCategory) { result in
-            if result["result"] as? Int == 1 {
+            if result["result"] as? String == "success" {
                 guard let data = result["data"] as? HomeList else { return }
                 var addedList = data.liveRooms
                 addedList.append(contentsOf: data.videos)
