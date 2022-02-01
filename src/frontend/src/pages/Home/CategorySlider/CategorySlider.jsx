@@ -62,6 +62,10 @@ function CategorySlider() {
   const handleCategoryChipClick = selectedIdx => () => {
     const newCategoryToggle = [...categoryToggle];
 
+    if (selectedIdx === 0 && newCategoryToggle[selectedIdx]) {
+      return;
+    }
+
     if (newCategoryToggle[selectedIdx]) {
       newCategoryToggle[0] = true;
       newCategoryToggle[selectedIdx] = false;
