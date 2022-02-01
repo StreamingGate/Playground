@@ -65,6 +65,7 @@ export const FriendModalContainer = styled.div`
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
   visibility: ${({ isShow }) => (isShow ? 'visible' : 'hidden')};
   background-color: #ffffff;
+  z-index: 1;
 `;
 
 export const FriendAvatar = styled(Avatar)`

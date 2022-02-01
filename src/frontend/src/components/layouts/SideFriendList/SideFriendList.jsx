@@ -81,18 +81,25 @@ function SideFriendList() {
             />
           ))}
         </S.FriendList>
-        <S.FriendModalContainer
-          ref={friendModalRef}
-          top={friendBottomPos}
-          isShow={isFriendModalToggle}
-        >
-          <S.FriendAvatar size='lg' />
-          <S.FriendModalRightDiv>
-            <S.FriendModalName type='highlightCaption'>친구이름</S.FriendModalName>
-            <S.FriendVideoName type='caption'>시청 중인 영상제목</S.FriendVideoName>
-            <S.PlayWithFriendBtn>영상 같이 시청하기</S.PlayWithFriendBtn>
-          </S.FriendModalRightDiv>
-        </S.FriendModalContainer>
+        <>
+          <BackDrop
+            isOpen={isFriendModalToggle}
+            backgroundColor='rgba(255, 255, 255, 0)'
+            onClick={() => setFriendModalToggle(false)}
+          />
+          <S.FriendModalContainer
+            ref={friendModalRef}
+            top={friendBottomPos}
+            isShow={isFriendModalToggle}
+          >
+            <S.FriendAvatar size='lg' />
+            <S.FriendModalRightDiv>
+              <S.FriendModalName type='highlightCaption'>친구이름</S.FriendModalName>
+              <S.FriendVideoName type='caption'>시청 중인 영상제목</S.FriendVideoName>
+              <S.PlayWithFriendBtn>영상 같이 시청하기</S.PlayWithFriendBtn>
+            </S.FriendModalRightDiv>
+          </S.FriendModalContainer>
+        </>
       </S.SideFriendListContainer>
     </>
   );
