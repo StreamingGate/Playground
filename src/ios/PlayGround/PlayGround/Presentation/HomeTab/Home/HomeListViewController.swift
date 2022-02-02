@@ -11,6 +11,7 @@ import AVFoundation
 import Combine
 
 class HomeListViewController: UIViewController {
+    // MARK: - Properties
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchButton: UIButton!
     @IBOutlet weak var noticeButton: UIButton!
@@ -18,16 +19,15 @@ class HomeListViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     private var cancellable: Set<AnyCancellable> = []
     var selectedIndex = 0
+    var player = AVPlayer()
     let playerView = PlayerView()
     var safeTop: CGFloat = 0
     var safeBottom: CGFloat = 0
-    var navVC: HomeNavigationController?
     var middle = 0
-    var player = AVPlayer()
+    var navVC: HomeNavigationController?
+    
     let viewModel = HomeViewModel()
-    
     let spinner = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.medium)
-    
     let categoryDic = ["ALL": "전체", "EDU": "교육", "SPORTS": "스포츠", "KPOP": "K-POP"]
     
     // MARK: - View Life Cycle
@@ -59,6 +59,7 @@ class HomeListViewController: UIViewController {
         self.playerView.player = nil
     }
 
+    // MARK: - Data Binding
     func bindViewModel() {
         self.viewModel.$homeList.receive(on: DispatchQueue.main, options: nil)
             .sink { [weak self] list in
@@ -73,20 +74,24 @@ class HomeListViewController: UIViewController {
             }.store(in: &cancellable)
     }
     
+    // MARK: - UI Setting
     func setupUI() {
+        // iOS 14 이전의 경우 Storyboard에서 default 상태로 text를 지워도 Button 글자가 사라지지 않음
         searchButton.setTitle("", for: .normal)
         noticeButton.setTitle("", for: .normal)
         friendButton.setTitle("", for: .normal)
     }
     
+    // 인피니트 스크롤을 위해서 푸터 스피너 추가
     private func createSpinnerFooter() -> UIView {
        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 50))
        spinner.center = footerView.center
        footerView.addSubview(spinner)
        spinner.startAnimating()
        return footerView
-   }
+    }
     
+    // MARK: - Button Action
     @IBAction func noticeButtonDidTap(_ sender: Any) {
         navVC?.coordinator?.showNotice()
     }
@@ -138,6 +143,7 @@ extension HomeListViewController: UICollectionViewDataSource, UICollectionViewDe
             self.tableView.scrollToRow(at: IndexPath(item: 0, section: 0), at: .top, animated: false)
         }
         self.viewModel.selectedCategory = viewModel.categories[indexPath.item]
+        // 카테고리 변경 시, 가장 최신 동영상부터 다시 로드
         self.viewModel.lastLiveId = -1
         self.viewModel.lastVideoId = -1
         self.collectionView.reloadData()
@@ -190,18 +196,14 @@ extension HomeListViewController: UITableViewDataSource, UITableViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let position = scrollView.contentOffset.y
-        
         if position > (tableView.contentSize.height - scrollView.frame.size.height) && !self.viewModel.isFinished {
-            
             guard !self.viewModel.isLoading else {
-                // we are already fetching more data
                 return
             }
-//
             self.tableView.tableFooterView = createSpinnerFooter()
-            // fetch more data
             self.viewModel.loadAllList()
         } else {
+            // 더이상 로드할 데이터가 없을 경우, spinner 멈춤
             self.spinner.stopAnimating()
         }
     }
