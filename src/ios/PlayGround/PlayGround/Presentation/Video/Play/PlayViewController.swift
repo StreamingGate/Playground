@@ -31,6 +31,7 @@ class PlayViewController: UIViewController {
     @IBOutlet var playControlViewSingleTap: UITapGestureRecognizer!
     var timeObserver: Any?
     @IBOutlet weak var seekbarBackView: UIView!
+    var didEndPlay = false
     
     // button action
     @IBOutlet weak var likeImageView: UIImageView!
@@ -250,6 +251,7 @@ class PlayViewController: UIViewController {
     }
 
     @objc func playerDidFinishPlaying() {
+        self.didEndPlay = true
         self.isPlay = false
     }
     
@@ -351,6 +353,7 @@ class PlayViewController: UIViewController {
             .sink { [weak self] tf in
                 guard let self = self else { return }
                 if tf {
+                    if self.didEndPlay { self.isPlay = false }
                     self.playView.player?.play()
                     self.miniPlayPauseButton.setImage(UIImage(named: "pause_black"), for: .normal)
                     self.playPauseButton.setImage(UIImage(named: "pause_white"), for: .normal)
