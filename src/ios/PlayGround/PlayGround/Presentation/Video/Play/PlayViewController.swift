@@ -32,10 +32,10 @@ class PlayViewController: UIViewController {
     var timeObserver: Any?
     @IBOutlet weak var seekbarBackView: UIView!
     
+    // button action
     @IBOutlet weak var likeImageView: UIImageView!
     @IBOutlet weak var likeLabel: UILabel!
     @IBOutlet weak var likeButton: UIButton!
-    
     @IBOutlet weak var dislikeImageView: UIImageView!
     @IBOutlet weak var dislikeButton: UIButton!
     @IBOutlet weak var reportButton: UIButton!
@@ -98,6 +98,8 @@ class PlayViewController: UIViewController {
 
     let viewModel = PlayViewModel()
     
+    @Published var isPlay = false
+    
     // MARK: - View Life Cycle
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -112,6 +114,7 @@ class PlayViewController: UIViewController {
         portraitLayout = [chatContainerViewLeading, chatContainerViewCenterX, chatContainerViewTop, playViewTop, playViewCenterX, playViewWidth]
         NotificationCenter.default.addObserver(self, selector: #selector(adjustInputView), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(adjustInputView), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(playerDidFinishPlaying), name: .AVPlayerItemDidPlayToEndTime, object: nil)
         setupUI()
         bindingData()
     }
@@ -204,7 +207,7 @@ class PlayViewController: UIViewController {
         let item = AVPlayerItem(asset: avAsset)
         self.player.replaceCurrentItem(with: item)
         playView.player = self.player
-        playView.player?.play()
+        isPlay = true
         
         // 10 secs forward || backward
         let doubleTap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(gestureRecognizer:)))
@@ -244,6 +247,10 @@ class PlayViewController: UIViewController {
         // setting for mini player
         setMiniPlayerlayout()
         setMiniPlayerAction()
+    }
+
+    @objc func playerDidFinishPlaying() {
+        self.isPlay = false
     }
     
     // Player timeLabel change
@@ -340,6 +347,19 @@ class PlayViewController: UIViewController {
                 self.setPlayer(urlInfo: info.fileLink ?? "")
                 self.connectChatView()
             }.store(in: &cancellable)
+        self.$isPlay.receive(on: DispatchQueue.main, options: nil)
+            .sink { [weak self] tf in
+                guard let self = self else { return }
+                if tf {
+                    self.playView.player?.play()
+                    self.miniPlayPauseButton.setImage(UIImage(named: "pause_black"), for: .normal)
+                    self.playPauseButton.setImage(UIImage(named: "pause_white"), for: .normal)
+                } else {
+                    self.playView.player?.pause()
+                    self.miniPlayPauseButton.setImage(UIImage(named: "play_black"), for: .normal)
+                    self.playPauseButton.setImage(UIImage(named: "play_white"), for: .normal)
+                }
+            }.store(in: &cancellable)
     }
     
     // MARK: - Animation Setting
@@ -430,11 +450,11 @@ class PlayViewController: UIViewController {
         if (play.isPlaying) {
             miniPlayPauseButton.setImage(UIImage(named: "play_black"), for: .normal)
             playPauseButton.setImage(UIImage(named: "play_white"), for: .normal)
-            play.pause()
+            isPlay = false
         } else {
             miniPlayPauseButton.setImage(UIImage(named: "pause_black"), for: .normal)
             playPauseButton.setImage(UIImage(named: "pause_white"), for: .normal)
-            play.play()
+            isPlay = true
         }
     }
     
@@ -580,13 +600,13 @@ class PlayViewController: UIViewController {
             switch touchEvent.phase {
             case .began, .moved:
                 self.playControllTimer.invalidate()
-                self.playView.player?.pause()
+                self.isPlay = false
                 let currentTime = CMTimeMakeWithSeconds(Float64(seekbar.value), preferredTimescale: Int32(NSEC_PER_SEC))
                 self.updateVideoPlayerState(currentTime: currentTime)
             case .ended:
                 self.playControllTimer.invalidate()
                 playView.player?.seek(to: CMTimeMakeWithSeconds(Float64(seekbar.value), preferredTimescale: Int32(NSEC_PER_SEC)))
-                self.playView.player?.play()
+                self.isPlay = true
                 self.playControllTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { timer in
                     UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut) {
                         self.playControllView.alpha = 0
