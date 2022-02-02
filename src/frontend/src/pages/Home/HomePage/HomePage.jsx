@@ -1,16 +1,25 @@
-import React, { Fragment, useCallback, useEffect, useRef } from 'react';
+import React, { Fragment, useState, useEffect, useRef } from 'react';
 
 import * as S from './HomePage.sytle';
 import { useInifinitScroll } from '@utils/hook';
 import { useMainVideoList } from '@utils/hook/query';
-import ThumbNailDummy from '@assets/image/ThumbNailDummy.jpg';
 
 import CategorySlider from '../CategorySlider/CategorySlider';
 import { VideoOverview } from '@components/videos';
 
 function HomePage() {
   const scrollFlag = useRef(null);
-  const { data, fetchNextPage } = useMainVideoList();
+
+  const [categories, setCategories] = useState([
+    { id: 'ALL', category: '전체' },
+    { id: 'SPORTS', category: '스포츠' },
+    { id: 'KPOP', category: 'K-POP' },
+    { id: 'EDU', category: '교육' },
+  ]);
+  const [categoryToggle, setCategoryToggle] = useState([]);
+  const [selectedCateogory, setSelectedCategory] = useState('ALL');
+
+  const { data, fetchNextPage } = useMainVideoList(selectedCateogory);
 
   const observer = useInifinitScroll(fetchNextPage, {
     root: null,
@@ -18,12 +27,44 @@ function HomePage() {
   });
 
   useEffect(() => {
+    const initCategoryToggle = new Array(categories.length).fill(false);
+    initCategoryToggle[0] = true;
+    setCategoryToggle(initCategoryToggle);
+
     if (scrollFlag.current) observer.observe(scrollFlag.current);
   }, []);
 
+  const handleCategoryChipClick = selectedIdx => () => {
+    const newCategoryToggle = [...categoryToggle];
+
+    if (selectedIdx === 0 && newCategoryToggle[selectedIdx]) {
+      return;
+    }
+
+    if (newCategoryToggle[selectedIdx]) {
+      newCategoryToggle[0] = true;
+      newCategoryToggle[selectedIdx] = false;
+    } else {
+      newCategoryToggle.forEach((_, idx) => {
+        if (idx === selectedIdx) {
+          newCategoryToggle[idx] = true;
+        } else {
+          newCategoryToggle[idx] = false;
+        }
+      });
+    }
+    setCategoryToggle(newCategoryToggle);
+    const categoryIdx = newCategoryToggle.findIndex(elem => elem);
+    setSelectedCategory(categories[categoryIdx].id);
+  };
+
   return (
     <>
-      <CategorySlider />
+      <CategorySlider
+        categories={categories}
+        onClick={handleCategoryChipClick}
+        toggleState={categoryToggle}
+      />
       <S.HomePageContainer>
         {data?.pages.map((group, i) => (
           <Fragment key={i}>
