@@ -569,7 +569,7 @@ class PlayViewController: UIViewController {
     }
     
     @objc func handleDoubleTap(gestureRecognizer: UITapGestureRecognizer) {
-        if isMinimized { return }
+        if isMinimized || self.viewModel.isLive { return }
         let point = gestureRecognizer.location(in: self.playView)
         let halfPosition = playView.frame.width / 2
         if point.x < (halfPosition - 30) {
