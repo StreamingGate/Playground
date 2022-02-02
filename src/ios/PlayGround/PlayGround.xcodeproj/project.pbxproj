@@ -93,6 +93,7 @@
 		49F18C2C278E5E0800EBDCF8 /* CreateNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F18C2B278E5E0800EBDCF8 /* CreateNavigationController.swift */; };
 		49F18C52278F0FB100EBDCF8 /* UITabBarController+Visibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F18C51278F0FB100EBDCF8 /* UITabBarController+Visibility.swift */; };
 		49F18C54278F2EED00EBDCF8 /* PlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F18C53278F2EED00EBDCF8 /* PlayViewController.swift */; };
+		49F777D927AA58B800AD2D78 /* FriendRequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F777D827AA58B800AD2D78 /* FriendRequestViewController.swift */; };
 		B86390ACC07320C4661BD124 /* Pods_PlayGround.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C094C2C5DF13CB2E6DBF8A02 /* Pods_PlayGround.framework */; };
 /* End PBXBuildFile section */
 
@@ -185,6 +186,7 @@
 		49F18C2B278E5E0800EBDCF8 /* CreateNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNavigationController.swift; sourceTree = "<group>"; };
 		49F18C51278F0FB100EBDCF8 /* UITabBarController+Visibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITabBarController+Visibility.swift"; sourceTree = "<group>"; };
 		49F18C53278F2EED00EBDCF8 /* PlayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayViewController.swift; sourceTree = "<group>"; };
+		49F777D827AA58B800AD2D78 /* FriendRequestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestViewController.swift; sourceTree = "<group>"; };
 		8A3D7763AEF5C85EA43F3126 /* Pods-PlayGround.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlayGround.debug.xcconfig"; path = "Target Support Files/Pods-PlayGround/Pods-PlayGround.debug.xcconfig"; sourceTree = "<group>"; };
 		C094C2C5DF13CB2E6DBF8A02 /* Pods_PlayGround.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PlayGround.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD5FDC1E3E6EC365A13644FD /* Pods-PlayGround.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlayGround.release.xcconfig"; path = "Target Support Files/Pods-PlayGround/Pods-PlayGround.release.xcconfig"; sourceTree = "<group>"; };
@@ -322,6 +324,7 @@
 			isa = PBXGroup;
 			children = (
 				49A308A12791AD72005D6109 /* Notice.storyboard */,
+				49F777D827AA58B800AD2D78 /* FriendRequestViewController.swift */,
 				49AC95292791AC080030DCC0 /* NoticeListViewController.swift */,
 			);
 			path = Notice;
@@ -694,6 +697,7 @@
 				49E72FF527A23F8C00DFBCC3 /* ChatViewModel.swift in Sources */,
 				49EC9A022782033E00DE4F79 /* CreatePopOverViewController.swift in Sources */,
 				492C62232795325000AE546E /* HomeTabCoordinator.swift in Sources */,
+				49F777D927AA58B800AD2D78 /* FriendRequestViewController.swift in Sources */,
 				492C622E27955F6C00AE546E /* Player.swift in Sources */,
 				49EC9A06278205D200DE4F79 /* UIView+RoundCorners.swift in Sources */,
 				490770A52797F7A300ADD8E8 /* ErrorCodeConverter.swift in Sources */,
