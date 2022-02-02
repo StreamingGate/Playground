@@ -26,6 +26,8 @@ class HomeListViewController: UIViewController {
     var player = AVPlayer()
     let viewModel = HomeViewModel()
     
+    let spinner = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.medium)
+    
     let categoryDic = ["ALL": "전체", "EDU": "교육", "SPORTS": "스포츠", "KPOP": "K-POP"]
     
     // MARK: - View Life Cycle
@@ -43,7 +45,6 @@ class HomeListViewController: UIViewController {
         self.playerView.isUserInteractionEnabled = false
         guard let nav = self.navigationController as? HomeNavigationController else{ return }
         self.navVC = nav
-        viewModel.loadAllList()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -57,7 +58,7 @@ class HomeListViewController: UIViewController {
         self.playerView.player?.replaceCurrentItem(with: nil)
         self.playerView.player = nil
     }
-    
+
     func bindViewModel() {
         self.viewModel.$homeList.receive(on: DispatchQueue.main, options: nil)
             .sink { [weak self] list in
@@ -77,6 +78,14 @@ class HomeListViewController: UIViewController {
         noticeButton.setTitle("", for: .normal)
         friendButton.setTitle("", for: .normal)
     }
+    
+    private func createSpinnerFooter() -> UIView {
+       let footerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 50))
+       spinner.center = footerView.center
+       footerView.addSubview(spinner)
+       spinner.startAnimating()
+       return footerView
+   }
     
     @IBAction func noticeButtonDidTap(_ sender: Any) {
         navVC?.coordinator?.showNotice()
@@ -125,10 +134,12 @@ extension HomeListViewController: UICollectionViewDataSource, UICollectionViewDe
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         self.selectedIndex = indexPath.item
+        if tableView.numberOfRows(inSection: 0) > 0 {        
+            self.tableView.scrollToRow(at: IndexPath(item: 0, section: 0), at: .top, animated: false)
+        }
         self.viewModel.selectedCategory = viewModel.categories[indexPath.item]
         self.viewModel.lastLiveId = -1
         self.viewModel.lastVideoId = -1
-        self.tableView.scrollToRow(at: IndexPath(item: 0, section: 0), at: .top, animated: false)
         self.collectionView.reloadData()
     }
 }
@@ -177,6 +188,23 @@ extension HomeListViewController: UITableViewDataSource, UITableViewDelegate {
         return UITableView.automaticDimension
     }
     
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let position = scrollView.contentOffset.y
+        
+        if position > (tableView.contentSize.height - scrollView.frame.size.height) && !self.viewModel.isFinished {
+            
+            guard !self.viewModel.isLoading else {
+                // we are already fetching more data
+                return
+            }
+//
+            self.tableView.tableFooterView = createSpinnerFooter()
+            // fetch more data
+            self.viewModel.loadAllList()
+        } else {
+            self.spinner.stopAnimating()
+        }
+    }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         guard let parent = self.navigationController?.parent as? CustomTabViewController else { return }
