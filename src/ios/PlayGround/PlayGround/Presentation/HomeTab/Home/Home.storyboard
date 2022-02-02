@@ -163,7 +163,7 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="414" height="233"/>
                                                         </imageView>
                                                     </subviews>
-                                                    <color key="backgroundColor" name="Separator"/>
+                                                    <color key="backgroundColor" systemColor="labelColor"/>
                                                     <constraints>
                                                         <constraint firstItem="zpA-av-Vyq" firstAttribute="top" secondItem="J38-vs-nkq" secondAttribute="top" id="IXH-uU-Zj1"/>
                                                         <constraint firstAttribute="width" secondItem="J38-vs-nkq" secondAttribute="height" multiplier="16:9" priority="750" id="IaP-Ma-zCt"/>
@@ -314,6 +314,9 @@
         <namedColor name="YoutubeRed">
             <color red="0.92900002002716064" green="0.1289999932050705" blue="0.13699999451637268" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
