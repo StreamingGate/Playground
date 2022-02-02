@@ -172,6 +172,9 @@
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LcA-ew-Zmn">
                                                         <rect key="frame" x="0.0" y="0.0" width="63.5" height="41"/>
                                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                        <connections>
+                                                            <action selector="likeButtonDidTap:" destination="zL7-Q9-x2b" eventType="touchUpInside" id="ac5-IO-nR7"/>
+                                                        </connections>
                                                     </button>
                                                 </subviews>
                                                 <constraints>
@@ -206,6 +209,9 @@
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gsk-u1-zcq">
                                                         <rect key="frame" x="0.0" y="0.0" width="63.5" height="41"/>
                                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                        <connections>
+                                                            <action selector="dislikeButtonDidTap:" destination="zL7-Q9-x2b" eventType="touchUpInside" id="0nt-mg-wN7"/>
+                                                        </connections>
                                                     </button>
                                                 </subviews>
                                                 <constraints>
@@ -274,6 +280,9 @@
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2SI-sW-WsO">
                                                         <rect key="frame" x="0.0" y="0.0" width="63.5" height="41"/>
                                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                        <connections>
+                                                            <action selector="reportButtonDidTap:" destination="zL7-Q9-x2b" eventType="touchUpInside" id="MRb-wC-cFA"/>
+                                                        </connections>
                                                     </button>
                                                 </subviews>
                                                 <constraints>
@@ -535,8 +544,13 @@
                         <outlet property="chatSeparatorView" destination="bU7-JT-1nv" id="nE4-wW-3B4"/>
                         <outlet property="chatTextView" destination="9ux-Rl-nYc" id="VCI-zJ-8eL"/>
                         <outlet property="chatViewBottom" destination="Xyf-My-VIO" id="Qfd-rF-Nfj"/>
+                        <outlet property="dislikeButton" destination="Gsk-u1-zcq" id="NWS-gD-gPt"/>
+                        <outlet property="dislikeImageView" destination="Ygn-kh-u07" id="2Ox-yh-shG"/>
                         <outlet property="explainContainerView" destination="YG8-9c-nRp" id="dwF-b8-4OO"/>
                         <outlet property="forwardImageView" destination="z4m-dy-jqD" id="f0t-I8-gu9"/>
+                        <outlet property="likeButton" destination="LcA-ew-Zmn" id="7sy-vP-o7y"/>
+                        <outlet property="likeImageView" destination="GP6-pt-tgR" id="gFo-DS-zRv"/>
+                        <outlet property="likeLabel" destination="P6C-UC-Te0" id="ddN-fO-gXz"/>
                         <outlet property="miniBackView" destination="i9w-aJ-nVI" id="xoi-nA-u5K"/>
                         <outlet property="playControlPanGesture" destination="RCZ-cR-RhB" id="UDD-C8-uCu"/>
                         <outlet property="playControlViewSingleTap" destination="i3D-s5-2aj" id="S2e-e7-dVP"/>
@@ -548,6 +562,7 @@
                         <outlet property="playViewSingleTap" destination="QGS-uA-Xj7" id="xHD-m0-0KG"/>
                         <outlet property="playViewTop" destination="S62-GT-XAz" id="qIm-Mw-v25"/>
                         <outlet property="playViewWidth" destination="v2O-eg-KOu" id="vaK-bl-PQP"/>
+                        <outlet property="reportButton" destination="2SI-sW-WsO" id="UjP-4J-AFh"/>
                         <outlet property="safeBottomView" destination="9wx-Cn-ZFu" id="Yjc-CZ-c12"/>
                         <outlet property="safeBottomViewHeight" destination="zNw-w9-rtl" id="Jrh-Ql-hNF"/>
                         <outlet property="seekbar" destination="XbX-Kr-dZU" id="0Nw-Bg-kO5"/>

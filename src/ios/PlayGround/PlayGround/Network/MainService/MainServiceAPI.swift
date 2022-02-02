@@ -50,7 +50,7 @@ struct MainServiceAPI {
         task.resume()
     }
     
-    func tapButtons(videoId: String, type: Int, action: Action, uuid: String, completion: @escaping ([String: Any])->Void) {
+    func tapButtons(videoId: Int, type: Int, action: Action, uuid: String, completion: @escaping ([String: Any])->Void) {
         let url = URL(string: "\(mainServiceUrl)/action")!
         var request = URLRequest(url: url)
         let postData : [String: Any] = ["id": videoId, "type" : type, "action": action.rawValue, "uuid": uuid]

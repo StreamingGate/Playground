@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 import Combine
 import AVFoundation
+import SwiftKeychainWrapper
 
 class PlayViewController: UIViewController {
     
@@ -29,6 +30,14 @@ class PlayViewController: UIViewController {
     @IBOutlet var playViewSingleTap: UITapGestureRecognizer!
     @IBOutlet var playControlViewSingleTap: UITapGestureRecognizer!
     var timeObserver: Any?
+    
+    @IBOutlet weak var likeImageView: UIImageView!
+    @IBOutlet weak var likeLabel: UILabel!
+    @IBOutlet weak var likeButton: UIButton!
+    
+    @IBOutlet weak var dislikeImageView: UIImageView!
+    @IBOutlet weak var dislikeButton: UIButton!
+    @IBOutlet weak var reportButton: UIButton!
     
     // mini player
     @IBOutlet weak var miniBackView: UIView!
@@ -345,6 +354,49 @@ class PlayViewController: UIViewController {
     }
     
     // MARK: - Button Action
+    
+    @IBAction func likeButtonDidTap(_ sender: Any) {
+        guard let info = viewModel.currentInfo, let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else { return }
+        likeButton.isEnabled = false
+        MainServiceAPI.shared.tapButtons(videoId: info.id, type: (info.hostNickname == nil ? 0 : 1), action: Action.Like, uuid: uuid) { result in
+            print("result: \(result)")
+            DispatchQueue.main.async {
+                self.likeButton.isEnabled = true
+                if result["result"] as? String == "success" {
+                    // UI 변경 및 유저정보 업데이트
+                }
+            }
+        }
+    }
+    
+    @IBAction func dislikeButtonDidTap(_ sender: Any) {
+        guard let info = viewModel.currentInfo, let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else { return }
+        dislikeButton.isEnabled = false
+        MainServiceAPI.shared.tapButtons(videoId: info.id, type: (info.hostNickname == nil ? 0 : 1), action: Action.Dislike, uuid: uuid) { result in
+            print("result: \(result)")
+            DispatchQueue.main.async {
+                self.dislikeButton.isEnabled = true
+                if result["result"] as? String == "success" {
+                    // UI 변경 및 유저정보 업데이트
+                }
+            }
+        }
+    }
+    
+    @IBAction func reportButtonDidTap(_ sender: Any) {
+        guard let info = viewModel.currentInfo, let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else { return }
+        reportButton.isEnabled = false
+        MainServiceAPI.shared.tapButtons(videoId: info.id, type: (info.hostNickname == nil ? 0 : 1), action: Action.Report, uuid: uuid) { result in
+            print("result: \(result)")
+            DispatchQueue.main.async {
+                self.reportButton.isEnabled = true
+                if result["result"] as? String == "success" {
+                    // UI 변경 및 유저정보 업데이트
+                }
+            }
+        }
+    }
+    
     func setMiniPlayerAction() {
         miniCloseButton.addTarget(self, action: #selector(miniCLoseButtonDidTap), for: .touchUpInside)
         miniPlayPauseButton.addTarget(self, action: #selector(miniPlayPauseButtonDidTap), for: .touchUpInside)
