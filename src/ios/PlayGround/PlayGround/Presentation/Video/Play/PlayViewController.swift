@@ -346,6 +346,8 @@ class PlayViewController: UIViewController {
                 self.miniTitleLabel.text = info.title
                 self.miniChannelNameLabel.text = (info.uploaderNickname == nil) ? info.hostNickname : info.uploaderNickname
         //        channelProfileImageView.downloadImageFrom(link: info., contentMode: <#T##UIView.ContentMode#>)
+                self.playControllView.isHidden = self.viewModel.isLive
+                self.miniPlayPauseButton.alpha = self.viewModel.isLive ? 0 : 1
                 self.setPlayer(urlInfo: info.fileLink ?? "")
                 self.connectChatView()
             }.store(in: &cancellable)
@@ -496,6 +498,7 @@ class PlayViewController: UIViewController {
         if isMinimized {
             self.setPlayViewOriginalSize()
         } else {
+            if self.viewModel.isLive { return }
             self.playControllTimer.invalidate()
             UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut) {
                 self.playControllView.alpha = 1

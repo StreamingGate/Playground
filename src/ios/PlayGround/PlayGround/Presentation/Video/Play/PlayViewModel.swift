@@ -13,4 +13,11 @@ class PlayViewModel {
     let categoryDic = ["ALL": "전체", "EDU": "교육", "SPORTS": "스포츠", "KPOP": "K-POP"]
     
     @Published var currentInfo: GeneralVideo?
+    
+    var isLive: Bool {
+        guard let info = currentInfo else {
+            return false
+        }
+        return (info.hostNickname != nil)
+    }
 }
