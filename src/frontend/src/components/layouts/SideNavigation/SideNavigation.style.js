@@ -58,6 +58,10 @@ export default {
     text-decoration: none;
     color: inherit;
 
+    &.active {
+      background-color: ${({ theme }) => theme.colors.separator};
+    }
+
     &:hover {
       background-color: ${({ theme }) => theme.colors.separator};
     }

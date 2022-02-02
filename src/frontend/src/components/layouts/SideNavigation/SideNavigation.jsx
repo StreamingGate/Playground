@@ -8,9 +8,9 @@ import { BackDrop } from '@components/feedbacks';
 import NavigationItem from './NavigationItem';
 
 const myNavigationItems = [
-  { path: '/*', itemIcon: <History />, content: '시청한 동영상' },
-  { path: '/**', itemIcon: <ThumbUp />, content: '좋아요 표시한 동영상' },
-  { path: '/***', itemIcon: <MyVideo />, content: '내 동영상' },
+  { path: '/mypage/history', itemIcon: <History />, content: '시청한 동영상' },
+  { path: '/mypage/like', itemIcon: <ThumbUp />, content: '좋아요 표시한 동영상' },
+  { path: '/mypage/library', itemIcon: <MyVideo />, content: '내 동영상' },
 ];
 
 function SideNavigation() {
@@ -35,7 +35,7 @@ function SideNavigation() {
         <ul>
           <NavigationItem
             type='base'
-            path='/'
+            path='/home'
             itemIcon={<HomeEmpty />}
             fontType='component'
             content='홈'
