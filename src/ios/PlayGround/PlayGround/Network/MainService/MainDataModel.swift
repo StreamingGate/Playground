@@ -86,3 +86,13 @@ struct FriendRequest: Codable {
         case profileImage
     }
 }
+
+struct WatchingInfo: Codable {
+    let roomId: String
+    let title: String
+    
+    enum CodingKeys: String, CodingKey {
+        case roomId
+        case title
+    }
+}

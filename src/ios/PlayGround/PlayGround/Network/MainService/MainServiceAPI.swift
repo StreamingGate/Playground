@@ -312,4 +312,41 @@ struct MainServiceAPI {
         }
         task.resume()
     }
+    
+    func loadFriendWatch(friendUUID: String, completion: @escaping ([String: Any])->Void) {
+        
+        let original = "\(mainServiceUrl)/friends/watch/\(friendUUID)"
+        
+        guard let target = original.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
+            print("error encoding")
+            return
+        }
+        
+        let session = URLSession(configuration: .ephemeral)
+        let urlComponents = URLComponents(string: target)!
+        let requestURL = urlComponents.url!
+        let task = session.dataTask(with: requestURL) { data, response, error in
+            let successRange = 200 ..< 300
+            guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode), let resultData = data else {
+                print("\(error?.localizedDescription ?? "no error") \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
+                completion(["result": "failed"])
+                return
+            }
+            do {
+                let decoder = JSONDecoder()
+                decoder.dateDecodingStrategy = .millisecondsSince1970
+                let response = try decoder.decode(WatchingInfo.self, from: resultData)
+                completion(["result": "success", "data": response])
+            } catch let error {
+                print("---> error while loading friend requests: \(error.localizedDescription)")
+                let responseJSON = try? JSONSerialization.jsonObject(with: resultData, options: [])
+                if let result = responseJSON as? [String: Any] {
+                    completion(result)
+                } else {
+                    completion(["result": "failed"])
+                }
+            }
+        }
+        task.resume()
+    }
 }
