@@ -10,8 +10,7 @@ function VideoPlayPage() {
   const videoPlayerRef = useRef(null);
 
   useEffect(() => {
-    const videoSrc =
-      'https://s3.ap-northeast-2.amazonaws.com/sg.playground/video/output/momo_trans.m3u8';
+    const videoSrc = process.env.REACT_APP_DUMMY_VIDEO;
     const hls = new Hls();
     hls.loadSource(videoSrc);
     hls.attachMedia(videoPlayerRef.current);
