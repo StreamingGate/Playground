@@ -14,6 +14,16 @@ const lineEllipsis = css`
 export const ThumbNailContainer = styled.div`
   position: relative;
   z-index: -1;
+  background-color: black;
+  min-height: 180px;
+`;
+
+export const ThumbNail = styled.img`
+  position: absolute;
+  height: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 `;
 
 export const RealTimeIcon = styled(RealTimeMark)`
@@ -67,6 +77,7 @@ export const ViedeoOverviewContainer = styled.li`
       direction === 'horizontal' &&
       css`
         max-width: 160px;
+        height: 90px;
         flex-shrink 0;
       `}
   }
