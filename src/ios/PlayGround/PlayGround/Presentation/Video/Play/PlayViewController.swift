@@ -30,6 +30,7 @@ class PlayViewController: UIViewController {
     @IBOutlet var playViewSingleTap: UITapGestureRecognizer!
     @IBOutlet var playControlViewSingleTap: UITapGestureRecognizer!
     var timeObserver: Any?
+    @IBOutlet weak var seekbarBackView: UIView!
     
     @IBOutlet weak var likeImageView: UIImageView!
     @IBOutlet weak var likeLabel: UILabel!
@@ -666,5 +667,16 @@ extension PlayViewController {
             chatViewBottom.constant = 0
             self.view.layoutIfNeeded()
         }
+    }
+}
+
+extension PlayViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if touch.view?.isDescendant(of: self.seekbarBackView) == true {
+            return false
+        } else if touch.view?.isDescendant(of: self.seekbar) == true {
+            return false
+        }
+        return true
     }
 }
