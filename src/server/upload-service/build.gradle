@@ -24,8 +24,8 @@ dependencies {
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     implementation 'net.bramp.ffmpeg:ffmpeg:0.6.2'
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.5.RELEASE'
-//    implementation 'com.amazonaws:aws-java-sdk-bom:1.11.1000'
-//    implementation 'com.amazonaws:aws-java-sdk-s3'
+    implementation platform('com.amazonaws:aws-java-sdk-bom:1.11.228')
+    implementation 'com.amazonaws:aws-java-sdk-s3'
     implementation 'org.projectlombok:lombok'
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
