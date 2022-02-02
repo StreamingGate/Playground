@@ -5,13 +5,13 @@ import * as S from './VideoOverview.style';
 
 import { Avatar } from '@components/dataDisplays';
 
-function VideoOverview({ direction, isLibrary, videoInfo }) {
-  const { thumbNailSrc, title, userName, content, viewCount, createdAt, isRealTime } = videoInfo;
+function VideoOverview({ direction, isLibrary, videoInfo, isLive }) {
+  const { thumbnail, title, uploaderNickname, content, hits, createdAt } = videoInfo;
 
   const renderVideoInfo = useCallback(() => {
     const NumberDataComponent = (
       <>
-        <S.VideoCaption type='caption'>조회수 {viewCount}회</S.VideoCaption>
+        <S.VideoCaption type='caption'>조회수 {hits}회</S.VideoCaption>
         <S.VideoCaption type='caption'>{createdAt}</S.VideoCaption>
       </>
     );
@@ -24,8 +24,8 @@ function VideoOverview({ direction, isLibrary, videoInfo }) {
               NumberDataComponent
             ) : (
               <>
-                <S.VideoCaption type='caption'>{userName}</S.VideoCaption>
-                <S.VideoCaption type='caption'>조회수 {viewCount}회</S.VideoCaption>
+                <S.VideoCaption type='caption'>{uploaderNickname}</S.VideoCaption>
+                <S.VideoCaption type='caption'>조회수 {hits}회</S.VideoCaption>
               </>
             )}
           </S.VideoMetaContainer>
@@ -35,7 +35,7 @@ function VideoOverview({ direction, isLibrary, videoInfo }) {
     }
     return (
       <>
-        <S.VideoCaption type='caption'>{userName}</S.VideoCaption>
+        <S.VideoCaption type='caption'>{uploaderNickname}</S.VideoCaption>
         <S.VideoMetaContainer>{NumberDataComponent}</S.VideoMetaContainer>
       </>
     );
@@ -44,8 +44,8 @@ function VideoOverview({ direction, isLibrary, videoInfo }) {
   return (
     <S.ViedeoOverviewContainer direction={direction}>
       <S.ThumbNailContainer>
-        <img src={thumbNailSrc} alt='thumbnail' />
-        {isRealTime && <S.RealTimeIcon />}
+        <img src={thumbnail} alt='thumbnail' />
+        {isLive && <S.RealTimeIcon />}
       </S.ThumbNailContainer>
       <S.VideoInfoContainer>
         {direction === 'vertical' && (
@@ -65,21 +65,22 @@ function VideoOverview({ direction, isLibrary, videoInfo }) {
 VideoOverview.propTypes = {
   direction: PropTypes.oneOf(['horizontal', 'vertical']),
   isLibrary: PropTypes.bool,
+  isLive: PropTypes.bool,
   videoInfo: PropTypes.shape({
-    thumbNailSrc: PropTypes.string.isRequired,
+    thumbnail: PropTypes.string.isRequired,
     profileImgSrc: PropTypes.string,
     title: PropTypes.string.isRequired,
-    userName: PropTypes.string.isRequired,
-    viewCount: PropTypes.number.isRequired,
+    uploaderNickname: PropTypes.string.isRequired,
+    hits: PropTypes.number.isRequired,
     content: PropTypes.string,
     createdAt: PropTypes.instanceOf(Date).isRequired,
-    isRealTime: PropTypes.bool,
   }).isRequired,
 };
 
 VideoOverview.defaultProps = {
   direction: 'vertical',
   isLibrary: false,
+  isLive: false,
 };
 
 export default memo(VideoOverview);
