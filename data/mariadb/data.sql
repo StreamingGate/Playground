@@ -1,9 +1,9 @@
 -- 1(uploader), 2(streamer), 3,4(viewer)
-INSERT INTO users(id, email, uuid, nick_name, profile_image)
-VALUES (1, 'u1@email.com', '11111111-1234-1234-123456789012', 'nick1', 'https://www.1xbetkrs.com/wp-content/uploads/2020/03/2-3.jpg'),
-       (2, 'u2@email.com', '22222222-1234-1234-123456789012', 'nick2', 'https://www.1xbetkrs.com/wp-content/uploads/2020/03/2-3.jpg'),
-       (3, 'u3@email.com', '33333333-1234-1234-123456789012', 'nick3', 'https://www.1xbetkrs.com/wp-content/uploads/2020/03/2-3.jpg'),
-       (4, 'u4@email.com', '44444444-1234-1234-123456789012', 'nick4', 'https://www.1xbetkrs.com/wp-content/uploads/2020/03/2-3.jpg');
+INSERT INTO users(id, email, pwd, uuid, nick_name, profile_image)
+VALUES (1, 'u1@email.com', '$2a$10$hFNXIkB2dZ6ITSxoB1WXYuv4A5OTZybAzxoyEJJGFJyVJIZ.KF38a','11111111-1234-1234-123456789012', 'nick1', 'https://www.1xbetkrs.com/wp-content/uploads/2020/03/2-3.jpg'),
+       (2, 'u2@email.com', '$2a$10$hFNXIkB2dZ6ITSxoB1WXYuv4A5OTZybAzxoyEJJGFJyVJIZ.KF38a','22222222-1234-1234-123456789012', 'nick2', 'https://www.1xbetkrs.com/wp-content/uploads/2020/03/2-3.jpg'),
+       (3, 'u3@email.com', '$2a$10$hFNXIkB2dZ6ITSxoB1WXYuv4A5OTZybAzxoyEJJGFJyVJIZ.KF38a','33333333-1234-1234-123456789012', 'nick3', 'https://www.1xbetkrs.com/wp-content/uploads/2020/03/2-3.jpg'),
+       (4, 'u4@email.com', '$2a$10$hFNXIkB2dZ6ITSxoB1WXYuv4A5OTZybAzxoyEJJGFJyVJIZ.KF38a','44444444-1234-1234-123456789012', 'nick4', 'https://www.1xbetkrs.com/wp-content/uploads/2020/03/2-3.jpg');
 
 -- friend relation:
 -- 1 2
