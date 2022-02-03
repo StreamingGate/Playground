@@ -21,7 +21,6 @@ function HomePage() {
 
   const { data, fetchNextPage, hasNextPage } = useMainVideoList(selectedCateogory);
 
-  console.log(hasNextPage);
   const observer = useInifinitScroll(fetchNextPage, {
     root: null,
     threshold: 0,
