@@ -9,6 +9,7 @@ import {
   HamburgerBar,
   AddEmptyCircle,
   AddFullCircle,
+  FullAlarm,
   Alarm,
   Search,
   MyVideo,
@@ -24,6 +25,12 @@ const dummyFriends = [
   { id: 5, name: '이수현' },
   { id: 6, name: 'Daniel Radcliffe' },
   { id: 7, name: 'Emma Watson' },
+];
+
+const dummyAlarms = [
+  { id: 1, content: '김하늬님이 라이브 방송을 시작하셨습니다', time: '지금' },
+  { id: 2, content: '서채희님이 회원님의 비디오에 댓글을 남겼습니다', time: '1일' },
+  { id: 3, content: '이우재님이 회원님께 친구를 요청하셨습니다', time: '4일' },
 ];
 
 function BaseHeader() {
@@ -78,9 +85,31 @@ function BaseHeader() {
           </S.AddVideoDropdownContainer>
         </div>
         <div>
-          <IconButton>
-            <Alarm />
+          <IconButton name='alarm' onClick={onToggleModal}>
+            {modalState.alarm ? <FullAlarm /> : <Alarm />}
           </IconButton>
+          <S.AlarmDropdownContainer>
+            {modalState.alarm && (
+              <S.AlarmDropdown>
+                <S.AlarmTitle>
+                  <Typography>알림</Typography>
+                </S.AlarmTitle>
+                <S.AlarmBody>
+                  <S.AcceptFriendBtn>친구 요청</S.AcceptFriendBtn>
+                  <S.AlarmList>
+                    {dummyAlarms.map(alarm => (
+                      <S.AlarmInfo key={alarm.id}>
+                        <S.AlarmAvartar size='sm' />
+                        <S.AlarmContent type='caption'>
+                          {alarm.content} <span>{alarm.time}</span>
+                        </S.AlarmContent>
+                      </S.AlarmInfo>
+                    ))}
+                  </S.AlarmList>
+                </S.AlarmBody>
+              </S.AlarmDropdown>
+            )}
+          </S.AlarmDropdownContainer>
         </div>
         <div>
           <S.HeaderAvatar name='profile' onClick={onToggleModal} />
