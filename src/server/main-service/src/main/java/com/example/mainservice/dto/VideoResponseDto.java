@@ -12,7 +12,7 @@ public class VideoResponseDto {
     private Long id;
     private String title;
     private String uploaderNickname;
-    private String uploaderUuid;
+    private String uploaderProfileImage;
     private String fileLink;
     private int hits;
     private String thumbnail;
@@ -23,7 +23,7 @@ public class VideoResponseDto {
         this.id = video.getId();
         this.title = video.getTitle();
         this.uploaderNickname = video.getUser().getNickName();
-        this.uploaderUuid = video.getUser().getUuid();
+        this.uploaderProfileImage = video.getUser().getProfileImage();
         this.hits = video.getHits();
         this.fileLink = video.getMetadata().getFileLink();
         this.thumbnail = video.getThumbnail();

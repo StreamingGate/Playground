@@ -67,11 +67,11 @@ VALUES (1, 'video1', 1, 2, 1, 0, 'https://cdn.the-scientist.com/assets/articleNo
        (19, 'video19', 4, 0, 0, 0, 'https://cdn.the-scientist.com/assets/articleNo/65065/aImg/29449/image-of-the-day-jasper-the-cat-t.jpg','EDU', '2022-01-28T1:0:0',19),
        (20, 'video20', 4, 0, 0, 0, 'https://cdn.the-scientist.com/assets/articleNo/65065/aImg/29449/image-of-the-day-jasper-the-cat-t.jpg','EDU', '2022-01-28T2:0:0',20);
 
-INSERT INTO viewed_history(id, liked, disliked, last_viewed_at, users_id, video_id)
-VALUES (1, 0, 0,'2022-01-28T2:0:0', 3, 1),
-       (2, 0, 0,'2022-01-28T2:0:0', 3, 2),
-       (3, 1, 0,'2022-01-28T2:0:0', 4, 1),
-       (4, 1, 0,'2022-01-28T2:0:0', 4, 2);
+INSERT INTO viewed_history(id, liked, disliked, last_viewed_at, viewed_progress, users_id, video_id)
+VALUES (1, 0, 0,'2022-01-28T2:0:0', 10000, 3, 1),
+       (2, 0, 0,'2022-01-28T2:0:0', 10000, 3, 2),
+       (3, 1, 0,'2022-01-28T2:0:0', 10000, 4, 1),
+       (4, 1, 0,'2022-01-28T2:0:0', 10000, 4, 2);
 
 -- room
 INSERT INTO room(id, title, host_uuid, users_id, like_cnt, report_cnt, thumbnail, category, created_at)

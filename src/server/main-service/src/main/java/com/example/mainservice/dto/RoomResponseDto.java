@@ -13,6 +13,7 @@ public class RoomResponseDto {
     private String title;
     private String hostNickname;
     private String hostUuid;
+    private String hostProfileImage;
     @NonNull
     private String uuid; // live, chat uuid
     private String thumbnail;
@@ -24,6 +25,7 @@ public class RoomResponseDto {
         this.title = room.getTitle();
         this.hostNickname = room.getUser().getNickName();
         this.hostUuid = room.getUser().getUuid();
+        this.hostProfileImage = room.getUser().getProfileImage();
         this.uuid = room.getUuid();
         this.thumbnail = room.getThumbnail();
         this.category = room.getCategory();
