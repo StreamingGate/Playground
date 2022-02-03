@@ -26,7 +26,7 @@ Button.propTypes = {
   id: PropTypes.string,
   variant: PropTypes.oneOf(['contained', 'outlined', 'text']),
   children: PropTypes.node,
-  color: PropTypes.oneOf(['youtubeRed', 'pgBlue', 'pgOrange']),
+  color: PropTypes.oneOf(['pgBlue', 'pgRed', 'pgOrange']),
   size: PropTypes.oneOf(['sm', 'md', 'lg']),
   fullWidth: PropTypes.bool,
   onClick: PropTypes.func,
