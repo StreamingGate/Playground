@@ -2,7 +2,7 @@ package com.example.mainservice.entity.Video;
 
 import com.example.mainservice.entity.Category;
 import com.example.mainservice.entity.Metadata.Metadata;
-import com.example.mainservice.entity.User.UserEntity;
+import com.example.mainservice.entity.User.User;
 import com.example.mainservice.entity.ViewdHistory.ViewedHistory;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +20,9 @@ public class Video {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(length=36)
+    private String uuid;
 
     @Column(length = 100)
     private String title;
@@ -44,9 +47,12 @@ public class Video {
 
     private LocalDateTime createdAt;
 
+    @Column(length=36)
+    private String chatUuid;
+
     @ManyToOne
     @JoinColumn(name = "users_id")
-    private UserEntity userEntity;
+    private User user;
 
     @OneToMany( mappedBy = "video")
     private List<ViewedHistory> viewedHistories;

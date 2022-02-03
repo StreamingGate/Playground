@@ -1,8 +1,8 @@
-package com.example.mainservice.entity.LiveRoom;
+package com.example.mainservice.entity.Live;
 
 import com.example.mainservice.entity.Category;
 import com.example.mainservice.entity.LiveViewer.LiveViewer;
-import com.example.mainservice.entity.User.UserEntity;
+import com.example.mainservice.entity.User.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Entity
-public class LiveRoom {
+public class Live {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -41,18 +41,20 @@ public class LiveRoom {
 
     private short reportCnt;
 
-    private String streamingId;
+    @Column(length = 36)
+    private String streamingUuid;
 
-    private String chatRoomId;
+    @Column(length = 36)
+    private String chatUuid;
 
     @ManyToOne
     @JoinColumn(name = "users_id")
-    private UserEntity userEntity;
+    private User user;
 
-    @OneToMany(mappedBy = "liveRoom")
+    @OneToMany(mappedBy = "live")
     private List<LiveViewer> liveViewers;
 
-    public LiveRoom(String title) {
+    public Live(String title) {
         this.title = title;
     }
 

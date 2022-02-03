@@ -1,7 +1,7 @@
 package com.example.mainservice.entity.Notification;
 
-import com.example.mainservice.entity.LiveRoom.LiveRoom;
-import com.example.mainservice.entity.User.UserEntity;
+import com.example.mainservice.entity.Live.Live;
+import com.example.mainservice.entity.User.User;
 import com.example.mainservice.entity.Video.Video;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,40 +27,40 @@ public class Notification {
 
     @ManyToOne
     @JoinColumn(name="users_id")
-    private UserEntity userEntity;
+    private User user;
 
-    public static Notification createFriendRequest(UserEntity sender, UserEntity target){
+    public static Notification createFriendRequest(User sender, User target){
         return Notification.builder()
                 .notiType(NotiType.FRIEND_REQUEST)
                 .content(NotiType.getFriendRequestContent(sender))
-                .userEntity(target)
+                .user(target)
                 .build();
     }
 
-    public static List<Notification> createStreaming(UserEntity sender, LiveRoom liveRoom){
+    public static List<Notification> createStreaming(User sender, Live live){
         List<Notification> notifications = new LinkedList<>();
-        for(UserEntity friend : sender.getFriends() ) {
+        for(User friend : sender.getFriends() ) {
             Notification.builder()
                     .notiType(NotiType.STREAMING)
-                    .content(NotiType.getStreamingContent(sender, liveRoom))
-                    .userEntity(friend)
+                    .content(NotiType.getStreamingContent(sender, live))
+                    .user(friend)
                     .build();
         }
         return notifications;
     }
 
-    public static Notification createLikes(UserEntity user, Video video){
+    public static Notification createLikes(User user, Video video){
         return Notification.builder()
                 .notiType(NotiType.LIKES)
                 .content(NotiType.getLikesContent(user, video))
-                .userEntity(video.getUserEntity())
+                .user(video.getUser())
                 .build();
     }
 
     @Builder
-    public Notification(NotiType notiType, String content, UserEntity userEntity){
+    public Notification(NotiType notiType, String content, User user){
         this.notiType = notiType;
         this.content = content;
-        this.userEntity = userEntity;
+        this.user = user;
     }
 }

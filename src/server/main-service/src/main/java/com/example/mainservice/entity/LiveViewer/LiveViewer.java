@@ -1,21 +1,11 @@
 package com.example.mainservice.entity.LiveViewer;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
-import com.example.mainservice.entity.LiveRoom.LiveRoom;
-import com.example.mainservice.entity.User.UserEntity;
-
+import com.example.mainservice.entity.Live.Live;
+import com.example.mainservice.entity.User.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor
@@ -32,21 +22,21 @@ public class LiveViewer {
 
     private LocalDateTime likedAt;
 
-    private LocalDateTime lastViewedAt;
+    private Long lastViewedAt; // ms단위
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private UserEntity userEntity;
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "live_room_id")
-    private LiveRoom liveRoom;
+    private Live live;
 
-    public LiveViewer(UserEntity userEntity, LiveRoom liveRoom) {
-        this.userEntity = userEntity;
-        this.liveRoom = liveRoom;
-        userEntity.getLiveViewers().add(this);
-        liveRoom.getLiveViewers().add(this);
+    public LiveViewer(User user, Live live) {
+        this.user = user;
+        this.live = live;
+        user.getLiveViewers().add(this);
+        live.getLiveViewers().add(this);
     }
 
     public void setLiked(boolean liked) {

@@ -7,6 +7,6 @@ import org.springframework.data.repository.query.Param;
 import java.util.Optional;
 
 public interface LiveViewerRepository extends JpaRepository<LiveViewer, Long>{
-    @Query("SELECT l FROM LiveViewer l WHERE l.userEntity.uuid = :userUuid AND l.liveRoom.id = :liveRoomId")
-    Optional<LiveViewer> findByLiveRoomIdAndUserUuid(@Param("userUuid")String userUuid, @Param("liveRoomId")Long liveRoomId);
+    @Query("SELECT l FROM LiveViewer l WHERE l.user.uuid = :userUuid AND l.live.id = :liveId")
+    Optional<LiveViewer> findByLiveRoomIdAndUserUuid(@Param("userUuid")String userUuid, @Param("liveId")Long liveId);
 }

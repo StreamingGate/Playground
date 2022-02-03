@@ -1,12 +1,9 @@
 package com.example.mainservice.dto;
 
 import com.example.mainservice.entity.Category;
-import com.example.mainservice.entity.LiveRoom.LiveRoom;
+import com.example.mainservice.entity.Live.Live;
 import com.sun.istack.NotNull;
 import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.modelmapper.ModelMapper;
 
 import java.time.LocalDateTime;
@@ -25,7 +22,7 @@ public class LiveRoomDto {
     @NotNull
     private String chatRoomId;
 
-    public static LiveRoomDto fromEntity(ModelMapper mapper, LiveRoom liveRoom){
-        return mapper.map(liveRoom, LiveRoomDto.class);
+    public static LiveRoomDto fromEntity(ModelMapper mapper, Live live){
+        return mapper.map(live, LiveRoomDto.class);
     }
 }
