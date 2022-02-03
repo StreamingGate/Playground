@@ -7,7 +7,7 @@ import { ChipButton } from '@components/buttons';
 
 const MOVING_DIR = 150;
 
-function CategorySlider({ categories, toggleState, onClick }) {
+function CategorySlider({ categories, toggleState, onToggleCategory }) {
   const categoryContainerRef = useRef(null);
   const lastCateogriesRef = useRef(null);
   const intialLastCategoryPos = useRef(null);
@@ -53,7 +53,7 @@ function CategorySlider({ categories, toggleState, onClick }) {
               content={category}
               ref={idx === arr.length - 1 ? lastCateogriesRef : null}
               isSelected={toggleState[idx]}
-              onClick={onClick(idx)}
+              onClick={onToggleCategory(idx)}
             />
           ))}
         </S.Categories>
