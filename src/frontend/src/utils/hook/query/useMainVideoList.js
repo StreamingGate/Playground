@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { useInfiniteQuery } from 'react-query';
 import axios from '@utils/axios';
 
@@ -10,6 +11,9 @@ const getMainVideoList = async ({ pageParam = { lastVideo: -1, lastLive: -1 }, q
 };
 
 export default function useMainVideoList(category) {
+  const lastVideo = useRef(-1);
+  const lastLive = useRef(-1);
+
   return useInfiniteQuery(['main', category], getMainVideoList, {
     refetchOnWindowFocus: false,
     getNextPageParam: lastPage => {
@@ -19,9 +23,17 @@ export default function useMainVideoList(category) {
         return undefined;
       }
 
+      if (videos[videos.length - 1]?.id) {
+        lastVideo.current = videos[videos.length - 1].id;
+      }
+
+      if (liveRooms[liveRooms.length - 1]?.id) {
+        lastLive.current = liveRooms[liveRooms.length - 1].id;
+      }
+
       return {
-        lastVideo: videos[videos.length - 1]?.id,
-        lastLive: liveRooms[liveRooms.length - 1]?.id,
+        lastVideo: lastVideo.current,
+        lastLive: lastLive.current,
       };
     },
   });
