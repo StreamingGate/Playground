@@ -15,7 +15,7 @@ import { Friends } from '@components/cores';
 const { screenSize } = breakPoint;
 
 const sideComponentInitState = { open: false, backdrop: false };
-const modalInitState = { addVideo: false, profile: false, friend: false };
+const modalInitState = { addVideo: false, profile: false, alarm: false, friend: false };
 
 function MainLayout({ children }) {
   const { innerWidth } = useWindowSize();
@@ -29,7 +29,7 @@ function MainLayout({ children }) {
   };
 
   useEffect(() => {
-    if (modalState.addVideo || modalState.profile || modalState.friend) {
+    if (modalState.addVideo || modalState.profile || modalState.friend || modalState.alarm) {
       window.addEventListener('click', handleModalClose);
     }
     return () => {
