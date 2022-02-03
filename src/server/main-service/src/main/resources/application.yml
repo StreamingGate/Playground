@@ -23,7 +23,7 @@ server:
 spring.config.activate.on-profile: local
 spring:
   datasource:
-    url: jdbc:mariadb://localhost:3306/playground?serverTimezone=Asia/Seoul&characterEncoding=utf8
+    url: jdbc:mariadb://localhost:3306/playground?characterEncoding=utf8
     driver-class-name: org.mariadb.jdbc.Driver
     username: root
     password: test
@@ -34,7 +34,7 @@ server:
 spring.config.activate.on-profile: develop
 spring:
   datasource:
-    url: jdbc:mariadb://pg-mariadb:3306/playground?serverTimezone=Asia/Seoul&characterEncoding=utf8
+    url: jdbc:mariadb://pg-mariadb:3306/playground?characterEncoding=utf8
     driver-class-name: org.mariadb.jdbc.Driver
     username: root
     password: test
