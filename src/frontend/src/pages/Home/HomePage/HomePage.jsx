@@ -19,7 +19,7 @@ function HomePage() {
   const [categoryToggleState, setCategoryToggleStates] = useState([]);
   const [selectedCateogory, setSelectedCategory] = useState('ALL');
 
-  const { data, fetchNextPage, hasNextPage } = useMainVideoList(selectedCateogory);
+  const { data, fetchNextPage } = useMainVideoList(selectedCateogory);
 
   const observer = useInifinitScroll(fetchNextPage, {
     root: null,
