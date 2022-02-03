@@ -1,7 +1,7 @@
-package com.example.mainservice.entity.Live;
+package com.example.mainservice.entity.Room;
 
 import com.example.mainservice.entity.Category;
-import com.example.mainservice.entity.LiveViewer.LiveViewer;
+import com.example.mainservice.entity.RoomViewer.RoomViewer;
 import com.example.mainservice.entity.User.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,10 +15,16 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Entity
-public class Live {
+public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(length = 36)
+    private String uuid;    // use for chat, room
+
+    @Column(length = 36)
+    private String hostUuid;
 
     @Column(length = 100)
     private String title;
@@ -26,12 +32,12 @@ public class Live {
     @Column(length = 5000)
     private String content;
 
-    private String hostNickname;
-
     @Column(columnDefinition = "TEXT")
     private String thumbnail;
 
     private int likeCnt;
+
+    private short reportCnt;
 
     @Enumerated(EnumType.STRING)
     @Column(length = 10)
@@ -39,22 +45,14 @@ public class Live {
 
     private LocalDateTime createdAt;
 
-    private short reportCnt;
-
-    @Column(length = 36)
-    private String streamingUuid;
-
-    @Column(length = 36)
-    private String chatUuid;
-
     @ManyToOne
     @JoinColumn(name = "users_id")
     private User user;
 
-    @OneToMany(mappedBy = "live")
-    private List<LiveViewer> liveViewers;
+    @OneToMany(mappedBy = "room")
+    private List<RoomViewer> roomViewers;
 
-    public Live(String title) {
+    public Room(String title) {
         this.title = title;
     }
 

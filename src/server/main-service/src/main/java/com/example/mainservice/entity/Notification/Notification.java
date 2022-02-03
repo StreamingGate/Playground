@@ -1,6 +1,6 @@
 package com.example.mainservice.entity.Notification;
 
-import com.example.mainservice.entity.Live.Live;
+import com.example.mainservice.entity.Room.Room;
 import com.example.mainservice.entity.User.User;
 import com.example.mainservice.entity.Video.Video;
 import lombok.Builder;
@@ -37,12 +37,12 @@ public class Notification {
                 .build();
     }
 
-    public static List<Notification> createStreaming(User sender, Live live){
+    public static List<Notification> createStreaming(User sender, Room room){
         List<Notification> notifications = new LinkedList<>();
         for(User friend : sender.getFriends() ) {
             Notification.builder()
                     .notiType(NotiType.STREAMING)
-                    .content(NotiType.getStreamingContent(sender, live))
+                    .content(NotiType.getStreamingContent(sender, room))
                     .user(friend)
                     .build();
         }

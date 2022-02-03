@@ -4,15 +4,37 @@ spring:
     driver-class-name: org.mariadb.jdbc.Driver
     username: root
     password: test
-  application:
-    name: main-service
   jpa:
     open-in-view: false
     generate-ddl: true
     show-sql: true
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+---
+spring.config.activate.on-profile: local
+server:
+  port: 8080
+spring:
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: create
+  datasource:
+    url: jdbc:mariadb://localhost:3306/playground?serverTimezone=Asia/Seoul&characterEncoding=utf8
+  sql:
+    init:
+      mode: always
+---
+spring.config.activate.on-profile: develop
+server:
+  port: 0
+spring:
+  application:
+    name: main-service
+  jpa:
     hibernate:
       ddl-auto: none
+  datasource:
+    url: jdbc:mariadb://pg-mariadb:3306/playground?serverTimezone=Asia/Seoul&characterEncoding=utf8
 eureka:
   instance:
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
@@ -21,17 +43,3 @@ eureka:
     register-with-eureka: true
     service-url:
       defaultZone: http://localhost:8761/eureka
----
-spring.config.activate.on-profile: local
-server:
-  port: 8080
-spring:
-  datasource:
-    url: jdbc:mariadb://localhost:3306/playground?serverTimezone=Asia/Seoul&characterEncoding=utf8
----
-spring.config.activate.on-profile: develop
-server:
-  port: 0
-spring:
-  datasource:
-    url: jdbc:mariadb://pg-mariadb:3306/playground?serverTimezone=Asia/Seoul&characterEncoding=utf8

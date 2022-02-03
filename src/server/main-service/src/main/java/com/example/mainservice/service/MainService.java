@@ -2,10 +2,10 @@ package com.example.mainservice.service;
 
 import com.example.mainservice.dto.*;
 import com.example.mainservice.entity.Category;
-import com.example.mainservice.entity.Live.Live;
-import com.example.mainservice.entity.Live.LiveRepository;
-import com.example.mainservice.entity.LiveViewer.LiveViewer;
-import com.example.mainservice.entity.LiveViewer.LiveViewerRepository;
+import com.example.mainservice.entity.Room.Room;
+import com.example.mainservice.entity.Room.RoomRepository;
+import com.example.mainservice.entity.RoomViewer.RoomViewer;
+import com.example.mainservice.entity.RoomViewer.RoomViewerRepository;
 import com.example.mainservice.entity.Notification.Notification;
 import com.example.mainservice.entity.Notification.NotificationRepository;
 import com.example.mainservice.entity.User.User;
@@ -35,22 +35,22 @@ public class MainService {
 
     private static final String RESPONSE_SUCCESS = "success";
     private final VideoRepository videoRepository;
-    private final LiveRepository liveRepository;
+    private final RoomRepository roomRepository;
     private final UserRepository userRepository;
     private final ViewedRepository viewedRepository;
-    private final LiveViewerRepository liveViewerRepository;
+    private final RoomViewerRepository liveRoomViewerRepository;
     private final NotificationRepository notificationRepository;
     private final ModelMapper mapper;
 
     @Transactional(readOnly = true)
-    public VideoListDto getHomeList(Category category, long lastVideoId, long lastLiveRoomId, int size) throws Exception{
-        List<VideoDto> videoDtos = getVideoList(category, lastVideoId, size);
-        List<LiveRoomDto> liveRoomDtos = getLiveRoomList(category, lastLiveRoomId, size);
-        VideoListDto videoListDto = new VideoListDto(videoDtos, liveRoomDtos);
-        return videoListDto;
+    public HomeListDto getHomeList(Category category, long lastVideoId, long lastLiveRoomId, int size) throws Exception{
+        List<VideoResponseDto> videoDtos = getVideoList(category, lastVideoId, size);
+        List<RoomResponseDto> roomDtos = getLiveRoomList(category, lastLiveRoomId, size);
+        HomeListDto homeListDto = new HomeListDto(videoDtos, roomDtos);
+        return homeListDto;
     }
 
-    private List<VideoDto> getVideoList(Category category, long lastId, int size) throws Exception{
+    private List<VideoResponseDto> getVideoList(Category category, long lastId, int size) throws Exception{
         Stream<Video> videoDtoStream = null;
         Pageable pageable = PageRequest.of(0, size);
         if (category == Category.ALL) {
@@ -68,29 +68,29 @@ public class MainService {
                 videoDtoStream = videoRepository.findAllByCategory(category, lastId, pageable).stream();
             }
         }
-        return videoDtoStream.map(video -> VideoDto.fromEntity(mapper, video))
+        return videoDtoStream.map(VideoResponseDto::new)
                 .collect(Collectors.toList());
     }
 
-    public List<LiveRoomDto> getLiveRoomList(Category category, long lastId, int size) throws Exception{
+    public List<RoomResponseDto> getLiveRoomList(Category category, long lastId, int size) throws Exception{
         Pageable pageable = PageRequest.of(0, size);
-        Stream<Live> liveRoomDtoStream = null;
+        Stream<Room> liveRoomDtoStream = null;
         if (category == Category.ALL) {
             if(lastId == -1){
-                liveRoomDtoStream = liveRepository.findAll(pageable).getContent().stream();
+                liveRoomDtoStream = roomRepository.findAll(pageable).getContent().stream();
             }
             else {
-                liveRoomDtoStream = liveRepository.findAll(lastId, pageable).getContent().stream();
+                liveRoomDtoStream = roomRepository.findAll(lastId, pageable).getContent().stream();
             }
         } else {
             if(lastId == -1){
-                liveRoomDtoStream = liveRepository.findAllByCategory(category, pageable).stream();
+                liveRoomDtoStream = roomRepository.findAllByCategory(category, pageable).stream();
             }
             else {
-                liveRoomDtoStream = liveRepository.findAllByCategory(category, lastId, pageable).stream();
+                liveRoomDtoStream = roomRepository.findAllByCategory(category, lastId, pageable).stream();
             }
         }
-        return liveRoomDtoStream.map(liveRoom -> LiveRoomDto.fromEntity(mapper, liveRoom))
+        return liveRoomDtoStream.map(RoomResponseDto::new)
                 .collect(Collectors.toList());
     }
     @Transactional(readOnly = true)
@@ -154,32 +154,32 @@ public class MainService {
     }
 
     private void actionToLiveRoom(VideoActionDto dto, boolean isCancel) throws Exception {
-        LiveViewer liveViewer = liveViewerRepository.findByLiveRoomIdAndUserUuid(dto.getUuid(), dto.getId())
+        RoomViewer roomViewer = liveRoomViewerRepository.findByLiveRoomIdAndUserUuid(dto.getUuid(), dto.getId())
                 .orElse(null);
         User user = userRepository.findByUuid(dto.getUuid()).orElseThrow(() -> new CustomMainException(ErrorCode.U002));
-        if (liveViewer == null) {
+        if (roomViewer == null) {
             user = userRepository.findByUuid(dto.getUuid())
                     .orElseThrow(() -> new CustomMainException(ErrorCode.U002));
-            Live live = liveRepository.findById(dto.getId())
+            Room room = roomRepository.findById(dto.getId())
                     .orElseThrow(() -> new CustomMainException(ErrorCode.L001));
-            liveViewer = new LiveViewer(user, live);
-            liveViewerRepository.save(liveViewer);
+            roomViewer = new RoomViewer(user, room);
+            liveRoomViewerRepository.save(roomViewer);
         }
-        Live live = liveViewer.getLive();
+        Room room = roomViewer.getRoom();
         if (dto.getAction() == VideoActionDto.ACTION.REPORT) {
-            live.addReportCnt(1);
+            room.addReportCnt(1);
         } else if (dto.getAction() == VideoActionDto.ACTION.LIKE) {
             if (isCancel) {
-                liveViewer.setLiked(false);
-                live.addLikeCnt(-1);
+                roomViewer.setLiked(false);
+                room.addLikeCnt(-1);
             } else {
-                liveViewer.setLiked(true);
-                live.addLikeCnt(1);
+                roomViewer.setLiked(true);
+                room.addLikeCnt(1);
 
             }
         } else if (dto.getAction() == VideoActionDto.ACTION.DISLIKE) {
-            if (isCancel) liveViewer.setDisliked(false);
-            else liveViewer.setDisliked(true);
+            if (isCancel) roomViewer.setDisliked(false);
+            else roomViewer.setDisliked(true);
         }
     }
 }

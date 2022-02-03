@@ -1,8 +1,8 @@
 package com.example.mainservice.entity.User;
 
 import com.example.mainservice.entity.FriendWait.FriendWait;
-import com.example.mainservice.entity.Live.Live;
-import com.example.mainservice.entity.LiveViewer.LiveViewer;
+import com.example.mainservice.entity.Room.Room;
+import com.example.mainservice.entity.RoomViewer.RoomViewer;
 import com.example.mainservice.entity.Notification.Notification;
 import com.example.mainservice.entity.Video.Video;
 import com.example.mainservice.entity.ViewdHistory.ViewedHistory;
@@ -67,7 +67,7 @@ public class User {
     private LocalDate lastAt;
 
     @OneToMany(mappedBy = "user")
-    private List<LiveViewer> liveViewers = new LinkedList<>();
+    private List<RoomViewer> roomViewers = new LinkedList<>();
 
     @OneToMany(mappedBy = "user")
     private List<Video> videos = new LinkedList<>();
@@ -76,7 +76,7 @@ public class User {
     private List<ViewedHistory> viewedHistories = new LinkedList<>();
 
     @OneToMany(mappedBy = "user")
-    private List<Live> lives = new ArrayList<>();
+    private List<Room> lives = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
     private List<Notification> notifications = new LinkedList<>();

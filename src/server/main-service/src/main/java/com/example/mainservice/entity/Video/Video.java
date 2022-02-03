@@ -27,28 +27,23 @@ public class Video {
     @Column(length = 100)
     private String title;
 
-    private String uploaderNickname;
-
     @Column(length = 5000)
     private String content;
 
+    @Column(columnDefinition="TEXT")
+    private String thumbnail;
+
     private int likeCnt;
+
+    private int hits;
+
+    private short reportCnt;
 
     @Enumerated(EnumType.STRING)
     @Column(length = 10)
     private Category category;
 
-    @Column(columnDefinition="TEXT")
-    private String thumbnail;
-    
-    private int hits;
-
-    private short reportCnt;
-
     private LocalDateTime createdAt;
-
-    @Column(length=36)
-    private String chatUuid;
 
     @ManyToOne
     @JoinColumn(name = "users_id")

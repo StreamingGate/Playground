@@ -1,6 +1,6 @@
-package com.example.mainservice.entity.LiveViewer;
+package com.example.mainservice.entity.RoomViewer;
 
-import com.example.mainservice.entity.Live.Live;
+import com.example.mainservice.entity.Room.Room;
 import com.example.mainservice.entity.User.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Entity
-public class LiveViewer {
+public class RoomViewer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,21 +22,21 @@ public class LiveViewer {
 
     private LocalDateTime likedAt;
 
-    private Long lastViewedAt; // ms단위
+    private LocalDateTime lastViewedAt;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "users_id")
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "live_room_id")
-    private Live live;
+    @JoinColumn(name = "room_id")
+    private Room room;
 
-    public LiveViewer(User user, Live live) {
+    public RoomViewer(User user, Room room) {
         this.user = user;
-        this.live = live;
-        user.getLiveViewers().add(this);
-        live.getLiveViewers().add(this);
+        this.room = room;
+        user.getRoomViewers().add(this);
+        room.getRoomViewers().add(this);
     }
 
     public void setLiked(boolean liked) {

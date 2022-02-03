@@ -16,7 +16,7 @@ public class ViewedHistory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDateTime viewedProgress;
+    private Long viewedProgress; // ms
 
     private boolean liked = false;
 

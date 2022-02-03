@@ -1,6 +1,6 @@
 package com.example.mainservice.entity.Notification;
 
-import com.example.mainservice.entity.Live.Live;
+import com.example.mainservice.entity.Room.Room;
 import com.example.mainservice.entity.User.User;
 import com.example.mainservice.entity.Video.Video;
 import lombok.Getter;
@@ -17,9 +17,9 @@ public enum NotiType {
         this.template = template;
     }
 
-    public static String getStreamingContent(User user, Live live) {
+    public static String getStreamingContent(User user, Room room) {
         return String.format(STREAMING.getTemplate(), user.getNickName(), user.getProfileImage(),
-                live.getTitle(), live.getId());
+                room.getTitle(), room.getId());
     }
 
     public static String getFriendRequestContent(User user) {
