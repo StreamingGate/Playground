@@ -16,11 +16,12 @@ function HomePage() {
     { id: 'KPOP', category: 'K-POP' },
     { id: 'EDU', category: '교육' },
   ]);
-  const [categoryToggle, setCategoryToggle] = useState([]);
+  const [categoryToggleState, setCategoryToggleStates] = useState([]);
   const [selectedCateogory, setSelectedCategory] = useState('ALL');
 
-  const { data, fetchNextPage } = useMainVideoList(selectedCateogory);
+  const { data, fetchNextPage, hasNextPage } = useMainVideoList(selectedCateogory);
 
+  console.log(hasNextPage);
   const observer = useInifinitScroll(fetchNextPage, {
     root: null,
     threshold: 0,
@@ -29,14 +30,16 @@ function HomePage() {
   useEffect(() => {
     const initCategoryToggle = new Array(categories.length).fill(false);
     initCategoryToggle[0] = true;
-    setCategoryToggle(initCategoryToggle);
+    setCategoryToggleStates(initCategoryToggle);
 
     if (scrollFlag.current) observer.observe(scrollFlag.current);
   }, []);
 
   const handleCategoryChipClick = selectedIdx => () => {
-    const newCategoryToggle = [...categoryToggle];
+    const newCategoryToggle = [...categoryToggleState];
+    let selectedCategoryIdx = -1;
 
+    // prevent ALL category from toggling
     if (selectedIdx === 0 && newCategoryToggle[selectedIdx]) {
       return;
     }
@@ -44,26 +47,27 @@ function HomePage() {
     if (newCategoryToggle[selectedIdx]) {
       newCategoryToggle[0] = true;
       newCategoryToggle[selectedIdx] = false;
+      selectedCategoryIdx = 0;
     } else {
       newCategoryToggle.forEach((_, idx) => {
         if (idx === selectedIdx) {
           newCategoryToggle[idx] = true;
+          selectedCategoryIdx = idx;
         } else {
           newCategoryToggle[idx] = false;
         }
       });
     }
-    setCategoryToggle(newCategoryToggle);
-    const categoryIdx = newCategoryToggle.findIndex(elem => elem);
-    setSelectedCategory(categories[categoryIdx].id);
+    setCategoryToggleStates(newCategoryToggle);
+    setSelectedCategory(categories[selectedCategoryIdx].id);
   };
 
   return (
     <>
       <CategorySlider
         categories={categories}
-        onClick={handleCategoryChipClick}
-        toggleState={categoryToggle}
+        onToggleCategory={handleCategoryChipClick}
+        toggleState={categoryToggleState}
       />
       <S.HomePageContainer>
         {data?.pages.map((group, i) => (
