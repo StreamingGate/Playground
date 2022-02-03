@@ -9,7 +9,7 @@ function Dialog({ open, onClose, maxWidth, children, zIndex }) {
   return (
     <>
       <BackDrop isOpen={open} onClick={onClose} zIndex={zIndex} />
-      <S.DialogContainer isOpen={open} zIndex={zIndex + 1}>
+      <S.DialogContainer isOpen={open} zIndex={zIndex + 1} onClick={onClose}>
         <S.DialogContent maxWidth={maxWidth}>{children}</S.DialogContent>
       </S.DialogContainer>
     </>
