@@ -1,18 +1,15 @@
 //
-//  NoticeListViewController.swift
+//  FriendRequestViewController.swift
 //  PlayGround
 //
-//  Created by chuiseo-MN on 2022/01/14.
+//  Created by chuiseo-MN on 2022/02/02.
 //
 
 import Foundation
 import UIKit
 
-class NoticeListViewController: UIViewController {
+class FriendRequestViewController: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var friendRequestButton: UIButton!
-    @IBOutlet weak var friendRequestCountView: UIView!
-    @IBOutlet weak var friendRequestCountLabel: UILabel!
     var navVC: HomeNavigationController?
     
     override func viewDidLoad() {
@@ -24,21 +21,14 @@ class NoticeListViewController: UIViewController {
     
     func setupUI() {
         titleLabel.font = UIFont.SubTitle
-        friendRequestButton.layer.cornerRadius = 20
-        friendRequestCountView.layer.cornerRadius = 10
     }
     
     @IBAction func backButtonDidTap(_ sender: Any) {
         navVC?.coordinator?.pop()
     }
-    
-    @IBAction func friendRequestButtonDidTap(_ sender: Any) {
-        guard let vc = UIStoryboard(name: "Notice", bundle: nil).instantiateViewController(withIdentifier: "FriendRequestViewController") as? FriendRequestViewController else { return }
-        self.navVC?.pushViewController(vc, animated: true)
-    }
 }
 
-extension NoticeListViewController: UITableViewDataSource, UITableViewDelegate {
+extension FriendRequestViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 40
     }

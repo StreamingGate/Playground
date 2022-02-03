@@ -40,7 +40,7 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "VideoListCell", for: indexPath) as? VideoListCell else { return UITableViewCell() }
-        cell.setupUI(indexPath.row, 0)
+        cell.setupUI(indexPath.row)
         cell.channelTapHandler = {
             self.navVC?.coordinator?.showChannel()
         }
@@ -48,7 +48,7 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        navVC?.coordinator?.showPlayer()
+        navVC?.coordinator?.showPlayer(info: nil)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
