@@ -15,7 +15,7 @@ export const ThumbNailContainer = styled.div`
   position: relative;
   z-index: -1;
   background-color: black;
-  min-height: 180px;
+  min-height: 200px;
 `;
 
 export const ThumbNail = styled.img`
@@ -70,7 +70,7 @@ export const ViedeoOverviewContainer = styled.li`
   display: flex;
   flex-direction: ${({ direction }) => (direction === 'vertical' ? 'column' : 'row')};
   gap: 10px;
-  max-width: ${({ direction }) => (direction === 'vertical' ? '400px' : 'none')};
+  max-width: ${({ direction }) => (direction === 'vertical' ? '450px' : 'none')};
 
   ${ThumbNailContainer} {
     ${({ direction }) =>
