@@ -13,7 +13,7 @@ struct HomeList: Codable {
     let categories: [String]
     
     enum CodingKeys: String, CodingKey {
-        case liveRooms
+        case liveRooms = "rooms"
         case videos
         case categories
     }
