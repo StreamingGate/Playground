@@ -16,7 +16,11 @@ import {
   MyVideo,
   LiveStreaming,
 } from '@components/cores';
-import { AcceptFriendModal, DeleteFriendModal } from '@components/feedbacks/Modals';
+import {
+  AcceptFriendModal,
+  DeleteFriendModal,
+  ModifyProfileModal,
+} from '@components/feedbacks/Modals';
 import SearchForm from './SearchForm';
 
 const dummyFriends = [
@@ -77,6 +81,8 @@ function BaseHeader() {
     if (buttonId === 'friendDelete') {
       const seletedName = dummyFriends[Number(friendIdx)].name;
       modalService.show(DeleteFriendModal, { friendName: seletedName });
+    } else if (buttonId === 'modifyProfile') {
+      modalService.show(ModifyProfileModal, { nickName: '이재윤' });
     }
   };
 
