@@ -3,21 +3,27 @@ import PropTypes from 'prop-types';
 
 import * as S from './DeleteFriendModal.style';
 import { modalService } from '@utils/service';
+import { useDeleteFriend } from '@utils/hook/query';
 
 import { Dialog } from '@components/feedbacks';
 import { Avatar } from '@components/dataDisplays';
 import { Typography } from '@components/cores';
 
-function DeleteFriendModal({ friendName }) {
+function DeleteFriendModal({ friendName, target, myId }) {
   const modal = modalService.useModal();
+  const { mutate } = useDeleteFriend();
 
-  const handleDeleteFriendModalClose = e => {
-    e.stopPropagation();
+  const handleCloseBtnClose = () => {
+    modal.hide();
+  };
+
+  const handleDeleteBtnClick = () => {
+    mutate({ target, myId });
     modal.hide();
   };
 
   return (
-    <Dialog open={modal.visible} zIndex={2} onClose={handleDeleteFriendModalClose}>
+    <Dialog open={modal.visible} zIndex={2} onClose={handleCloseBtnClose}>
       <S.DeleteFriendModalContainer onClick={e => e.stopPropagation()}>
         <S.DeleteFriendModalTitle>
           <Typography type='subtitle'>친구 삭제</Typography>
@@ -33,8 +39,10 @@ function DeleteFriendModal({ friendName }) {
             삭제됩니다.
           </Typography>
           <S.ActionContainer>
-            <S.CloseButton onClick={handleDeleteFriendModalClose}>취소</S.CloseButton>
-            <S.DeleteButton color='pgRed'>삭제</S.DeleteButton>
+            <S.CloseButton onClick={handleCloseBtnClose}>취소</S.CloseButton>
+            <S.DeleteButton color='pgRed' onClick={handleDeleteBtnClick}>
+              삭제
+            </S.DeleteButton>
           </S.ActionContainer>
         </S.DeleteFriendModalBody>
       </S.DeleteFriendModalContainer>
@@ -44,6 +52,8 @@ function DeleteFriendModal({ friendName }) {
 
 DeleteFriendModal.propTypes = {
   friendName: PropTypes.string.isRequired,
+  target: PropTypes.string.isRequired,
+  myId: PropTypes.string.isRequired,
 };
 
 export default modalService.create(DeleteFriendModal);
