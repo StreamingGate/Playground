@@ -29,6 +29,11 @@ class MyPageViewController: UIViewController {
         AppUtility.lockOrientation(.portrait)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        navVC?.coordinator?.resetTabBarHeight()
+    }
+    
     // MARK: - UI Setting
     func setupUI() {
         recentVideoTitleLabel.font = UIFont.Content
