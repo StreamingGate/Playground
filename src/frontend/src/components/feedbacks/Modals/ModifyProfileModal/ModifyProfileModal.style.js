@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 import { Typography } from '@components/cores';
 import { Button } from '@components/buttons';
+import { Input } from '@components/forms';
 
 export const ModifyProfileModalContainer = styled.div``;
 
@@ -17,6 +18,7 @@ export const ModifyProfileModalBody = styled.div`
 export const UserProfileContainer = styled.div`
   display: flex;
   justify-content: center;
+  cursor: pointer;
 `;
 
 export const UserProfile = styled.div`
@@ -29,6 +31,10 @@ export const UserProfile = styled.div`
 export const InputLabel = styled(Typography)`
   margin-top: 10px;
   color: ${({ theme }) => theme.colors.placeHolder};
+`;
+
+export const ProfileInput = styled(Input)`
+  padding-left: 0;
 `;
 
 export const ActionContainer = styled.div`
