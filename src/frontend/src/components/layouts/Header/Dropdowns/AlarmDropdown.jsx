@@ -1,22 +1,38 @@
 import React, { useContext } from 'react';
 
-import * as S from '../Header.style';
+import * as S from './Dropdown.style';
 import { MainLayoutContext } from '@utils/context';
 import { modalService } from '@utils/service';
-import { useGetFriendReqList } from '@utils/hook/query';
+import { useGetFriendReqList, useGetNotiList } from '@utils/hook/query';
 
 import { AcceptFriendModal } from '@components/feedbacks/Modals';
 import { Typography } from '@components/cores';
 
-const dummyAlarms = [
-  { id: 1, content: '김하늬님이 라이브 방송을 시작하셨습니다', time: '지금' },
-  { id: 2, content: '서채희님이 회원님의 비디오에 댓글을 남겼습니다', time: '1일' },
-  { id: 3, content: '이우재님이 회원님께 친구를 요청하셨습니다', time: '4일' },
-];
+function parseAlarm(alarm) {
+  const { notiType, content } = alarm;
+
+  const parsedContent = JSON.parse(content);
+  const { sender, profileImage } = parsedContent;
+
+  let message = '';
+  switch (notiType) {
+    case 'STREAMING':
+      message = `${sender}님이 실시간 스트리밍을 시작했습니다`;
+      break;
+    case 'FRIEND_REQUEST':
+      message = `${sender}님이 친구를 요청했습니다`;
+      break;
+    default:
+      message = `${sender}님이 '${parsedContent.title}'에 좋아요를 눌렀습니다`;
+      break;
+  }
+  return { message, profileImage };
+}
 
 function AlarmDropdown() {
   const { modalState } = useContext(MainLayoutContext);
   const { data: friendReqList } = useGetFriendReqList('33333333-1234-1234-123456789012');
+  const { data: notiList } = useGetNotiList('33333333-1234-1234-123456789012');
 
   const handleAlarmModalClick = e => {
     e.stopPropagation();
@@ -36,16 +52,21 @@ function AlarmDropdown() {
             <Typography>알림</Typography>
           </S.AlarmTitle>
           <S.AlarmBody>
-            <S.AcceptFriendBtn>친구 요청{friendReqList?.result.length}</S.AcceptFriendBtn>
+            <S.AcceptFriendBtnContainer>
+              <S.AcceptFriendBtn>친구 요청{friendReqList?.result.length}</S.AcceptFriendBtn>
+            </S.AcceptFriendBtnContainer>
             <S.AlarmList>
-              {dummyAlarms.map(alarm => (
-                <S.AlarmInfo key={alarm.id}>
-                  <S.AlarmAvartar size='sm' />
-                  <S.AlarmContent type='caption'>
-                    {alarm.content} <span>{alarm.time}</span>
-                  </S.AlarmContent>
-                </S.AlarmInfo>
-              ))}
+              {notiList?.result.map(alarm => {
+                const { message, profileImage } = parseAlarm(alarm);
+                return (
+                  <S.AlarmInfo key={alarm.id}>
+                    <S.AlarmAvartar size='sm' imgSrc={profileImage} />
+                    <S.AlarmContent type='caption'>
+                      {message} <span>{alarm.time}</span>
+                    </S.AlarmContent>
+                  </S.AlarmInfo>
+                );
+              })}
             </S.AlarmList>
           </S.AlarmBody>
         </S.AlarmDropdown>
