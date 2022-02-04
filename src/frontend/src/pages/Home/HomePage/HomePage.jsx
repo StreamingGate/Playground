@@ -71,7 +71,7 @@ function HomePage() {
       <S.HomePageContainer>
         {data?.pages.map((group, i) => (
           <Fragment key={i}>
-            {group.liveRooms.map(liveInfo => (
+            {group.rooms.map(liveInfo => (
               <VideoOverview key={`live_${liveInfo.id}`} isLive videoInfo={liveInfo} />
             ))}
             {group.videos.map(videoInfo => (
