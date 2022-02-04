@@ -7,5 +7,5 @@ const getFriendList = async uuid => {
 };
 
 export default function useFriendList(uuid) {
-  return useQuery('friends', () => getFriendList(uuid), { refetchOnWindowFocus: false });
+  return useQuery('friends', () => getFriendList(uuid));
 }
