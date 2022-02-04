@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 
 import * as S from './ChatDialog.style';
 
-function ChatDialog({ chatInfo, isAdmin }) {
-  const { profileImgSrc, timeStamp, userName, message } = chatInfo;
+function ChatDialog({ chatInfo }) {
+  const { timeStamp, nickname, message, senderRole } = chatInfo;
   return (
     <S.ChatDialogContainer>
       <S.ChatMetaContainer>
-        <S.ChatProfile size='md' isAdmin={isAdmin} />
+        <S.ChatProfile size='md' isAdmin={senderRole === 'STREAMER'} />
         <S.TimeStamp type='bottomTab'>{timeStamp}</S.TimeStamp>
-        <S.UserName type='highlightCaption'>{userName}</S.UserName>
+        <S.UserName type='highlightCaption'>{nickname}</S.UserName>
       </S.ChatMetaContainer>
       <S.Message>{message}</S.Message>
     </S.ChatDialogContainer>
@@ -21,14 +21,10 @@ ChatDialog.propTypes = {
   chatInfo: PropTypes.shape({
     profileImgSrc: PropTypes.string,
     timeStamp: PropTypes.instanceOf(Date),
-    userName: PropTypes.string,
+    nickname: PropTypes.string,
     message: PropTypes.string,
+    senderRole: PropTypes.oneOf(['STREAMER', 'VIEWER']),
   }).isRequired,
-  isAdmin: PropTypes.bool,
-};
-
-ChatDialog.defaultProps = {
-  isAdmin: false,
 };
 
 export default memo(ChatDialog);

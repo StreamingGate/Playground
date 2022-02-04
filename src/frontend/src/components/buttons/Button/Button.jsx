@@ -22,7 +22,7 @@ function Button({ className, variant, children, color, size, fullWidth, onClick,
 
 Button.propTypes = {
   className: PropTypes.string,
-  variant: PropTypes.oneOf(['contained', 'outlined']),
+  variant: PropTypes.oneOf(['contained', 'outlined', 'text']),
   children: PropTypes.node,
   color: PropTypes.oneOf(['youtubeRed', 'pgBlue', 'pgOrange']),
   size: PropTypes.oneOf(['sm', 'md', 'lg']),
