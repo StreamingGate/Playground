@@ -1,27 +1,32 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import * as S from './AcceptFriendModal.style';
 import { modalService } from '@utils/service';
+import { useHandleFriendReq, useGetFriendReqList } from '@utils/hook/query';
 
 import { Dialog } from '@components/feedbacks';
 import { Avatar } from '@components/dataDisplays';
 import { Typography } from '@components/cores';
 
-const dummyFriend = [
-  { id: 1, friendName: '김하늬' },
-  { id: 2, friendName: '서채희' },
-  { id: 3, friendName: '이우재' },
-  { id: 4, friendName: 'A' },
-  { id: 5, friendName: 'B' },
-  { id: 6, friendName: 'C' },
-];
-
-function AcceptFriendModal() {
+function AcceptFriendModal({ myId }) {
   const modal = modalService.useModal();
+
+  const { data: friendReqList } = useGetFriendReqList(myId);
+  const { mutate } = useHandleFriendReq();
 
   const handleAcceptFriendModalClose = e => {
     e.stopPropagation();
     modal.hide();
+  };
+
+  const handleReqActionBtnClick = friendUuid => e => {
+    const { target } = e;
+    if (target.id === 'accept') {
+      mutate({ type: 'accept', target: friendUuid, myId });
+    } else if (target.id === 'decline') {
+      mutate({ type: 'decline', target: friendUuid, myId });
+    }
   };
 
   return (
@@ -32,15 +37,17 @@ function AcceptFriendModal() {
         </S.AcceptFriendModalTitle>
         <S.AcceptFriendModalBody>
           <S.AcceptFriendList>
-            {dummyFriend.map(({ id, friendName }) => (
-              <S.AcceptFriend key={id}>
-                <Avatar size='sm' />
-                <Typography type='caption'>{friendName}</Typography>
-                <S.ActionContainer>
-                  <S.AcceptButton size='sm' color='pgBlue'>
+            {friendReqList?.result.map(({ uuid, nickname, profileImage }) => (
+              <S.AcceptFriend key={uuid}>
+                <Avatar size='sm' imgSrc={profileImage} />
+                <Typography type='caption'>{nickname}</Typography>
+                <S.ActionContainer onClick={handleReqActionBtnClick(uuid)}>
+                  <S.AcceptButton id='accept' size='sm' color='pgBlue'>
                     수락
                   </S.AcceptButton>
-                  <S.DeclineButton size='sm'>거절</S.DeclineButton>
+                  <S.DeclineButton id='decline' size='sm'>
+                    거절
+                  </S.DeclineButton>
                 </S.ActionContainer>
               </S.AcceptFriend>
             ))}
@@ -53,5 +60,9 @@ function AcceptFriendModal() {
     </Dialog>
   );
 }
+
+AcceptFriendModal.propTypes = {
+  myId: PropTypes.string.isRequired,
+};
 
 export default modalService.create(AcceptFriendModal);

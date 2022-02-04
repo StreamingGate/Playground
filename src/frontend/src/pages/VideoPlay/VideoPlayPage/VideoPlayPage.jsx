@@ -10,7 +10,8 @@ function VideoPlayPage() {
   const videoPlayerRef = useRef(null);
 
   useEffect(() => {
-    const videoSrc = process.env.REACT_APP_DUMMY_VIDEO;
+    // const videoSrc = process.env.REACT_APP_DUMMY_VIDEO;
+    const videoSrc = '';
     const hls = new Hls();
     hls.loadSource(videoSrc);
     hls.attachMedia(videoPlayerRef.current);
