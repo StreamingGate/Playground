@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import AVFoundation
+import MobileCoreServices
 
 class createInfoViewController: UIViewController {
     @IBOutlet weak var currentAccountLabel: UILabel!
@@ -34,6 +35,8 @@ class createInfoViewController: UIViewController {
     @IBOutlet weak var loadingViewTopMargin: NSLayoutConstraint!
     @IBOutlet weak var loadingViewBottomMargin: NSLayoutConstraint!
     
+    let imagePicker = UIImagePickerController()
+    var imageInfo: UIImage?
     
     let captureSession = AVCaptureSession()
     var videoDeviceInput: AVCaptureDeviceInput!
@@ -56,6 +59,11 @@ class createInfoViewController: UIViewController {
         super.viewDidLoad()
         guard let nav = self.navigationController as? CreateNavigationController else { return }
         navVC = nav
+        
+        imagePicker.delegate = self
+        imagePicker.sourceType = .photoLibrary
+        imagePicker.mediaTypes = [kUTTypeImage as String]
+        
         cameraView.session = captureSession
         sessionQueue.async {
             self.setupSession()
@@ -136,6 +144,10 @@ class createInfoViewController: UIViewController {
     @IBAction func tempButtonDidTap(_ sender: Any) {
         self.navVC?.coordinator?.startBroadcasting()
     }
+    
+    @IBAction func thumbnailButtonDidTap(_ sender: Any) {
+        self.present(imagePicker, animated: true, completion: nil)
+    }
 }
 
 
@@ -206,3 +218,13 @@ extension createInfoViewController {
         }
     }
 }
+
+extension createInfoViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        let imageInfo = info[UIImagePickerController.InfoKey.originalImage] as? UIImage
+        self.imageInfo = imageInfo
+        thumbnailImageView.image = imageInfo
+        imagePicker.dismiss(animated: true, completion: nil)
+    }
+}
+
