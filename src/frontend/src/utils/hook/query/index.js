@@ -5,3 +5,4 @@ export { default as useFriendList } from './useFriendList';
 export { default as useDeleteFriend } from './useDeleteFriend';
 export { default as useGetFriendReqList } from './useGetFriendReqList';
 export { default as useHandleFriendReq } from './useHandleFriendReq';
+export { default as useGetNotiList } from './useGetNotiList';
