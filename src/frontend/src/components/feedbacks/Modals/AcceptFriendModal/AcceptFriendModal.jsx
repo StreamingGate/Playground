@@ -8,15 +8,6 @@ import { Dialog } from '@components/feedbacks';
 import { Avatar } from '@components/dataDisplays';
 import { Typography } from '@components/cores';
 
-const dummyFriend = [
-  { id: 1, friendName: '김하늬' },
-  { id: 2, friendName: '서채희' },
-  { id: 3, friendName: '이우재' },
-  { id: 4, friendName: 'A' },
-  { id: 5, friendName: 'B' },
-  { id: 6, friendName: 'C' },
-];
-
 function AcceptFriendModal({ friendReqList }) {
   const modal = modalService.useModal();
 
