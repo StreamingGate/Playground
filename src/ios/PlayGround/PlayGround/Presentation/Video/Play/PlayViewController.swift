@@ -438,19 +438,21 @@ class PlayViewController: UIViewController {
     
     @IBAction func friendRequestButtonDidTap(_ sender: Any) {
         guard let info = viewModel.currentInfo, let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else { return }
-        if let target = info.hostNickname {
-            MainServiceAPI.shared.sendFriendRequest(uuid: uuid, target: target) { result in
-                if result["result"] as? String == "success" {
-                    print("성공")
-                }
-            }
-        } else if let target = info.uploaderNickname {
-            MainServiceAPI.shared.sendFriendRequest(uuid: uuid, target: target) { result in
-                if result["result"] as? String == "success" {
-                    print("성공")
-                }
-            }
-        }
+        // TODO: uuid 생기면 추가하기
+//        if let target = info.hostNickname {
+//            MainServiceAPI.shared.sendFriendRequest(uuid: uuid, target: target) { result in
+//                if result["result"] as? String == "success" {
+//                    print("성공: \(result)")
+//                }
+//            }
+//        } else if let target = info.uploaderNickname {
+//            MainServiceAPI.shared.sendFriendRequest(uuid: uuid, target: target) { result in
+//                if result["result"] as? String == "success" {
+//                    print("성공")
+//                    print("성공: \(result)")
+//                }
+//            }
+//        }
     }
     
     func setMiniPlayerAction() {
