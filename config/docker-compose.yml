@@ -26,8 +26,7 @@ services:
 
   user-service:
     container_name: user-service
-#    image: wodndl895/user-service:1.0
-    image: user-service:1.0
+    image: wodndl895/user-service:1.0
     environment:
       spring.datasource.url: jdbc:mariadb://pg-mariadb:3306/playground
       eureka.client.serviceUrl.defaultZone: http://service-discovery:8761/eureka/
@@ -75,8 +74,7 @@ services:
     networks:
       - sg-network
   apigateway-service:
-#    image: wodndl895/api-gateway:1.0
-    image: api-gateway:1.0
+    image: wodndl895/api-gateway:1.0
     ports:
       - "8000:8000"
     environment:
