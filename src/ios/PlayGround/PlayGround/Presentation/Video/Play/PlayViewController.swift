@@ -67,6 +67,8 @@ class PlayViewController: UIViewController {
     @IBOutlet weak var separatorView: UIView!
     @IBOutlet weak var stackView: UIStackView!
     @IBOutlet weak var explainContainerView: UIView!
+    @IBOutlet weak var friendRequestLabel: UILabel!
+    @IBOutlet weak var friendRequestButton: UIButton!
     
     // chatting
     @IBOutlet weak var chatSendButton: UIButton!
@@ -117,6 +119,11 @@ class PlayViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(adjustInputView), name: UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(playerDidFinishPlaying), name: .AVPlayerItemDidPlayToEndTime, object: nil)
         setupUI()
+        
+        // setting for mini player
+        setMiniPlayerlayout()
+        setMiniPlayerAction()
+        
         bindingData()
     }
     
@@ -194,6 +201,9 @@ class PlayViewController: UIViewController {
         miniChannelNameLabel.translatesAutoresizingMaskIntoConstraints = false
         miniPlayPauseButton.translatesAutoresizingMaskIntoConstraints = false
         miniCloseButton.translatesAutoresizingMaskIntoConstraints = false
+        friendRequestButton.setTitle("", for: .normal)
+        friendRequestLabel.font = UIFont.Content
+        // TODO: 내가 올린 영상일 경우, '친구 신청' 보이지 않도록
     }
     
     
@@ -244,10 +254,6 @@ class PlayViewController: UIViewController {
             guard let currentTime = self.playView.player?.currentTime() else { return }
             self.updateVideoPlayerState(currentTime: currentTime)
         })
-        
-        // setting for mini player
-        setMiniPlayerlayout()
-        setMiniPlayerAction()
     }
 
     @objc func playerDidFinishPlaying() {
@@ -381,7 +387,6 @@ class PlayViewController: UIViewController {
     }
     
     // MARK: - Button Action
-    
     @IBAction func likeButtonDidTap(_ sender: Any) {
         guard let info = viewModel.currentInfo, let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else { return }
         likeButton.isEnabled = false
@@ -410,6 +415,13 @@ class PlayViewController: UIViewController {
         }
     }
     
+    @IBAction func shareButtonDidTap(_ sender: Any) {
+        guard let url = URL(string: "naver.com") else { return }
+        let shareSheetVC = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+        present(shareSheetVC, animated: true, completion: nil)
+    }
+    
+    
     @IBAction func reportButtonDidTap(_ sender: Any) {
         guard let info = viewModel.currentInfo, let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else { return }
         reportButton.isEnabled = false
@@ -419,6 +431,23 @@ class PlayViewController: UIViewController {
                 self.reportButton.isEnabled = true
                 if result["result"] as? String == "success" {
                     // UI 변경 및 유저정보 업데이트
+                }
+            }
+        }
+    }
+    
+    @IBAction func friendRequestButtonDidTap(_ sender: Any) {
+        guard let info = viewModel.currentInfo, let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else { return }
+        if let target = info.hostNickname {
+            MainServiceAPI.shared.sendFriendRequest(uuid: uuid, target: target) { result in
+                if result["result"] as? String == "success" {
+                    print("성공")
+                }
+            }
+        } else if let target = info.uploaderNickname {
+            MainServiceAPI.shared.sendFriendRequest(uuid: uuid, target: target) { result in
+                if result["result"] as? String == "success" {
+                    print("성공")
                 }
             }
         }

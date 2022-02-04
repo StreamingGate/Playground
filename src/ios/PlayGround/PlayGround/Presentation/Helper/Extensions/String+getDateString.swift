@@ -24,9 +24,9 @@ extension String {
             return "\(differenceMin)분 전"
         } else if differenceMin <= 1440 {
             return "\(differenceHour)시간 전"
-        } else if differenceMonth <= 1 {
+        } else if differenceMonth < 1 {
             return "\(differenceDay)일 전"
-        } else if differenceYear <= 1 {
+        } else if differenceYear < 1 {
             return "\(differenceMonth)개월 전"
         } else {
             return "\(differenceYear)년 전"

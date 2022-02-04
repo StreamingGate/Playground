@@ -54,9 +54,7 @@ class HomeListViewController: UIViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        self.playerView.player?.pause()
-        self.playerView.player?.replaceCurrentItem(with: nil)
-        self.playerView.player = nil
+        self.pausePlayer()
     }
 
     // MARK: - Data Binding
@@ -89,6 +87,13 @@ class HomeListViewController: UIViewController {
        footerView.addSubview(spinner)
        spinner.startAnimating()
        return footerView
+    }
+    
+    // MARK: - Player Control
+    func pausePlayer() {
+        self.playerView.player?.pause()
+        self.playerView.player?.replaceCurrentItem(with: nil)
+        self.playerView.player = nil
     }
     
     // MARK: - Button Action
@@ -143,9 +148,11 @@ extension HomeListViewController: UICollectionViewDataSource, UICollectionViewDe
             self.tableView.scrollToRow(at: IndexPath(item: 0, section: 0), at: .top, animated: false)
         }
         self.viewModel.selectedCategory = viewModel.categories[indexPath.item]
+        
         // 카테고리 변경 시, 가장 최신 동영상부터 다시 로드
         self.viewModel.lastLiveId = -1
         self.viewModel.lastVideoId = -1
+        
         self.collectionView.reloadData()
     }
 }
@@ -167,9 +174,7 @@ extension HomeListViewController: UITableViewDataSource, UITableViewDelegate {
         }
         
         cell.channelTapHandler = {
-            self.playerView.player?.pause()
-            self.playerView.player?.replaceCurrentItem(with: nil)
-            self.playerView.player = nil
+            self.pausePlayer()
             self.navVC?.coordinator?.showChannel()
         }
         return cell
@@ -177,16 +182,12 @@ extension HomeListViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if middle == indexPath.row {
-            self.playerView.player?.pause()
-            self.playerView.player?.replaceCurrentItem(with: nil)
-            self.playerView.player = nil
+            self.pausePlayer()
         }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.playerView.player?.pause()
-        self.playerView.player?.replaceCurrentItem(with: nil)
-        self.playerView.player = nil
+        self.pausePlayer()
         self.navVC?.coordinator?.showPlayer(info: viewModel.homeList[indexPath.row])
     }
     
@@ -211,7 +212,7 @@ extension HomeListViewController: UITableViewDataSource, UITableViewDelegate {
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         guard let parent = self.navigationController?.parent as? CustomTabViewController else { return }
         if parent.children.contains(where: { ($0 as? PlayViewController) != nil }) {
-            self.playerView.player = nil
+            self.pausePlayer()
             return
         }
         if scrollView == tableView {

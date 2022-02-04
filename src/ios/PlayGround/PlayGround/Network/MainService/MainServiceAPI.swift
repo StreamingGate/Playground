@@ -68,7 +68,7 @@ struct MainServiceAPI {
             
             let responseJSON = try? JSONSerialization.jsonObject(with: resultData, options: [])
             if let result = responseJSON as? [String: Any] {
-                completion(result)
+                completion(["result": "success", "data": result])
             } else {
                 completion(["result": "failed"])
             }
@@ -94,7 +94,7 @@ struct MainServiceAPI {
             
             let responseJSON = try? JSONSerialization.jsonObject(with: resultData, options: [])
             if let result = responseJSON as? [String: Any] {
-                completion(result)
+                completion(["result": "success", "data": result])
             } else {
                 completion(["result": "failed"])
             }
@@ -123,8 +123,8 @@ struct MainServiceAPI {
             do {
                 let decoder = JSONDecoder()
                 decoder.dateDecodingStrategy = .millisecondsSince1970
-                let response = try decoder.decode(Notice.self, from: resultData)
-                completion(["result": "success", "data": response])
+                let response = try decoder.decode(NoticeResult.self, from: resultData)
+                completion(["result": "success", "data": response.result])
             } catch let error {
                 print("---> error while loading notification: \(error.localizedDescription)")
                 let responseJSON = try? JSONSerialization.jsonObject(with: resultData, options: [])
@@ -159,8 +159,8 @@ struct MainServiceAPI {
             do {
                 let decoder = JSONDecoder()
                 decoder.dateDecodingStrategy = .millisecondsSince1970
-                let response = try decoder.decode(Friend.self, from: resultData)
-                completion(["result": "success", "data": response])
+                let response = try decoder.decode(FriendResult.self, from: resultData)
+                completion(["result": "success", "data": response.result])
             } catch let error {
                 print("---> error while loading friends: \(error.localizedDescription)")
                 let responseJSON = try? JSONSerialization.jsonObject(with: resultData, options: [])
@@ -192,7 +192,7 @@ struct MainServiceAPI {
             
             let responseJSON = try? JSONSerialization.jsonObject(with: resultData, options: [])
             if let result = responseJSON as? [String: Any] {
-                completion(result)
+                completion(["result": "success", "data": result])
             } else {
                 completion(["result": "failed"])
             }
@@ -218,7 +218,7 @@ struct MainServiceAPI {
             
             let responseJSON = try? JSONSerialization.jsonObject(with: resultData, options: [])
             if let result = responseJSON as? [String: Any] {
-                completion(result)
+                completion(["result": "success", "data": result])
             } else {
                 completion(["result": "failed"])
             }
@@ -247,8 +247,8 @@ struct MainServiceAPI {
             do {
                 let decoder = JSONDecoder()
                 decoder.dateDecodingStrategy = .millisecondsSince1970
-                let response = try decoder.decode(Friend.self, from: resultData)
-                completion(["result": "success", "data": response])
+                let response = try decoder.decode(FriendResult.self, from: resultData)
+                completion(["result": "success", "data": response.result])
             } catch let error {
                 print("---> error while loading friend requests: \(error.localizedDescription)")
                 let responseJSON = try? JSONSerialization.jsonObject(with: resultData, options: [])
@@ -263,9 +263,9 @@ struct MainServiceAPI {
     }
     
     func acceptFriendRequest(friendUUID: String, myUUID: String, completion: @escaping ([String: Any])->Void) {
-        let url = URL(string: "\(mainServiceUrl)/friends/manage/\(friendUUID)")!
+        let url = URL(string: "\(mainServiceUrl)/friends/manage/\(myUUID)")!
         var request = URLRequest(url: url)
-        let postData : [String: Any] = ["sender": myUUID]
+        let postData : [String: Any] = ["sender": friendUUID]
         let jsonData = try? JSONSerialization.data(withJSONObject: postData)
         request.httpMethod = "POST"
         request.httpBody = jsonData
@@ -280,7 +280,8 @@ struct MainServiceAPI {
             
             let responseJSON = try? JSONSerialization.jsonObject(with: resultData, options: [])
             if let result = responseJSON as? [String: Any] {
-                completion(result)
+                print("==> \(result)")
+                completion(["result": "success", "data": result])
             } else {
                 completion(["result": "failed"])
             }
@@ -289,9 +290,9 @@ struct MainServiceAPI {
     }
     
     func deleteFriendRequest(friendUUID: String, myUUID: String, completion: @escaping ([String: Any])->Void) {
-        let url = URL(string: "\(mainServiceUrl)/friends/manage/\(friendUUID)")!
+        let url = URL(string: "\(mainServiceUrl)/friends/manage/\(myUUID)")!
         var request = URLRequest(url: url)
-        let postData : [String: Any] = ["sender": myUUID]
+        let postData : [String: Any] = ["sender": friendUUID]
         let jsonData = try? JSONSerialization.data(withJSONObject: postData)
         request.httpMethod = "DELETE"
         request.httpBody = jsonData
@@ -306,7 +307,7 @@ struct MainServiceAPI {
             
             let responseJSON = try? JSONSerialization.jsonObject(with: resultData, options: [])
             if let result = responseJSON as? [String: Any] {
-                completion(result)
+                completion(["result": "success", "data": result])
             } else {
                 completion(["result": "failed"])
             }

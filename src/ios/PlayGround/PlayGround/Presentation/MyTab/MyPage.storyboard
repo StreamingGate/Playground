@@ -548,6 +548,9 @@
                                                             </fragment>
                                                         </attributedString>
                                                     </buttonConfiguration>
+                                                    <connections>
+                                                        <action selector="deleteButtonDidTap:" destination="eRI-mA-P1Y" eventType="touchUpInside" id="DjT-uj-pzD"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <constraints>
@@ -627,6 +630,7 @@
                         <outlet property="logOutLabel" destination="z73-Fw-lOg" id="dIK-xU-nPd"/>
                         <outlet property="nicknameLabel" destination="jXy-br-oYP" id="MJ1-qH-4Pg"/>
                         <outlet property="profileImageView" destination="pZ6-Dd-07Q" id="5qj-wv-l2Y"/>
+                        <outlet property="tableView" destination="E9K-ES-qUN" id="upt-R5-Txo"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bOM-D8-WfT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
