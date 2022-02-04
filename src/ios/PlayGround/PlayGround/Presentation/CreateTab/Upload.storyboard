@@ -18,32 +18,24 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="stO-6l-wsa" customClass="CameraView" customModule="PlayGround" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
-                                <color key="backgroundColor" name="CustomDarkGray"/>
-                            </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dmd-nx-zg0">
-                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
-                                <color key="backgroundColor" red="0.33725738529999999" green="0.33725041150000001" blue="0.33725515010000001" alpha="0.80379278929999998" colorSpace="custom" customColorSpace="displayP3"/>
-                            </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZEN-lt-6e8">
-                                <rect key="frame" x="30" y="144" width="354" height="199"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZEN-lt-6e8" customClass="PlayerView" customModule="PlayGround" customModuleProvider="target">
+                                <rect key="frame" x="30" y="114" width="354" height="199"/>
                                 <color key="backgroundColor" name="PlaceHolder"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="ZEN-lt-6e8" secondAttribute="height" multiplier="16:9" id="wT4-fc-ZfZ"/>
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pS2-uW-sRw">
-                                <rect key="frame" x="30" y="144" width="354" height="199"/>
+                                <rect key="frame" x="30" y="114" width="354" height="199"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" image="camera_white"/>
                                 <connections>
-                                    <action selector="imagePickerButtonDidTap:" destination="b7o-xj-zRz" eventType="touchUpInside" id="jw3-ia-b8a"/>
+                                    <action selector="videoPickerButtonDidTap:" destination="b7o-xj-zRz" eventType="touchUpInside" id="BFd-Hy-bQi"/>
                                 </connections>
                             </button>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0F6-OY-UVN">
-                                <rect key="frame" x="30" y="383" width="354" height="479"/>
+                                <rect key="frame" x="30" y="353" width="354" height="509"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qhx-vM-mKd">
                                         <rect key="frame" x="0.0" y="0.0" width="354" height="559"/>
@@ -103,13 +95,18 @@
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1GO-eC-zm3">
                                                 <rect key="frame" x="0.0" y="312" width="137" height="91"/>
                                             </imageView>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="21N-ji-PZZ">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="21N-ji-PZZ">
                                                 <rect key="frame" x="0.0" y="312" width="137" height="91"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="137" id="glh-LS-HuQ"/>
                                                     <constraint firstAttribute="height" constant="91" id="iKF-x5-ddu"/>
                                                 </constraints>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal" image="camera_white"/>
+                                                <connections>
+                                                    <action selector="thumbnailButtonDidTap:" destination="b7o-xj-zRz" eventType="touchUpInside" id="Lf3-0v-jlY"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pHw-tY-DrG">
                                                 <rect key="frame" x="93" y="480" width="168" height="40"/>
@@ -163,69 +160,33 @@
                                 </constraints>
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SVI-oU-hyV">
-                                <rect key="frame" x="30" y="94" width="35" height="35"/>
+                                <rect key="frame" x="30" y="64" width="35" height="35"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="SVI-oU-hyV" secondAttribute="height" multiplier="1:1" id="28Z-m9-zUF"/>
                                     <constraint firstAttribute="width" constant="35" id="gaO-oG-yRu"/>
                                 </constraints>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" image="xMark_grayCircle"/>
+                                <connections>
+                                    <action selector="closeButtonDidTap:" destination="b7o-xj-zRz" eventType="touchUpInside" id="Nhx-b7-iui"/>
+                                </connections>
                             </button>
-                            <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8zI-P4-vBI">
-                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="실시간 스트리밍 시작 중..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zDe-9i-DhB">
-                                        <rect key="frame" x="120" y="526" width="174" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rjI-Xx-6ut">
-                                        <rect key="frame" x="172" y="666" width="70" height="40"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="40" id="LJ0-fj-WHh"/>
-                                            <constraint firstAttribute="width" constant="70" id="yK4-Y7-Huf"/>
-                                        </constraints>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" title="취소"/>
-                                    </button>
-                                </subviews>
-                                <color key="backgroundColor" red="0.2666666667" green="0.2666666667" blue="0.2666666667" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstItem="zDe-9i-DhB" firstAttribute="centerX" secondItem="8zI-P4-vBI" secondAttribute="centerX" id="IfT-VD-cwX"/>
-                                    <constraint firstItem="rjI-Xx-6ut" firstAttribute="top" secondItem="zDe-9i-DhB" secondAttribute="bottom" constant="119" id="VVH-pr-Z87"/>
-                                    <constraint firstItem="rjI-Xx-6ut" firstAttribute="centerX" secondItem="8zI-P4-vBI" secondAttribute="centerX" id="Yb3-J3-avE"/>
-                                    <constraint firstAttribute="bottom" secondItem="rjI-Xx-6ut" secondAttribute="bottom" constant="112" id="mfc-T7-4wc"/>
-                                </constraints>
-                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="t9U-Gw-wTi"/>
                         <color key="backgroundColor" name="CustomDarkGray"/>
                         <constraints>
                             <constraint firstItem="pS2-uW-sRw" firstAttribute="centerY" secondItem="ZEN-lt-6e8" secondAttribute="centerY" id="24V-e4-qNm"/>
-                            <constraint firstItem="Dmd-nx-zg0" firstAttribute="trailing" secondItem="stO-6l-wsa" secondAttribute="trailing" id="2sE-HI-ShW"/>
                             <constraint firstItem="SVI-oU-hyV" firstAttribute="leading" secondItem="t9U-Gw-wTi" secondAttribute="leading" constant="30" id="5v5-23-O04"/>
                             <constraint firstItem="pS2-uW-sRw" firstAttribute="centerX" secondItem="ZEN-lt-6e8" secondAttribute="centerX" id="D7Q-Jf-iKP"/>
                             <constraint firstItem="pS2-uW-sRw" firstAttribute="top" secondItem="ZEN-lt-6e8" secondAttribute="top" id="Ed5-LI-L8a"/>
-                            <constraint firstItem="ZEN-lt-6e8" firstAttribute="centerX" secondItem="8zI-P4-vBI" secondAttribute="centerX" id="FqW-yV-28o"/>
-                            <constraint firstItem="t9U-Gw-wTi" firstAttribute="trailing" secondItem="8zI-P4-vBI" secondAttribute="trailing" id="G6f-Jt-g1e"/>
                             <constraint firstItem="0F6-OY-UVN" firstAttribute="top" secondItem="ZEN-lt-6e8" secondAttribute="bottom" constant="40" id="GqZ-1j-OtF"/>
-                            <constraint firstItem="t9U-Gw-wTi" firstAttribute="bottom" secondItem="stO-6l-wsa" secondAttribute="bottom" id="OyS-TI-qDq"/>
-                            <constraint firstItem="ZEN-lt-6e8" firstAttribute="top" secondItem="t9U-Gw-wTi" secondAttribute="top" constant="100" id="QmU-L3-TYG"/>
+                            <constraint firstItem="ZEN-lt-6e8" firstAttribute="top" secondItem="t9U-Gw-wTi" secondAttribute="top" constant="70" id="QmU-L3-TYG"/>
                             <constraint firstItem="pS2-uW-sRw" firstAttribute="leading" secondItem="ZEN-lt-6e8" secondAttribute="leading" id="SDa-oP-wq1"/>
-                            <constraint firstItem="8zI-P4-vBI" firstAttribute="top" secondItem="t9U-Gw-wTi" secondAttribute="top" id="Zt9-Vx-hRD"/>
-                            <constraint firstItem="8zI-P4-vBI" firstAttribute="leading" secondItem="t9U-Gw-wTi" secondAttribute="leading" id="bDr-2z-NSq"/>
+                            <constraint firstItem="ZEN-lt-6e8" firstAttribute="centerX" secondItem="t9U-Gw-wTi" secondAttribute="centerX" id="ZYW-qc-NGO"/>
                             <constraint firstItem="t9U-Gw-wTi" firstAttribute="bottom" secondItem="0F6-OY-UVN" secondAttribute="bottom" id="bo8-76-NA9"/>
-                            <constraint firstItem="Dmd-nx-zg0" firstAttribute="bottom" secondItem="stO-6l-wsa" secondAttribute="bottom" id="dRZ-33-aix"/>
-                            <constraint firstItem="8zI-P4-vBI" firstAttribute="bottom" secondItem="t9U-Gw-wTi" secondAttribute="bottom" id="f7O-g5-co2"/>
-                            <constraint firstItem="Dmd-nx-zg0" firstAttribute="leading" secondItem="stO-6l-wsa" secondAttribute="leading" id="hYA-dU-Eqa"/>
                             <constraint firstItem="0F6-OY-UVN" firstAttribute="centerX" secondItem="t9U-Gw-wTi" secondAttribute="centerX" id="iFr-9v-84I"/>
-                            <constraint firstItem="t9U-Gw-wTi" firstAttribute="trailing" secondItem="stO-6l-wsa" secondAttribute="trailing" id="k6S-QC-zvA"/>
-                            <constraint firstItem="stO-6l-wsa" firstAttribute="leading" secondItem="t9U-Gw-wTi" secondAttribute="leading" id="lEl-hL-AhH"/>
-                            <constraint firstItem="SVI-oU-hyV" firstAttribute="top" secondItem="t9U-Gw-wTi" secondAttribute="top" constant="50" id="rA7-Lx-UbK"/>
+                            <constraint firstItem="SVI-oU-hyV" firstAttribute="top" secondItem="t9U-Gw-wTi" secondAttribute="top" constant="20" id="rA7-Lx-UbK"/>
                             <constraint firstItem="ZEN-lt-6e8" firstAttribute="leading" secondItem="t9U-Gw-wTi" secondAttribute="leading" constant="30" id="sfG-IR-ACF"/>
-                            <constraint firstItem="Dmd-nx-zg0" firstAttribute="top" secondItem="stO-6l-wsa" secondAttribute="top" id="wKY-xr-m4l"/>
-                            <constraint firstItem="stO-6l-wsa" firstAttribute="top" secondItem="t9U-Gw-wTi" secondAttribute="top" id="zDU-LG-Ps2"/>
                             <constraint firstItem="0F6-OY-UVN" firstAttribute="leading" secondItem="t9U-Gw-wTi" secondAttribute="leading" constant="30" id="zMY-tx-cQa"/>
                         </constraints>
                     </view>
@@ -236,12 +197,13 @@
                         <outlet property="closeButton" destination="SVI-oU-hyV" id="s7m-Rp-1bX"/>
                         <outlet property="detailTitleLabel" destination="Vd4-ig-78e" id="YUr-0z-Y8e"/>
                         <outlet property="explainTextView" destination="S6i-Tb-6B0" id="lbZ-xy-hOZ"/>
-                        <outlet property="imagePickerButton" destination="pS2-uW-sRw" id="g0G-kH-Kbu"/>
+                        <outlet property="playerView" destination="ZEN-lt-6e8" id="rEc-sX-hAU"/>
                         <outlet property="thumbnailButton" destination="21N-ji-PZZ" id="Fhg-bE-f0u"/>
                         <outlet property="thumbnailImageTitleLabel" destination="aNZ-2n-ctA" id="liV-nJ-WP9"/>
                         <outlet property="thumbnailImageView" destination="1GO-eC-zm3" id="X2u-GP-g2v"/>
                         <outlet property="titleTextView" destination="t59-ur-2vA" id="TP1-zZ-5Jq"/>
                         <outlet property="uploadButton" destination="pHw-tY-DrG" id="Bvg-L4-aTI"/>
+                        <outlet property="videoPickerButton" destination="pS2-uW-sRw" id="v6V-72-dY9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XY3-yt-Uyb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

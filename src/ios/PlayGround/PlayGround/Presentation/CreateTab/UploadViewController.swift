@@ -8,10 +8,12 @@
 import Foundation
 import UIKit
 import MobileCoreServices
+import AVFoundation
 
 class UploadViewController: UIViewController {
     let imagePicker = UIImagePickerController()
-    @IBOutlet weak var imagePickerButton: UIButton!
+    let videoPicker = UIImagePickerController()
+    @IBOutlet weak var videoPickerButton: UIButton!
     @IBOutlet weak var detailTitleLabel: UILabel!
     @IBOutlet weak var titleTextView: UITextView!
     @IBOutlet weak var explainTextView: UITextView!
@@ -23,18 +25,28 @@ class UploadViewController: UIViewController {
     @IBOutlet weak var thumbnailButton: UIButton!
     @IBOutlet weak var uploadButton: UIButton!
     @IBOutlet weak var closeButton: UIButton!
-    
+    @IBOutlet weak var playerView: PlayerView!
+    let player = AVPlayer()
+    var navVC: CreateNavigationController?
     var videoInfo: NSURL?
+    var imageInfo: UIImage?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        guard let nav = self.navigationController as? CreateNavigationController else { return }
+        navVC = nav
+        videoPicker.delegate = self
+        videoPicker.sourceType = .photoLibrary
+        videoPicker.mediaTypes = [kUTTypeMovie as String]
         imagePicker.delegate = self
         imagePicker.sourceType = .photoLibrary
-        imagePicker.mediaTypes = [kUTTypeMovie as String]
-        imagePickerButton.setTitle("", for: .normal)
+        imagePicker.mediaTypes = [kUTTypeImage as String]
+        setupUI()
     }
     
     func setupUI() {
+        videoPickerButton.setTitle("", for: .normal)
+        
         closeButton.setTitle("", for: .normal)
         
         detailTitleLabel.font = UIFont.Content
@@ -71,17 +83,40 @@ class UploadViewController: UIViewController {
         uploadButton.backgroundColor = UIColor.PGOrange
         uploadButton.titleLabel?.font = UIFont.SubTitle
         uploadButton.layer.cornerRadius = 20
+        
+        playerView.layer.cornerRadius = 10
     }
     
-    @IBAction func imagePickerButtonDidTap(_ sender: Any) {
+    @IBAction func videoPickerButtonDidTap(_ sender: Any) {
+        self.present(videoPicker, animated: true, completion: nil)
+    }
+    
+    @IBAction func thumbnailButtonDidTap(_ sender: Any) {
         self.present(imagePicker, animated: true, completion: nil)
+    }
+    
+    @IBAction func closeButtonDidTap(_ sender: Any) {
+        self.navVC?.coordinator?.dismiss()
     }
 }
 
 extension UploadViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        let videoURL = info[UIImagePickerController.InfoKey.mediaURL] as? NSURL
-        self.videoInfo = videoURL
-        imagePicker.dismiss(animated: true, completion: nil)
+        if picker == videoPicker {
+            let videoURL = info[UIImagePickerController.InfoKey.mediaURL] as? NSURL
+            self.videoInfo = videoURL
+            let avAsset = AVURLAsset(url: videoURL! as URL)
+            let item = AVPlayerItem(asset: avAsset)
+            self.player.replaceCurrentItem(with: item)
+            playerView.player = self.player
+            playerView.player?.play()
+            videoPicker.dismiss(animated: true, completion: nil)
+        } else {
+            let imageInfo = info[UIImagePickerController.InfoKey.originalImage] as? UIImage
+            self.imageInfo = imageInfo
+            thumbnailImageView.image = imageInfo
+            imagePicker.dismiss(animated: true, completion: nil)
+        }
     }
 }
+
