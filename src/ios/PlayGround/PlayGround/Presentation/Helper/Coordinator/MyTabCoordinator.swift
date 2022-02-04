@@ -21,7 +21,7 @@ class MyTabCoordinator: Coordinator {
     func start() {
         DispatchQueue.main.async {
             guard let tabVC = self.parentCoordinator?.navigation.viewControllers.last as? CustomTabViewController else { return }
-            tabVC.selectedTanIndex = 2
+            tabVC.selectedTabIndex = 2
             tabVC.removeChildViewController()
             tabVC.addChild(self.navigation)
             tabVC.containerView.addSubview((self.navigation.view)!)
