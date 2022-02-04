@@ -21,7 +21,7 @@ class HomeViewModel {
     
     func loadAllList() {
         isLoading = true
-        MainServiceAPI.shared.getAllList(lastVideoId: lastVideoId, lastLiveId: lastLiveId, category: selectedCategory) { result in
+        MainServiceAPI.shared.getAllList(lastVideoId: lastVideoId, lastLiveId: lastLiveId, category: selectedCategory, size: (lastLiveId == -1 && lastVideoId == -1 ? 10 : 5)) { result in
             if result["result"] as? String == "success" {
                 guard let data = result["data"] as? HomeList else { return }
                 var addedList = data.liveRooms

@@ -13,9 +13,9 @@ struct MainServiceAPI {
     
     let mainServiceUrl = "http://\(GatewayManager.shared.gatewayAddress)/main-service"
     
-    func getAllList(lastVideoId: Int, lastLiveId: Int, category: String, completion: @escaping ([String: Any])->Void) {
+    func getAllList(lastVideoId: Int, lastLiveId: Int, category: String, size: Int, completion: @escaping ([String: Any])->Void) {
         // infinite scroll 테스트를 위해 size 2로 설정
-        let original = "\(mainServiceUrl)/list?last-video=\(lastVideoId)&last-live=\(lastLiveId)&size=2&category=\(category)"
+        let original = "\(mainServiceUrl)/list?last-video=\(lastVideoId)&last-live=\(lastLiveId)&size=\(size)&category=\(category)"
         
         guard let target = original.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
             print("error encoding")
