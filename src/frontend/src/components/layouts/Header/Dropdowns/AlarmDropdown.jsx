@@ -22,7 +22,9 @@ function AlarmDropdown() {
     e.stopPropagation();
     const { target } = e;
     if (target.tagName === 'BUTTON') {
-      modalService.show(AcceptFriendModal, { friendReqList });
+      modalService.show(AcceptFriendModal, {
+        myId: '33333333-1234-1234-123456789012',
+      });
     }
   };
 

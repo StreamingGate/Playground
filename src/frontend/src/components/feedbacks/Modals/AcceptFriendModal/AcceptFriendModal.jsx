@@ -3,17 +3,30 @@ import PropTypes from 'prop-types';
 
 import * as S from './AcceptFriendModal.style';
 import { modalService } from '@utils/service';
+import { useHandleFriendReq, useGetFriendReqList } from '@utils/hook/query';
 
 import { Dialog } from '@components/feedbacks';
 import { Avatar } from '@components/dataDisplays';
 import { Typography } from '@components/cores';
 
-function AcceptFriendModal({ friendReqList }) {
+function AcceptFriendModal({ myId }) {
   const modal = modalService.useModal();
+
+  const { data: friendReqList } = useGetFriendReqList(myId);
+  const { mutate } = useHandleFriendReq();
 
   const handleAcceptFriendModalClose = e => {
     e.stopPropagation();
     modal.hide();
+  };
+
+  const handleReqActionBtnClick = friendUuid => e => {
+    const { target } = e;
+    if (target.id === 'accept') {
+      mutate({ type: 'accept', target: friendUuid, myId });
+    } else if (target.id === 'decline') {
+      mutate({ type: 'decline', target: friendUuid, myId });
+    }
   };
 
   return (
@@ -28,11 +41,13 @@ function AcceptFriendModal({ friendReqList }) {
               <S.AcceptFriend key={uuid}>
                 <Avatar size='sm' imgSrc={profileImage} />
                 <Typography type='caption'>{nickname}</Typography>
-                <S.ActionContainer>
-                  <S.AcceptButton size='sm' color='pgBlue'>
+                <S.ActionContainer onClick={handleReqActionBtnClick(uuid)}>
+                  <S.AcceptButton id='accept' size='sm' color='pgBlue'>
                     수락
                   </S.AcceptButton>
-                  <S.DeclineButton size='sm'>거절</S.DeclineButton>
+                  <S.DeclineButton id='decline' size='sm'>
+                    거절
+                  </S.DeclineButton>
                 </S.ActionContainer>
               </S.AcceptFriend>
             ))}
@@ -47,7 +62,7 @@ function AcceptFriendModal({ friendReqList }) {
 }
 
 AcceptFriendModal.propTypes = {
-  friendReqList: PropTypes.object.isRequired,
+  myId: PropTypes.string.isRequired,
 };
 
 export default modalService.create(AcceptFriendModal);
