@@ -30,7 +30,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                 return onError(exchange,"You don't have authorization header", HttpStatus.UNAUTHORIZED);
             }
             String authorizationHeader =  request.getHeaders().get(org.apache.http.HttpHeaders.AUTHORIZATION).get(0);
-            String jwt = authorizationHeader.replace("Bearer","");
+            String jwt = authorizationHeader.replace("Bearer ","");
             if (!isJwtValid(jwt)) {
                 return onError(exchange,"JWT is not valid", HttpStatus.UNAUTHORIZED);
             }
@@ -44,21 +44,22 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
         return response.setComplete();
     }
     private boolean isJwtValid(String jwt) {
+        boolean res = true;
         try {
-            Claims accessClaims = Jwts.parser().setSigningKey("token_secret")
+            Claims accessClaims = Jwts.parser().setSigningKey("token_secret".getBytes())
                     .parseClaimsJws(jwt)
                     .getBody();
-            return true;
         }
         catch (ExpiredJwtException exception) {
-            return false;
+            res = false;
         }
         catch (JwtException exception) {
-            return false;
+            res = false;
         }
         catch (NullPointerException exception) {
-            return false;
+            res = false;
         }
+        return res;
     }
 
 }

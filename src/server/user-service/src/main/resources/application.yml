@@ -11,7 +11,7 @@ spring:
     name: user-service
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     show-sql: true
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
