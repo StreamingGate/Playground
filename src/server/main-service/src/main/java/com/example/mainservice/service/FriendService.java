@@ -4,10 +4,9 @@ import com.example.mainservice.dto.FriendDto;
 import com.example.mainservice.dto.FriendWaitDto;
 import com.example.mainservice.entity.FriendWait.FriendWait;
 import com.example.mainservice.entity.FriendWait.FriendWaitRepository;
-import com.example.mainservice.entity.Notification.NotiType;
 import com.example.mainservice.entity.Notification.Notification;
 import com.example.mainservice.entity.Notification.NotificationRepository;
-import com.example.mainservice.entity.User.UserEntity;
+import com.example.mainservice.entity.User.User;
 import com.example.mainservice.entity.User.UserRepository;
 import com.example.mainservice.exceptionHandler.customexception.CustomMainException;
 import com.example.mainservice.exceptionHandler.customexception.ErrorCode;
@@ -22,8 +21,6 @@ import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static com.example.mainservice.exceptionHandler.customexception.ErrorCode.F003;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -42,7 +39,7 @@ public class FriendService {
 
     @Transactional(readOnly = true)
     public List<FriendDto> getFriendList(String uuid) throws Exception {
-        UserEntity user = userRepository.findByUuid(uuid).orElseThrow(() -> new CustomMainException(ErrorCode.U002));
+        User user = userRepository.findByUuid(uuid).orElseThrow(() -> new CustomMainException(ErrorCode.U002));
         return user.getFriends().stream()
                 .map(friend -> FriendDto.from(friend))
                 .collect(Collectors.toList());
@@ -50,8 +47,8 @@ public class FriendService {
 
     @Transactional
     public String requestFriend(String uuid, String targetUuid) throws Exception {
-        UserEntity user = userRepository.findByUuid(uuid).orElseThrow(() -> new CustomMainException(ErrorCode.U002));
-        UserEntity target = userRepository.findByUuid(targetUuid).orElseThrow(() -> new CustomMainException(ErrorCode.U002));
+        User user = userRepository.findByUuid(uuid).orElseThrow(() -> new CustomMainException(ErrorCode.U002));
+        User target = userRepository.findByUuid(targetUuid).orElseThrow(() -> new CustomMainException(ErrorCode.U002));
 
         // 이미 친구인지 확인
         if (target.getFriends().contains(user)) throw new CustomMainException(ErrorCode.F003);
@@ -74,15 +71,15 @@ public class FriendService {
 
     @Transactional
     public String deleteFriend(String uuid, String targetUuid) throws Exception {
-        UserEntity user = userRepository.findByUuid(uuid).orElseThrow(() -> new CustomMainException(ErrorCode.U002));
-        UserEntity target = userRepository.findByUuid(targetUuid).orElseThrow(() -> new CustomMainException(ErrorCode.U002));
+        User user = userRepository.findByUuid(uuid).orElseThrow(() -> new CustomMainException(ErrorCode.U002));
+        User target = userRepository.findByUuid(targetUuid).orElseThrow(() -> new CustomMainException(ErrorCode.U002));
         user.deleteFriend(target);
         return target.getUuid();
     }
 
     @Transactional(readOnly = true)
     public List<FriendWaitDto> getFriendWaitList(String uuid) throws Exception {
-        UserEntity user = userRepository.findByUuid(uuid).orElseThrow(() -> new CustomMainException(ErrorCode.U002));
+        User user = userRepository.findByUuid(uuid).orElseThrow(() -> new CustomMainException(ErrorCode.U002));
         return user.getFriendWaits().stream()
                 .map(FriendWaitDto::new)
                 .collect(Collectors.toList());
@@ -90,8 +87,8 @@ public class FriendService {
 
     @Transactional
     public String allowFriendRequest(String uuid, String senderUuid) throws Exception {
-        UserEntity user = userRepository.findByUuid(uuid).orElseThrow(() -> new CustomMainException(ErrorCode.U002));
-        UserEntity sender = userRepository.findByUuid(senderUuid).orElseThrow(() -> new CustomMainException(ErrorCode.U002));
+        User user = userRepository.findByUuid(uuid).orElseThrow(() -> new CustomMainException(ErrorCode.U002));
+        User sender = userRepository.findByUuid(senderUuid).orElseThrow(() -> new CustomMainException(ErrorCode.U002));
 
         // FriendWait에서 row 삭제
         FriendWait friendWait = user.getFriendWaits().stream()
@@ -110,7 +107,7 @@ public class FriendService {
 
     @Transactional
     public String refuseFriendRequest(String uuid, String senderUuid) throws Exception {
-        UserEntity user = userRepository.findByUuid(uuid).orElseThrow(() -> new CustomMainException(ErrorCode.U002));
+        User user = userRepository.findByUuid(uuid).orElseThrow(() -> new CustomMainException(ErrorCode.U002));
 
         // FriendWait에서 row 삭제
         FriendWait friendWait = user.getFriendWaits().stream()

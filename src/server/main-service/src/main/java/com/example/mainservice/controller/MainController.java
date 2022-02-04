@@ -1,6 +1,6 @@
 package com.example.mainservice.controller;
 
-import com.example.mainservice.dto.VideoListDto;
+import com.example.mainservice.dto.HomeListDto;
 import com.example.mainservice.dto.NotificationDto;
 import com.example.mainservice.dto.VideoActionDto;
 import com.example.mainservice.entity.Category;
@@ -27,10 +27,10 @@ public class MainController {
      * </pre>
      */
     @GetMapping("/list")
-    public ResponseEntity<VideoListDto> getHomeList(@RequestParam("category") String category,
-                                                    @RequestParam("last-video") long lastVideoId,
-                                                    @RequestParam("last-live") long lastLiveRoomId,
-                                                    @RequestParam("size") int size) throws Exception {
+    public ResponseEntity<HomeListDto> getHomeList(@RequestParam("category") String category,
+                                                   @RequestParam("last-video") long lastVideoId,
+                                                   @RequestParam("last-live") long lastLiveRoomId,
+                                                   @RequestParam("size") int size) throws Exception {
         return ResponseEntity.ok(mainService.getHomeList(Category.valueOf(category), lastVideoId, lastLiveRoomId, size));
     }
 

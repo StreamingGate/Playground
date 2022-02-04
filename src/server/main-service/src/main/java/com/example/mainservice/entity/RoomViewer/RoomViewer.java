@@ -1,7 +1,7 @@
-package com.example.mainservice.entity.ViewdHistory;
+package com.example.mainservice.entity.RoomViewer;
 
+import com.example.mainservice.entity.Room.Room;
 import com.example.mainservice.entity.User.User;
-import com.example.mainservice.entity.Video.Video;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,12 +11,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Entity
-public class ViewedHistory {
+public class RoomViewer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private Long viewedProgress; // ms
 
     private boolean liked = false;
 
@@ -27,23 +25,23 @@ public class ViewedHistory {
     private LocalDateTime lastViewedAt;
 
     @ManyToOne
-    @JoinColumn(name = "video_id")
-    private Video video;
-
-    @ManyToOne
     @JoinColumn(name = "users_id")
     private User user;
 
-    public ViewedHistory(User user, Video video) {
+    @ManyToOne
+    @JoinColumn(name = "room_id")
+    private Room room;
+
+    public RoomViewer(User user, Room room) {
         this.user = user;
-        this.video = video;
-        user.getViewedHistories().add(this);
-        video.getViewedHistories().add(this);
+        this.room = room;
+        user.getRoomViewers().add(this);
+        room.getRoomViewers().add(this);
     }
 
     public void setLiked(boolean liked) {
         this.liked = liked;
-        this.likedAt = liked? LocalDateTime.now(): null;
+        this.likedAt = LocalDateTime.now();
     }
 
     public void setDisliked(boolean disliked) {

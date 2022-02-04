@@ -1,8 +1,8 @@
 package com.example.mainservice.entity.User;
 
 import com.example.mainservice.entity.FriendWait.FriendWait;
-import com.example.mainservice.entity.LiveRoom.LiveRoom;
-import com.example.mainservice.entity.LiveViewer.LiveViewer;
+import com.example.mainservice.entity.Room.Room;
+import com.example.mainservice.entity.RoomViewer.RoomViewer;
 import com.example.mainservice.entity.Notification.Notification;
 import com.example.mainservice.entity.Video.Video;
 import com.example.mainservice.entity.ViewdHistory.ViewedHistory;
@@ -15,13 +15,15 @@ import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 @Slf4j
 @NoArgsConstructor
 @Getter
 @Entity(name = "users")
-public class UserEntity {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -64,22 +66,22 @@ public class UserEntity {
     @Column
     private LocalDate lastAt;
 
-    @OneToMany(mappedBy = "userEntity")
-    private List<LiveViewer> liveViewers = new LinkedList<>();
+    @OneToMany(mappedBy = "user")
+    private List<RoomViewer> roomViewers = new LinkedList<>();
 
-    @OneToMany(mappedBy = "userEntity")
+    @OneToMany(mappedBy = "user")
     private List<Video> videos = new LinkedList<>();
 
-    @OneToMany(mappedBy = "userEntity")
+    @OneToMany(mappedBy = "user")
     private List<ViewedHistory> viewedHistories = new LinkedList<>();
 
-    @OneToMany(mappedBy = "userEntity")
-    private List<LiveRoom> liveRooms = new ArrayList<>();
+    @OneToMany(mappedBy = "user")
+    private List<Room> lives = new ArrayList<>();
 
-    @OneToMany(mappedBy = "userEntity")
+    @OneToMany(mappedBy = "user")
     private List<Notification> notifications = new LinkedList<>();
 
-    @OneToMany(mappedBy = "userEntity")
+    @OneToMany(mappedBy = "user")
     private List<FriendWait> friendWaits = new LinkedList<>();
 
     /**
@@ -91,22 +93,22 @@ public class UserEntity {
             joinColumns = @JoinColumn(name = "users_id"),
             inverseJoinColumns = @JoinColumn(name = "friend_id")
     )
-    private List<UserEntity> friends = new ArrayList<>();
+    private List<User> friends = new ArrayList<>();
 
     @ManyToMany(mappedBy = "friends") //나를 친구로 추가한 사람들
-    private List<UserEntity> beFriend = new ArrayList<>();
+    private List<User> beFriend = new ArrayList<>();
     /**
      * ================================
      **/
 
-    public void addFriend(UserEntity target) throws CustomMainException {
+    public void addFriend(User target) throws CustomMainException {
         if (target == null || target == this) return;
         if (friends.contains(target)) throw new CustomMainException(ErrorCode.F003);
         this.friends.add(target);
         target.getFriends().add(this);
     }
 
-    public void deleteFriend(UserEntity target) throws CustomMainException {
+    public void deleteFriend(User target) throws CustomMainException {
         if (target == null || target == this) return;
         if (!friends.contains(target)) throw new CustomMainException(ErrorCode.F004);
         this.friends.remove(target);

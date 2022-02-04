@@ -1,12 +1,12 @@
 package com.example.mainservice.entity.User;
 
-import java.util.Optional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository extends JpaRepository<UserEntity,Long> {
-    Optional<UserEntity> findByEmail(String email);
-    Optional<UserEntity> findByNickName(String nickName);
-    Optional<UserEntity> findByUuid(String uuid);
-    Optional<UserEntity> findByNameAndEmail(String name,String email);
+import java.util.Optional;
+
+public interface UserRepository extends JpaRepository<User,Long> {
+    Optional<User> findByEmail(String email);
+    Optional<User> findByNickName(String nickName);
+    Optional<User> findByUuid(String uuid);
+    Optional<User> findByNameAndEmail(String name, String email);
 }
