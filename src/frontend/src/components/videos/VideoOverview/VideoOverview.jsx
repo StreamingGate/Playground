@@ -1,17 +1,23 @@
-import React, { useCallback, memo } from 'react';
+import React, { useEffect, useState, useCallback, memo } from 'react';
 import PropTypes from 'prop-types';
 
 import * as S from './VideoOverview.style';
+import ThumbNailDummy from '@assets/image/ThumbNailDummy.jpg';
 
 import { Avatar } from '@components/dataDisplays';
 
-function VideoOverview({ direction, isLibrary, videoInfo }) {
-  const { thumbNailSrc, title, userName, content, viewCount, createdAt, isRealTime } = videoInfo;
+function VideoOverview({ direction, isLibrary, videoInfo, isLive }) {
+  const { thumbnail, title, uploaderNickname, hostNickname, content, hits, createdAt } = videoInfo;
+
+  const [userName, setUserName] = useState('');
+  useEffect(() => {
+    setUserName(uploaderNickname || hostNickname);
+  }, [uploaderNickname, hostNickname]);
 
   const renderVideoInfo = useCallback(() => {
     const NumberDataComponent = (
       <>
-        <S.VideoCaption type='caption'>조회수 {viewCount}회</S.VideoCaption>
+        <S.VideoCaption type='caption'>조회수 {hits}회</S.VideoCaption>
         <S.VideoCaption type='caption'>{createdAt}</S.VideoCaption>
       </>
     );
@@ -25,7 +31,7 @@ function VideoOverview({ direction, isLibrary, videoInfo }) {
             ) : (
               <>
                 <S.VideoCaption type='caption'>{userName}</S.VideoCaption>
-                <S.VideoCaption type='caption'>조회수 {viewCount}회</S.VideoCaption>
+                <S.VideoCaption type='caption'>조회수 {hits}회</S.VideoCaption>
               </>
             )}
           </S.VideoMetaContainer>
@@ -33,19 +39,24 @@ function VideoOverview({ direction, isLibrary, videoInfo }) {
         </>
       );
     }
-    return (
+    return !isLive ? (
       <>
         <S.VideoCaption type='caption'>{userName}</S.VideoCaption>
         <S.VideoMetaContainer>{NumberDataComponent}</S.VideoMetaContainer>
       </>
+    ) : (
+      <S.VideoMetaContainer>
+        <S.VideoCaption type='caption'>{userName}</S.VideoCaption>
+        <S.VideoCaption type='caption'>{createdAt}</S.VideoCaption>
+      </S.VideoMetaContainer>
     );
-  }, [direction]);
+  }, [direction, userName]);
 
   return (
     <S.ViedeoOverviewContainer direction={direction}>
       <S.ThumbNailContainer>
-        <img src={thumbNailSrc} alt='thumbnail' />
-        {isRealTime && <S.RealTimeIcon />}
+        <S.ThumbNail src={thumbnail} alt='thumbnail' />
+        {isLive && <S.RealTimeIcon />}
       </S.ThumbNailContainer>
       <S.VideoInfoContainer>
         {direction === 'vertical' && (
@@ -65,21 +76,23 @@ function VideoOverview({ direction, isLibrary, videoInfo }) {
 VideoOverview.propTypes = {
   direction: PropTypes.oneOf(['horizontal', 'vertical']),
   isLibrary: PropTypes.bool,
+  isLive: PropTypes.bool,
   videoInfo: PropTypes.shape({
-    thumbNailSrc: PropTypes.string.isRequired,
+    thumbnail: PropTypes.string.isRequired,
     profileImgSrc: PropTypes.string,
     title: PropTypes.string.isRequired,
-    userName: PropTypes.string.isRequired,
-    viewCount: PropTypes.number.isRequired,
+    uploaderNickname: PropTypes.string,
+    hostNickname: PropTypes.string,
+    hits: PropTypes.number,
     content: PropTypes.string,
     createdAt: PropTypes.instanceOf(Date).isRequired,
-    isRealTime: PropTypes.bool,
   }).isRequired,
 };
 
 VideoOverview.defaultProps = {
   direction: 'vertical',
   isLibrary: false,
+  isLive: false,
 };
 
 export default memo(VideoOverview);

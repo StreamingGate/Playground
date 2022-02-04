@@ -16,23 +16,43 @@ const Input = forwardRef((props, ref) => {
     fontSize,
     fullWidth,
     onChange,
+    multiLine,
+    maxLength,
     ...rest
   } = props;
   return (
     <S.InputContainer>
-      <S.Input
-        className={className}
-        ref={ref}
-        type={type}
-        placeholder={placeholder}
-        value={value}
-        size={size}
-        variant={variant}
-        fullWidth={fullWidth}
-        fontSize={fontSize}
-        onChange={onChange}
-        {...rest}
-      />
+      {multiLine ? (
+        <S.TextArea
+          className={className}
+          ref={ref}
+          type={type}
+          placeholder={placeholder}
+          value={value}
+          size={size}
+          variant={variant}
+          fullWidth={fullWidth}
+          fontSize={fontSize}
+          onChange={onChange}
+          rows='1'
+          maxLength={maxLength}
+          {...rest}
+        />
+      ) : (
+        <S.Input
+          className={className}
+          ref={ref}
+          type={type}
+          placeholder={placeholder}
+          value={value}
+          size={size}
+          variant={variant}
+          fullWidth={fullWidth}
+          fontSize={fontSize}
+          onChange={onChange}
+          {...rest}
+        />
+      )}
       {error && <S.HelperText type='caption'>{helperText}</S.HelperText>}
     </S.InputContainer>
   );
@@ -59,6 +79,8 @@ Input.propTypes = {
     'bottomTab',
   ]),
   fullWidth: PropTypes.bool,
+  multiLine: PropTypes.bool,
+  maxLength: PropTypes.number,
   onChange: PropTypes.func,
 };
 
@@ -73,6 +95,8 @@ Input.defaultProps = {
   variant: 'outlined',
   fontSize: 'content',
   fullWidth: false,
+  multiLine: false,
+  maxLength: 524288,
   onChange: undefined,
 };
 

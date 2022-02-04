@@ -1,45 +1,121 @@
-import React, { useContext } from 'react';
-import PropTypes from 'prop-types';
+import React, { useEffect, useContext, useState, useRef } from 'react';
 
-import S from './SideFriendList.style';
+import * as S from './SideFriendList.style';
 import { MainLayoutContext } from '@utils/context';
 
 import FriendItem from './FriendItem';
 import { BackDrop } from '@components/feedbacks';
 
-function SideFriendList({ friends }) {
-  const { sideFriendState, onToggleSideFriend } = useContext(MainLayoutContext);
+const dummyFriends = [
+  { isOnline: false, profileImgSrc: '', name: '김하늬' },
+  { isOnline: false, profileImgSrc: '', name: '서채희' },
+  { isOnline: false, profileImgSrc: '', name: '이우재' },
+  { isOnline: false, profileImgSrc: '', name: 'Daniel Radcliffe' },
+  { isOnline: false, profileImgSrc: '', name: 'Emma Watson' },
+  { isOnline: false, profileImgSrc: '', name: 'Tom Holland' },
+  { isOnline: false, profileImgSrc: '', name: 'Rupert Grint' },
+  { isOnline: false, profileImgSrc: '', name: '황예지' },
+  { isOnline: false, profileImgSrc: '', name: '강슬기' },
+  { isOnline: false, profileImgSrc: '', name: '차정원' },
+  { isOnline: false, profileImgSrc: '', name: '신류진' },
+  { isOnline: false, profileImgSrc: '', name: '이이경' },
+  { isOnline: false, profileImgSrc: '', name: 'A' },
+  { isOnline: false, profileImgSrc: '', name: 'B' },
+  { isOnline: false, profileImgSrc: '', name: 'C' },
+  { isOnline: false, profileImgSrc: '', name: 'D' },
+  { isOnline: false, profileImgSrc: '', name: 'E' },
+  { isOnline: false, profileImgSrc: '', name: 'F' },
+  { isOnline: false, profileImgSrc: '', name: 'G' },
+  { isOnline: false, profileImgSrc: '', name: 'H' },
+  { isOnline: false, profileImgSrc: '', name: 'I' },
+  { isOnline: false, profileImgSrc: '', name: 'J' },
+];
+
+function SideFriendList() {
+  const friendModalRef = useRef(null);
+  const { sideFriendState, onToggleSideFriend, onToggleModal, modalState } =
+    useContext(MainLayoutContext);
+
+  const [selectedFriendIdx, setSelectedFriendIdx] = useState(-1);
+  const [friendBottomPos, setFriendBottomPos] = useState(0);
+  const [isFriendModalToggle, setFriendModalToggle] = useState(false);
+
+  const handleFriendModalClose = () => {
+    setFriendModalToggle(false);
+  };
+
+  useEffect(() => {
+    if (isFriendModalToggle) {
+      window.addEventListener('click', handleFriendModalClose);
+    }
+    return () => {
+      window.removeEventListener('click', handleFriendModalClose);
+    };
+  }, [isFriendModalToggle]);
+
+  const handleFriendItemClick = idx => e => {
+    const { currentTarget } = e;
+    const friendModalHeight = friendModalRef.current.getBoundingClientRect().height;
+    const currentTargetPos = currentTarget.getBoundingClientRect();
+
+    if (modalState.friend && selectedFriendIdx === idx) {
+      setSelectedFriendIdx(idx);
+      onToggleModal(e);
+    } else {
+      if (idx === dummyFriends.length - 1) {
+        setFriendBottomPos(currentTargetPos.bottom - friendModalHeight);
+      } else {
+        setFriendBottomPos(
+          currentTargetPos.y + currentTargetPos.height / 2 - friendModalHeight / 2
+        );
+      }
+      onToggleModal(e);
+      setSelectedFriendIdx(idx);
+    }
+  };
+
+  const handleViewWithFriendBtnClick = e => {
+    e.stopPropagation();
+  };
+
   return (
     <>
       <BackDrop
         isOpen={sideFriendState.open && sideFriendState.backdrop}
         onClick={onToggleSideFriend}
+        zIndex={2}
       />
       <S.SideFriendListContainer state={sideFriendState}>
         <S.SideFriendListHeader type='highlightCaption'>친구 목록</S.SideFriendListHeader>
         <S.FriendList>
-          {friends.map(({ isOnline, profileImgSrc, name }) => (
+          {dummyFriends.map(({ isOnline, profileImgSrc, name }, idx) => (
             // 추후 profileImgSrc로 변경
-            <FriendItem key={name} isOnline={isOnline} profileImgSrc={profileImgSrc} name={name} />
+            <FriendItem
+              key={name}
+              dataSet='friend'
+              isOnline={isOnline}
+              profileImgSrc={profileImgSrc}
+              name={name}
+              onClick={handleFriendItemClick(idx)}
+            />
           ))}
         </S.FriendList>
+        <S.FriendModalContainer
+          ref={friendModalRef}
+          top={friendBottomPos}
+          isShow={modalState.friend}
+          onClick={handleViewWithFriendBtnClick}
+        >
+          <S.FriendAvatar size='lg' />
+          <S.FriendModalRightDiv>
+            <S.FriendModalName type='highlightCaption'>친구이름</S.FriendModalName>
+            <S.FriendVideoName type='caption'>시청 중인 영상제목</S.FriendVideoName>
+            <S.PlayWithFriendBtn>영상 같이 시청하기</S.PlayWithFriendBtn>
+          </S.FriendModalRightDiv>
+        </S.FriendModalContainer>
       </S.SideFriendListContainer>
     </>
   );
 }
-
-SideFriendList.propTypes = {
-  friends: PropTypes.arrayOf(
-    PropTypes.shape({
-      isOnline: PropTypes.bool,
-      profileImgSrc: PropTypes.string,
-      name: PropTypes.string,
-    })
-  ),
-};
-
-SideFriendList.defaultProps = {
-  friends: [],
-};
 
 export default SideFriendList;

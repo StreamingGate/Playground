@@ -3,7 +3,7 @@ import React, { useState, useMemo } from 'react';
 import { HeaderContext } from '@utils/context';
 import { breakPoint } from '@utils/constant';
 import { useWindowSize } from '@utils/hook';
-import S from './Header.style';
+import * as S from './Header.style';
 
 import BaseHeader from './BaseHeader';
 import SearchBar from './SearchBar';

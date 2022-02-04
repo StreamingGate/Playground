@@ -30,6 +30,7 @@ const colors = {
   placeHolder: '#999999',
   separator: '#E5E5E5',
   background: '#F3F3F3',
+  pgRed: '#ED2123',
   pgOrange: '#FFBD13',
   pgBlue: '#4286F5',
   pgMint: '#93E9F4',
