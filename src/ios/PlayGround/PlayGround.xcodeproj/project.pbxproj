@@ -36,6 +36,7 @@
 		4935FD42277C0E4D00760675 /* ChattingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4935FD41277C0E4D00760675 /* ChattingViewController.swift */; };
 		4935FD44277C0ED100760675 /* ChatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4935FD43277C0ED100760675 /* ChatCell.swift */; };
 		4957CBBB27ACEA8C00554967 /* Friend.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4957CBBA27ACEA8B00554967 /* Friend.storyboard */; };
+		4957CBBE27AD4B4800554967 /* UILabel+PartOfTextColorChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4957CBBD27AD4B4800554967 /* UILabel+PartOfTextColorChange.swift */; };
 		496279D627828BB3005A2BDC /* PlayExplainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496279D527828BB3005A2BDC /* PlayExplainViewController.swift */; };
 		496279D827829516005A2BDC /* MyPageNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496279D727829516005A2BDC /* MyPageNavigationController.swift */; };
 		496279DA278297C2005A2BDC /* VideoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496279D9278297C2005A2BDC /* VideoListViewController.swift */; };
@@ -134,6 +135,7 @@
 		4935FD41277C0E4D00760675 /* ChattingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChattingViewController.swift; sourceTree = "<group>"; };
 		4935FD43277C0ED100760675 /* ChatCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCell.swift; sourceTree = "<group>"; };
 		4957CBBA27ACEA8B00554967 /* Friend.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Friend.storyboard; sourceTree = "<group>"; };
+		4957CBBD27AD4B4800554967 /* UILabel+PartOfTextColorChange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+PartOfTextColorChange.swift"; sourceTree = "<group>"; };
 		496279D527828BB3005A2BDC /* PlayExplainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayExplainViewController.swift; sourceTree = "<group>"; };
 		496279D727829516005A2BDC /* MyPageNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageNavigationController.swift; sourceTree = "<group>"; };
 		496279D9278297C2005A2BDC /* VideoListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoListViewController.swift; sourceTree = "<group>"; };
@@ -399,6 +401,7 @@
 				49B9C9EF277AEF4E006AE134 /* UIColor+CustomColor.swift */,
 				49B9C9F1277AF018006AE134 /* UIFont+CustomFont.swift */,
 				492C622B27954F9800AE546E /* UIView+takeScreenshot.swift */,
+				4957CBBD27AD4B4800554967 /* UILabel+PartOfTextColorChange.swift */,
 				49F0213D2799505400684A25 /* UIViewController+SimpleAlert.swift */,
 			);
 			path = Extensions;
@@ -743,6 +746,7 @@
 				49EC9A06278205D200DE4F79 /* UIView+RoundCorners.swift in Sources */,
 				490770A52797F7A300ADD8E8 /* ErrorCodeConverter.swift in Sources */,
 				490770A32797EA7A00ADD8E8 /* KeyChainWrapper+Key.swift in Sources */,
+				4957CBBE27AD4B4800554967 /* UILabel+PartOfTextColorChange.swift in Sources */,
 				49E72FF727A253DA00DFBCC3 /* DataHelper.swift in Sources */,
 				492C62212795323700AE546E /* CreateTabCoordinator.swift in Sources */,
 				492C621B279531F200AE546E /* AccountEditCoordinator.swift in Sources */,
