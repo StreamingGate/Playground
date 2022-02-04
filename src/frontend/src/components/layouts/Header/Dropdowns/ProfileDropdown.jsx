@@ -18,11 +18,14 @@ function ProfileDropdown() {
     const button = target.closest('button');
 
     if (!button) return;
-    const [buttonId, friendIdx] = button.id.split('_');
+    const [buttonId, uuid, nickname] = button.id.split('_');
 
     if (buttonId === 'friendDelete') {
-      const seletedName = friendList[Number(friendIdx)].name;
-      modalService.show(DeleteFriendModal, { friendName: seletedName });
+      modalService.show(DeleteFriendModal, {
+        friendName: nickname,
+        target: uuid,
+        myId: '33333333-1234-1234-123456789012',
+      });
     } else if (buttonId === 'modifyProfile') {
       modalService.show(ModifyProfileModal, { nickName: '이재윤' });
     }
@@ -52,7 +55,7 @@ function ProfileDropdown() {
                 <S.FriendInfo key={uuid}>
                   <S.FriendAvatar tyep='sm' imgSrc={profileImage} />
                   <S.FriendName type='caption'>{nickname}</S.FriendName>
-                  <S.FriendDeleteBtn id={`friendDelete_${uuid}`} variant='text'>
+                  <S.FriendDeleteBtn id={`friendDelete_${uuid}_${nickname}`} variant='text'>
                     삭제
                   </S.FriendDeleteBtn>
                 </S.FriendInfo>
