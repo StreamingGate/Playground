@@ -461,6 +461,7 @@ class PlayViewController: UIViewController {
     }
     
     @objc func miniCLoseButtonDidTap() {
+        chatTextView.resignFirstResponder()
         coordinator?.closeMiniPlayer(vc: self)
     }
     
@@ -496,6 +497,7 @@ class PlayViewController: UIViewController {
     }
     
     @IBAction func explainStretchButtonDidTap(_ sender: Any) {
+        chatTextView.resignFirstResponder()
         coordinator?.showExplain(vc: self)
     }
     
@@ -669,10 +671,12 @@ class PlayViewController: UIViewController {
     
     // MARK: - PlayView layout change
     func setPlayViewOriginalSize() {
+        chatTextView.resignFirstResponder()
         coordinator?.setPlayViewOriginalSize(vc: self)
     }
     
     func setPlayViewMinimizing() {
+        chatTextView.resignFirstResponder()
         coordinator?.setPlayMinimizing(vc: self)
     }
 }
