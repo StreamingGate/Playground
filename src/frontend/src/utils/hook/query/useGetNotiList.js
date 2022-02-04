@@ -7,5 +7,5 @@ const getNotiList = async uuid => {
 };
 
 export default function useGetNotiList(uuid) {
-  return useQuery('notifications', () => getNotiList(uuid));
+  return useQuery('notifications', () => getNotiList(uuid), { refetchOnWindowFocus: false });
 }
