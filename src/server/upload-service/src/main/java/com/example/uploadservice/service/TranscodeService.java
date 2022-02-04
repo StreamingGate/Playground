@@ -12,12 +12,16 @@ import net.bramp.ffmpeg.builder.FFmpegBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+
 @Slf4j
 @RequiredArgsConstructor
 @Service
 public class TranscodeService {
-//    S3_DOMAIN/{bucket}/{inputDir}/test.mp4
+
     private static final String S3_DOMAIN="https://s3.ap-northeast-2.amazonaws.com";
+    private static final String DEFAULT_VIDEO_FILE = "video.mp4";
+    private static final String DEFAULT_VIDEO_NAME = "video";
 
     @Value("${cloud.aws.s3.image.bucket}")
     private String bucket;
@@ -31,18 +35,17 @@ public class TranscodeService {
     private final AmazonS3 amazonS3;
 
     /**
-     * @param rawFilename with s3 directory, ext(mp4)
+     * @param videoUuid with s3 directory, ext(mp4)
      */
-    public UploadResponseDto convertMp4ToTs(String rawFilename) {
-        final String INPUT_FILEPATH = S3_DOMAIN+"/"+bucket+"/"+inputDir+"/"+rawFilename;
+    public UploadResponseDto convertMp4ToTs(String videoUuid) {
+        final String INPUT_FILEPATH = S3_DOMAIN+"/"+bucket+"/"+inputDir+"/"+videoUuid+"/" + DEFAULT_VIDEO_FILE;
         final String OUTPUT_FILEPATH = "C:\\Projects\\Playground\\bin";
-        final String FILENAME = rawFilename.split("\\.")[0];
-        final String EXT = rawFilename.split("\\.")[1];
+//        final String FILENAME = rawFilename.split("\\.")[0];
+//        final String EXT = rawFilename.split("\\.")[1];
         log.info("inputFilename:" + INPUT_FILEPATH);
 
         try {
-            if(EXT.equals("mp4")) {
-                S3Object s3Object = amazonS3.getObject(bucket, inputDir+"/"+rawFilename);
+                S3Object s3Object = amazonS3.getObject(bucket, inputDir+"/"+videoUuid+"/"+DEFAULT_VIDEO_FILE);
                 if (s3Object == null) return null;
                 FFmpeg ffmpeg = new FFmpeg("C:\\Program Files\\ffmpeg-5.0-essentials_build\\bin\\ffmpeg.exe");       //C:\Projects\Playground\bin\ffmpeg.exe
                 FFprobe ffprobe = new FFprobe("C:\\Program Files\\ffmpeg-5.0-essentials_build\\bin\\ffprobe.exe");   //C:\Projects\Playground\bin\ffprobe.exe
@@ -51,7 +54,7 @@ public class TranscodeService {
                 FFmpegBuilder builder = new FFmpegBuilder()
                         .overrideOutputFiles(true) // 오버라이드 여부
                         .setInput(INPUT_FILEPATH) // 동영상파일
-                        .addOutput(OUTPUT_FILEPATH + "/" + FILENAME + ".m3u8")
+                        .addOutput(OUTPUT_FILEPATH + "/" + DEFAULT_VIDEO_NAME + ".m3u8")
                         .addExtraArgs("-profile:v", "baseline")
                         .addExtraArgs("-level", "3.0")
                         .addExtraArgs("-start_number", "0")
@@ -74,9 +77,9 @@ public class TranscodeService {
                 FFmpegExecutor executorThumbNail = new FFmpegExecutor(ffmpeg, ffprobe);
                 executorThumbNail.createJob(builderThumbNail).run();
 
-            }
-            return new UploadResponseDto(OUTPUT_FILEPATH +"/"+ FILENAME + ".m3u8",
-                    OUTPUT_FILEPATH +"/"+ FILENAME + ".ts",
+
+            return new UploadResponseDto(OUTPUT_FILEPATH +"/"+ DEFAULT_VIDEO_NAME + ".m3u8",
+                    OUTPUT_FILEPATH +"/"+ DEFAULT_VIDEO_NAME + ".ts",
                     OUTPUT_FILEPATH + "/"+"thumbnail" + ".png");
         } catch (Exception e) {
             e.printStackTrace();

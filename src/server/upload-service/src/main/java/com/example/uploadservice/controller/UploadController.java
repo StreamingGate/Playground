@@ -40,13 +40,17 @@ public class UploadController {
     public ResponseEntity<String> video(@RequestPart(value = "video") MultipartFile multipartFileVideo,
                                         @RequestPart(value = "thumbnail", required = false) MultipartFile multipartFileThumbnail,
                                         @RequestPart(value = "data") UploadRequestDto dto) {
-        log.info("multipartFile come....");
+        log.info("upload api start....");
 
         /* TODO VideoService*/
-        Long videoId = videoService.add(dto);
-        String inputSavedDir = uploadService.uploadRawFile(videoId, multipartFileVideo, multipartFileThumbnail);
-        UploadResponseDto uploadResponseDto = transcodeService.convertMp4ToTs(inputSavedDir);
+        String videoUuid = uploadService.uploadRawFile(multipartFileVideo, multipartFileThumbnail);
+        log.info("1.uploaded RawFile....");
+        UploadResponseDto uploadResponseDto = transcodeService.convertMp4ToTs(videoUuid);
+        log.info("2.converted Mp4ToTs....");
         String result = uploadService.uploadTranscodedFile(uploadResponseDto);
+        log.info("3.uploaded TranscodedFile....");
+        Long videoId = videoService.add(dto);
+        log.info("4.added videoService....");
 
         return ResponseEntity.ok(result);
     }

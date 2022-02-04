@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.UUID;
 
 /**
  * Uplaod video file into AWS S3
@@ -24,6 +25,8 @@ import java.io.InputStream;
 public class UploadService {
 
     private static final String[] ALLOWED_EXT = new String[]{"mp4"};
+    private static final String DEFAULT_VIDEO_NAME = "video";
+    private static final String DEFAULT_THUMBNAIL_NAME = "thumbnail";
 
     @Value("${cloud.aws.s3.image.bucket}")
     private String bucket;
@@ -41,16 +44,32 @@ public class UploadService {
      * @param multipartFileVideo
      * @return saved directory
      */
-    public String uploadRawFile(Long videoId, MultipartFile multipartFileVideo, MultipartFile multipartFileThumbnail) {
-        final String INPUT_FILEPATH = inputDir + "/" + videoId+"/"+multipartFileVideo.getOriginalFilename(); /* TODO revise filename to video pk */
-        final String EXT = INPUT_FILEPATH.substring(INPUT_FILEPATH.lastIndexOf(".") + 1);
-        if(!isAllowedExt(EXT)) return null;
+    public String uploadRawFile(MultipartFile multipartFileVideo, MultipartFile multipartFileThumbnail) {
+        final String videoUuid = createUuid();
 
         // upload video, thumbnail
-        upload(multipartFileVideo, INPUT_FILEPATH);
-        upload(multipartFileThumbnail, INPUT_FILEPATH);
+        String fileLink = getKey(multipartFileVideo, videoUuid);
+        String thumbnailLink = getKey(multipartFileThumbnail, videoUuid);
+        log.info("fileLink:" + fileLink);
+        log.info("thumbnailLink:" + thumbnailLink);
+        upload(multipartFileVideo, fileLink);
+        upload(multipartFileThumbnail, thumbnailLink);
 
-        return multipartFileVideo.getOriginalFilename();
+        return videoUuid;
+    }
+
+    private String createUuid(){
+        return UUID.randomUUID().toString();
+    }
+
+    /**
+     * rename key(s3 path)
+     */
+    public String getKey(MultipartFile multipartFile, String videoUuid){
+        String originalFilename =multipartFile.getOriginalFilename();
+        String ext = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
+        if(ext.equals("mp4")) return videoUuid+"/"+ DEFAULT_VIDEO_NAME +"."+ext;
+        else return videoUuid+"/"+DEFAULT_THUMBNAIL_NAME+"."+ext;
     }
 
     public void upload(MultipartFile multipartFile, String key){
