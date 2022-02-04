@@ -23,7 +23,8 @@ class CustomTabViewController: UIViewController {
     @IBOutlet weak var myTabImageView: UIImageView!
     @IBOutlet weak var CreateTabImageView: UIImageView!
     @IBOutlet weak var myTabLabel: UILabel!
-    @IBOutlet weak var containerView: UIView!
+    @IBOutlet weak var homeContainerView: UIView!
+    @IBOutlet weak var myContainerView: UIView!
     
     @Published var selectedTabIndex = 0
     private var cancellable: Set<AnyCancellable> = []
@@ -43,6 +44,7 @@ class CustomTabViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         bindData()
+        coordinator?.addSubTab(tabVC: self)
         coordinator?.changeTab(index: 0, tabVC: self)
     }
     
