@@ -18,7 +18,7 @@ class PlayerCoordinator: Coordinator {
         self.parentCoordinator = parent
     }
 
-    func start() {
+    func start(info: GeneralVideo?) {
         DispatchQueue.main.async {
             guard let mainVC = self.parentCoordinator?.navigation.viewControllers.last as? CustomTabViewController else { return }
             mainVC.playContainerView.isHidden = false
@@ -26,6 +26,10 @@ class PlayerCoordinator: Coordinator {
                 vc is PlayViewController
             }) as? PlayViewController {
                 print("exist")
+                guard let currentInfo = playVC.viewModel.currentInfo, let newInfo = info else { return }
+                if currentInfo.id != newInfo.id {
+                    playVC.viewModel.currentInfo = info
+                }
                 playVC.isMinimized = false
                 mainVC.playViewTopMargin.constant = 0
                 mainVC.tabBarHeight.constant = 0
@@ -39,6 +43,7 @@ class PlayerCoordinator: Coordinator {
             } else {
                 print("new")
                 guard let playVC = UIStoryboard(name: "Play", bundle: nil).instantiateViewController(withIdentifier: "PlayViewController" ) as? PlayViewController else { return }
+                playVC.viewModel.currentInfo = info
                 playVC.coordinator = self
                 mainVC.addChild(playVC)
                 mainVC.playContainerView.addSubview((playVC.view)!)
@@ -107,6 +112,7 @@ class PlayerCoordinator: Coordinator {
     
     func showExplain(vc: PlayViewController) {
         guard let explainVC = UIStoryboard(name: "Play", bundle: nil).instantiateViewController(withIdentifier: "PlayExplainViewController") as? PlayExplainViewController else { return }
+        explainVC.viewModel.currentInfo = vc.viewModel.currentInfo
         vc.addChild(explainVC)
         vc.explainContainerView.addSubview((explainVC.view)!)
         explainVC.view.frame = vc.explainContainerView.bounds

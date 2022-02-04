@@ -2,13 +2,13 @@ package com.example.mainservice.service;
 
 import com.example.mainservice.dto.*;
 import com.example.mainservice.entity.Category;
-import com.example.mainservice.entity.LiveRoom.LiveRoom;
-import com.example.mainservice.entity.LiveRoom.LiveRoomRepository;
-import com.example.mainservice.entity.LiveViewer.LiveViewer;
-import com.example.mainservice.entity.LiveViewer.LiveViewerRepository;
+import com.example.mainservice.entity.Room.Room;
+import com.example.mainservice.entity.Room.RoomRepository;
+import com.example.mainservice.entity.RoomViewer.RoomViewer;
+import com.example.mainservice.entity.RoomViewer.RoomViewerRepository;
 import com.example.mainservice.entity.Notification.Notification;
 import com.example.mainservice.entity.Notification.NotificationRepository;
-import com.example.mainservice.entity.User.UserEntity;
+import com.example.mainservice.entity.User.User;
 import com.example.mainservice.entity.User.UserRepository;
 import com.example.mainservice.entity.Video.Video;
 import com.example.mainservice.entity.Video.VideoRepository;
@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -34,40 +35,51 @@ public class MainService {
 
     private static final String RESPONSE_SUCCESS = "success";
     private final VideoRepository videoRepository;
-    private final LiveRoomRepository liveRoomRepository;
+    private final RoomRepository roomRepository;
     private final UserRepository userRepository;
     private final ViewedRepository viewedRepository;
-    private final LiveViewerRepository liveViewerRepository;
+    private final RoomViewerRepository liveRoomViewerRepository;
     private final NotificationRepository notificationRepository;
     private final ModelMapper mapper;
 
     @Transactional(readOnly = true)
-    public VideoListDto getVideoList(Category category, int page, int size) throws Exception{
-        List<VideoDto> videoDtos = null;
-        List<LiveRoomDto> liveRoomDtos = null;
-        Pageable pageable = PageRequest.of(page, size);
-        if (category == Category.ALL) {
-            videoDtos = videoRepository.findAll(pageable).getContent().stream()
-                    .map(video -> VideoDto.fromEntity(mapper, video))
-                    .collect(Collectors.toList());
-            liveRoomDtos = liveRoomRepository.findAll(pageable).getContent().stream()
-                    .map(liveRoom -> LiveRoomDto.fromEntity(mapper, liveRoom))
-                    .collect(Collectors.toList());
-        } else {
-            videoDtos = videoRepository.findAllByCategory(category, pageable).stream()
-                    .map(video -> VideoDto.fromEntity(mapper, video))
-                    .collect(Collectors.toList());
-            liveRoomDtos = liveRoomRepository.findAllByCategory(category, pageable).stream()
-                    .map(liveRoom -> LiveRoomDto.fromEntity(mapper, liveRoom))
-                    .collect(Collectors.toList());
-        }
-        VideoListDto videoListDto = new VideoListDto(videoDtos, liveRoomDtos);
-        return videoListDto;
+    public HomeListDto getHomeList(Category category, long lastVideoId, long lastLiveRoomId, int size) throws Exception{
+        List<VideoResponseDto> videoDtos = getVideoList(category, lastVideoId, size);
+        List<RoomResponseDto> roomDtos = getLiveRoomList(category, lastLiveRoomId, size);
+        HomeListDto homeListDto = new HomeListDto(videoDtos, roomDtos);
+        return homeListDto;
     }
 
+    private List<VideoResponseDto> getVideoList(Category category, long lastId, int size) throws Exception{
+        Stream<Video> videoDtoStream = null;
+        Pageable pageable = PageRequest.of(0, size);
+        if (category == Category.ALL) {
+            if(lastId == -1) videoDtoStream = videoRepository.findAll(pageable).getContent().stream();
+            else  videoDtoStream = videoRepository.findAll(lastId, pageable).getContent().stream();
+        } else {
+            if(lastId == -1) videoDtoStream = videoRepository.findAllByCategory(category, pageable).stream();
+            else videoDtoStream = videoRepository.findAllByCategory(category, lastId, pageable).stream();
+        }
+        return videoDtoStream.map(VideoResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
+    public List<RoomResponseDto> getLiveRoomList(Category category, long lastId, int size) throws Exception{
+        Pageable pageable = PageRequest.of(0, size);
+        Stream<Room> liveRoomDtoStream = null;
+        if (category == Category.ALL) {
+            if(lastId == -1) liveRoomDtoStream = roomRepository.findAll(pageable).getContent().stream();
+            else liveRoomDtoStream = roomRepository.findAll(lastId, pageable).getContent().stream();
+        } else {
+            if(lastId == -1) liveRoomDtoStream = roomRepository.findAllByCategory(category, pageable).stream();
+            else liveRoomDtoStream = roomRepository.findAllByCategory(category, lastId, pageable).stream();
+        }
+        return liveRoomDtoStream.map(RoomResponseDto::new)
+                .collect(Collectors.toList());
+    }
     @Transactional(readOnly = true)
     public List<NotificationDto> getNotificationList(String uuid) throws Exception {
-        UserEntity user = userRepository.findByUuid(uuid).orElseThrow(() -> new CustomMainException(ErrorCode.U002));
+        User user = userRepository.findByUuid(uuid).orElseThrow(() -> new CustomMainException(ErrorCode.U002));
         List<NotificationDto> notificationDtos = user.getNotifications().stream()
                 .map(notification -> mapper.map(notification, NotificationDto.class))
                 .collect(Collectors.toList());
@@ -97,7 +109,7 @@ public class MainService {
 
     private void actionToVideo(VideoActionDto dto, boolean isCancel) throws Exception {
         ViewedHistory viewedHistory = viewedRepository.findByVideoIdAndUserUuid(dto.getUuid(), dto.getId()).orElse(null);
-        UserEntity user = userRepository.findByUuid(dto.getUuid()).orElseThrow(() -> new CustomMainException(ErrorCode.U002));
+        User user = userRepository.findByUuid(dto.getUuid()).orElseThrow(() -> new CustomMainException(ErrorCode.U002));
         if (viewedHistory == null) { //봤지만 처음 저장하는 경우
             user = userRepository.findByUuid(dto.getUuid())
                     .orElseThrow(() -> new CustomMainException(ErrorCode.U002));
@@ -126,32 +138,32 @@ public class MainService {
     }
 
     private void actionToLiveRoom(VideoActionDto dto, boolean isCancel) throws Exception {
-        LiveViewer liveViewer = liveViewerRepository.findByLiveRoomIdAndUserUuid(dto.getUuid(), dto.getId())
+        RoomViewer roomViewer = liveRoomViewerRepository.findByLiveRoomIdAndUserUuid(dto.getUuid(), dto.getId())
                 .orElse(null);
-        UserEntity user = userRepository.findByUuid(dto.getUuid()).orElseThrow(() -> new CustomMainException(ErrorCode.U002));
-        if (liveViewer == null) {
+        User user = userRepository.findByUuid(dto.getUuid()).orElseThrow(() -> new CustomMainException(ErrorCode.U002));
+        if (roomViewer == null) {
             user = userRepository.findByUuid(dto.getUuid())
                     .orElseThrow(() -> new CustomMainException(ErrorCode.U002));
-            LiveRoom liveRoom = liveRoomRepository.findById(dto.getId())
+            Room room = roomRepository.findById(dto.getId())
                     .orElseThrow(() -> new CustomMainException(ErrorCode.L001));
-            liveViewer = new LiveViewer(user, liveRoom);
-            liveViewerRepository.save(liveViewer);
+            roomViewer = new RoomViewer(user, room);
+            liveRoomViewerRepository.save(roomViewer);
         }
-        LiveRoom liveRoom = liveViewer.getLiveRoom();
+        Room room = roomViewer.getRoom();
         if (dto.getAction() == VideoActionDto.ACTION.REPORT) {
-            liveRoom.addReportCnt(1);
+            room.addReportCnt(1);
         } else if (dto.getAction() == VideoActionDto.ACTION.LIKE) {
             if (isCancel) {
-                liveViewer.setLiked(false);
-                liveRoom.addLikeCnt(-1);
+                roomViewer.setLiked(false);
+                room.addLikeCnt(-1);
             } else {
-                liveViewer.setLiked(true);
-                liveRoom.addLikeCnt(1);
+                roomViewer.setLiked(true);
+                room.addLikeCnt(1);
 
             }
         } else if (dto.getAction() == VideoActionDto.ACTION.DISLIKE) {
-            if (isCancel) liveViewer.setDisliked(false);
-            else liveViewer.setDisliked(true);
+            if (isCancel) roomViewer.setDisliked(false);
+            else roomViewer.setDisliked(true);
         }
     }
 }

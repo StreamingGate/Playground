@@ -1,9 +1,10 @@
 package com.example.mainservice.entity.FriendWait;
 
-import com.example.mainservice.entity.User.UserEntity;
+import com.example.mainservice.entity.User.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 @NoArgsConstructor
@@ -25,21 +26,21 @@ public class FriendWait {
 
     @ManyToOne
     @JoinColumn(name = "users_id")
-    private UserEntity userEntity; //friends들이 나를 참조
+    private User user; //friends들이 나를 참조
 
-    public static FriendWait create(UserEntity user, UserEntity target){
+    public static FriendWait create(User user, User target){
         return FriendWait.builder()
                 .senderUuid(user.getUuid())
                 .senderNickname(user.getNickName())
                 .senderProfileImage(user.getProfileImage())
-                .userEntity(target)
+                .user(target)
                 .build();
     }
     @Builder
-    public FriendWait(String senderNickname, String senderUuid, String senderProfileImage, UserEntity userEntity){
+    public FriendWait(String senderNickname, String senderUuid, String senderProfileImage, User user){
         this.senderNickname = senderNickname;
         this.senderUuid = senderUuid;
         this.senderProfileImage = senderProfileImage;
-        this.userEntity = userEntity;
+        this.user = user;
     }
 }

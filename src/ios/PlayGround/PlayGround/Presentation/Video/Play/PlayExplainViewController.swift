@@ -19,6 +19,7 @@ class PlayExplainViewController: UIViewController {
     @IBOutlet weak var explainContentLabel: UILabel!
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var scrollView: UIScrollView!
+    let viewModel = PlayViewModel()
     
     // MARK: - View Life Cycle
     override func viewDidLayoutSubviews() {
@@ -45,6 +46,11 @@ class PlayExplainViewController: UIViewController {
         channelLabel.font = UIFont.Content
         explainContentLabel.font = UIFont.caption
         explainContentLabel.textColor = UIColor.customDarkGray
+        guard let info = viewModel.currentInfo else { return }
+        videoTitleLabel.text = info.title
+        categoryLabel.text = "#\(viewModel.categoryDic[info.category] ?? "기타")"
+        channelLabel.text = (info.uploaderNickname == nil) ? info.hostNickname : info.uploaderNickname
+//        channelProfileImageView.downloadImageFrom(link: info., contentMode: <#T##UIView.ContentMode#>)
     }
     
     // MARK: - Animation
