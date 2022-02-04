@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 
 import * as S from './Dropdown.style';
 import { MainLayoutContext } from '@utils/context';
@@ -31,8 +31,19 @@ function parseAlarm(alarm) {
 
 function AlarmDropdown() {
   const { modalState } = useContext(MainLayoutContext);
-  const { data: friendReqList } = useGetFriendReqList('33333333-1234-1234-123456789012');
-  const { data: notiList } = useGetNotiList('33333333-1234-1234-123456789012');
+  const { data: friendReqList, refetch: friendReqListRefetch } = useGetFriendReqList(
+    '33333333-1234-1234-123456789012'
+  );
+  const { data: notiList, refetch: notiListRefetch } = useGetNotiList(
+    '33333333-1234-1234-123456789012'
+  );
+
+  useEffect(() => {
+    if (modalState.alarm) {
+      friendReqListRefetch();
+      notiListRefetch();
+    }
+  }, [modalState.alarm]);
 
   const handleAlarmModalClick = e => {
     e.stopPropagation();
