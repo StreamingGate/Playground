@@ -25,7 +25,7 @@ class CustomTabViewController: UIViewController {
     @IBOutlet weak var myTabLabel: UILabel!
     @IBOutlet weak var containerView: UIView!
     
-    @Published var selectedTanIndex = 0
+    @Published var selectedTabIndex = 0
     private var cancellable: Set<AnyCancellable> = []
     
     var safeTop: CGFloat = 0
@@ -61,7 +61,7 @@ class CustomTabViewController: UIViewController {
     }
     
     func bindData() {
-        $selectedTanIndex.receive(on: RunLoop.main)
+        $selectedTabIndex.receive(on: RunLoop.main)
             .sink { [weak self] index in
                 guard let self = self else { return }
                 switch index {

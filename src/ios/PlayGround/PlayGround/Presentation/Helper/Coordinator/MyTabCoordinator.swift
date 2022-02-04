@@ -21,7 +21,7 @@ class MyTabCoordinator: Coordinator {
     func start() {
         DispatchQueue.main.async {
             guard let tabVC = self.parentCoordinator?.navigation.viewControllers.last as? CustomTabViewController else { return }
-            tabVC.selectedTanIndex = 2
+            tabVC.selectedTabIndex = 2
             tabVC.removeChildViewController()
             tabVC.addChild(self.navigation)
             tabVC.containerView.addSubview((self.navigation.view)!)
@@ -43,7 +43,8 @@ class MyTabCoordinator: Coordinator {
     }
     
     func showProfile() {
-        guard let accountVC = UIStoryboard(name: "MyPage", bundle: nil).instantiateViewController(withIdentifier: "AccountInfoViewController") as? AccountInfoViewController else { return }
+        guard let accountVC = UIStoryboard(name: "MyPage", bundle: nil).instantiateViewController(withIdentifier: "AccountInfoViewController") as? AccountInfoViewController, let tabVC = self.parentCoordinator?.navigation.viewControllers.last as? CustomTabViewController else { return }
+        tabVC.tabBarHeight.constant = 0
         navigation.pushViewController(accountVC, animated: true)
     }
     
@@ -67,6 +68,8 @@ class MyTabCoordinator: Coordinator {
     }
     
     func pop() {
+        guard let tabVC = self.parentCoordinator?.navigation.viewControllers.last as? CustomTabViewController else { return }
+        tabVC.tabBarHeight.constant = 80
         self.navigation.popViewController(animated: true)
     }
 }

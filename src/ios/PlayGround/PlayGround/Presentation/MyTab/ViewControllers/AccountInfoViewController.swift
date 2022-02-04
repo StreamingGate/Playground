@@ -8,19 +8,34 @@
 import Foundation
 import UIKit
 import SwiftKeychainWrapper
+import Combine
 
 class AccountInfoViewController: UIViewController {
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var nicknameLabel: UILabel!
     @IBOutlet weak var logOutLabel: UILabel!
     @IBOutlet weak var editButton: UIButton!
+    @IBOutlet weak var tableView: UITableView!
     var navVC: MyPageNavigationController?
+    
+    private var cancellable: Set<AnyCancellable> = []
+    let viewModel = AccountInfoViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         guard let nav = self.navigationController as? MyPageNavigationController else { return }
         self.navVC = nav
+        bindViewModel()
         setupUI()
+        self.viewModel.loadFriend()
+    }
+    
+    func bindViewModel() {
+        self.viewModel.$friendList.receive(on: DispatchQueue.main, options: nil)
+            .sink { [weak self] _ in
+                guard let self = self else { return }
+                self.tableView.reloadData()
+            }.store(in: &cancellable)
     }
     
     func setupUI() {
@@ -52,14 +67,17 @@ class AccountInfoViewController: UIViewController {
 
 extension AccountInfoViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 20
+        return self.viewModel.friendList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "FriendListCell", for: indexPath) as? FriendListCell else {
             return UITableViewCell()
         }
-        cell.setupUI()
+        cell.setupUI_manage(info: self.viewModel.friendList[indexPath.row])
+        cell.deleteHandler = {
+            self.viewModel.deleteFriend(friendUuid: self.viewModel.friendList[indexPath.row].uuid, vc: self)
+        }
         return cell
     }
     

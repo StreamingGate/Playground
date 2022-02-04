@@ -61,13 +61,13 @@ struct UserServiceAPI {
             let successRange = 200 ..< 300
             guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, let HeaderFields = (response as? HTTPURLResponse)?.allHeaderFields, let accessToken = HeaderFields["token"], let uuid = HeaderFields["uuid"], successRange.contains(statusCode), let _ = data else {
                 print("\(error?.localizedDescription ?? "no error") \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
-                completion(["success" :0])
+                completion(["success" : 0])
                 return
             }
             if statusCode == 200 {
                 completion(["success" : 1, "accessToken": accessToken, "uuid": uuid])
             } else {
-                completion(["success" :0])
+                completion(["success" : 0])
             }
         }
         task.resume()
