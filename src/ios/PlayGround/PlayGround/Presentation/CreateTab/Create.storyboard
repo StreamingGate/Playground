@@ -45,15 +45,15 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6ZC-rL-qFS">
                                                 <rect key="frame" x="0.0" y="0.0" width="384" height="42"/>
                                                 <subviews>
-                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="shorts_grayCircle" translatesAutoresizingMaskIntoConstraints="NO" id="NHA-me-GsT">
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="play_box_grayCircle" translatesAutoresizingMaskIntoConstraints="NO" id="NHA-me-GsT">
                                                         <rect key="frame" x="0.0" y="0.0" width="42" height="42"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="42" id="7M2-PG-DXi"/>
                                                             <constraint firstAttribute="width" secondItem="NHA-me-GsT" secondAttribute="height" multiplier="1:1" id="OKM-l4-UOz"/>
                                                         </constraints>
                                                     </imageView>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Shorts 동영상 만들기" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cvR-x3-7Bd">
-                                                        <rect key="frame" x="55" y="11" width="147.5" height="20.5"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="동영상 업로드" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cvR-x3-7Bd">
+                                                        <rect key="frame" x="55" y="11" width="93" height="20.5"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
@@ -450,7 +450,7 @@
     <resources>
         <image name="add_circle" width="35" height="35"/>
         <image name="live_grayCircle" width="42" height="42"/>
-        <image name="shorts_grayCircle" width="42" height="42"/>
+        <image name="play_box_grayCircle" width="42" height="42"/>
         <image name="xMark_grayCircle" width="35" height="35"/>
         <image name="xmark" catalog="system" width="128" height="113"/>
         <systemColor name="labelColor">
