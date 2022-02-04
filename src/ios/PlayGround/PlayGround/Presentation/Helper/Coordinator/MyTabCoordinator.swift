@@ -21,12 +21,20 @@ class MyTabCoordinator: Coordinator {
     func start() {
         DispatchQueue.main.async {
             guard let tabVC = self.parentCoordinator?.navigation.viewControllers.last as? CustomTabViewController else { return }
-            tabVC.selectedTabIndex = 2
-            tabVC.removeChildViewController()
-            tabVC.addChild(self.navigation)
-            tabVC.containerView.addSubview((self.navigation.view)!)
-            self.navigation.view.frame = tabVC.containerView.bounds
-            self.navigation.didMove(toParent: tabVC)
+            tabVC.myContainerView.isHidden = false
+            tabVC.homeContainerView.isHidden = true
+            if tabVC.selectedTabIndex == 2 {
+                self.navigation.popToRootViewController(animated: true)
+            } else {
+                tabVC.selectedTabIndex = 2
+            }
+            
+//            tabVC.selectedTabIndex = 2
+//            tabVC.removeChildViewController()
+//            tabVC.addChild(self.navigation)
+//            tabVC.containerView.addSubview((self.navigation.view)!)
+//            self.navigation.view.frame = tabVC.containerView.bounds
+//            self.navigation.didMove(toParent: tabVC)
         }
     }
     
@@ -65,6 +73,11 @@ class MyTabCoordinator: Coordinator {
     
     func dismissToRoot() {
         self.parentCoordinator?.navigation.popToRootViewController(animated: true)
+    }
+    
+    func resetTabBarHeight() {
+        guard let tabVC = self.parentCoordinator?.navigation.viewControllers.last as? CustomTabViewController else { return }
+        tabVC.tabBarHeight.constant = 80
     }
     
     func pop() {

@@ -21,12 +21,18 @@ class HomeTabCoordinator: Coordinator {
     func start() {
         DispatchQueue.main.async {
             guard let tabVC = self.parentCoordinator?.navigation.viewControllers.last as? CustomTabViewController else { return }
-            tabVC.selectedTabIndex = 0
-            tabVC.removeChildViewController()
-            tabVC.addChild(self.navigation)
-            tabVC.containerView.addSubview((self.navigation.view)!)
-            self.navigation.view.frame = tabVC.containerView.bounds
-            self.navigation.didMove(toParent: tabVC)
+            tabVC.homeContainerView.isHidden = false
+            tabVC.myContainerView.isHidden = true
+            if tabVC.selectedTabIndex == 0 {
+                self.navigation.popToRootViewController(animated: true)
+            } else {
+                tabVC.selectedTabIndex = 0
+            }
+//            tabVC.removeChildViewController()
+//            tabVC.addChild(self.navigation)
+//            tabVC.homeContainerView.addSubview((self.navigation.view)!)
+//            self.navigation.view.frame = tabVC.homeContainerView.bounds
+//            self.navigation.didMove(toParent: tabVC)
         }
     }
     
