@@ -88,7 +88,7 @@
     recvMessage = (chat) => {
         console.log("received msg...");
         const liElem = document.createElement("li");
-        liElem.innerText = "[" + chat.nickname + "] " + chat.message;
+        liElem.innerText = "[" + chat.nickname + "] " + "("+chat.pstTime+")    " +  chat.message;
         msgList.append(liElem);
     }
 
