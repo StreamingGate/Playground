@@ -231,6 +231,7 @@ extension HomeListViewController: UITableViewDataSource, UITableViewDelegate {
             player.replaceCurrentItem(with: item)
             self.playerView.player = player
             self.playerView.player?.play()
+            self.playerView.player?.isMuted = true
         }
     }
 }
