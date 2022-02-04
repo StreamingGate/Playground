@@ -52,6 +52,11 @@ class MyTabCoordinator: Coordinator {
     
     func showProfile() {
         guard let accountVC = UIStoryboard(name: "MyPage", bundle: nil).instantiateViewController(withIdentifier: "AccountInfoViewController") as? AccountInfoViewController, let tabVC = self.parentCoordinator?.navigation.viewControllers.last as? CustomTabViewController else { return }
+        for i in tabVC.children {
+            if let player = i as? PlayViewController {
+                player.coordinator?.closeMiniPlayer(vc: player)
+            }
+        }
         tabVC.tabBarHeight.constant = 0
         navigation.pushViewController(accountVC, animated: true)
     }
