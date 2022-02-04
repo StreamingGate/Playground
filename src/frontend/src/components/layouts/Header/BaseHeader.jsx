@@ -16,22 +16,9 @@ import {
   MyVideo,
   LiveStreaming,
 } from '@components/cores';
-import {
-  AcceptFriendModal,
-  DeleteFriendModal,
-  ModifyProfileModal,
-} from '@components/feedbacks/Modals';
+import { AcceptFriendModal } from '@components/feedbacks/Modals';
 import SearchForm from './SearchForm';
-
-const dummyFriends = [
-  { id: 1, name: '김하늬' },
-  { id: 2, name: '서채희' },
-  { id: 3, name: '이우재' },
-  { id: 4, name: '이이경' },
-  { id: 5, name: '이수현' },
-  { id: 6, name: 'Daniel Radcliffe' },
-  { id: 7, name: 'Emma Watson' },
-];
+import ProfileDropdown from './Dropdowns/ProfileDropdown';
 
 const dummyAlarms = [
   { id: 1, content: '김하늬님이 라이브 방송을 시작하셨습니다', time: '지금' },
@@ -67,22 +54,6 @@ function BaseHeader() {
     const { target } = e;
     if (target.tagName === 'BUTTON') {
       modalService.show(AcceptFriendModal);
-    }
-  };
-
-  const handleProfileModalClick = e => {
-    e.stopPropagation();
-    const { target } = e;
-    const button = target.closest('button');
-
-    if (!button) return;
-    const [buttonId, friendIdx] = button.id.split('_');
-
-    if (buttonId === 'friendDelete') {
-      const seletedName = dummyFriends[Number(friendIdx)].name;
-      modalService.show(DeleteFriendModal, { friendName: seletedName });
-    } else if (buttonId === 'modifyProfile') {
-      modalService.show(ModifyProfileModal, { nickName: '이재윤' });
     }
   };
 
@@ -147,39 +118,7 @@ function BaseHeader() {
         </div>
         <div>
           <S.HeaderAvatar name='profile' onClick={onToggleModal} />
-          <S.ProfileDropdownContainer onClick={handleProfileModalClick}>
-            {modalState.profile && (
-              <S.ProfileDropdown>
-                <S.UserProfileInfo>
-                  <S.UserAvartar size='xl' />
-                  <S.UserName>
-                    <Typography type='content'>닉네임</Typography>
-                    <S.ModifyUserInfoBtn variant='text' id='modifyProfile'>
-                      정보 수정
-                    </S.ModifyUserInfoBtn>
-                  </S.UserName>
-                  <S.LogoutButton variant='text' id='logout'>
-                    <S.LogoutBtnIcon />
-                    로그아웃
-                  </S.LogoutButton>
-                </S.UserProfileInfo>
-                <S.FriendListContainer>
-                  <S.FriendListTitle type='highlightCaption'>친구목록</S.FriendListTitle>
-                  <S.FriendList>
-                    {dummyFriends.map(({ id, name }, idx) => (
-                      <S.FriendInfo key={id}>
-                        <S.FriendAvatar tyep='sm' />
-                        <S.FriendName type='caption'>{name}</S.FriendName>
-                        <S.FriendDeleteBtn id={`friendDelete_${idx}`} variant='text'>
-                          삭제
-                        </S.FriendDeleteBtn>
-                      </S.FriendInfo>
-                    ))}
-                  </S.FriendList>
-                </S.FriendListContainer>
-              </S.ProfileDropdown>
-            )}
-          </S.ProfileDropdownContainer>
+          <ProfileDropdown />
         </div>
       </S.HeaderRightDiv>
     </>
