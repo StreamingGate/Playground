@@ -8,6 +8,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -62,13 +63,10 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
             response.setStatus(HttpStatus.OK.value());
         }
 
-        Claims claims = Jwts.claims().setSubject(userDto.getUuid());
-        Date now = new Date();
         String token = Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(now)
+                .setSubject(userDto.getUuid())
                 .setExpiration(new Date(System.currentTimeMillis() + 600000))
-                .signWith(SignatureAlgorithm.HS256,"token_secret")
+                .signWith(SignatureAlgorithm.HS512, "token_secret")
                 .compact();
 
         response.addHeader("uuid",userDto.getUuid());

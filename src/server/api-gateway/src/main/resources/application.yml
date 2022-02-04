@@ -64,3 +64,4 @@ spring:
             - Method=POST,GET,DELETE,PUT
           filters:
             - RewritePath=/main-service(?<segment>/?.*), /$\{segment}
+            - AuthenticationFilter
