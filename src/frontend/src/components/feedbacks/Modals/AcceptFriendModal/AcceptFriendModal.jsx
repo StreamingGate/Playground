@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import * as S from './AcceptFriendModal.style';
 import { modalService } from '@utils/service';
@@ -16,7 +17,7 @@ const dummyFriend = [
   { id: 6, friendName: 'C' },
 ];
 
-function AcceptFriendModal() {
+function AcceptFriendModal({ friendReqList }) {
   const modal = modalService.useModal();
 
   const handleAcceptFriendModalClose = e => {
@@ -32,10 +33,10 @@ function AcceptFriendModal() {
         </S.AcceptFriendModalTitle>
         <S.AcceptFriendModalBody>
           <S.AcceptFriendList>
-            {dummyFriend.map(({ id, friendName }) => (
-              <S.AcceptFriend key={id}>
-                <Avatar size='sm' />
-                <Typography type='caption'>{friendName}</Typography>
+            {friendReqList?.result.map(({ uuid, nickname, profileImage }) => (
+              <S.AcceptFriend key={uuid}>
+                <Avatar size='sm' imgSrc={profileImage} />
+                <Typography type='caption'>{nickname}</Typography>
                 <S.ActionContainer>
                   <S.AcceptButton size='sm' color='pgBlue'>
                     수락
@@ -53,5 +54,9 @@ function AcceptFriendModal() {
     </Dialog>
   );
 }
+
+AcceptFriendModal.propTypes = {
+  friendReqList: PropTypes.object.isRequired,
+};
 
 export default modalService.create(AcceptFriendModal);
