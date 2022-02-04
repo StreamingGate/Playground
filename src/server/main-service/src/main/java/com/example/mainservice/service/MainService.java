@@ -54,19 +54,11 @@ public class MainService {
         Stream<Video> videoDtoStream = null;
         Pageable pageable = PageRequest.of(0, size);
         if (category == Category.ALL) {
-            if(lastId == -1){
-                videoDtoStream = videoRepository.findAll(pageable).getContent().stream();
-            }
-            else {
-                videoDtoStream = videoRepository.findAll(lastId, pageable).getContent().stream();
-            }
+            if(lastId == -1) videoDtoStream = videoRepository.findAll(pageable).getContent().stream();
+            else  videoDtoStream = videoRepository.findAll(lastId, pageable).getContent().stream();
         } else {
-            if(lastId == -1){
-                videoDtoStream = videoRepository.findAllByCategory(category, pageable).stream();
-            }
-            else {
-                videoDtoStream = videoRepository.findAllByCategory(category, lastId, pageable).stream();
-            }
+            if(lastId == -1) videoDtoStream = videoRepository.findAllByCategory(category, pageable).stream();
+            else videoDtoStream = videoRepository.findAllByCategory(category, lastId, pageable).stream();
         }
         return videoDtoStream.map(VideoResponseDto::new)
                 .collect(Collectors.toList());
@@ -76,19 +68,11 @@ public class MainService {
         Pageable pageable = PageRequest.of(0, size);
         Stream<Room> liveRoomDtoStream = null;
         if (category == Category.ALL) {
-            if(lastId == -1){
-                liveRoomDtoStream = roomRepository.findAll(pageable).getContent().stream();
-            }
-            else {
-                liveRoomDtoStream = roomRepository.findAll(lastId, pageable).getContent().stream();
-            }
+            if(lastId == -1) liveRoomDtoStream = roomRepository.findAll(pageable).getContent().stream();
+            else liveRoomDtoStream = roomRepository.findAll(lastId, pageable).getContent().stream();
         } else {
-            if(lastId == -1){
-                liveRoomDtoStream = roomRepository.findAllByCategory(category, pageable).stream();
-            }
-            else {
-                liveRoomDtoStream = roomRepository.findAllByCategory(category, lastId, pageable).stream();
-            }
+            if(lastId == -1) liveRoomDtoStream = roomRepository.findAllByCategory(category, pageable).stream();
+            else liveRoomDtoStream = roomRepository.findAllByCategory(category, lastId, pageable).stream();
         }
         return liveRoomDtoStream.map(RoomResponseDto::new)
                 .collect(Collectors.toList());
