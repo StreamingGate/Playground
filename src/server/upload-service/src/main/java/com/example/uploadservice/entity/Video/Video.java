@@ -2,7 +2,7 @@ package com.example.uploadservice.entity.Video;
 
 import com.example.uploadservice.entity.Category;
 import com.example.uploadservice.entity.Metadata.Metadata;
-import com.example.uploadservice.entity.User.UserEntity;
+import com.example.uploadservice.entity.User.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,9 +36,9 @@ public class Video {
     @Column(length = 10)
     private Category category;
 
-    @Column(columnDefinition="TEXT")
+    @Column(columnDefinition = "TEXT")
     private String thumbnail;
-    
+
     private int hits;
 
     private short reportCnt;
@@ -47,7 +47,7 @@ public class Video {
 
     @ManyToOne
     @JoinColumn(name = "users_id")
-    private UserEntity userEntity;
+    private User user;
 
     @OneToOne
     @JoinColumn(name = "metadata_id")
@@ -71,28 +71,28 @@ public class Video {
 
     @Builder
     public Video(String title, String uploaderNickname, String content, Category category,
-                 String thumbnail, UserEntity userEntity){
+                 String thumbnail, User user) {
         this.title = title;
         this.uploaderNickname = uploaderNickname;
         this.content = content;
         this.category = category;
         this.thumbnail = thumbnail;
-        this.userEntity = userEntity;
+        this.user = user;
         this.likeCnt = 0;
-        this.hits=0;
-        this.reportCnt=0;
-        this.createdAt= ZonedDateTime.now(ZoneId.of("America/Los_Angeles")).toLocalDateTime();
+        this.hits = 0;
+        this.reportCnt = 0;
+        this.createdAt = ZonedDateTime.now(ZoneId.of("America/Los_Angeles")).toLocalDateTime();
     }
 
-    public void setMetadata(Metadata metadata){
+    public void setMetadata(Metadata metadata) {
         this.metadata = metadata;
     }
 
-    public void setUserEntity(UserEntity userEntity) {
-        this.userEntity = userEntity;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public void setThumbnail(String thumbnail){
+    public void setThumbnail(String thumbnail) {
         this.thumbnail = thumbnail;
     }
 }

@@ -1,6 +1,8 @@
 package com.example.uploadservice.entity.User;
 
 import com.example.uploadservice.entity.Video.Video;
+import com.example.uploadservice.exceptionHandler.customexception.CustomUploadException;
+import com.example.uploadservice.exceptionHandler.customexception.ErrorCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Entity(name = "users")
-public class UserEntity {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -59,22 +61,22 @@ public class UserEntity {
     @Column
     private LocalDate lastAt;
 
-//    @OneToMany(mappedBy = "userEntity")
-//    private List<LiveViewer> liveViewers = new LinkedList<>();
+//    @OneToMany(mappedBy = "user")
+//    private List<RoomViewer> roomViewers = new LinkedList<>();
 
-    @OneToMany(mappedBy = "userEntity")
+    @OneToMany(mappedBy = "user")
     private List<Video> videos = new LinkedList<>();
 
-//    @OneToMany(mappedBy = "userEntity")
+//    @OneToMany(mappedBy = "user")
 //    private List<ViewedHistory> viewedHistories = new LinkedList<>();
-
-//    @OneToMany(mappedBy = "userEntity")
-//    private List<LiveRoom> liveRooms = new ArrayList<>();
-
-//    @OneToMany(mappedBy = "userEntity")
+//
+//    @OneToMany(mappedBy = "user")
+//    private List<Room> lives = new ArrayList<>();
+//
+//    @OneToMany(mappedBy = "user")
 //    private List<Notification> notifications = new LinkedList<>();
-
-//    @OneToMany(mappedBy = "userEntity")
+//
+//    @OneToMany(mappedBy = "user")
 //    private List<FriendWait> friendWaits = new LinkedList<>();
 
     /**
@@ -86,24 +88,24 @@ public class UserEntity {
             joinColumns = @JoinColumn(name = "users_id"),
             inverseJoinColumns = @JoinColumn(name = "friend_id")
     )
-    private List<UserEntity> friends = new ArrayList<>();
+    private List<User> friends = new ArrayList<>();
 
     @ManyToMany(mappedBy = "friends") //나를 친구로 추가한 사람들
-    private List<UserEntity> beFriend = new ArrayList<>();
+    private List<User> beFriend = new ArrayList<>();
     /**
      * ================================
      **/
 
-//    public void addFriend(UserEntity target) throws CustomMainException {
+//    public void addFriend(User target) throws CustomUploadException {
 //        if (target == null || target == this) return;
-//        if (friends.contains(target)) throw new CustomMainException(ErrorCode.F003);
+//        if (friends.contains(target)) throw new CustomUploadException(ErrorCode.F003);
 //        this.friends.add(target);
 //        target.getFriends().add(this);
 //    }
 //
-//    public void deleteFriend(UserEntity target) throws CustomMainException {
+//    public void deleteFriend(User target) throws CustomUploadException {
 //        if (target == null || target == this) return;
-//        if (!friends.contains(target)) throw new CustomMainException(ErrorCode.F004);
+//        if (!friends.contains(target)) throw new CustomUploadException(ErrorCode.F004);
 //        this.friends.remove(target);
 //        target.getFriends().remove(this);
 //    }

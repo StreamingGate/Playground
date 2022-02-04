@@ -3,7 +3,7 @@ package com.example.uploadservice.service;
 import com.example.uploadservice.dto.UploadRequestDto;
 import com.example.uploadservice.entity.Metadata.Metadata;
 import com.example.uploadservice.entity.Metadata.MetadataRepository;
-import com.example.uploadservice.entity.User.UserEntity;
+import com.example.uploadservice.entity.User.User;
 import com.example.uploadservice.entity.User.UserRepository;
 import com.example.uploadservice.entity.Video.Video;
 import com.example.uploadservice.entity.Video.VideoRepository;
@@ -26,7 +26,7 @@ public class VideoService {
     @Transactional
     public void add(UploadRequestDto dto, String thumbnailPath, String videoPath,
                     Long size, LocalDateTime videoCreatedAt){
-        UserEntity user = userRepository.findByNickName(dto.getUploaderNickname())
+        User user = userRepository.findByNickName(dto.getUploaderNickname())
                 .orElseThrow(() -> new CustomUploadException(ErrorCode.U002));
         Metadata metadata = Metadata.builder()
                 .fileLink(videoPath)
@@ -41,7 +41,7 @@ public class VideoService {
                 .category(dto.getCategory())
                 .uploaderNickname(user.getNickName())
                 .thumbnail(thumbnailPath)
-                .userEntity(user)
+                .user(user)
                 .build();
         video.setMetadata(metadata);
         metadataRepository.save(metadata);
@@ -53,7 +53,7 @@ public class VideoService {
      */
     @Transactional
     public Long add(UploadRequestDto dto){
-        UserEntity user = userRepository.findByNickName(dto.getUploaderNickname())
+        User user = userRepository.findByNickName(dto.getUploaderNickname())
                 .orElseThrow(() -> new CustomUploadException(ErrorCode.U002));
 
         Video video = Video.builder()
@@ -61,7 +61,7 @@ public class VideoService {
                 .content(dto.getContent())
                 .category(dto.getCategory())
                 .uploaderNickname(user.getNickName())
-                .userEntity(user)
+                .user(user)
                 .build();
         return videoRepository.save(video).getId();
     }
