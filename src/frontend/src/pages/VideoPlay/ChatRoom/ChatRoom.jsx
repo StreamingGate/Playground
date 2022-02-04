@@ -1,32 +1,76 @@
-import React from 'react';
+import React, { useEffect, useState, useRef } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 import * as S from './ChatRoom.style';
+import { useSocket, useForm } from '@utils/hook';
 
 import { Input } from '@components/forms';
 import { IconButton } from '@components/buttons';
 import { ChatDialog } from '@components/dataDisplays';
 
-const dummyChatList = [
-  { id: 1, timeStamp: '오후 2:30', userName: 'test', message: '이것은 채팅이다.' },
-  { id: 2, timeStamp: '오후 2:30', userName: 'test', message: '이것은 채팅이다.' },
-  {
-    id: 3,
-    timeStamp: '오후 2:30',
-    userName: 'test',
-    message:
-      '이것은 채팅이다. 이것은 채팅이다.이것은 채팅이다.이것은 채팅이다.이것은 채팅이다.이것은 채팅이다.이것은 채팅이다.이것은 채팅이다.이것은 채팅이다.이것은 채팅이다.이것은 채팅이다.이것은 채팅이다.이것은 채팅이다.이것은 채팅이다.이것은 채팅이다.이것은 채팅이다.이것은 채팅이다.이것은 채팅이다.',
-  },
-  { id: 4, timeStamp: '오후 2:30', userName: 'test', message: '이것은 채팅이다.' },
-  { id: 5, timeStamp: '오후 2:30', userName: 'test', message: '이것은 채팅이다.' },
-  { id: 6, timeStamp: '오후 2:30', userName: 'test', message: '이것은 채팅이다.' },
-  { id: 7, timeStamp: '오후 2:30', userName: 'test', message: '이것은 채팅이다.' },
-  { id: 8, timeStamp: '오후 2:30', userName: 'test', message: '이것은 채팅이다.' },
-  { id: 9, timeStamp: '오후 2:30', userName: 'test', message: '이것은 채팅이다.' },
-  { id: 10, timeStamp: '오후 2:30', userName: 'test', message: '이것은 채팅이다.' },
-  { id: 11, timeStamp: '오후 2:30', userName: 'test', message: '이것은 채팅이다.' },
-];
+const MAX_LENGTH = 200;
 
 function ChatRoom() {
+  const chatListContainerRef = useRef(null);
+  const { chatData, sendChatMessage } = useSocket('cd902733-8126-4219-afef-ccd0b0300813');
+  const { values, handleInputChange, changeValue } = useForm({ initialValues: { message: '' } });
+
+  const [isShowScrollBtm, setShowScrollBtm] = useState(false);
+
+  const handleChatListScroll = () => {
+    const chatListContainerDom = chatListContainerRef.current;
+
+    const currentScrollHeight = chatListContainerDom.scrollHeight;
+    const currentScrollPos = chatListContainerDom.scrollTop + chatListContainerDom.clientHeight;
+
+    if (currentScrollHeight - currentScrollPos >= 35) {
+      setShowScrollBtm(true);
+    } else {
+      setShowScrollBtm(false);
+    }
+  };
+
+  useEffect(() => {
+    chatListContainerRef.current.addEventListener('scroll', handleChatListScroll);
+
+    return () => {
+      chatListContainerRef.current.removeEventListener('scroll', handleChatListScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    const currentHeight = chatListContainerRef.current.scrollHeight;
+
+    if (!isShowScrollBtm) {
+      chatListContainerRef.current.scroll(0, currentHeight);
+    }
+  }, [chatData]);
+
+  const handleSendBtn = e => {
+    const { message } = values;
+    if (!message || message.length > MAX_LENGTH) {
+      return;
+    }
+    if (e.key === 'Enter' || e.type === 'click') {
+      sendChatMessage(message);
+      changeValue(['message', '']);
+    }
+  };
+
+  const handleInputLineBreak = e => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+    }
+  };
+
+  const handleScrollToBtmBtnClick = () => {
+    const currentHeight = chatListContainerRef.current.scrollHeight;
+    chatListContainerRef.current.scroll({
+      top: currentHeight,
+      behavior: 'smooth',
+    });
+  };
+
   return (
     <S.ChatRoomContainer>
       <S.ChatRoomHeader>
@@ -36,18 +80,38 @@ function ChatRoom() {
           <S.ChatRoomPeople>6.7천명</S.ChatRoomPeople>
         </S.ChatMetaContainer>
       </S.ChatRoomHeader>
-      <S.ChaListContainer>
-        {dummyChatList.map(chatInfo => (
-          <ChatDialog key={chatInfo.id} chatInfo={chatInfo} />
+      <S.ChaListContainer ref={chatListContainerRef}>
+        {chatData.map(chatInfo => (
+          <ChatDialog key={uuidv4()} chatInfo={chatInfo} />
         ))}
+        {isShowScrollBtm && (
+          <S.ScrollDownBtnContainer>
+            <S.ScrollDownBtn onClick={handleScrollToBtmBtnClick} />
+          </S.ScrollDownBtnContainer>
+        )}
       </S.ChaListContainer>
-      <S.ChatInputContainer>
+      <S.ChatInputController>
         <S.UserProfile />
-        <Input fullWidth variant='standard' placeholder='닉네임으로 채팅하기' />
-        <IconButton>
+        <S.ChatInputContainer>
+          <Input
+            name='message'
+            placeholder='닉네임으로 채팅하기'
+            fullWidth
+            variant='standard'
+            multiLine
+            onKeyPress={handleInputLineBreak}
+            onKeyUp={handleSendBtn}
+            value={values.message}
+            onChange={handleInputChange}
+          />
+          <S.InputCharCount isLimit={values.message.length > MAX_LENGTH}>
+            {values.message.length}/{MAX_LENGTH}
+          </S.InputCharCount>
+        </S.ChatInputContainer>
+        <IconButton onClick={handleSendBtn} disabled={!values.message}>
           <S.SendIcon />
         </IconButton>
-      </S.ChatInputContainer>
+      </S.ChatInputController>
     </S.ChatRoomContainer>
   );
 }

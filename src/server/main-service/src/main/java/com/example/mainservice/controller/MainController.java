@@ -1,6 +1,6 @@
 package com.example.mainservice.controller;
 
-import com.example.mainservice.dto.VideoListDto;
+import com.example.mainservice.dto.HomeListDto;
 import com.example.mainservice.dto.NotificationDto;
 import com.example.mainservice.dto.VideoActionDto;
 import com.example.mainservice.entity.Category;
@@ -22,16 +22,21 @@ public class MainController {
     private final MainService mainService;
 
     /**
-     *
-     * @param category ALL(기본 홈화면 로드), 그 외(카테고리별 조회)
+     * <pre>
+     * {lastVideoId, lastLiveRoomId} value must be -1 for initial home view (or must be same or bigger than 0)
+     * </pre>
      */
     @GetMapping("/list")
-    public ResponseEntity<VideoListDto> getVideoList(@RequestParam("category") String category, @RequestParam("page") int page, @RequestParam("size") int size) throws Exception {
-        return ResponseEntity.ok(mainService.getVideoList(Category.valueOf(category), page, size));
+    public ResponseEntity<HomeListDto> getHomeList(@RequestParam("category") String category,
+                                                   @RequestParam("last-video") long lastVideoId,
+                                                   @RequestParam("last-live") long lastLiveRoomId,
+                                                   @RequestParam("size") int size) throws Exception {
+        return ResponseEntity.ok(mainService.getHomeList(Category.valueOf(category), lastVideoId, lastLiveRoomId, size));
     }
 
     @GetMapping("/notification/{uuid}")
-    public ResponseEntity<Map<String, List<NotificationDto>>> getNotificationList(@PathVariable("uuid") String uuid) throws Exception {
+    public ResponseEntity<Map<String, List<NotificationDto>>> getNotificationList(@PathVariable("uuid") String uuid)
+            throws Exception {
         return ResponseEntity.ok(Map.of(RESPONSE_MAP_KEY, mainService.getNotificationList(uuid)));
     }
 
@@ -49,8 +54,9 @@ public class MainController {
 
     /* TODO : elastic search로 구현*/
     @GetMapping("/search")
-    public ResponseEntity<Map<String, String>> searchVideoByKeyword(@RequestParam("keyword") String keyword, @RequestParam("page") int page,
-                                             @RequestParam("size") int size) throws Exception {
+    public ResponseEntity<Map<String, String>> searchVideoByKeyword(@RequestParam("keyword") String keyword,
+                                                                    @RequestParam("page") int page,
+                                                                    @RequestParam("size") int size) throws Exception {
         //mainService.searchVideoByKeyword(keyword, page, size);
         return ResponseEntity.ok(Map.of(RESPONSE_MAP_KEY, "This API is not developed yet...."));
     }

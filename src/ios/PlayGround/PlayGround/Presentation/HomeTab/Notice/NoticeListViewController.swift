@@ -10,6 +10,9 @@ import UIKit
 
 class NoticeListViewController: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var friendRequestButton: UIButton!
+    @IBOutlet weak var friendRequestCountView: UIView!
+    @IBOutlet weak var friendRequestCountLabel: UILabel!
     var navVC: HomeNavigationController?
     
     override func viewDidLoad() {
@@ -21,10 +24,17 @@ class NoticeListViewController: UIViewController {
     
     func setupUI() {
         titleLabel.font = UIFont.SubTitle
+        friendRequestButton.layer.cornerRadius = 20
+        friendRequestCountView.layer.cornerRadius = 10
     }
     
     @IBAction func backButtonDidTap(_ sender: Any) {
         navVC?.coordinator?.pop()
+    }
+    
+    @IBAction func friendRequestButtonDidTap(_ sender: Any) {
+        guard let vc = UIStoryboard(name: "Notice", bundle: nil).instantiateViewController(withIdentifier: "FriendRequestViewController") as? FriendRequestViewController else { return }
+        self.navVC?.pushViewController(vc, animated: true)
     }
 }
 

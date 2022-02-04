@@ -8,6 +8,6 @@ import java.util.Optional;
 
 public interface ViewedRepository extends JpaRepository<ViewedHistory, Long>{
 
-    @Query("SELECT v FROM ViewedHistory v WHERE v.userEntity.uuid = :userUuid AND v.video.id = :videoId")
+    @Query("SELECT v FROM ViewedHistory v WHERE v.user.uuid = :userUuid AND v.video.id = :videoId")
     Optional<ViewedHistory> findByVideoIdAndUserUuid(@Param("userUuid") String userUuid, @Param("videoId") Long videoId);
 }

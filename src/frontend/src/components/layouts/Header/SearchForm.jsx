@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import { Search } from '@components/cores';
 
 import { HeaderContext } from '@utils/context';
-import S from './Header.style';
+import * as S from './Header.style';
 
 function SearchSection() {
   const { isShow } = useContext(HeaderContext);
