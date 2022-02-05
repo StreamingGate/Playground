@@ -36,7 +36,12 @@ class CreateTabCoordinator: Coordinator {
     }
     
     func showUploadPage() {
-        guard let vc = UIStoryboard(name: "Upload", bundle: nil).instantiateViewController(withIdentifier: "UploadViewController") as? UploadViewController else { return }
+        guard let vc = UIStoryboard(name: "Upload", bundle: nil).instantiateViewController(withIdentifier: "UploadViewController") as? UploadViewController, let tabVC = self.parentCoordinator?.navigation.viewControllers.last as? CustomTabViewController else { return }
+        for i in tabVC.children {
+            if let player = i as? PlayViewController {
+                player.coordinator?.closeMiniPlayer(vc: player)
+            }
+        }
         var viewControllers = navigation.viewControllers
         viewControllers[viewControllers.count - 1] = vc
         navigation.setViewControllers(viewControllers, animated: true)
