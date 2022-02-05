@@ -229,6 +229,7 @@ extension HomeListViewController: UITableViewDataSource, UITableViewDelegate {
             let avAsset = AVURLAsset(url: url)
             let item = AVPlayerItem(asset: avAsset)
             player.replaceCurrentItem(with: item)
+            self.playerView.backgroundColor = UIColor.black
             self.playerView.player = player
             self.playerView.player?.play()
             self.playerView.player?.isMuted = true
