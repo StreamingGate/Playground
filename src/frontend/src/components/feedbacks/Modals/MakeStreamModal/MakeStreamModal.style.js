@@ -24,7 +24,7 @@ export const StreamModalTitle = styled(Typography)`
 
 export const StreamModalBody = styled.form`
   padding: 30px 50px 20px;
-  min-width: 760px;
+  min-width: 850px;
 `;
 
 export const StreamInfoContainer = styled.div`
@@ -45,6 +45,8 @@ export const VideoPreviewContainer = styled.div`
 `;
 
 export const VideoPreview = styled.video`
+  width: 270px;
+  height: 150px;
   border: 1px solid ${({ theme }) => theme.colors.placeHolder};
   border-radius: 3px;
   overflow: hidden;
@@ -96,6 +98,8 @@ export const ThumbnailPreview = styled.div`
   border-radius: 3px;
   overflow: hidden;
   cursor: pointer;
+  background-image: ${({ src }) => src && `url(${src})`};
+  background-size: cover;
 `;
 
 export const CameraIcon = styled(Camera)`
