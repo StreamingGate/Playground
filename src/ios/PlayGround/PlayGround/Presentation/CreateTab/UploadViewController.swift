@@ -43,6 +43,9 @@ class UploadViewController: UIViewController {
     var timeObserver: Any?
     var playControllTimer = Timer()
     var didEndPlay = false
+    var categoryList: [String] = []
+    @Published var selectedCategory: String?
+    let categoryDic = ["ALL": "전체", "EDU": "교육", "SPORTS": "스포츠", "KPOP": "K-POP"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,6 +58,12 @@ class UploadViewController: UIViewController {
         imagePicker.delegate = self
         imagePicker.sourceType = .photoLibrary
         imagePicker.mediaTypes = [kUTTypeImage as String]
+        MainServiceAPI.shared.getAllList(lastVideoId: -1, lastLiveId: -1, category: "ALL", size: 1) { result in
+            if result["result"] as? String == "success" {
+                guard let data = result["data"] as? HomeList else { return }
+                self.categoryList = data.categories.compactMap({ self.categoryDic[$0] ?? "기타" }).filter({ $0 != "전체" && $0 != "기타" })
+            }
+        }
         bindData()
         setupUI()
     }
@@ -160,6 +169,15 @@ class UploadViewController: UIViewController {
                 self.playPauseButton.isHidden = false
                 self.setSeekBar(url: urlInfo)
             }.store(in: &cancellable)
+        self.$selectedCategory.receive(on: DispatchQueue.main, options: nil)
+            .sink { [weak self] selected in
+                guard let self = self else { return }
+                guard let info = selected else {
+                    self.categoryContentLabel.text = "카테고리를 선택해주세요"
+                    return
+                }
+                self.categoryContentLabel.text = info
+            }.store(in: &cancellable)
     }
     
     func setSeekBar(url: URL) {
@@ -236,6 +254,16 @@ class UploadViewController: UIViewController {
         explainTextView.resignFirstResponder()
     }
     
+    @IBAction func categoryButtonDidTap(_ sender: Any) {
+        let alert = UIAlertController(title: "", message: "카테고리를 선택해주세요", preferredStyle: .actionSheet)
+        for i in categoryList {
+            alert.addAction(UIAlertAction(title: i, style: .default, handler: { _ in
+                self.selectedCategory = i
+            }))
+        }
+        alert.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
 }
 
 extension UploadViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
