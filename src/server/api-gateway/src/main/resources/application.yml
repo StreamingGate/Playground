@@ -56,7 +56,7 @@ spring:
             - Method=POST,GET,DELETE,PUT
           filters:
             - RewritePath=/user-service(?<segment>/?.*), /$\{segment}
-#            - AuthenticationFilter
+            - AuthenticationFilter
         - id: main-service
           uri: lb://MAIN-SERVICE
           predicates:
@@ -64,3 +64,12 @@ spring:
             - Method=POST,GET,DELETE,PUT
           filters:
             - RewritePath=/main-service(?<segment>/?.*), /$\{segment}
+            - AuthenticationFilter
+        - id: upload-service
+          uri: lb://UPLOAD-SERVICE
+          predicates:
+            - Path=/upload-service/**
+            - Method=POST,GET,DELETE,PUT
+          filters:
+            - RewritePath=/upload-service(?<segment>/?.*), /$\{segment}
+            - AuthenticationFilter

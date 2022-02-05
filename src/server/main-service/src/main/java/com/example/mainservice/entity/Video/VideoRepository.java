@@ -11,9 +11,8 @@ import java.util.List;
 
 public interface VideoRepository extends JpaRepository<Video, Long> {
 
-//    @Query("SELECT v FROM Video v JOIN ViewedHistory vh ON v.ORDER BY v.createdAt DESC")
     @Query("SELECT v FROM Video v ORDER BY v.createdAt DESC")
-    Page<Video> findAll(@Param("userUuid")String userUuid, Pageable pageable);
+    Page<Video> findAll(Pageable pageable);
 
     @Query("SELECT v FROM Video v WHERE v.id < :lastId ORDER BY v.createdAt DESC")
     Page<Video> findAll(@Param("lastId") long lastId, Pageable pageable);
