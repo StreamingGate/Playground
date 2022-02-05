@@ -22,7 +22,11 @@ function MakeStreamModal({ type }) {
     const { id } = e.currentTarget;
 
     if (id === 'videoSelect') {
-      videoInputRef.current.click();
+      const button = e.target.closest('video');
+
+      if (button) {
+        videoInputRef.current.click();
+      }
     } else if (id === 'thumbnailSelect') {
       const button = e.target.closest('div');
 
@@ -57,13 +61,13 @@ function MakeStreamModal({ type }) {
               <S.InputLabel>동영상 선택</S.InputLabel>
               <S.VideoPreviewContainer>
                 <S.VideoPreview
+                  id='videoSelect'
                   src={filePreview.videoUrl}
                   autoPlay
                   controls={filePreview.videoUrl && true}
+                  onClick={handleFileSelectBtn}
                 />
-                <S.VideoSelectBtn id='videoSelect' color='pgBlue' onClick={handleFileSelectBtn}>
-                  파일선택
-                </S.VideoSelectBtn>
+                <S.VideoIcon />
                 <S.VideoFileInput
                   id='videoFile'
                   type='file'

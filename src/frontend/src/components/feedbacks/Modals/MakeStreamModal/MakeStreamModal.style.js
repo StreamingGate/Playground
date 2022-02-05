@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-import { Typography, Camera } from '@components/cores';
+import { Typography, Camera, Video } from '@components/cores';
 import { Button } from '@components/buttons';
 import { Input } from '@components/forms';
 
@@ -52,7 +52,7 @@ export const VideoPreview = styled.video`
   overflow: hidden;
 `;
 
-export const VideoSelectBtn = styled(Button)`
+export const VideoIcon = styled(Video)`
   position: absolute;
   top: 50%;
   left: 50%;
