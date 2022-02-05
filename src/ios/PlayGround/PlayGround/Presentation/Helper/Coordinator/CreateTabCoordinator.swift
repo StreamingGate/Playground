@@ -29,7 +29,12 @@ class CreateTabCoordinator: Coordinator {
     }
     
     func showCreatingPage() {
-        guard let liveInfoVC = UIStoryboard(name: "Create", bundle: nil).instantiateViewController(withIdentifier: "createInfoViewController") as? createInfoViewController else { return }
+        guard let liveInfoVC = UIStoryboard(name: "Create", bundle: nil).instantiateViewController(withIdentifier: "createInfoViewController") as? createInfoViewController, let tabVC = self.parentCoordinator?.navigation.viewControllers.last as? CustomTabViewController else { return }
+        for i in tabVC.children {
+            if let player = i as? PlayViewController {
+                player.coordinator?.closeMiniPlayer(vc: player)
+            }
+        }
         var viewControllers = navigation.viewControllers
         viewControllers[viewControllers.count - 1] = liveInfoVC
         navigation.setViewControllers(viewControllers, animated: true)
