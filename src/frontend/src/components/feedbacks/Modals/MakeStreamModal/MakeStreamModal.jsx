@@ -92,8 +92,8 @@ function MakeStreamModal({ type }) {
   };
 
   return (
-    <Dialog open={modal.visible} maxWidth='md' zIndex={2}>
-      <S.MakeStreamModalContainer>
+    <Dialog open={modal.visible} maxWidth='md' zIndex={2} onClose={() => modal.hide()}>
+      <S.MakeStreamModalContainer onClick={e => e.stopPropagation()}>
         <S.StreamModalTitleContainer>
           <S.StreamModalTitle>스트림 만들기</S.StreamModalTitle>
         </S.StreamModalTitleContainer>
