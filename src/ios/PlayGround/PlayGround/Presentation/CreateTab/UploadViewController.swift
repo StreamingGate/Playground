@@ -61,7 +61,8 @@ class UploadViewController: UIViewController {
         MainServiceAPI.shared.getAllList(lastVideoId: -1, lastLiveId: -1, category: "ALL", size: 1) { result in
             if result["result"] as? String == "success" {
                 guard let data = result["data"] as? HomeList else { return }
-                self.categoryList = data.categories.compactMap({ self.categoryDic[$0] ?? "기타" }).filter({ $0 != "전체" && $0 != "기타" })
+//                self.categoryList = data.categories.compactMap({ self.categoryDic[$0] ?? "기타" }).filter({ $0 != "전체" && $0 != "기타" })
+                self.categoryList = data.categories.filter({ $0 != "ALL" })
             }
         }
         bindData()
@@ -172,11 +173,11 @@ class UploadViewController: UIViewController {
         self.$selectedCategory.receive(on: DispatchQueue.main, options: nil)
             .sink { [weak self] selected in
                 guard let self = self else { return }
-                guard let info = selected else {
+                guard let info = selected, let categoryString = self.categoryDic[info] else {
                     self.categoryContentLabel.text = "카테고리를 선택해주세요"
                     return
                 }
-                self.categoryContentLabel.text = info
+                self.categoryContentLabel.text = categoryString
             }.store(in: &cancellable)
     }
     
@@ -257,12 +258,30 @@ class UploadViewController: UIViewController {
     @IBAction func categoryButtonDidTap(_ sender: Any) {
         let alert = UIAlertController(title: "", message: "카테고리를 선택해주세요", preferredStyle: .actionSheet)
         for i in categoryList {
-            alert.addAction(UIAlertAction(title: i, style: .default, handler: { _ in
+            guard let categoryInfo = categoryDic[i] else { return }
+            alert.addAction(UIAlertAction(title: categoryInfo, style: .default, handler: { _ in
                 self.selectedCategory = i
             }))
         }
         alert.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
         self.present(alert, animated: true, completion: nil)
+    }
+    
+    @IBAction func uploadButtonDidTap(_ sender: Any) {
+        guard let video = self.videoInfo as URL?, let titleInfo = titleTextView.text, titleInfo != "", let contentInfo = explainTextView.text, contentInfo != "", let categoryInfo = self.selectedCategory else {
+            self.simpleAlert(message: "실시간 스트리밍에 필요한 모든 정보를 입력해주세요")
+            return
+        }
+        do {
+            let videoData = try Data(contentsOf: video)
+            let imageData = self.imageInfo?.jpegData(compressionQuality: 1)
+            UploadServiceAPI.shared.post(video: videoData, image: imageData, title: titleInfo, content: contentInfo, category: categoryInfo) { result in
+                print("result : \(result)")
+            }
+         } catch let error {
+             self.simpleAlert(message: "동영상 데이터를 가져오는 데 실패했습니다. 동영상을 다시 업로드해주세요")
+             print(error)
+         }
     }
 }
 
