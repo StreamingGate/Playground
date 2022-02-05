@@ -37,6 +37,8 @@
 		4935FD44277C0ED100760675 /* ChatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4935FD43277C0ED100760675 /* ChatCell.swift */; };
 		4957CBBB27ACEA8C00554967 /* Friend.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4957CBBA27ACEA8B00554967 /* Friend.storyboard */; };
 		4957CBBE27AD4B4800554967 /* UILabel+PartOfTextColorChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4957CBBD27AD4B4800554967 /* UILabel+PartOfTextColorChange.swift */; };
+		4957CBC027AD58AC00554967 /* Upload.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4957CBBF27AD58AC00554967 /* Upload.storyboard */; };
+		4957CBC227AD5A8400554967 /* UploadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4957CBC127AD5A8400554967 /* UploadViewController.swift */; };
 		496279D627828BB3005A2BDC /* PlayExplainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496279D527828BB3005A2BDC /* PlayExplainViewController.swift */; };
 		496279D827829516005A2BDC /* MyPageNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496279D727829516005A2BDC /* MyPageNavigationController.swift */; };
 		496279DA278297C2005A2BDC /* VideoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496279D9278297C2005A2BDC /* VideoListViewController.swift */; };
@@ -136,6 +138,8 @@
 		4935FD43277C0ED100760675 /* ChatCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCell.swift; sourceTree = "<group>"; };
 		4957CBBA27ACEA8B00554967 /* Friend.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Friend.storyboard; sourceTree = "<group>"; };
 		4957CBBD27AD4B4800554967 /* UILabel+PartOfTextColorChange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+PartOfTextColorChange.swift"; sourceTree = "<group>"; };
+		4957CBBF27AD58AC00554967 /* Upload.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Upload.storyboard; sourceTree = "<group>"; };
+		4957CBC127AD5A8400554967 /* UploadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadViewController.swift; sourceTree = "<group>"; };
 		496279D527828BB3005A2BDC /* PlayExplainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayExplainViewController.swift; sourceTree = "<group>"; };
 		496279D727829516005A2BDC /* MyPageNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageNavigationController.swift; sourceTree = "<group>"; };
 		496279D9278297C2005A2BDC /* VideoListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoListViewController.swift; sourceTree = "<group>"; };
@@ -539,6 +543,8 @@
 			isa = PBXGroup;
 			children = (
 				49EC99FF278201C600DE4F79 /* Create.storyboard */,
+				4957CBBF27AD58AC00554967 /* Upload.storyboard */,
+				4957CBC127AD5A8400554967 /* UploadViewController.swift */,
 				49F18C2B278E5E0800EBDCF8 /* CreateNavigationController.swift */,
 				49EC9A012782033E00DE4F79 /* CreatePopOverViewController.swift */,
 				496279DF2782C1AA005A2BDC /* CreateInfoViewController.swift */,
@@ -639,6 +645,7 @@
 				49E8E89C278BB528003AD1DF /* Broadcast.storyboard in Resources */,
 				49B9C9C3277ACE9F006AE134 /* Assets.xcassets in Resources */,
 				4957CBBB27ACEA8C00554967 /* Friend.storyboard in Resources */,
+				4957CBC027AD58AC00554967 /* Upload.storyboard in Resources */,
 				49C52CE1278B4379009D6FBB /* Channel.storyboard in Resources */,
 				49B9C9C1277ACE9C006AE134 /* Login.storyboard in Resources */,
 			);
@@ -697,6 +704,7 @@
 				49F0213E2799505400684A25 /* UIViewController+SimpleAlert.swift in Sources */,
 				491EF26927A7C31000A7AF91 /* UIImageView+downloadImageFrom.swift in Sources */,
 				496279DA278297C2005A2BDC /* VideoListViewController.swift in Sources */,
+				4957CBC227AD5A8400554967 /* UploadViewController.swift in Sources */,
 				49F4E3D327ACCE81002869F4 /* AccountInfoViewModel.swift in Sources */,
 				49D7A0AA2783DBB9001CAC60 /* LoginViewController.swift in Sources */,
 				49F18C52278F0FB100EBDCF8 /* UITabBarController+Visibility.swift in Sources */,
