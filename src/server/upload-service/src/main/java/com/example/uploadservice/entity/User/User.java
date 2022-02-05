@@ -58,23 +58,8 @@ public class User {
     @Column
     private LocalDate lastAt;
 
-//    @OneToMany(mappedBy = "user")
-//    private List<RoomViewer> roomViewers = new LinkedList<>();
-
     @OneToMany(mappedBy = "user")
     private List<Video> videos = new LinkedList<>();
-
-//    @OneToMany(mappedBy = "user")
-//    private List<ViewedHistory> viewedHistories = new LinkedList<>();
-//
-//    @OneToMany(mappedBy = "user")
-//    private List<Room> lives = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "user")
-//    private List<Notification> notifications = new LinkedList<>();
-//
-//    @OneToMany(mappedBy = "user")
-//    private List<FriendWait> friendWaits = new LinkedList<>();
 
     /**
      * =============Friend=============
@@ -92,18 +77,4 @@ public class User {
     /**
      * ================================
      **/
-
-//    public void addFriend(User target) throws CustomUploadException {
-//        if (target == null || target == this) return;
-//        if (friends.contains(target)) throw new CustomUploadException(ErrorCode.F003);
-//        this.friends.add(target);
-//        target.getFriends().add(this);
-//    }
-//
-//    public void deleteFriend(User target) throws CustomUploadException {
-//        if (target == null || target == this) return;
-//        if (!friends.contains(target)) throw new CustomUploadException(ErrorCode.F004);
-//        this.friends.remove(target);
-//        target.getFriends().remove(this);
-//    }
 }

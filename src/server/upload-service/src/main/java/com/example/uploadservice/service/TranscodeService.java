@@ -46,9 +46,6 @@ public class TranscodeService {
         this.amazonS3 = amazonS3;
     }
 
-    /**
-     * @param videoUuid with s3 directory, ext(mp4)
-     */
     public void convertMp4ToTs(String videoUuid, MultipartFile multipartFileThumbnail) throws CustomUploadException {
         final String INPUT_FILEPATH = S3_DOMAIN + "/" + BUCKET + "/" + INPUT_DIR + "/" + videoUuid + "/" + DEFAULT_VIDEO_FILE;
         log.info("FFMPEG_PATH " + FFMPEG_PATH);
@@ -64,7 +61,6 @@ public class TranscodeService {
         }
 
         try {
-//            S3Object s3Object = amazonS3.getObject(BUCKET, INPUT_DIR + "/" + videoUuid + "/" + DEFAULT_VIDEO_FILE);
             FFmpeg ffmpeg = new FFmpeg(FFMPEG_PATH);       //C:\Projects\Playground\bin\ffmpeg.exe
             FFprobe ffprobe = new FFprobe(FFPROBE_PATH);   //C:\Projects\Playground\bin\ffprobe.exe
 

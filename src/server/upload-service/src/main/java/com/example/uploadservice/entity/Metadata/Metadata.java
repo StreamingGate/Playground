@@ -4,7 +4,6 @@ import com.example.uploadservice.entity.Video.Video;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
