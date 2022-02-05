@@ -642,6 +642,7 @@ class PlayViewController: UIViewController {
                 let currentTime = CMTimeMakeWithSeconds(Float64(seekbar.value), preferredTimescale: Int32(NSEC_PER_SEC))
                 self.updateVideoPlayerState(currentTime: currentTime)
             case .ended:
+                self.didEndPlay = false
                 self.playControllTimer.invalidate()
                 playView.player?.seek(to: CMTimeMakeWithSeconds(Float64(seekbar.value), preferredTimescale: Int32(NSEC_PER_SEC)))
                 self.isPlay = true
@@ -657,6 +658,7 @@ class PlayViewController: UIViewController {
     }
     
     @objc func sliderTapped(gestureRecognizer: UIGestureRecognizer) {
+        self.didEndPlay = false
         let pointTapped: CGPoint = gestureRecognizer.location(in: self.view)
         let positionOfSlider: CGPoint = seekbar.frame.origin
         let widthOfSlider: CGFloat = seekbar.frame.size.width
