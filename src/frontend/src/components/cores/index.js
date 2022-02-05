@@ -25,3 +25,4 @@ export { default as AddFullCircle } from './Icons/AddFullCircle';
 export { default as LiveStreaming } from './Icons/LiveStreaming';
 export { default as Logout } from './Icons/Logout';
 export { default as FullAlarm } from './Icons/FullAlarm';
+export { default as Camera } from './Icons/Camera';
