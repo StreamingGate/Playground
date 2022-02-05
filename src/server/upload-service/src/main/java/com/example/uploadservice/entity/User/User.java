@@ -1,13 +1,10 @@
 package com.example.uploadservice.entity.User;
 
 import com.example.uploadservice.entity.Video.Video;
-import com.example.uploadservice.exceptionHandler.customexception.CustomUploadException;
-import com.example.uploadservice.exceptionHandler.customexception.ErrorCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.ColumnDefault;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;

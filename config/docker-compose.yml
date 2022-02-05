@@ -87,8 +87,7 @@ services:
     networks:
       - sg-network
   apigateway-service:
-#    image: wodndl895/api-gateway:1.0
-    image: api-gateway:1.0
+    image: wodndl895/api-gateway:1.0
     ports:
       - "8000:8000"
     environment:

@@ -1,7 +1,6 @@
 package com.example.uploadservice.service;
 
 import com.amazonaws.services.s3.AmazonS3;
-import com.example.uploadservice.dto.VideoDto;
 import com.example.uploadservice.exceptionHandler.customexception.CustomUploadException;
 import com.example.uploadservice.exceptionHandler.customexception.ErrorCode;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.File;
 
 @Slf4j

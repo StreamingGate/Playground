@@ -7,12 +7,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.List;
 
 @Slf4j
 @NoArgsConstructor
@@ -51,9 +49,6 @@ public class Video {
     @JoinColumn(name = "users_id")
     private User user;
 
-//    @OneToMany( mappedBy = "video")
-//    private List<ViewedHistory> viewedHistories;
-
     @OneToOne
     @JoinColumn(name = "metadata_id")
     private Metadata metadata;
@@ -62,18 +57,6 @@ public class Video {
     public Video(String title) {
         this.title = title;
     }
-
-//    public void addReportCnt(int reportCnt){
-//        if(reportCnt != 1 && reportCnt != -1) log.error("잘못된 신고 수가 업데이트됩니다. parameter:"+reportCnt);
-//        this.reportCnt+=reportCnt;
-//        if(this.reportCnt<0) this.reportCnt = 0;
-//    }
-//
-//    public void addLikeCnt(int likeCnt){
-//        if(likeCnt != 1 && likeCnt != -1) log.error("잘못된 좋아요 수가 업데이트됩니다. parameter:"+likeCnt);
-//        this.likeCnt+=likeCnt;
-//        if(this.likeCnt<0) this.likeCnt = 0;
-//    }
 
     @Builder
     public Video(String title, String content, Category category,
