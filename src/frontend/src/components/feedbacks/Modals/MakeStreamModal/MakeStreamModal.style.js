@@ -9,6 +9,14 @@ const videoInputCommonStyle = css`
   color: #ffffff;
 `;
 
+export const InputContainer = styled.div`
+  text-align: right;
+`;
+
+export const InputCount = styled(Typography)`
+  color: ${({ isLimit, theme }) => (isLimit ? 'red' : theme.colors.placeHolder)};
+`;
+
 export const MakeStreamModalContainer = styled.div`
   background-color: #444444;
 `;

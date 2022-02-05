@@ -8,6 +8,9 @@ import { modalService, mediaService } from '@utils/service';
 import { Dialog } from '@components/feedbacks';
 import { AdviseModal } from '@components/feedbacks/Modals';
 
+const TITLE_MAX_LEN = 100;
+const CONTENT_MAX_LEN = 5000;
+
 function MakeStreamModal({ type }) {
   const videoInputRef = useRef(null);
   const thumbnailInputRef = useRef(null);
@@ -21,14 +24,16 @@ function MakeStreamModal({ type }) {
   const handleFileSelectBtn = e => {
     const { id } = e.currentTarget;
 
+    let button = null;
+
     if (id === 'videoSelect') {
-      const button = e.target.closest('video');
+      button = e.target.closest('video');
 
       if (button) {
         videoInputRef.current.click();
       }
     } else if (id === 'thumbnailSelect') {
-      const button = e.target.closest('div');
+      button = e.target.closest('div');
 
       if (button) {
         thumbnailInputRef.current.click();
@@ -79,24 +84,34 @@ function MakeStreamModal({ type }) {
             </S.VideoSelectContainer>
             <S.VideoDetailInfoContainer>
               <S.InputLabel>세부정보</S.InputLabel>
-              <S.VideoTitleInput
-                multiLine
-                fullWidth
-                placeholder='제목'
-                rows='2'
-                name='title'
-                value={values.title}
-                onChange={handleInputChange}
-              />
-              <S.VideoContentInput
-                multiLine
-                fullWidth
-                placeholder='내용'
-                rows='3'
-                name='content'
-                value={values.content}
-                onChange={handleInputChange}
-              />
+              <S.InputContainer>
+                <S.VideoTitleInput
+                  multiLine
+                  fullWidth
+                  placeholder='제목'
+                  rows='2'
+                  name='title'
+                  value={values.title}
+                  onChange={handleInputChange}
+                />
+                <S.InputCount type='caption' isLimit={values.title.length > TITLE_MAX_LEN}>
+                  {values.title.length} / {TITLE_MAX_LEN}
+                </S.InputCount>
+              </S.InputContainer>
+              <S.InputContainer>
+                <S.VideoContentInput
+                  multiLine
+                  fullWidth
+                  placeholder='내용'
+                  rows='3'
+                  name='content'
+                  value={values.content}
+                  onChange={handleInputChange}
+                />
+                <S.InputCount type='caption' isLimit={values.content.length > TITLE_MAX_LEN}>
+                  {values.content.length} / {CONTENT_MAX_LEN}
+                </S.InputCount>
+              </S.InputContainer>
             </S.VideoDetailInfoContainer>
           </S.StreamInfoContainer>
           <S.CategorySelectContainer>
