@@ -12,6 +12,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.List;
 
 @Slf4j
 @NoArgsConstructor
@@ -22,26 +23,27 @@ public class Video {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(length=36)
+    private String uuid;
+
     @Column(length = 100)
     private String title;
-
-    private String uploaderNickname;
 
     @Column(length = 5000)
     private String content;
 
-    private int likeCnt;
-
-    @Enumerated(EnumType.STRING)
-    @Column(length = 10)
-    private Category category;
-
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition="TEXT")
     private String thumbnail;
+
+    private int likeCnt;
 
     private int hits;
 
     private short reportCnt;
+
+    @Enumerated(EnumType.STRING)
+    @Column(length = 10)
+    private Category category;
 
     private LocalDateTime createdAt;
 
@@ -49,9 +51,13 @@ public class Video {
     @JoinColumn(name = "users_id")
     private User user;
 
+//    @OneToMany( mappedBy = "video")
+//    private List<ViewedHistory> viewedHistories;
+
     @OneToOne
     @JoinColumn(name = "metadata_id")
     private Metadata metadata;
+
 
     public Video(String title) {
         this.title = title;
@@ -70,13 +76,13 @@ public class Video {
 //    }
 
     @Builder
-    public Video(String title, String uploaderNickname, String content, Category category,
-                 String thumbnail, User user) {
+    public Video(String title, String content, Category category,
+                 String thumbnail, String uuid, User user) {
         this.title = title;
-        this.uploaderNickname = uploaderNickname;
         this.content = content;
         this.category = category;
         this.thumbnail = thumbnail;
+        this.uuid = uuid;
         this.user = user;
         this.likeCnt = 0;
         this.hits = 0;

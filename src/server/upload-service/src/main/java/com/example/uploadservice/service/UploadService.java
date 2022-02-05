@@ -4,9 +4,12 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.example.uploadservice.dto.UploadResponseDto;
-import lombok.RequiredArgsConstructor;
+import com.example.uploadservice.dto.VideoDto;
+import com.example.uploadservice.exceptionHandler.customexception.CustomUploadException;
+import com.example.uploadservice.exceptionHandler.customexception.ErrorCode;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
@@ -21,105 +25,107 @@ import java.util.UUID;
  */
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class UploadService {
 
-    private static final String[] ALLOWED_EXT = new String[]{"mp4"};
     private static final String DEFAULT_VIDEO_NAME = "video";
     private static final String DEFAULT_THUMBNAIL_NAME = "thumbnail";
-
-    @Value("${cloud.aws.s3.image.bucket}")
-    private String bucket;
-
-    @Value("${cloud.aws.s3.image.input-dir}")
-    private String inputDir;
-
-    @Value("${cloud.aws.s3.image.output-dir}")
-    private String outputDir;
-
+    private final String LOCAL_FILEPATH;
+    private final String BUCKET;
+    private final String INPUT_DIR;
+    private final String OUTPUT_DIR;
+    private final String RESULT_PREFIX;
     private final AmazonS3 amazonS3;
 
-    /**
-     * upload video to "input" folder
-     * @param multipartFileVideo
-     * @return saved directory
-     */
-    public String uploadRawFile(MultipartFile multipartFileVideo, MultipartFile multipartFileThumbnail) {
-        final String videoUuid = createUuid();
-
-        // upload video, thumbnail
-        String fileLink = getKey(multipartFileVideo, videoUuid);
-        String thumbnailLink = getKey(multipartFileThumbnail, videoUuid);
-        log.info("fileLink:" + fileLink);
-        log.info("thumbnailLink:" + thumbnailLink);
-        upload(multipartFileVideo, fileLink);
-        upload(multipartFileThumbnail, thumbnailLink);
-
-        return videoUuid;
+    @Autowired
+    public UploadService(@Value("${bin.path}") String localFilePath,
+                         @Value("${cloud.aws.s3.image.bucket}") String bucket,
+                         @Value("${cloud.aws.s3.image.input-dir}") String inputDir,
+                         @Value("${cloud.aws.s3.image.output-dir}") String outputDir,
+                         @Value("${cloud.aws.s3.image.result-prefix}") String resultPrefix,
+                         AmazonS3 amazonS3) {
+        this.LOCAL_FILEPATH = localFilePath;
+        this.BUCKET = bucket;
+        this.INPUT_DIR = inputDir;
+        this.OUTPUT_DIR = outputDir;
+        this.RESULT_PREFIX = resultPrefix;
+        this.amazonS3 = amazonS3;
     }
 
-    private String createUuid(){
-        return UUID.randomUUID().toString();
+    /**
+     * upload video to s3 "input" folder
+     */
+    public String uploadRawFile(MultipartFile multipartFileVideo, MultipartFile multipartFileThumbnail, VideoDto videoDto)
+            throws CustomUploadException {
+        String videoUuid = UUID.randomUUID().toString();
+
+        // upload video
+        if (multipartFileVideo.isEmpty()) throw new CustomUploadException(ErrorCode.I001, "첨부한 비디오 파일이 비어있습니다");
+        String fileLink = getKey(multipartFileVideo, videoUuid);
+        log.info("fileLink:" + fileLink);
+        upload(multipartFileVideo, fileLink);
+        videoDto.updateMetaData(videoUuid, multipartFileVideo.getSize(), LocalDateTime.now());
+
+        // upload thumbnail
+        if (multipartFileThumbnail != null) {
+            String thumbnailLink = getKey(multipartFileThumbnail, videoUuid);
+            upload(multipartFileThumbnail, thumbnailLink);
+            log.info("thumbnailLink:" + thumbnailLink);
+        }
+        return videoUuid;
     }
 
     /**
      * rename key(s3 path)
      */
-    public String getKey(MultipartFile multipartFile, String videoUuid){
-        String originalFilename =multipartFile.getOriginalFilename();
+    private String getKey(MultipartFile multipartFile, String videoUuid) throws CustomUploadException {
+        String originalFilename = multipartFile.getOriginalFilename();
         String ext = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
-        if(ext.equals("mp4")) return videoUuid+"/"+ DEFAULT_VIDEO_NAME +"."+ext;
-        else return videoUuid+"/"+DEFAULT_THUMBNAIL_NAME+"."+ext;
+        if (multipartFile.getName().equals(DEFAULT_VIDEO_NAME)) return INPUT_DIR + "/" + videoUuid + "/" + DEFAULT_VIDEO_NAME + "." + ext;
+        else return OUTPUT_DIR + "/" + videoUuid + "/" + DEFAULT_THUMBNAIL_NAME + "." + ext;
     }
 
-    public void upload(MultipartFile multipartFile, String key){
+    public void upload(MultipartFile multipartFile, String key) {
         try {
             InputStream inputStream = multipartFile.getInputStream();
             ObjectMetadata objectMetadata = new ObjectMetadata();
             objectMetadata.setContentLength(multipartFile.getSize());
-            amazonS3.putObject(new PutObjectRequest(bucket, key, inputStream, objectMetadata)
+            amazonS3.putObject(new PutObjectRequest(BUCKET, key, inputStream, objectMetadata)
                     .withCannedAcl(CannedAccessControlList.PublicRead)); // public 권한으로 설정
-        } catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private boolean isAllowedExt(String ext) {
-        for(String cur: ALLOWED_EXT){
-            if(ext.equals(cur)){
-                return true;
-            }
-        }
-        return false;
+    public String uploadTranscodedFile(String videoUuid) throws CustomUploadException {
+        uploadAllLocalFiles(videoUuid);
+        log.info("uploaded transcoded files...");
+        deleteAllLocalFiles(videoUuid);
+        log.info("deleted transcoded files...");
+        return RESULT_PREFIX + "/" + videoUuid;
     }
 
-    public String uploadTranscodedFile(UploadResponseDto uploadResponseDto){
-        String result1 = uploadTranscodedFile(uploadResponseDto.getOutputPath());
-        String result2 = uploadTranscodedFile(uploadResponseDto.getTsPath());
-        String result3 = uploadTranscodedFile(uploadResponseDto.getThumbnailPath());
-        if(result1 == null || result2==null || result3==null) return null;
-        return "success";
-    }
-    /**
-     * s3에 업로드
-     * - PutObjectRequest로 저장하는 방식이 추가로 로컬에 파일을 저장하지 않으므로 선호됨
-     * - 따라서 InputStream 사용
-     */
-    public String uploadTranscodedFile(String path) {
-        log.info("path:"+ path);
-        File uploadFile = new File(path);
+    private void uploadAllLocalFiles(String videoUuid) {
         try {
-            if (uploadFile != null) {
-                final String OUTPUT_FILEPATH = outputDir + "/" + uploadFile.getName();
-                log.info("OUTPUT_FILEPATH:" + OUTPUT_FILEPATH);
-                amazonS3.putObject(new PutObjectRequest(bucket, OUTPUT_FILEPATH, uploadFile)
-                        .withCannedAcl(CannedAccessControlList.PublicRead)); // public 권한으로 설정
-
-                return uploadFile.getName();
+            File targetFolder = new File(LOCAL_FILEPATH + File.separator + videoUuid);
+            if (!targetFolder.exists()) return;
+            File[] files = targetFolder.listFiles();
+            for (File file : files) {
+                final String OUTPUT_FILEPATH = OUTPUT_DIR + "/" + videoUuid + "/" + file.getName();
+                amazonS3.putObject(new PutObjectRequest(BUCKET, OUTPUT_FILEPATH, file)
+                        .withCannedAcl(CannedAccessControlList.PublicRead));    // public 권한으로 설정
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+    }
+
+    private void deleteAllLocalFiles(String videoUuid) {
+        try {
+            File file = new File(LOCAL_FILEPATH + File.separator + videoUuid);
+            FileUtils.cleanDirectory(file);
+            file.delete();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

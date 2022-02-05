@@ -12,5 +12,5 @@ public class UploadRequestDto {
     private String title;
     private String content;
     private Category category;
-    private String uploaderNickname;
+    private String uuid; //uploder's uuid
 }
