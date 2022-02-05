@@ -3,10 +3,12 @@ import PropTypes from 'prop-types';
 
 import * as S from './MakeStreamModal.style';
 import { useForm } from '@utils/hook';
+import { useUploadVideo } from '@utils/hook/query';
 import { modalService, mediaService } from '@utils/service';
 
 import { Dialog } from '@components/feedbacks';
 import { AdviseModal } from '@components/feedbacks/Modals';
+import { Select } from '@components/forms';
 
 const TITLE_MAX_LEN = 100;
 const CONTENT_MAX_LEN = 5000;
@@ -15,11 +17,13 @@ function MakeStreamModal({ type }) {
   const videoInputRef = useRef(null);
   const thumbnailInputRef = useRef(null);
 
-  const [filePreview, setFilePreview] = useState({ videoUrl: '', thumbnailUrl: '' });
-  const [fileFormData, setFileFormData] = useState({ video: null, thumbnail: null });
-
+  const { mutate } = useUploadVideo();
   const { values, handleInputChange } = useForm({ initialValues: { title: '', content: '' } });
   const modal = modalService.useModal();
+
+  const [category, setCategory] = useState('');
+  const [filePreview, setFilePreview] = useState({ videoUrl: '', thumbnailUrl: '' });
+  const [fileFormData, setFileFormData] = useState({ video: null, thumbnail: null });
 
   const handleFileSelectBtn = e => {
     const { id } = e.currentTarget;
@@ -28,13 +32,11 @@ function MakeStreamModal({ type }) {
 
     if (id === 'videoSelect') {
       button = e.target.closest('video');
-
       if (button) {
         videoInputRef.current.click();
       }
     } else if (id === 'thumbnailSelect') {
       button = e.target.closest('div');
-
       if (button) {
         thumbnailInputRef.current.click();
       }
@@ -52,6 +54,41 @@ function MakeStreamModal({ type }) {
       setFilePreview(prev => ({ ...prev, thumbnailUrl }));
       setFileFormData(prev => ({ ...prev, thumbnail: target.files[0] }));
     }
+  };
+
+  const handleCategoryChange = e => {
+    const { target } = e;
+    setCategory(target.value);
+  };
+
+  const handleUploadBtnClick = () => {
+    const { title, content } = values;
+    const modalProps = {};
+
+    if (!title || !content || !filePreview.videoUrl || !category) {
+      modalProps.content = '썸네일을 제외한 모든 필드는 필수값 입니다';
+    } else if (title.length > TITLE_MAX_LEN || content.length > CONTENT_MAX_LEN) {
+      modalProps.content = '글자수를 초과했습니다';
+    }
+
+    if (Object.keys(modalProps).length !== 0) {
+      modalService.show(AdviseModal, { ...modalProps });
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('video', fileFormData.video);
+
+    if (fileFormData.thumbnail) {
+      formData.append('thumbnail', fileFormData.thumbnail);
+    }
+
+    formData.append(
+      'data',
+      '{\n"title":"good cat",\n"content":"meow~",\n"category":"KPOP",\n"uuid":"33333333-1234-1234-123456789012"\n}'
+    );
+
+    mutate(formData);
   };
 
   return (
@@ -116,12 +153,13 @@ function MakeStreamModal({ type }) {
           </S.StreamInfoContainer>
           <S.CategorySelectContainer>
             <S.InputLabel>카테고리</S.InputLabel>
-            <select>
-              <option>ALL</option>
-              <option>EDU</option>
-              <option>SPORTS</option>
-              <option>KPOP</option>
-            </select>
+            <S.CategorySelect value={category} onChange={handleCategoryChange}>
+              <option value=''>카테고리를 선택해주세요</option>
+              <option value='ALL'>ALL</option>
+              <option value='EDU'>EDU</option>
+              <option value='SPORTS'>SPORTS</option>
+              <option value='KPOP'>KPOP</option>
+            </S.CategorySelect>
           </S.CategorySelectContainer>
           <S.ThumbnailSelectContainer>
             <S.InputLabel>썸네일 이미지 (선택)</S.InputLabel>
@@ -146,7 +184,7 @@ function MakeStreamModal({ type }) {
             </S.ThumbnailPreviewContainer>
           </S.ThumbnailSelectContainer>
           <S.UploadBtnContainer>
-            <S.UploadButton color='pgBlue' size='md' onClick={() => modalService.show(AdviseModal)}>
+            <S.UploadButton color='pgBlue' size='md' onClick={handleUploadBtnClick}>
               업로드
             </S.UploadButton>
           </S.UploadBtnContainer>

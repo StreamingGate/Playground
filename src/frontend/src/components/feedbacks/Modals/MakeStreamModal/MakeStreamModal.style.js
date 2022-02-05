@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 
 import { Typography, Camera, Video } from '@components/cores';
 import { Button } from '@components/buttons';
-import { Input } from '@components/forms';
+import { Input, Select } from '@components/forms';
 
 const videoInputCommonStyle = css`
   background-color: transparent;
@@ -85,6 +85,11 @@ export const VideoContentInput = styled(Input)`
 
 export const CategorySelectContainer = styled.div`
   margin-top: 30px;
+`;
+
+export const CategorySelect = styled(Select)`
+  background-color: transparent;
+  color: ${({ theme }) => theme.colors.placeHolder};
 `;
 
 export const ThumbnailSelectContainer = styled.div`
