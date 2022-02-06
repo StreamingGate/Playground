@@ -27,3 +27,4 @@ export { default as Logout } from './Icons/Logout';
 export { default as FullAlarm } from './Icons/FullAlarm';
 export { default as Camera } from './Icons/Camera';
 export { default as Video } from './Icons/Video';
+export { default as Mike } from './Icons/Mike';
