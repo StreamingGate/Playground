@@ -30,7 +30,7 @@ public class UploadController {
     public ResponseEntity<Map<String, String>> video(@RequestPart(value = "video") MultipartFile multipartFileVideo,
                                                      @RequestPart(value = "thumbnail", required = false) MultipartFile multipartFileThumbnail,
                                                      @RequestPart(value = "data") UploadRequestDto dto) throws CustomUploadException  {
-        VideoDto videoDto = new VideoDto(dto);
+        VideoDto videoDto = new VideoDto(dto, multipartFileThumbnail.getOriginalFilename());
         String videoUuid = uploadService.uploadRawFile(multipartFileVideo, multipartFileThumbnail, videoDto);
         transcodeService.convertMp4ToTs(videoUuid, multipartFileThumbnail);
         String s3OutputPath = uploadService.uploadTranscodedFile(videoUuid);
@@ -46,7 +46,7 @@ public class UploadController {
                                                     @RequestPart(value = "data") UploadRequestDto dto,
                                                     @PathVariable(value = "roomId") Long roomId) throws CustomUploadException  {
 
-        VideoDto videoDto = new VideoDto(dto);
+        VideoDto videoDto = new VideoDto(dto, multipartFileThumbnail.getOriginalFilename());
         String videoUuid = uploadService.uploadRawFile(multipartFileVideo, multipartFileThumbnail, videoDto);
         transcodeService.convertMp4ToTs(videoUuid, multipartFileThumbnail);
         String s3OutputPath = uploadService.uploadTranscodedFile(videoUuid);
@@ -54,6 +54,13 @@ public class UploadController {
 
         Video video = videoService.add(videoDto);
         videoService.remove(video, roomId);
+        return ResponseEntity.ok(Map.of("result", "success"));
+    }
+
+    @PostMapping(value="/aws-converter", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<Map<String, String>> videoByAwsConverter (@RequestPart(value = "video") MultipartFile multipartFileVideo,
+                                                     @RequestPart(value = "thumbnail", required = false) MultipartFile multipartFileThumbnail,
+                                                     @RequestPart(value = "data") UploadRequestDto dto) throws CustomUploadException  {
         return ResponseEntity.ok(Map.of("result", "success"));
     }
 }

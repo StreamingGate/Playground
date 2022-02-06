@@ -26,7 +26,6 @@ public class VideoService {
 
     private static final String DEFAULT_M3U8_FILE = "video.m3u8";
     private static final String DEFAULT_VIDEO_FILE = "video.mp4";
-    private static final String DEFAULT_THUMBNAIL_FILE = "thumbnail.png";
     private final VideoRepository videoRepository;
     private final UserRepository userRepository;
     private final RoomRepository roomRepository;
@@ -50,7 +49,7 @@ public class VideoService {
                 .content(dto.getContent())
                 .category(dto.getCategory())
                 .uuid(dto.getVideoUuid())
-                .thumbnail(dto.getS3OutputPath() + "/" + DEFAULT_THUMBNAIL_FILE)
+                .thumbnail(dto.getS3OutputPath() + "/" + dto.getThumbnailName())
                 .user(user)
                 .build();
 
