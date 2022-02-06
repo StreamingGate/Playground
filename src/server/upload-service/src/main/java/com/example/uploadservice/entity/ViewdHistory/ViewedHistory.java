@@ -1,10 +1,10 @@
-package com.example.mainservice.entity.ViewdHistory;
+package com.example.uploadservice.entity.ViewdHistory;
 
-import com.example.mainservice.entity.User.User;
-import com.example.mainservice.entity.Video.Video;
+import com.example.uploadservice.entity.RoomViewer.RoomViewer;
+import com.example.uploadservice.entity.User.User;
+import com.example.uploadservice.entity.Video.Video;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -36,6 +36,15 @@ public class ViewedHistory {
 
     public ViewedHistory(User user, Video video) {
         this.user = user;
+        this.video = video;
+    }
+
+    public ViewedHistory(RoomViewer roomViewer, Video video){
+        this.liked = roomViewer.isLiked();
+        this.disliked = roomViewer.isDisliked();
+        this.likedAt = roomViewer.getLikedAt();
+        this.lastViewedAt = roomViewer.getLastViewedAt();
+        this.user = roomViewer.getUser();
         this.video = video;
     }
 
