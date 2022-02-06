@@ -274,7 +274,7 @@ class UploadViewController: UIViewController {
         }
         do {
             let videoData = try Data(contentsOf: video)
-            let imageData = self.imageInfo?.jpegData(compressionQuality: 1)
+            let imageData = self.imageInfo?.pngData()
             UploadServiceAPI.shared.post(video: videoData, image: imageData, title: titleInfo, content: contentInfo, category: categoryInfo) { result in
                 print("result : \(result)")
             }

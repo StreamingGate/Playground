@@ -32,15 +32,15 @@ struct UploadServiceAPI {
         body.appendString("\(dataInfo)\r\n")
         
         body.appendString("--\(boundary)\r\n")
-        body.appendString("Content-Disposition: form-data; name=\"video\"; filename=\"video\"\r\n")
+        body.appendString("Content-Disposition: form-data; name=\"video\"; filename=\"video.mp4\"\r\n")
         body.appendString("Content-Type: video/mp4\r\n\r\n")
         body.append(video)
         body.appendString("\r\n")
         
         if let imageInfo = image {
             body.appendString("--\(boundary)\r\n")
-            body.appendString("Content-Disposition: form-data; name=\"thumbnail\"; filename=\"thumbnail\"\r\n")
-            body.appendString("Content-Type: image/jpg\r\n\r\n")
+            body.appendString("Content-Disposition: form-data; name=\"thumbnail\"; filename=\"thumbnail.png\"\r\n")
+            body.appendString("Content-Type: image/png\r\n\r\n")
             body.append(imageInfo)
             body.appendString("\r\n")
         }
