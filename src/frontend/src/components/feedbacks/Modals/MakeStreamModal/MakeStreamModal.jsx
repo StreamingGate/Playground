@@ -85,7 +85,10 @@ function MakeStreamModal({ type }) {
 
     formData.append(
       'data',
-      '{\n"title":"good cat",\n"content":"meow~",\n"category":"KPOP",\n"uuid":"33333333-1234-1234-123456789012"\n}'
+      new Blob(
+        [JSON.stringify({ title, content, category, uuid: '33333333-1234-1234-123456789012' })],
+        { type: 'application/json' }
+      )
     );
 
     mutate(formData);

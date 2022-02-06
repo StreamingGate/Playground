@@ -4,7 +4,7 @@ import axios from '@utils/axios';
 const postUploadVideo = async formData => {
   const { data } = await axios.post(`/upload-service/upload`, formData, {
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
+      'Content-Type': 'multipart/form-data',
     },
   });
   return data;
