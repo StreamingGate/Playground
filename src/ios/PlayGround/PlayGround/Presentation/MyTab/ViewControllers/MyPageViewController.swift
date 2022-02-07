@@ -44,7 +44,9 @@ class MyPageViewController: UIViewController {
         likedVideoLabel.font = UIFont.Component
         myVideoLabel.font = UIFont.Component
         profileImageView.backgroundColor = UIColor.placeHolder
-        profileImageView.layer.cornerRadius = 10
+        profileImageView.layer.cornerRadius = 15
+        profileImageView.layer.borderColor = UIColor.placeHolder.cgColor
+        profileImageView.layer.borderWidth = 1
     }
     
     func bindData() {

@@ -43,8 +43,10 @@ class AccountInfoViewController: UIViewController {
         logOutLabel.font = UIFont.Component
         nicknameLabel.font = UIFont.Content
         editButton.titleLabel?.font = UIFont.caption
-        profileImageView.layer.cornerRadius = 35 / 2
+        profileImageView.layer.cornerRadius = 20
         profileImageView.backgroundColor = UIColor.placeHolder
+        profileImageView.layer.borderColor = UIColor.placeHolder.cgColor
+        profileImageView.layer.borderWidth = 1
     }
     
     func bindData() {
