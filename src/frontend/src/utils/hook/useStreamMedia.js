@@ -1,12 +1,20 @@
 import { useEffect, useState } from 'react';
 
-const constraints = { audio: { echoCancellation: false }, video: { width: 1280, height: 720 } };
+const constraints = {
+  audio: { echoCancellation: false },
+  video: { width: 1280, height: 720 },
+};
 
-export default function useStreamMedia(streamPlayerRef) {
+export default function useStreamMedia(streamPlayerRef, device = 'web') {
   const [stream, setStream] = useState({ videoTrack: null, audioTrack: null });
 
   async function getMediaStream() {
     try {
+      // iphone 접근시 constraints 동적으로 변경
+      if (device === 'mobile') {
+        constraints.video = { ...constraints.video, facingMode: 'user' };
+      }
+
       const newStream = await navigator.mediaDevices.getUserMedia(constraints);
       const videoDom = streamPlayerRef.current;
 
@@ -47,5 +55,16 @@ export default function useStreamMedia(streamPlayerRef) {
     setStream({ videoTrack: null, audioTrack: null });
   };
 
-  return { stream, toggleMuteAudio, stopStream };
+  const switchCamera = () => {
+    const constraints = stream.videoTrack.getConstraints();
+    if (constraints.facingMode === 'user') {
+      constraints.facingMode = { exact: 'environment' };
+    } else {
+      constraints.facingMode = 'user';
+    }
+
+    stream.videoTrack.applyConstraints(constraints);
+  };
+
+  return { stream, toggleMuteAudio, stopStream, switchCamera };
 }
