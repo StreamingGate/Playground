@@ -80,6 +80,7 @@ class LoginViewController: UIViewController {
                 KeychainWrapper.standard.set(uuid, forKey: KeychainWrapper.Key.uuid.rawValue)
                 KeychainWrapper.standard.set(token, forKey: KeychainWrapper.Key.accessToken.rawValue)
                 DispatchQueue.main.async {
+                    UserManager.shared.userInfo = userInfo
                     self.coordinator?.showTabPage()
                 }
             } else {
