@@ -38,14 +38,6 @@ struct UserServiceAPI {
                 completion(nil)
                 return
             }
-            
-            
-//            let responseJSON = try? JSONSerialization.jsonObject(with: resultData, options: [])
-//            if let result = responseJSON as? [String: Any] {
-//                completion(result)
-//            } else {
-//                completion(["success" : 0])
-//            }
         }
         task.resume()
     }
