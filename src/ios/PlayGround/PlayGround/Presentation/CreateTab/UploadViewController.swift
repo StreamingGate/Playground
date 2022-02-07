@@ -290,14 +290,26 @@ class UploadViewController: UIViewController {
             self.simpleAlert(message: "실시간 스트리밍에 필요한 모든 정보를 입력해주세요")
             return
         }
+        uploadButton.isEnabled = false
         do {
             let videoData = try Data(contentsOf: video)
             let imageData = self.imageInfo?.pngData()
-            UploadServiceAPI.shared.post(video: videoData, image: imageData, title: titleInfo, content: contentInfo, category: categoryInfo) { result in
-                print("result : \(result)")
+            self.navVC?.coordinator?.dismiss()
+            UploadProgress.shared.isFinished = .inProgress
+            UploadViewController.showToastMessage(toastLabel: toastLabel, "업로드 중~", font: UIFont.Component)
+            DispatchQueue.global().sync {
+                UploadServiceAPI.shared.post(video: videoData, image: imageData, title: titleInfo, content: contentInfo, category: categoryInfo) { result in
+                    print("result : \(result)")
+                    UploadProgress.shared.isFinished = .success
+                    DispatchQueue.main.async {
+                        self.uploadButton.isEnabled = false
+                    }
+                }
             }
          } catch let error {
              self.simpleAlert(message: "동영상 데이터를 가져오는 데 실패했습니다. 동영상을 다시 업로드해주세요")
+             UploadProgress.shared.isFinished = .fail
+             uploadButton.isEnabled = true
              print(error)
          }
     }
