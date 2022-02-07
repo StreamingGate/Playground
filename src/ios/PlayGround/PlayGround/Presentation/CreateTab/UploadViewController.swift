@@ -46,6 +46,7 @@ class UploadViewController: UIViewController {
     var categoryList: [String] = []
     @Published var selectedCategory: String?
     let categoryDic = ["ALL": "전체", "EDU": "교육", "SPORTS": "스포츠", "KPOP": "K-POP"]
+    let toastLabel = UILabel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -178,6 +179,23 @@ class UploadViewController: UIViewController {
                     return
                 }
                 self.categoryContentLabel.text = categoryString
+            }.store(in: &cancellable)
+        UploadProgress.shared.$isFinished.receive(on: DispatchQueue.main, options: nil)
+            .sink { [weak self] progress in
+                guard let self = self else { return }
+                switch progress {
+                case .inProgress:
+                    self.toastLabel.text = "비디오 업로드 중입니다..."
+                case .fail:
+                    self.toastLabel.text = "비디오 업로드에 실패했습니다"
+                default:
+                    self.toastLabel.text = "비디오 업로드 완료했습니다"
+                    UIView.animate(withDuration: 2, delay: 0.3, options: .curveEaseOut) {
+                        self.toastLabel.alpha = 0.0
+                    } completion: { _ in
+                        self.toastLabel.removeFromSuperview()
+                    }
+                }
             }.store(in: &cancellable)
     }
     
@@ -351,5 +369,40 @@ extension UploadViewController: UITextViewDelegate {
                 explainPlaceHolderLabel.isHidden = false
             }
         }
+    }
+}
+
+class UploadProgress {
+    static let shared = UploadProgress()
+    @Published var isFinished: Progress = .inProgress
+}
+
+enum Progress {
+    case inProgress
+    case fail
+    case success
+}
+
+extension UIViewController {
+    static func showToastMessage(toastLabel: UILabel, _ message: String, font: UIFont = UIFont.systemFont(ofSize: 12, weight: .light)) {
+        let window = UIApplication.shared.windows.first!
+        toastLabel.frame = CGRect(x: window.frame.width / 2 - 150, y: window.frame.height - 180, width: 300, height: 50)
+        
+        toastLabel.backgroundColor = UIColor.black.withAlphaComponent(0.7)
+        toastLabel.textColor = UIColor.white
+        toastLabel.numberOfLines = 2
+        toastLabel.font = font
+        toastLabel.textAlignment = .center
+        toastLabel.layer.cornerRadius = 25
+        toastLabel.clipsToBounds = true
+        
+        guard let topController = UIApplication.shared.keyWindow?.rootViewController else { return }
+        topController.view.addSubview(toastLabel)
+
+//        UIView.animate(withDuration: 1.5, delay: 0.3, options: .curveEaseOut) {
+//            toastLabel.alpha = 0.0
+//        } completion: { _ in
+//            toastLabel.removeFromSuperview()
+//        }
     }
 }
