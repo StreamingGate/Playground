@@ -3,8 +3,8 @@ import Hls from 'hls.js';
 
 import * as S from './VideoPlayPage.style';
 
-import ChatRoom from '@pages/VideoPlay/ChatRoom/ChatRoom';
 import VideoMetaData from '@pages/VideoPlay/VideoMetaData/VideoMetaData';
+import { ChatRoom } from '@components/chats';
 
 function VideoPlayPage() {
   const videoPlayerRef = useRef(null);
@@ -24,7 +24,9 @@ function VideoPlayPage() {
           Video Load Fail
         </S.VideoPlayer>
       </S.PlayerContainer>
-      <ChatRoom />
+      <S.ChatRoomContainer>
+        <ChatRoom />
+      </S.ChatRoomContainer>
       <VideoMetaData />
     </S.VideoPlayPageContainer>
   );

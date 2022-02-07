@@ -4,6 +4,31 @@ import { Logout, Typography } from '@components/cores';
 import { Button } from '@components/buttons';
 import { Avatar } from '@components/dataDisplays';
 
+export const AddVideoDropdownContainer = styled.div`
+  position: relative;
+  top: 0;
+  margin-left: -200px; ;
+`;
+
+export const AddVideoMenus = styled.ul`
+  position: absolute;
+  width: 100%;
+  background-color: #ffffff;
+  padding: 9px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  z-index: 1;
+`;
+
+export const AddVideoMenu = styled.li`
+  display: flex;
+  gap: 15px;
+  padding: 8px 4px;
+  cursor: pointer;
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.background};
+  }
+`;
+
 export const AlarmDropdownContainer = styled.div`
   position: relative;
   margin-left: -300px;

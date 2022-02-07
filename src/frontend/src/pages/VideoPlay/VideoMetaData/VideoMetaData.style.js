@@ -4,7 +4,9 @@ import { Typography } from '@components/cores';
 import { Avatar } from '@components/dataDisplays';
 import { Button } from '@components/buttons';
 
-export const VideoMetaDataContainer = styled.div``;
+export const VideoMetaDataContainer = styled.div`
+  margin-top: 40px;
+`;
 
 export const VideoCategory = styled(Typography)`
   color: ${({ theme }) => theme.colors.pgBlue};

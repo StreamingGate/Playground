@@ -1,0 +1,22 @@
+cloud:
+  aws:
+    stack:
+      auto: false
+    region:
+      static: ap-northeast-2
+    credentials:
+      access-key: dummy
+      secret-key: dummy
+    s3:
+      image:
+        bucket: sg.playground
+        input-dir: video/input
+        output-dir: video/output
+        domain: https://s3.ap-northeast-2.amazonaws.com
+        result-prefix: ${cloud.aws.s3.image.domain}/${cloud.aws.s3.image.bucket}/${cloud.aws.s3.image.output-dir}
+logging:
+  level:
+    com:
+      amazonaws:
+        util:
+          EC2MetadataUtils: error
