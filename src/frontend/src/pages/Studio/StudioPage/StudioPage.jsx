@@ -5,6 +5,7 @@ import { useStreamMedia } from '@utils/hook';
 
 // 컴포넌트 이동 예정
 import ChatRoom from '../../VideoPlay/ChatRoom/ChatRoom';
+import StreamStatusBar from '../StreamStatusBar/StreamStatusBar';
 import { IconButton, Button } from '@components/buttons';
 import { Mike, Mute, WhiteShare } from '@components/cores';
 
@@ -14,6 +15,7 @@ function StudioPage() {
   const { stream, toggleMuteAudio, stopStream } = useStreamMedia(streamPlayerRef);
 
   const [isMuteToggle, setMuteToggle] = useState(false);
+  const [isCounterStop, setIsCounterStop] = useState(false);
 
   const handleMuteBtnToggle = () => {
     toggleMuteAudio();
@@ -22,11 +24,13 @@ function StudioPage() {
 
   const handleStopStreamBtnClick = () => {
     stopStream();
+    setIsCounterStop(true);
   };
 
   return (
     <S.StudioPageContainer>
       <S.PlayerConatiner>
+        <StreamStatusBar isStop={isCounterStop} />
         <S.StreamPlayer ref={streamPlayerRef} />
         <S.StreamControlContainer>
           <IconButton onClick={handleMuteBtnToggle}>
