@@ -7,6 +7,7 @@ export const StudioPageContainer = styled.div`
 `;
 
 export const PlayerConatiner = styled.div`
+  width: 150%;
   background-color: #000000;
   position: relative;
   flex-grow: 1;
