@@ -1,6 +1,34 @@
 [
   {
+    "errorCode": "F001",
+    "message": "해당 유저로부터 받은 친구 요청이 존재하지 않습니다."
+  },
+  {
+    "errorCode": "F002",
+    "message": "이미 해당 유저에게 친구 신청을 보냈습니다."
+  },
+  {
+    "errorCode": "F003",
+    "message": "이미 친구인 유저입니다."
+  },
+  {
+    "errorCode": "F004",
+    "message": "친구가 아닌 유저입니다."
+  },
+  {
     "errorCode": "I001",
+    "message": ""
+  },
+  {
+    "errorCode": "L001",
+    "message": "존재하지 않는 실시간 스트리밍입니다."
+  },
+  {
+    "errorCode": "L002",
+    "message": "방을 생성할수 없습니다."
+  },
+  {
+    "errorCode": "L003",
     "message": ""
   },
   {
@@ -30,33 +58,5 @@
   {
     "errorCode": "V001",
     "message": "존재하지 않는 일반 영상입니다."
-  },
-  {
-    "errorCode": "L001",
-    "message": "존재하지 않는 실시간 스트리밍입니다."
-  },
-  {
-    "errorCode": "L002",
-    "message": "방을 생성할수 없습니다."
-  },
-  {
-    "errorCode": "L003",
-    "message": ""
-  },
-  {
-    "errorCode": "F001",
-    "message": "해당 유저로부터 받은 친구 요청이 존재하지 않습니다."
-  },
-  {
-    "errorCode": "F002",
-    "message": "이미 해당 유저에게 친구 신청을 보냈습니다."
-  },
-  {
-    "errorCode": "F003",
-    "message": "이미 친구인 유저입니다."
-  },
-  {
-    "errorCode": "F004",
-    "message": "친구가 아닌 유저입니다."
   }
 ]
