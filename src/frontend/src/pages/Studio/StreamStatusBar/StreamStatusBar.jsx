@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
 
 import * as S from './StreamStatusBar.style';
 
 import { Viewers, Like } from '@components/cores';
 
-function StreamStatusBar() {
+function StreamStatusBar({ isStop }) {
   const timer = useRef(null);
 
   const [count, setCount] = useState(0);
@@ -17,6 +18,12 @@ function StreamStatusBar() {
       clearInterval(timer.current);
     };
   }, []);
+
+  useEffect(() => {
+    if (isStop) {
+      clearInterval(timer.current);
+    }
+  }, [isStop]);
 
   return (
     <S.StreamStatusBarContainer>
@@ -35,5 +42,9 @@ function StreamStatusBar() {
     </S.StreamStatusBarContainer>
   );
 }
+
+StreamStatusBar.propTypes = {
+  isStop: PropTypes.bool.isRequired,
+};
 
 export default StreamStatusBar;
