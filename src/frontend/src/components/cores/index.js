@@ -17,6 +17,7 @@ export { default as Person } from './Icons/Person';
 export { default as Send } from './Icons/Send';
 export { default as ThumbDown } from './Icons/ThumbDown';
 export { default as Share } from './Icons/Share';
+export { default as WhiteShare } from './Icons/WhiteShare';
 export { default as Report } from './Icons/Report';
 export { default as ScrollDown } from './Icons/ScrollDown';
 export { default as ArrowLeft } from './Icons/ArrowLeft';
