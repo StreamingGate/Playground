@@ -16,6 +16,7 @@ class AccountEditViewController: UIViewController {
     @IBOutlet weak var nicknameTextField: UITextField!
     @IBOutlet weak var profileView: UIView!
     @IBOutlet weak var updateButton: UIButton!
+    @IBOutlet weak var nickNameCountingLabel: UILabel!
     var coordinator: AccountEditCoordinator?
     let imagePicker = UIImagePickerController()
     let firstCharacterLabel = UILabel()
@@ -41,6 +42,11 @@ class AccountEditViewController: UIViewController {
         nicknameTextField.font = UIFont.Content
         profileImageView.backgroundColor = UIColor.placeHolder
         profileImageView.layer.cornerRadius = 50
+        profileImageView.layer.borderColor = UIColor.placeHolder.cgColor
+        profileImageView.layer.borderWidth = 1
+        nickNameCountingLabel.font = UIFont.caption
+        nickNameCountingLabel.textColor = UIColor.placeHolder
+        
         guard let userInfo = UserManager.shared.userInfo else { return }
         profileImageView.downloadImageFrom(link: userInfo.profileImage, contentMode: .scaleAspectFill)
         nicknameTextField.text = userInfo.nickName
@@ -62,6 +68,7 @@ class AccountEditViewController: UIViewController {
                 guard let self = self, let userInfo = user else { return }
                 self.profileImageView.downloadImageFrom(link: userInfo.profileImage, contentMode: .scaleAspectFill)
                 self.nicknameTextField.text = userInfo.nickName
+                self.nickNameCountingLabel.text = "\(userInfo.nickName?.count ?? 0)/8"
             }.store(in: &cancellable)
     }
     
@@ -102,6 +109,22 @@ class AccountEditViewController: UIViewController {
         }))
         alert.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
         self.present(alert, animated: true, completion: nil)
+    }
+    
+    @IBAction func nickNameTextFieldEditingChanged(_ sender: Any) {
+        if let textInfo = nicknameTextField.text {
+            if textInfo.count <= 8 {
+                nickNameCountingLabel.text = "\(textInfo.count)/8"
+                nickNameCountingLabel.textColor = UIColor.placeHolder
+            } else {
+                nicknameTextField.deleteBackward()
+                nickNameCountingLabel.text = "8/8"
+                nickNameCountingLabel.textColor = UIColor.systemRed
+            }
+        } else {
+            nickNameCountingLabel.text = "0/8"
+            nickNameCountingLabel.textColor = UIColor.placeHolder
+        }
     }
     
     @IBAction func backButtonDidTap(_ sender: Any) {
