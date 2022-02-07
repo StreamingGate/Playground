@@ -3,9 +3,8 @@ import React, { useState, useRef } from 'react';
 import * as S from './StudioPage.style';
 import { useStreamMedia } from '@utils/hook';
 
-// 컴포넌트 이동 예정
-import ChatRoom from '../../VideoPlay/ChatRoom/ChatRoom';
 import StreamStatusBar from '../StreamStatusBar/StreamStatusBar';
+import { ChatRoom } from '@components/chats';
 import { IconButton, Button } from '@components/buttons';
 import { Mike, Mute, WhiteShare } from '@components/cores';
 
