@@ -15,6 +15,7 @@ class AccountEditViewController: UIViewController {
     @IBOutlet weak var nicknameLabel: UILabel!
     @IBOutlet weak var nicknameTextField: UITextField!
     @IBOutlet weak var profileView: UIView!
+    @IBOutlet weak var updateButton: UIButton!
     var coordinator: AccountEditCoordinator?
     let imagePicker = UIImagePickerController()
     let firstCharacterLabel = UILabel()
@@ -113,9 +114,12 @@ class AccountEditViewController: UIViewController {
     
     @IBAction func updateButtonDidTap(_ sender: Any) {
         guard let nicknameInfo = nicknameTextField.text, nicknameInfo != "" else { return }
+        updateButton.isEnabled = false
         if lastProfileSelectType == 2 {
             if nicknameInfo == UserManager.shared.userInfo?.nickName {
                 // 변경 사항 없음
+                self.simpleAlert(message: "변경 사항이 없습니다")
+                self.updateButton.isEnabled = true
                 return
             }
             UserServiceAPI.shared.updateUserInfo(nickName: nicknameInfo, profileImage: nil) { result in
@@ -123,6 +127,7 @@ class AccountEditViewController: UIViewController {
                 guard let userInfo = result["data"] as? UserInfo else { return }
                 UserManager.shared.userInfo = userInfo
                 DispatchQueue.main.async {
+                    self.updateButton.isEnabled = true
                     self.coordinator?.dismiss()
                 }
             }
@@ -142,6 +147,7 @@ class AccountEditViewController: UIViewController {
                 guard let userInfo = result["data"] as? UserInfo else { return }
                 UserManager.shared.userInfo = userInfo
                 DispatchQueue.main.async {
+                    self.updateButton.isEnabled = true
                     self.coordinator?.dismiss()
                 }
             }

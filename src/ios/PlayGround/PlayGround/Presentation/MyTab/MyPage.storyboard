@@ -770,6 +770,7 @@
                         <outlet property="profileImageView" destination="0SS-ux-vXP" id="EIP-yE-jRm"/>
                         <outlet property="profileView" destination="CiC-f6-bW3" id="Ssb-Hr-xGT"/>
                         <outlet property="titleLabel" destination="zK0-ci-MI1" id="fEK-iP-8oP"/>
+                        <outlet property="updateButton" destination="h0e-Xo-33v" id="NcO-ND-p3r"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7Di-Ct-TfU" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
