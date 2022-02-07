@@ -15,7 +15,7 @@ import HomePage from '@pages/Home';
 import VideoPlayPage from '@pages/VideoPlay';
 import ChannelPage from '@pages/Channel';
 import MyPage from '@pages/My';
-import StudioPage from '@pages/Studio';
+import { StudioPage, MobileStudioPage } from '@pages/Studio';
 
 const queryClient = new QueryClient();
 
@@ -38,6 +38,7 @@ function App() {
                 <Route path='mypage/:type' element={<MyPage />} />
                 <Route path='studio' element={<StudioPage />} />
               </Route>
+              <Route path='/m/studio' element={<MobileStudioPage />} />
             </Routes>
           </Router>
         </modalService.Provider>
