@@ -6,6 +6,7 @@ import { ReactQueryDevtools } from 'react-query/devtools';
 
 import { theme } from '@utils/constant';
 import { modalService } from '@utils/service';
+import { history } from '@utils/router';
 
 import { GlobalStyle, NormalizeStyle } from '@components/styles';
 import { MainLayout } from '@components/layouts';
@@ -26,7 +27,7 @@ function App() {
         <GlobalStyle />
         <NormalizeStyle />
         <modalService.Provider>
-          <Router>
+          <Router navigator={history}>
             <Routes>
               <Route path='/' element={<Navigate to='/login' />} />
               <Route path='/login' element={<LoginPage />} />
