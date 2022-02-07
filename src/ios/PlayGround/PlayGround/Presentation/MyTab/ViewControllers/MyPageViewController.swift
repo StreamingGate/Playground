@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import Combine
 
 class MyPageViewController: UIViewController {
     @IBOutlet weak var recentVideoTitleLabel: UILabel!
@@ -15,12 +16,14 @@ class MyPageViewController: UIViewController {
     @IBOutlet weak var myVideoLabel: UILabel!
     @IBOutlet weak var profileImageView: UIImageView!
     var navVC: MyPageNavigationController?
+    private var cancellable: Set<AnyCancellable> = []
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         guard let nav = self.navigationController as? MyPageNavigationController else { return }
         self.navVC = nav
+        bindData()
         setupUI()
     }
     
@@ -42,8 +45,14 @@ class MyPageViewController: UIViewController {
         myVideoLabel.font = UIFont.Component
         profileImageView.backgroundColor = UIColor.placeHolder
         profileImageView.layer.cornerRadius = 10
-        guard let userInfo = UserManager.shared.userInfo else { return }
-        profileImageView.downloadImageFrom(link: userInfo.profileImage, contentMode: .scaleAspectFill)   
+    }
+    
+    func bindData() {
+        UserManager.shared.$userInfo.receive(on: DispatchQueue.main, options: nil)
+            .sink { [weak self] user in
+                guard let self = self, let userInfo = user else { return }
+                self.profileImageView.downloadImageFrom(link: userInfo.profileImage, contentMode: .scaleAspectFill)
+            }.store(in: &cancellable)
     }
     
     // MARK: - Button Action

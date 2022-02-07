@@ -26,6 +26,7 @@ class AccountInfoViewController: UIViewController {
         guard let nav = self.navigationController as? MyPageNavigationController else { return }
         self.navVC = nav
         bindViewModel()
+        bindData()
         setupUI()
         self.viewModel.loadFriend()
     }
@@ -44,9 +45,15 @@ class AccountInfoViewController: UIViewController {
         editButton.titleLabel?.font = UIFont.caption
         profileImageView.layer.cornerRadius = 35 / 2
         profileImageView.backgroundColor = UIColor.placeHolder
-        guard let userInfo = UserManager.shared.userInfo else { return }
-        profileImageView.downloadImageFrom(link: userInfo.profileImage, contentMode: .scaleAspectFill)
-        nicknameLabel.text = userInfo.nickName
+    }
+    
+    func bindData() {
+        UserManager.shared.$userInfo.receive(on: DispatchQueue.main, options: nil)
+            .sink { [weak self] user in
+                guard let self = self, let userInfo = user else { return }
+                self.profileImageView.downloadImageFrom(link: userInfo.profileImage, contentMode: .scaleAspectFill)
+                self.nicknameLabel.text = userInfo.nickName
+            }.store(in: &cancellable)
     }
     
     @IBAction func closeButtonDidTap(_ sender: Any) {
