@@ -76,7 +76,7 @@ public class User {
     private List<ViewedHistory> viewedHistories = new LinkedList<>();
 
     @OneToMany(mappedBy = "user")
-    private List<Room> lives = new ArrayList<>();
+    private List<Room> rooms = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
     private List<Notification> notifications = new LinkedList<>();

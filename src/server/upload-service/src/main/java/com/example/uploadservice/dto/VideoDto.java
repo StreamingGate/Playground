@@ -14,15 +14,17 @@ public class VideoDto {
     private Category category;
     private String videoUuid;
     private String uploaderUuid;
+    private String thumbnailName;
     private String s3OutputPath; // folder path
     private Long size;
     private LocalDateTime videoCreatedAt;
 
-    public VideoDto(UploadRequestDto dto){
+    public VideoDto(UploadRequestDto dto, String thumbnailName){
         this.title = dto.getTitle();
         this.content = dto.getContent();
         this.category = dto.getCategory();
         this.uploaderUuid = dto.getUuid();
+        this.thumbnailName = thumbnailName;
     }
 
     /**
