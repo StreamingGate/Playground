@@ -142,13 +142,13 @@ function MakeStreamModal({ type }) {
                 <S.VideoContentInput
                   multiLine
                   fullWidth
-                  placeholder='내용'
+                  placeholder='설명'
                   rows='3'
                   name='content'
                   value={values.content}
                   onChange={handleInputChange}
                 />
-                <S.InputCount type='caption' isLimit={values.content.length > TITLE_MAX_LEN}>
+                <S.InputCount type='caption' isLimit={values.content.length > CONTENT_MAX_LEN}>
                   {values.content.length} / {CONTENT_MAX_LEN}
                 </S.InputCount>
               </S.InputContainer>

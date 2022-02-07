@@ -10,6 +10,7 @@ const videoInputCommonStyle = css`
 `;
 
 export const InputContainer = styled.div`
+  margin-bottom: 10px;
   text-align: right;
 `;
 
