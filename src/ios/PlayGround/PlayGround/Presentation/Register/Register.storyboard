@@ -401,21 +401,22 @@
                                 </constraints>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Enl-wk-kDm">
-                                <rect key="frame" x="84.5" y="301" width="245" height="30"/>
+                                <rect key="frame" x="79.5" y="301" width="255" height="30"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zTK-XP-z8f">
-                                        <rect key="frame" x="0.0" y="0.0" width="110" height="30"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="120" height="30"/>
                                         <color key="backgroundColor" name="PGBlue"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="110" id="KKT-bq-W13"/>
+                                            <constraint firstAttribute="width" constant="120" id="KKT-bq-W13"/>
                                         </constraints>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain">
                                             <attributedString key="attributedTitle">
-                                                <fragment content="파일에서 선택">
+                                                <fragment content="갤러리에서 선택">
                                                     <attributes>
                                                         <font key="NSFont" size="14" name="AppleSDGothicNeo-Regular"/>
+                                                        <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                     </attributes>
                                                 </fragment>
                                             </attributedString>
@@ -425,7 +426,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vKj-mJ-cFw">
-                                        <rect key="frame" x="115" y="0.0" width="130" height="30"/>
+                                        <rect key="frame" x="125" y="0.0" width="130" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="130" id="OGe-0V-ZQ9"/>
                                             <constraint firstAttribute="height" constant="30" id="xXX-PN-EQi"/>
