@@ -1,5 +1,7 @@
 package com.example.videoservice.service;
 
+import java.util.Optional;
+
 import com.example.videoservice.dto.VideoResponseDto;
 import com.example.videoservice.entity.User.User;
 import com.example.videoservice.entity.User.UserRepository;
@@ -9,14 +11,12 @@ import com.example.videoservice.entity.ViewdHistory.ViewedHistory;
 import com.example.videoservice.entity.ViewdHistory.ViewedRepository;
 import com.example.videoservice.exceptionHandler.customexception.CustomVideoException;
 import com.example.videoservice.exceptionHandler.customexception.ErrorCode;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 
-@Slf4j
 @RequiredArgsConstructor
 @Service
 public class VideoService {
