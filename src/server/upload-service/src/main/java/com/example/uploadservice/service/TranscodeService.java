@@ -27,7 +27,6 @@ public class TranscodeService {
     private final String LOCAL_FILEPATH;
     private final String FFMPEG_PATH;
     private final String FFPROBE_PATH;
-    private final AmazonS3 amazonS3;
 
     @Autowired
     public TranscodeService(@Value("${cloud.aws.s3.image.domain}") String s3Domain,
@@ -35,15 +34,13 @@ public class TranscodeService {
                             @Value("${cloud.aws.s3.image.bucket}") String bucket,
                             @Value("${cloud.aws.s3.image.input-dir}") String inputDir,
                             @Value("${ffmpeg.path}") String ffmpegPath,
-                            @Value("${ffprobe.path}") String ffprobePath,
-                            AmazonS3 amazonS3) {
+                            @Value("${ffprobe.path}") String ffprobePath){
         this.S3_DOMAIN= s3Domain;
         this.BUCKET = bucket;
         this.INPUT_DIR = inputDir;
         this.LOCAL_FILEPATH = localFilePath;
         this.FFMPEG_PATH = ffmpegPath;
         this.FFPROBE_PATH = ffprobePath;
-        this.amazonS3 = amazonS3;
     }
 
     public void convertMp4ToTs(String videoUuid, MultipartFile multipartFileThumbnail) throws CustomUploadException {
