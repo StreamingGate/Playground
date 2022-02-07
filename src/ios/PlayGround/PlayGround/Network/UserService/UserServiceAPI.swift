@@ -160,11 +160,18 @@ struct UserServiceAPI {
         task.resume()
     }
     
-    func updateUserInfo(nickName: String, profileImage: String, completion: @escaping ([String: Any])->Void) {
+    func updateUserInfo(nickName: String?, profileImage: String?, completion: @escaping ([String: Any])->Void) {
         guard let tokenInfo = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue), let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else { return }
         let url = URL(string: "\(userServiceUrl)/\(uuid)")!
         var request = URLRequest(url: url)
-        let postData : [String: Any] = ["nickName": nickName, "profileImage": profileImage]
+        var postData = [String: Any]()
+        if let profile = profileImage {
+            postData["profileImage"] = profile
+        }
+        if let nickname = nickName {
+            postData["nickName"] = nickname
+        }
+        print(postData)
         let jsonData = try? JSONSerialization.data(withJSONObject: postData)
         request.httpMethod = "PUT"
         request.httpBody = jsonData
@@ -177,12 +184,14 @@ struct UserServiceAPI {
                 completion(["result": "failed"])
                 return
             }
-            
-            let responseJSON = try? JSONSerialization.jsonObject(with: resultData, options: [])
-            if let result = responseJSON as? [String: Any] {
-                completion(["result": "success", "data": result])
-            } else {
+            do {
+                let decoder = JSONDecoder()
+                let response = try decoder.decode(UserInfo.self, from: resultData)
+                completion(["result": "success", "data": response])
+            } catch let error {
+                print("---> error while update userInfo: \(error.localizedDescription)")
                 completion(["result": "failed"])
+                return
             }
         }
         task.resume()
