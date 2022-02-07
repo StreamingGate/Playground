@@ -161,7 +161,10 @@ struct UserServiceAPI {
     }
     
     func updateUserInfo(nickName: String?, profileImage: String?, completion: @escaping ([String: Any])->Void) {
-        guard let tokenInfo = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue), let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else { return }
+        guard let tokenInfo = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue), let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else {
+            completion(["result": "Invalid Token"])
+            return
+        }
         let url = URL(string: "\(userServiceUrl)/\(uuid)")!
         var request = URLRequest(url: url)
         var postData = [String: Any]()
@@ -181,6 +184,10 @@ struct UserServiceAPI {
             let successRange = 200 ..< 300
             guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode), let resultData = data else {
                 print("\(error?.localizedDescription ?? "no error") \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
+                if let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode == 401 {
+                    completion(["result": "Invalid Token"])
+                    return
+                }
                 completion(["result": "failed"])
                 return
             }

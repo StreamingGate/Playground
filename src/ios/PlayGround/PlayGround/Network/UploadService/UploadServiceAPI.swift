@@ -19,7 +19,11 @@ struct UploadServiceAPI {
                 print("Error creating endpoint")
                 return
         }
-        guard let tokenInfo = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue), let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else { return }
+        guard let tokenInfo = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue) else {
+            completion(["result": "Invalid Token"])
+            return
+        }
+        guard let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else { return }
         var request = URLRequest(url: endpoint, timeoutInterval: Double.infinity)
         request.httpMethod = "POST"
         let boundary = "Boundary-\(UUID().uuidString)"
