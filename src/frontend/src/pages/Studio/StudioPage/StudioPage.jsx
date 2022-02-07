@@ -11,13 +11,17 @@ import { Mike, Mute, WhiteShare } from '@components/cores';
 function StudioPage() {
   const streamPlayerRef = useRef(null);
 
-  const { stream, toggleMuteAudio } = useStreamMedia(streamPlayerRef);
+  const { stream, toggleMuteAudio, stopStream } = useStreamMedia(streamPlayerRef);
 
   const [isMuteToggle, setMuteToggle] = useState(false);
 
   const handleMuteBtnToggle = () => {
     toggleMuteAudio();
     setMuteToggle(prev => !prev);
+  };
+
+  const handleStopStreamBtnClick = () => {
+    stopStream();
   };
 
   return (
@@ -31,7 +35,9 @@ function StudioPage() {
           <IconButton>
             <WhiteShare />
           </IconButton>
-          <Button size='sm'>스트림 종료</Button>
+          <Button size='sm' onClick={handleStopStreamBtnClick}>
+            스트림 종료
+          </Button>
         </S.StreamControlContainer>
       </S.PlayerConatiner>
       <ChatRoom />

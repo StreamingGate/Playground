@@ -33,5 +33,19 @@ export default function useStreamMedia(streamPlayerRef) {
     stream.audioTrack.enabled = !curAudioEnable;
   };
 
-  return { stream, toggleMuteAudio };
+  const stopStream = () => {
+    const { videoTrack, audioTrack } = stream;
+
+    if (videoTrack) {
+      videoTrack.stop();
+    }
+    if (audioTrack) {
+      audioTrack.stop();
+    }
+
+    streamPlayerRef.current.srcObject = null;
+    setStream({ videoTrack: null, audioTrack: null });
+  };
+
+  return { stream, toggleMuteAudio, stopStream };
 }
