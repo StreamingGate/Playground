@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 
 import * as S from './StudioPage.style';
 import { useStreamMedia } from '@utils/hook';
@@ -11,15 +11,22 @@ import { Mike, Mute, WhiteShare } from '@components/cores';
 function StudioPage() {
   const streamPlayerRef = useRef(null);
 
-  const { videoTrack, audioTrack } = useStreamMedia(streamPlayerRef);
+  const { stream, toggleMuteAudio } = useStreamMedia(streamPlayerRef);
+
+  const [isMuteToggle, setMuteToggle] = useState(false);
+
+  const handleMuteBtnToggle = () => {
+    toggleMuteAudio();
+    setMuteToggle(prev => !prev);
+  };
 
   return (
     <S.StudioPageContainer>
       <S.PlayerConatiner>
         <S.StreamPlayer ref={streamPlayerRef} />
         <S.StreamControlContainer>
-          <IconButton>
-            <Mike />
+          <IconButton onClick={handleMuteBtnToggle}>
+            {isMuteToggle ? <Mute /> : <Mike />}
           </IconButton>
           <IconButton>
             <WhiteShare />

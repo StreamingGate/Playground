@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-const constraints = { audio: { echoCancellation: true }, video: { width: 1280, height: 720 } };
+const constraints = { audio: { echoCancellation: false }, video: { width: 1280, height: 720 } };
 
 export default function useStreamMedia(streamPlayerRef) {
   const [stream, setStream] = useState({ videoTrack: null, audioTrack: null });
@@ -28,5 +28,10 @@ export default function useStreamMedia(streamPlayerRef) {
     getMediaStream();
   }, []);
 
-  return stream;
+  const toggleMuteAudio = () => {
+    const curAudioEnable = stream.audioTrack.enabled;
+    stream.audioTrack.enabled = !curAudioEnable;
+  };
+
+  return { stream, toggleMuteAudio };
 }
