@@ -62,4 +62,8 @@ class CreateTabCoordinator: Coordinator {
     func dismiss() {
         self.navigation.dismiss(animated: true, completion: nil)
     }
+    
+    func dismissToRoot() {
+        self.parentCoordinator?.navigation.popToRootViewController(animated: true)
+    }
 }

@@ -27,12 +27,12 @@ class NoticeListViewController: UIViewController {
         self.navVC = nav
         bindViewModel()
         setupUI()
-        self.viewModel.loadNotice(vc: self)
+        self.viewModel.loadNotice(vc: self, coordinator: navVC?.coordinator)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.viewModel.loadFriendRequest(vc: self)
+        self.viewModel.loadFriendRequest(vc: self, coordinator: navVC?.coordinator)
     }
     
     func bindViewModel() {

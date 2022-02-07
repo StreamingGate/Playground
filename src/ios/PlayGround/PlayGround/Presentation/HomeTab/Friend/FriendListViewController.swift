@@ -28,7 +28,7 @@ class FriendListViewController: UIViewController {
         super.viewDidLoad()
         bindViewModel()
         setupUI()
-        self.viewModel.loadFriend(vc: self)
+        self.viewModel.loadFriend(vc: self, coordinator: nil)
     }
     
     func disappearAnimation(){

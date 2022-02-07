@@ -137,4 +137,8 @@ class PlayerCoordinator: Coordinator {
             }
         }
     }
+    
+    func dismissToRoot() {
+        self.parentCoordinator?.parentCoordinator?.navigation.popToRootViewController(animated: true)
+    }
 }

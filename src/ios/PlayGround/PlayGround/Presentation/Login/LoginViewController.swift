@@ -23,7 +23,7 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         coordinator = MainCoordinator(parent: nil, navigation: self.navigationController ?? UINavigationController())
-        coordinator?.start()
+//        coordinator?.start()
         setupUI()
         if UserDefaults.standard.bool(forKey: "onRegister") == true, (UserDefaults.standard.string(forKey: "onRegister-Email") != nil || UserDefaults.standard.string(forKey: "onRegister-Name") != nil) {
             self.onRegister()
