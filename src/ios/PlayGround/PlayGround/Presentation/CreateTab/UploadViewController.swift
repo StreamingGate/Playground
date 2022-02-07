@@ -296,7 +296,7 @@ class UploadViewController: UIViewController {
             let imageData = self.imageInfo?.pngData()
             self.navVC?.coordinator?.dismiss()
             UploadProgress.shared.isFinished = .inProgress
-            UploadViewController.showToastMessage(toastLabel: toastLabel, "업로드 중~", font: UIFont.Component)
+            UploadViewController.showToastMessage(toastLabel: toastLabel, font: UIFont.Component)
             DispatchQueue.global().sync {
                 UploadServiceAPI.shared.post(video: videoData, image: imageData, title: titleInfo, content: contentInfo, category: categoryInfo) { result in
                     print("result : \(result)")
@@ -396,7 +396,7 @@ enum Progress {
 }
 
 extension UIViewController {
-    static func showToastMessage(toastLabel: UILabel, _ message: String, font: UIFont = UIFont.systemFont(ofSize: 12, weight: .light)) {
+    static func showToastMessage(toastLabel: UILabel, font: UIFont = UIFont.systemFont(ofSize: 12, weight: .light)) {
         let window = UIApplication.shared.windows.first!
         toastLabel.frame = CGRect(x: window.frame.width / 2 - 150, y: window.frame.height - 180, width: 300, height: 50)
         
@@ -410,11 +410,5 @@ extension UIViewController {
         
         guard let topController = UIApplication.shared.keyWindow?.rootViewController else { return }
         topController.view.addSubview(toastLabel)
-
-//        UIView.animate(withDuration: 1.5, delay: 0.3, options: .curveEaseOut) {
-//            toastLabel.alpha = 0.0
-//        } completion: { _ in
-//            toastLabel.removeFromSuperview()
-//        }
     }
 }
