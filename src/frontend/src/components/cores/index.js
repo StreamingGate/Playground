@@ -32,3 +32,4 @@ export { default as Mike } from './Icons/Mike';
 export { default as Mute } from './Icons/Mute';
 export { default as Viewers } from './Icons/Viewers';
 export { default as Like } from './Icons/Like';
+export { default as Switch } from './Icons/Switch';
