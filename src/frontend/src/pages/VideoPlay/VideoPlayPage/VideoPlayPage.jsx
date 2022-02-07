@@ -24,7 +24,9 @@ function VideoPlayPage() {
           Video Load Fail
         </S.VideoPlayer>
       </S.PlayerContainer>
-      <ChatRoom />
+      <S.ChatRoomContainer>
+        <ChatRoom />
+      </S.ChatRoomContainer>
       <VideoMetaData />
     </S.VideoPlayPageContainer>
   );

@@ -13,3 +13,7 @@ export const VideoPlayer = styled.video`
   width: 100%;
   aspect-ratio: 16 / 9;
 `;
+
+export const ChatRoomContainer = styled.div`
+  height: 432px;
+`;

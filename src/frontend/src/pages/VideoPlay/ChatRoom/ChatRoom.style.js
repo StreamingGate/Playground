@@ -5,12 +5,16 @@ import { Avatar } from '@components/dataDisplays';
 
 export const ChatRoomContainer = styled.div`
   width: 100%;
+  height: 100%;
   border: 1px solid ${({ theme }) => theme.colors.separator};
+  --chat-room-header-height: 70px;
+  --chat-input-controller-height: 120px;
 `;
 
 export const ChatRoomHeader = styled.div`
   display: flex;
   flex-direction: column;
+  height: var(--chat-room-header-height);
   padding: 13px 20px;
   background-color: #ffffff;
 `;
@@ -39,7 +43,7 @@ export const ChaListContainer = styled.ul`
   flex-direction: column;
   gap: 15px;
   position: relative;
-  height: 240px;
+  height: calc(100% - var(--chat-room-header-height) - var(--chat-input-controller-height));
   overflow: auto;
   padding: 20px 20px 0px 20px;
   border-top: 1px solid ${({ theme }) => theme.colors.separator};
@@ -66,6 +70,7 @@ export const ChatInputController = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
+  height: var(--chat-input-controller-height);
   padding: 15px 20px;
   background-color: #ffffff;
 `;
