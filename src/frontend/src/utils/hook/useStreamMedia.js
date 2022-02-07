@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-const constraints = { audio: true, video: { width: 1280, height: 720 } };
+const constraints = { audio: { echoCancellation: true }, video: { width: 1280, height: 720 } };
 
 export default function useStreamMedia(streamPlayerRef) {
   const [stream, setStream] = useState({ videoTrack: null, audioTrack: null });

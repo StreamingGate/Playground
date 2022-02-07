@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 
-import { Share } from '@components/cores';
-
 export const StudioPageContainer = styled.div`
   display: flex;
   gap: 20px;
