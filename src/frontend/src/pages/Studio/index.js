@@ -1,3 +1,4 @@
 import StudioPage from './StudioPage/StudioPage';
+import MobileStudioPage from './MobileStudioPage/MobileStudioPage';
 
-export default StudioPage;
+export { StudioPage, MobileStudioPage };
