@@ -4,6 +4,8 @@ import { Typography } from '@components/cores';
 
 export const StreamStatusBarContainer = styled.div`
   display: flex;
+  position: absolute;
+  z-index: 1;
   gap: 35px;
   padding: 20px 0px 7px 20px;
 `;
