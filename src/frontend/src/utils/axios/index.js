@@ -1,12 +1,21 @@
 import axios from 'axios';
 import { history } from '@utils/router';
 
+import { lStorageService } from '@utils/service';
+
 const axiosInstance = axios.create({ baseURL: process.env.REACT_APP_API });
 
 axiosInstance.interceptors.request.use(
   config => {
-    config.headers.Authorization =
-      'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzMzMzMzMzMy0xMjM0LTEyMzQtMTIzNDU2Nzg5MDEyIiwiZXhwIjoxNjQ0NTAwMDQ4fQ.8tUJ5Akh4TT5Uc2u9RqXtZAbIqSC8fLYputpM0DBr4sSbaPuy6nW7XAwGTuMmM48cScolYPxih-yw3-4AHwwHQ';
+    const token = lStorageService.getItem('token');
+    const uuid = lStorageService.getItem('uuid');
+
+    // token, uuid가 없을시 로그인 페이지로 리다이렉트
+    if (!token || !uuid) {
+      history.push('/login');
+      history.go();
+    }
+    config.headers.Authorization = `Bearer ${token}`;
     return config;
   },
   error => {
