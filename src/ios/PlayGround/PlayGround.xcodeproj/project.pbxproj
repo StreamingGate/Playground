@@ -92,6 +92,7 @@
 		49EC9A022782033E00DE4F79 /* CreatePopOverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EC9A012782033E00DE4F79 /* CreatePopOverViewController.swift */; };
 		49EC9A06278205D200DE4F79 /* UIView+RoundCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EC9A05278205D200DE4F79 /* UIView+RoundCorners.swift */; };
 		49ECFDB627A292C000BA6DF6 /* ChatSendDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49ECFDB527A292C000BA6DF6 /* ChatSendDelegate.swift */; };
+		49EF543327AEA218002A2A53 /* UploadServiceAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EF543227AEA218002A2A53 /* UploadServiceAPI.swift */; };
 		49F0213E2799505400684A25 /* UIViewController+SimpleAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F0213D2799505400684A25 /* UIViewController+SimpleAlert.swift */; };
 		49F18C2C278E5E0800EBDCF8 /* CreateNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F18C2B278E5E0800EBDCF8 /* CreateNavigationController.swift */; };
 		49F18C52278F0FB100EBDCF8 /* UITabBarController+Visibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F18C51278F0FB100EBDCF8 /* UITabBarController+Visibility.swift */; };
@@ -195,6 +196,7 @@
 		49EC9A012782033E00DE4F79 /* CreatePopOverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePopOverViewController.swift; sourceTree = "<group>"; };
 		49EC9A05278205D200DE4F79 /* UIView+RoundCorners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+RoundCorners.swift"; sourceTree = "<group>"; };
 		49ECFDB527A292C000BA6DF6 /* ChatSendDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatSendDelegate.swift; sourceTree = "<group>"; };
+		49EF543227AEA218002A2A53 /* UploadServiceAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadServiceAPI.swift; sourceTree = "<group>"; };
 		49F0213D2799505400684A25 /* UIViewController+SimpleAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+SimpleAlert.swift"; sourceTree = "<group>"; };
 		49F18C2B278E5E0800EBDCF8 /* CreateNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNavigationController.swift; sourceTree = "<group>"; };
 		49F18C51278F0FB100EBDCF8 /* UITabBarController+Visibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITabBarController+Visibility.swift"; sourceTree = "<group>"; };
@@ -493,6 +495,7 @@
 			children = (
 				49E72FFA27A256FA00DFBCC3 /* UserService */,
 				49C6CFA027A3DABA007C2895 /* MainService */,
+				49EF543427AEC769002A2A53 /* UploadService */,
 				49E72FFB27A2570200DFBCC3 /* ChatService */,
 				49E72FD027A166E300DFBCC3 /* GatewayManager.swift */,
 				49F4E3D427ACE436002869F4 /* NetworkResultManager.swift */,
@@ -554,6 +557,14 @@
 				49E8E89D278BB5B0003AD1DF /* CameraView.swift */,
 			);
 			path = CreateTab;
+			sourceTree = "<group>";
+		};
+		49EF543427AEC769002A2A53 /* UploadService */ = {
+			isa = PBXGroup;
+			children = (
+				49EF543227AEA218002A2A53 /* UploadServiceAPI.swift */,
+			);
+			path = UploadService;
 			sourceTree = "<group>";
 		};
 		49F4E3D827ACE9ED002869F4 /* ViewModel */ = {
@@ -755,6 +766,7 @@
 				490770A52797F7A300ADD8E8 /* ErrorCodeConverter.swift in Sources */,
 				490770A32797EA7A00ADD8E8 /* KeyChainWrapper+Key.swift in Sources */,
 				4957CBBE27AD4B4800554967 /* UILabel+PartOfTextColorChange.swift in Sources */,
+				49EF543327AEA218002A2A53 /* UploadServiceAPI.swift in Sources */,
 				49E72FF727A253DA00DFBCC3 /* DataHelper.swift in Sources */,
 				492C62212795323700AE546E /* CreateTabCoordinator.swift in Sources */,
 				492C621B279531F200AE546E /* AccountEditCoordinator.swift in Sources */,
