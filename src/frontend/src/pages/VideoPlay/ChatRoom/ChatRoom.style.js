@@ -4,6 +4,7 @@ import { Typography, Person, Send, ScrollDown } from '@components/cores';
 import { Avatar } from '@components/dataDisplays';
 
 export const ChatRoomContainer = styled.div`
+  width: 100%;
   border: 1px solid ${({ theme }) => theme.colors.separator};
 `;
 
