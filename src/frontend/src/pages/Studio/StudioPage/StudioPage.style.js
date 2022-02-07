@@ -4,10 +4,10 @@ export const StudioPageContainer = styled.div`
   display: flex;
   gap: 20px;
   padding: 25px;
+  min-width: 780px;
 `;
 
 export const PlayerConatiner = styled.div`
-  width: 150%;
   background-color: #000000;
   position: relative;
   flex-grow: 1;
@@ -33,4 +33,8 @@ export const StreamControlContainer = styled.div`
   gap: 10px;
   background-color: #676767;
   height: 50px;
+`;
+
+export const ChatRoomContainer = styled.div`
+  height: 80vh;
 `;

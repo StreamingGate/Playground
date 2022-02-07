@@ -44,7 +44,9 @@ function StudioPage() {
           </Button>
         </S.StreamControlContainer>
       </S.PlayerConatiner>
-      <ChatRoom />
+      <S.ChatRoomContainer>
+        <ChatRoom />
+      </S.ChatRoomContainer>
     </S.StudioPageContainer>
   );
 }
