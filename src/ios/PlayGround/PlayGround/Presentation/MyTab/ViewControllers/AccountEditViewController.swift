@@ -27,6 +27,9 @@ class AccountEditViewController: UIViewController {
         nicknameTextField.font = UIFont.Content
         profileImageView.backgroundColor = UIColor.placeHolder
         profileImageView.layer.cornerRadius = 30
+        guard let userInfo = UserManager.shared.userInfo else { return }
+        profileImageView.downloadImageFrom(link: userInfo.profileImage, contentMode: .scaleAspectFill)
+        nicknameTextField.text = userInfo.nickName
     }
     
     @IBAction func backButtonDidTap(_ sender: Any) {

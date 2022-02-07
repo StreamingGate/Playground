@@ -44,6 +44,9 @@ class AccountInfoViewController: UIViewController {
         editButton.titleLabel?.font = UIFont.caption
         profileImageView.layer.cornerRadius = 35 / 2
         profileImageView.backgroundColor = UIColor.placeHolder
+        guard let userInfo = UserManager.shared.userInfo else { return }
+        profileImageView.downloadImageFrom(link: userInfo.profileImage, contentMode: .scaleAspectFill)
+        nicknameLabel.text = userInfo.nickName
     }
     
     @IBAction func closeButtonDidTap(_ sender: Any) {

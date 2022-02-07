@@ -11,4 +11,5 @@ import UIKit
 class UserManager {
     static let shared = UserManager()
     
+    var userInfo: UserInfo?
 }

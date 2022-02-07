@@ -66,13 +66,17 @@ class LoginViewController: UIViewController {
     }
     
     @IBAction func logInButtonDidTap(_ sender: Any) {
+//        KeychainWrapper.standard.set("33333333-1234-1234-123456789012", forKey: KeychainWrapper.Key.uuid.rawValue)
+//        self.coordinator?.showTabPage()
+//        
+        
         idField.resignFirstResponder()
         pwField.resignFirstResponder()
         guard let idInfo = idField.text, idInfo.isEmpty == false, let pwInfo = pwField.text, pwInfo.isEmpty == false else { return }
         print(TimeZone.current.identifier)
         UserServiceAPI.shared.login(email: idInfo, password: pwInfo, timezone: TimeZone.current.identifier, fcmtoken: "token") { result in
             print("login result = \(result)")
-            if result["success"] as? Int == 1, let uuid = result["uuid"] as? String, let token = result["accessToken"] as? String {
+            if result["success"] as? Int == 1, let uuid = result["uuid"] as? String, let token = result["accessToken"] as? String, let userInfo = result["data"] as? UserInfo {
                 KeychainWrapper.standard.set(uuid, forKey: KeychainWrapper.Key.uuid.rawValue)
                 KeychainWrapper.standard.set(token, forKey: KeychainWrapper.Key.accessToken.rawValue)
                 DispatchQueue.main.async {

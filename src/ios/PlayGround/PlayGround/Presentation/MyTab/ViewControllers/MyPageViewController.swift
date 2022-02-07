@@ -42,6 +42,8 @@ class MyPageViewController: UIViewController {
         myVideoLabel.font = UIFont.Component
         profileImageView.backgroundColor = UIColor.placeHolder
         profileImageView.layer.cornerRadius = 10
+        guard let userInfo = UserManager.shared.userInfo else { return }
+        profileImageView.downloadImageFrom(link: userInfo.profileImage, contentMode: .scaleAspectFill)   
     }
     
     // MARK: - Button Action
