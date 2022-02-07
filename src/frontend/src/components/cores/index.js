@@ -30,3 +30,4 @@ export { default as Camera } from './Icons/Camera';
 export { default as Video } from './Icons/Video';
 export { default as Mike } from './Icons/Mike';
 export { default as Mute } from './Icons/Mute';
+export { default as Viewers } from './Icons/Viewers';
