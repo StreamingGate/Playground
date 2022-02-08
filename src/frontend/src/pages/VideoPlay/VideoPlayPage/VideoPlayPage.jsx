@@ -23,8 +23,13 @@ function VideoPlayPage() {
   const handleVideoUrlLoad = data => {
     const { streamingUrl } = data;
     const hls = new Hls();
-    hls.loadSource(streamingUrl);
-    hls.attachMedia(videoPlayerRef.current);
+
+    try {
+      hls.loadSource(streamingUrl);
+      hls.attachMedia(videoPlayerRef.current);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const { data } = useGetVideoInfo(playType.current, id, userId, handleVideoUrlLoad);
@@ -97,7 +102,7 @@ function VideoPlayPage() {
       <S.ChatRoomContainer>
         <ChatRoom />
       </S.ChatRoomContainer>
-      <VideoMetaData />
+      <VideoMetaData videoData={data} />
     </S.VideoPlayPageContainer>
   );
 }
