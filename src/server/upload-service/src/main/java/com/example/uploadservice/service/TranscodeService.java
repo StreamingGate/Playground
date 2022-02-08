@@ -89,6 +89,7 @@ public class TranscodeService {
                         .setFrames(1) // 프레임 수
                         .done();
                 excutor.createJob(builderThumbNail).run();
+                log.info("thumbnail has created......");
                 videoDto.updateThumbnailName(DEFAULT_THUMBNAIL_NAME + ".png");
             }
         } catch (Exception e) {

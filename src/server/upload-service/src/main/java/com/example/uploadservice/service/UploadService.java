@@ -113,6 +113,7 @@ public class UploadService {
                 final String OUTPUT_FILEPATH = OUTPUT_DIR + "/" + videoUuid + "/" + file.getName();
                 amazonS3.putObject(new PutObjectRequest(BUCKET, OUTPUT_FILEPATH, file)
                         .withCannedAcl(CannedAccessControlList.PublicRead));    // public 권한으로 설정
+                log.info(file.getName());
             }
         } catch (Exception e) {
             e.printStackTrace();
