@@ -81,7 +81,8 @@ export default function useStreamMedia(streamPlayerRef, device = 'web') {
     stream.videoTrack.applyConstraints({ facingMode: 'environment' });
 
     console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
-    alert(stream.videoTrack.getConstraints());
+    alert(JSON.stringify(stream.videoTrack.getConstraints()));
+    console.log(stream.videoTrack.getConstraints());
     console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
   };
 
