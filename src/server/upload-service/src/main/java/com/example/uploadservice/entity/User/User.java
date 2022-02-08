@@ -1,9 +1,6 @@
 package com.example.uploadservice.entity.User;
 
-import com.example.uploadservice.entity.Room.Room;
-import com.example.uploadservice.entity.RoomViewer.RoomViewer;
 import com.example.uploadservice.entity.Video.Video;
-import com.example.uploadservice.entity.ViewdHistory.ViewedHistory;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -64,14 +61,6 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Video> videos = new LinkedList<>();
 
-    @OneToMany(mappedBy = "user")
-    private List<RoomViewer> roomViewers = new LinkedList<>();
-
-    @OneToMany(mappedBy = "user")
-    private List<ViewedHistory> viewedHistories = new LinkedList<>();
-
-    @OneToMany(mappedBy = "user")
-    private List<Room> rooms = new ArrayList<>();
     /**
      * =============Friend=============
      **/

@@ -23,7 +23,7 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         coordinator = MainCoordinator(parent: nil, navigation: self.navigationController ?? UINavigationController())
-//        coordinator?.start()
+        coordinator?.start()
         setupUI()
         if UserDefaults.standard.bool(forKey: "onRegister") == true, (UserDefaults.standard.string(forKey: "onRegister-Email") != nil || UserDefaults.standard.string(forKey: "onRegister-Name") != nil) {
             self.onRegister()
@@ -66,21 +66,16 @@ class LoginViewController: UIViewController {
     }
     
     @IBAction func logInButtonDidTap(_ sender: Any) {
-//        KeychainWrapper.standard.set("33333333-1234-1234-123456789012", forKey: KeychainWrapper.Key.uuid.rawValue)
-//        self.coordinator?.showTabPage()
-//        
-        
         idField.resignFirstResponder()
         pwField.resignFirstResponder()
         guard let idInfo = idField.text, idInfo.isEmpty == false, let pwInfo = pwField.text, pwInfo.isEmpty == false else { return }
         print(TimeZone.current.identifier)
         UserServiceAPI.shared.login(email: idInfo, password: pwInfo, timezone: TimeZone.current.identifier, fcmtoken: "token") { result in
             print("login result = \(result)")
-            if result["success"] as? Int == 1, let uuid = result["uuid"] as? String, let token = result["accessToken"] as? String, let userInfo = result["data"] as? UserInfo {
+            if result["success"] as? Int == 1, let uuid = result["uuid"] as? String, let token = result["accessToken"] as? String {
                 KeychainWrapper.standard.set(uuid, forKey: KeychainWrapper.Key.uuid.rawValue)
                 KeychainWrapper.standard.set(token, forKey: KeychainWrapper.Key.accessToken.rawValue)
                 DispatchQueue.main.async {
-                    UserManager.shared.userInfo = userInfo
                     self.coordinator?.showTabPage()
                 }
             } else {

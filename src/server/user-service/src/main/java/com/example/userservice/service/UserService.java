@@ -35,6 +35,7 @@ public class UserService implements UserDetailsService {
     private final JavaMailSender javaMailSender;
     private final RedisTemplate<String,Object> redisTemplate;
     private final AmazonS3Service amazonS3Service;
+
     public String sendEmail(String address) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(address);

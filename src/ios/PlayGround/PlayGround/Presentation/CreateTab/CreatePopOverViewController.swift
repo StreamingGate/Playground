@@ -72,10 +72,6 @@ class CreatePopOverViewController: UIViewController {
         disappearAnimation()
     }
     
-    @IBAction func uploadButtonDidTap(_ sender: Any) {
-        self.navVC?.coordinator?.showUploadPage()
-    }
-    
     @IBAction func liveStreamingButtonDidTap(_ sender: Any) {
         self.navVC?.coordinator?.showCreatingPage()
     }

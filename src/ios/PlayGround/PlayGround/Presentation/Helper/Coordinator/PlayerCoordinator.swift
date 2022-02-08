@@ -26,7 +26,8 @@ class PlayerCoordinator: Coordinator {
                 vc is PlayViewController
             }) as? PlayViewController {
                 print("exist")
-                if playVC.viewModel.currentInfo?.id != info?.id {
+                guard let currentInfo = playVC.viewModel.currentInfo, let newInfo = info else { return }
+                if currentInfo.id != newInfo.id {
                     playVC.viewModel.currentInfo = info
                 }
                 playVC.isMinimized = false
@@ -136,9 +137,5 @@ class PlayerCoordinator: Coordinator {
                 }
             }
         }
-    }
-    
-    func dismissToRoot() {
-        self.parentCoordinator?.parentCoordinator?.navigation.popToRootViewController(animated: true)
     }
 }

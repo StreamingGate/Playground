@@ -37,6 +37,8 @@ public class ViewedHistory {
     public ViewedHistory(User user, Video video) {
         this.user = user;
         this.video = video;
+        user.getViewedHistories().add(this);
+        video.getViewedHistories().add(this);
     }
 
     public void setLiked(boolean liked) {

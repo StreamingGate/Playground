@@ -23,10 +23,9 @@ class CustomTabViewController: UIViewController {
     @IBOutlet weak var myTabImageView: UIImageView!
     @IBOutlet weak var CreateTabImageView: UIImageView!
     @IBOutlet weak var myTabLabel: UILabel!
-    @IBOutlet weak var homeContainerView: UIView!
-    @IBOutlet weak var myContainerView: UIView!
+    @IBOutlet weak var containerView: UIView!
     
-    @Published var selectedTabIndex = 0
+    @Published var selectedTanIndex = 0
     private var cancellable: Set<AnyCancellable> = []
     
     var safeTop: CGFloat = 0
@@ -44,7 +43,6 @@ class CustomTabViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         bindData()
-        coordinator?.addSubTab(tabVC: self)
         coordinator?.changeTab(index: 0, tabVC: self)
     }
     
@@ -63,7 +61,7 @@ class CustomTabViewController: UIViewController {
     }
     
     func bindData() {
-        $selectedTabIndex.receive(on: RunLoop.main)
+        $selectedTanIndex.receive(on: RunLoop.main)
             .sink { [weak self] index in
                 guard let self = self else { return }
                 switch index {

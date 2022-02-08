@@ -17,8 +17,6 @@ class FriendPopUpViewController: UIViewController {
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var popUpView: UIView!
     
-    let viewModel = FriendViewModel()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -35,9 +33,6 @@ class FriendPopUpViewController: UIViewController {
         roomNameLabel.textColor = UIColor.customDarkGray
         watchButton.layer.cornerRadius = 15
         cancelButton.layer.cornerRadius = 15
-        guard let info = viewModel.currentFriend else { return }
-        profileImageView.downloadImageFrom(link: info.profileImage, contentMode: .scaleAspectFill)
-        nickNameLabel.text = info.nickname
     }
     
     @IBAction func cancelButtonDidTap(_ sender: Any) {

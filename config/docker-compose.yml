@@ -79,19 +79,6 @@ services:
     networks:
       - sg-network
 
-  video-service:
-    container_name: video-service
-    image: rlagksml99/video-service:latest
-    environment:
-      eureka.client.serviceUrl.defaultZone: http://service-discovery:8761/eureka/
-    depends_on:
-      - pg-mariadb
-    links:
-      - pg-mariadb
-    restart: always
-    networks:
-      - sg-network
-
   service-discovery:
     container_name: service-discovery
     image: wodndl895/service-discovery:1.0

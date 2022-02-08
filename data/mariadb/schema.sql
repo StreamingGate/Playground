@@ -55,8 +55,6 @@ create table room_viewer
     liked_at       datetime,
     room_id        bigint,
     users_id       bigint,
-    room_uuid      bigint,
-    user_uuid      varchar(36),
     primary key (id)
 ) engine=InnoDB;
 create table users

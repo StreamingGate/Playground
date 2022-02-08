@@ -38,13 +38,6 @@ class NickNameInputViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-//        let image = profileView.snapshotView(afterScreenUpdates: true)?.takeScreenshot()
-//        RegisterHelper.shared.profileImage = image
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        profileView.layer.cornerRadius = 0
         let image = profileView.snapshotView(afterScreenUpdates: true)?.takeScreenshot()
         RegisterHelper.shared.profileImage = image
     }

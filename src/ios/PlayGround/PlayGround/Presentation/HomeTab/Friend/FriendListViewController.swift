@@ -7,7 +7,6 @@
 
 import Foundation
 import UIKit
-import Combine
 
 class FriendListViewController: UIViewController {
     @IBOutlet weak var friendListView: UIView!
@@ -15,8 +14,6 @@ class FriendListViewController: UIViewController {
     @IBOutlet weak var listViewBottomMargin: NSLayoutConstraint!
     @IBOutlet weak var listTItleLabel: UILabel!
     @IBOutlet weak var friendTableView: UITableView!
-    private var cancellable: Set<AnyCancellable> = []
-    let viewModel = FriendViewModel()
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -26,27 +23,7 @@ class FriendListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        bindViewModel()
         setupUI()
-        self.viewModel.loadFriend(vc: self, coordinator: nil)
-    }
-    
-    func disappearAnimation(){
-        UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 2, initialSpringVelocity: 2, options: .showHideTransitionViews, animations: {
-            self.friendListView.transform = CGAffineTransform.init(translationX: 100, y: 0)
-            self.friendListView.alpha = 0
-            self.view.backgroundColor = UIColor.black.withAlphaComponent(0.0)
-        }, completion: {_ in
-            self.dismiss(animated: true, completion: nil)
-        })
-    }
-    
-    func bindViewModel() {
-        self.viewModel.$friendList.receive(on: DispatchQueue.main, options: nil)
-            .sink { [weak self] _ in
-                guard let self = self else { return }
-                self.friendTableView.reloadData()
-            }.store(in: &cancellable)
     }
     
     func setupUI() {
@@ -56,26 +33,25 @@ class FriendListViewController: UIViewController {
     }
     
     @IBAction func backTapped(_ sender: Any) {
-        disappearAnimation()
+        self.dismiss(animated: true, completion: nil)
     }
 }
 
 extension FriendListViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.viewModel.friendList.count
+        return 20
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "FriendListCell", for: indexPath) as? FriendListCell else {
             return UITableViewCell()
         }
-        cell.setupUI_list(info: self.viewModel.friendList[indexPath.row])
+        cell.setupUI()
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let popUp = UIStoryboard(name: "Friend", bundle: nil).instantiateViewController(withIdentifier: "FriendPopUpViewController") as? FriendPopUpViewController else { return }
-        popUp.viewModel.currentFriend = self.viewModel.friendList[indexPath.row]
         self.addChild(popUp)
         self.view.addSubview((popUp.view)!)
         popUp.view.frame = self.view.bounds
@@ -88,6 +64,20 @@ extension FriendListViewController: UITableViewDataSource, UITableViewDelegate {
 }
 
 
+class FriendListCell: UITableViewCell {
+    @IBOutlet weak var friendNameLabel: UILabel!
+    @IBOutlet weak var profileImageView: UIImageView!
+    @IBOutlet weak var onlineMarkView: UIView!
+    @IBOutlet weak var deleteButton: UIButton!
+    
+    func setupUI() {
+        friendNameLabel.font = UIFont.Content
+        profileImageView.layer.cornerRadius = 15
+        profileImageView.backgroundColor = UIColor.placeHolder
+        onlineMarkView.layer.cornerRadius = 4
+    }
+    
+}
 
 extension FriendListViewController: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {

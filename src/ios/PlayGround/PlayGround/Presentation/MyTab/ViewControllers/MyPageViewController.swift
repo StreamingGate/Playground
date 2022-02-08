@@ -7,7 +7,6 @@
 
 import Foundation
 import UIKit
-import Combine
 
 class MyPageViewController: UIViewController {
     @IBOutlet weak var recentVideoTitleLabel: UILabel!
@@ -16,25 +15,18 @@ class MyPageViewController: UIViewController {
     @IBOutlet weak var myVideoLabel: UILabel!
     @IBOutlet weak var profileImageView: UIImageView!
     var navVC: MyPageNavigationController?
-    private var cancellable: Set<AnyCancellable> = []
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         guard let nav = self.navigationController as? MyPageNavigationController else { return }
         self.navVC = nav
-        bindData()
         setupUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         AppUtility.lockOrientation(.portrait)
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        navVC?.coordinator?.resetTabBarHeight()
     }
     
     // MARK: - UI Setting
@@ -44,17 +36,7 @@ class MyPageViewController: UIViewController {
         likedVideoLabel.font = UIFont.Component
         myVideoLabel.font = UIFont.Component
         profileImageView.backgroundColor = UIColor.placeHolder
-        profileImageView.layer.cornerRadius = 15
-        profileImageView.layer.borderColor = UIColor.placeHolder.cgColor
-        profileImageView.layer.borderWidth = 1
-    }
-    
-    func bindData() {
-        UserManager.shared.$userInfo.receive(on: DispatchQueue.main, options: nil)
-            .sink { [weak self] user in
-                guard let self = self, let userInfo = user else { return }
-                self.profileImageView.downloadImageFrom(link: userInfo.profileImage, contentMode: .scaleAspectFill)
-            }.store(in: &cancellable)
+        profileImageView.layer.cornerRadius = 10
     }
     
     // MARK: - Button Action

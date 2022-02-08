@@ -24,8 +24,6 @@ public class RoomViewer {
 
     private LocalDateTime lastViewedAt;
 
-
-
     @ManyToOne
     @JoinColumn(name = "users_id")
     private User user;
