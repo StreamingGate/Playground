@@ -65,13 +65,17 @@ export default function useMediaSoupConsume(isLive) {
   };
 
   useEffect(() => {
+    let newPeer = null;
     if (isLive) {
       const transport = new protooClient.WebSocketTransport(
         'ws://localhost:4443/?room=test1&peer=peer3&role=consume'
       );
-      const newPeer = new protooClient.Peer(transport);
+      newPeer = new protooClient.Peer(transport);
       setPeer(newPeer);
     }
+    return () => {
+      newPeer?.close();
+    };
   }, []);
 
   useEffect(() => {
