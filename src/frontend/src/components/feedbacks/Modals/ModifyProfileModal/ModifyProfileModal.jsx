@@ -1,7 +1,7 @@
-import React, { useRef } from 'react';
+import React, { useState, useRef } from 'react';
 
 import * as S from './ModifyProfileModal.style';
-import { modalService } from '@utils/service';
+import { modalService, lStorageService, mediaService } from '@utils/service';
 import { validation } from '@utils/constant';
 import { useForm } from '@utils/hook';
 
@@ -10,13 +10,17 @@ import { Typography } from '@components/cores';
 import { Input } from '@components/forms';
 
 function ModifyProfileModal({ nickName }) {
-  const modal = modalService.useModal();
   const profileInputRef = useRef(null);
+
+  const userProfileImage = lStorageService.getItem('profileImage');
+  const modal = modalService.useModal();
 
   const { values, errors, touched, handleInputChange, handleInputBlur, handleSubmit } = useForm({
     initialValues: { nickName },
     validSchema: validation.modifyProfile,
   });
+
+  const [profilePreview, setProfilePreview] = useState('');
 
   const handleModifyProfileModalClose = e => {
     e.stopPropagation();
@@ -25,6 +29,11 @@ function ModifyProfileModal({ nickName }) {
 
   const handleProfileSelectBtnClick = () => {
     profileInputRef.current.click();
+  };
+
+  const handleProfileInputChange = async () => {
+    const profileImageUrl = await mediaService.getImagePreviewURl(profileInputRef.current);
+    setProfilePreview(profileImageUrl);
   };
 
   return (
@@ -36,10 +45,16 @@ function ModifyProfileModal({ nickName }) {
         <S.ModifyProfileModalBody>
           <S.UserProfileContainer onClick={handleProfileSelectBtnClick}>
             <S.UserProfile>
-              <img alt='carmera' />
+              <S.ProfileImage src={profilePreview || userProfileImage} alt='carmera' />
+              <S.CameraIcon />
             </S.UserProfile>
             <div style={{ display: 'none' }}>
-              <Input type='file' accept='.jpg, .jpeg, .png' ref={profileInputRef} />
+              <Input
+                type='file'
+                accept='.jpg, .jpeg, .png'
+                ref={profileInputRef}
+                onChange={handleProfileInputChange}
+              />
             </div>
           </S.UserProfileContainer>
           <S.InputLabel type='caption'>닉네임</S.InputLabel>
