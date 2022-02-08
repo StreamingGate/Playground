@@ -1,8 +1,8 @@
 package com.example.userservice.config.security;
 
-import com.example.userservice.dto.UserDto;
+import com.example.userservice.dto.user.UserDto;
 import com.example.userservice.service.UserService;
-import com.example.userservice.dto.RequestLogin;
+import com.example.userservice.dto.user.RequestLogin;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -73,5 +73,11 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
         response.addHeader("uuid",userDto.getUuid());
         response.addHeader("token",token);
+        res.put("email",userDto.getEmail());
+        res.put("name",userDto.getName());
+        res.put("nickName",userDto.getNickName());
+        res.put("profileImage",userDto.getProfileImage());
+        JSONObject object = new JSONObject(res);
+        response.getWriter().write(String.valueOf(object));
     }
 }

@@ -1,6 +1,7 @@
 package com.example.userservice.controller;
 
-import com.example.userservice.dto.*;
+import com.example.userservice.dto.history.ResponseVideo;
+import com.example.userservice.dto.user.*;
 import com.example.userservice.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -9,8 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -39,15 +40,14 @@ public class UserController {
     public ResponseEntity<ResponseUser> update(@PathVariable("uuid") String uuid,
                                                @RequestBody RequestMyinfo requestMyinfo) throws Exception {
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        requestMyinfo = userService.update(uuid,requestMyinfo);
-        ResponseUser responseUser = mapper.map(requestMyinfo,ResponseUser.class);
+        ResponseUser responseUser = userService.update(uuid,requestMyinfo);
         return ResponseEntity.status(HttpStatus.OK).body(responseUser);
     }
 
     /* 비밀번호 수정 */
     @PutMapping("/password/{uuid}")
     public ResponseEntity<PwdDto> updatePwd(@PathVariable("uuid") String uuid,
-                                                  @RequestBody PwdDto pwdDto) throws Exception {
+                                            @RequestBody PwdDto pwdDto) throws Exception {
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         PwdDto res = userService.updatePwd(uuid, pwdDto);
         return ResponseEntity.status(HttpStatus.OK).body(res);
@@ -94,4 +94,34 @@ public class UserController {
         res.put("nickName",resultNickname);
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
+
+    /* 시청한 동영상 목록 조회 */
+    @GetMapping("/watch/{uuid}")
+    public ResponseEntity<?> watchedHistory(@PathVariable("uuid") String uuid,
+                                            @RequestParam("last-video") Long lastVideoId,
+                                            @RequestParam("last-live") Long lastLiveId,
+                                            @RequestParam("size") int size) throws Exception {
+
+        return ResponseEntity.status(HttpStatus.OK).body(userService.watchedHistory(uuid,lastVideoId,lastLiveId,size));
+    }
+
+    /* 좋아요 누른 동영상 조회 */
+    @GetMapping("/liked/{uuid}")
+    public ResponseEntity<?> likedHistory(@PathVariable("uuid") String uuid,
+                                          @RequestParam("last-video") Long lastVideoId,
+                                          @RequestParam("last-live") Long lastLiveId,
+                                          @RequestParam("size") int size) throws Exception {
+
+        return ResponseEntity.status(HttpStatus.OK).body(userService.likedHistory(uuid, lastVideoId, lastLiveId, size));
+    }
+
+    /* 내가 업로드한 영상 조회 */
+    @GetMapping("/upload/{uuid}")
+    public ResponseEntity<List<ResponseVideo>> uploadedHistory(@PathVariable("uuid") String uuid,
+                                                         @RequestParam("last-video") Long lastVideoId,
+                                                         @RequestParam("size") int size) throws Exception {
+
+        return ResponseEntity.status(HttpStatus.OK).body(userService.uploadedHistory(uuid, lastVideoId, size));
+    }
+
 }
