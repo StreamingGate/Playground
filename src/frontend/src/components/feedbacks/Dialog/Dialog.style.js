@@ -38,4 +38,5 @@ export const DialogContent = styled.div`
   border-radius: 5px;
   ${({ maxWidth }) => getDialogMaxWidth(maxWidth)}
   min-width: 300px;
+  overflow: hidden;
 `;
