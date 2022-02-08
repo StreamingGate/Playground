@@ -2,7 +2,8 @@ package com.example.chatservice.redis;
 
 import com.example.chatservice.exception.CustomChatException;
 import com.example.chatservice.exception.ErrorCode;
-import com.example.chatservice.model.chat.Chat;
+import com.example.chatservice.model.chat.ChatConsume;
+import com.example.chatservice.model.chat.ChatProduce;
 import com.example.chatservice.model.chat.SenderRole;
 import com.example.chatservice.model.room.Room;
 import com.example.chatservice.utils.RedisMessaging;
@@ -50,18 +51,18 @@ public class RedisRoomService {
         return opsHashRoom.get(CHAT_ROOMS, roomId);
     }
 
-    public Room create(String name) {
-        Room room = new Room(name);
+    public Room create(String uuid) {
+        Room room = new Room(uuid);
         opsHashRoom.put(CHAT_ROOMS, room.getId(), room);
         return room;
     }
 
-    public int addPinnedChat(String roomId, Chat pinnedChat) throws CustomChatException {
+    public int addPinnedChat(String roomId, ChatProduce pinnedChat) throws CustomChatException {
         if (!pinnedChat.getSenderRole().equals(SenderRole.STREAMER))
             throw new CustomChatException(ErrorCode.C001, roomId);
 
         Room room = opsHashRoom.get(CHAT_ROOMS, roomId);
-        room.getPinnedChats().add(pinnedChat);
+        room.getPinnedChats().add(new ChatConsume(pinnedChat));
         opsHashRoom.put(CHAT_ROOMS, room.getId(), room); //update
         return room.getPinnedChats().size();
     }
