@@ -12,6 +12,7 @@ import AVFoundation
 import SwiftKeychainWrapper
 
 class PlayViewController: UIViewController {
+    var roomId = ""
     
     // MARK: - Properties
     // player
@@ -125,6 +126,7 @@ class PlayViewController: UIViewController {
         setMiniPlayerAction()
         
         bindingData()
+        viewModel.loadSingleInfo(vc: self, coordinator: coordinator)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -344,20 +346,19 @@ class PlayViewController: UIViewController {
                     AppUtility.lockOrientation(.all)
                 }
             }.store(in: &cancellable)
-        self.viewModel.$currentInfo.receive(on: DispatchQueue.main, options: nil)
+        self.viewModel.$videoInfo.receive(on: DispatchQueue.main, options: nil)
             .sink { [weak self] currentInfo in
                 guard let self = self, let info = currentInfo else { return }
                 self.titleLabel.text = info.title
                 self.categoryLabel.text = "#\(self.viewModel.categoryDic[info.category] ?? "기타")"
-                self.channelNicknameLabel.text = (info.uploaderNickname == nil) ? info.hostNickname : info.uploaderNickname
                 self.miniTitleLabel.text = info.title
-                self.miniChannelNameLabel.text = (info.uploaderNickname == nil) ? info.hostNickname : info.uploaderNickname
-        //        channelProfileImageView.downloadImageFrom(link: info., contentMode: <#T##UIView.ContentMode#>)
-                self.viewLabel.text = info.hits == nil ? "" : "조회수 \(info.hits ?? 0)회"
+                self.channelProfileImageView.downloadImageFrom(link: info.uploaderProfileImage, contentMode: .scaleAspectFill)
+                self.viewLabel.text = "조회수 \(info.hits)회"
                 self.playControllView.isHidden = self.viewModel.isLive
                 self.miniPlayPauseButton.alpha = self.viewModel.isLive ? 0 : 1
-                self.setPlayer(urlInfo: info.fileLink ?? "")
-                self.connectChatView()
+                self.setPlayer(urlInfo: info.streamingUrl)
+//                self.connectChatView(roomId: info.videoUuid)
+            }.store(in: &cancellable)
         self.viewModel.$currentInfo.receive(on: DispatchQueue.main, options: nil)
             .sink { [weak self] currentInfo in
                 guard let self = self, let info = currentInfo else { return }
