@@ -17,8 +17,12 @@ struct MainServiceAPI {
     func getAllList(lastVideoId: Int, lastLiveId: Int, category: String, size: Int, completion: @escaping ([String: Any])->Void) {
         let original = "\(mainServiceUrl)/list?last-video=\(lastVideoId)&last-live=\(lastLiveId)&size=\(size)&category=\(category)"
         
-        guard let target = original.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed), let tokenInfo = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue) else {
+        guard let target = original.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
             print("error encoding")
+            return
+        }
+        guard let tokenInfo = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue) else {
+            completion(["result": "Invalid Token"])
             return
         }
         let session = URLSession(configuration: .ephemeral)
@@ -32,6 +36,10 @@ struct MainServiceAPI {
             let successRange = 200 ..< 300
             guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode), let resultData = data else {
                 print("\(error?.localizedDescription ?? "no error") \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
+                if let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode == 401 {
+                    completion(["result": "Invalid Token"])
+                    return
+                }
                 completion(["result": "failed"])
                 return
             }
@@ -54,7 +62,10 @@ struct MainServiceAPI {
     }
     
     func tapButtons(videoId: Int, type: Int, action: Action, uuid: String, completion: @escaping ([String: Any])->Void) {
-        guard let tokenInfo = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue) else { return }
+        guard let tokenInfo = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue) else {
+            completion(["result": "Invalid Token"])
+            return
+        }
         let url = URL(string: "\(mainServiceUrl)/action")!
         var request = URLRequest(url: url)
         let postData : [String: Any] = ["id": videoId, "type" : type, "action": action.rawValue, "uuid": uuid]
@@ -68,6 +79,10 @@ struct MainServiceAPI {
             let successRange = 200 ..< 300
             guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode), let resultData = data else {
                 print("\(error?.localizedDescription ?? "no error") \((response as? HTTPURLResponse)?.statusCode ?? 0)")
+                if let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode == 401 {
+                    completion(["result": "Invalid Token"])
+                    return
+                }
                 completion(["result": "failed"])
                 return
             }
@@ -83,7 +98,10 @@ struct MainServiceAPI {
     }
     
     func cancelButtons(videoId: String, type: Int, action: String, uuid: String, completion: @escaping ([String: Any])->Void) {
-        guard let tokenInfo = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue) else { return }
+        guard let tokenInfo = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue) else {
+            completion(["result": "Invalid Token"])
+            return
+        }
         let url = URL(string: "\(mainServiceUrl)/action")!
         var request = URLRequest(url: url)
         let postData : [String: Any] = ["id": videoId, "type" : type, "action": action, "uuid": uuid]
@@ -97,6 +115,10 @@ struct MainServiceAPI {
             let successRange = 200 ..< 300
             guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode), let resultData = data else {
                 print("\(error?.localizedDescription ?? "no error") \((response as? HTTPURLResponse)?.statusCode ?? 0)")
+                if let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode == 401 {
+                    completion(["result": "Invalid Token"])
+                    return
+                }
                 completion(["result": "failed"])
                 return
             }
@@ -114,8 +136,12 @@ struct MainServiceAPI {
     func loadNotifications(uuid: String, completion: @escaping ([String: Any])->Void) {
         let original = "\(mainServiceUrl)/notification/\(uuid)"
         
-        guard let target = original.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed), let tokenInfo = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue) else {
+        guard let target = original.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
             print("error encoding")
+            return
+        }
+        guard let tokenInfo = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue) else {
+            completion(["result": "Invalid Token"])
             return
         }
         let session = URLSession(configuration: .ephemeral)
@@ -124,10 +150,15 @@ struct MainServiceAPI {
         var request = URLRequest(url: requestURL)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("Bearer \(tokenInfo)", forHTTPHeaderField: "Authorization")
-        let task = session.dataTask(with: requestURL) { data, response, error in
+        
+        let task = session.dataTask(with: request) { data, response, error in
             let successRange = 200 ..< 300
             guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode), let resultData = data else {
                 print("\(error?.localizedDescription ?? "no error") \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
+                if let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode == 401 {
+                    completion(["result": "Invalid Token"])
+                    return
+                }
                 completion(["result": "failed"])
                 return
             }
@@ -152,8 +183,12 @@ struct MainServiceAPI {
     func loadFriends(uuid: String, completion: @escaping ([String: Any])->Void) {
         let original = "\(mainServiceUrl)/friends/\(uuid)"
         
-        guard let target = original.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed), let tokenInfo = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue) else {
+        guard let target = original.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
             print("error encoding")
+            return
+        }
+        guard let tokenInfo = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue) else {
+            completion(["result": "Invalid Token"])
             return
         }
         let session = URLSession(configuration: .ephemeral)
@@ -161,11 +196,16 @@ struct MainServiceAPI {
         let requestURL = urlComponents.url!
         var request = URLRequest(url: requestURL)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("Bearer \(tokenInfo)", forHTTPHeaderField: "Authorization")
-        let task = session.dataTask(with: requestURL) { data, response, error in
+        request.addValue("Bearer \(tokenInfo)", forHTTPHeaderField: "Authorization")
+
+        let task = session.dataTask(with: request) { data, response, error in
             let successRange = 200 ..< 300
             guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode), let resultData = data else {
                 print("\(error?.localizedDescription ?? "no error") \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
+                if let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode == 401 {
+                    completion(["result": "Invalid Token"])
+                    return
+                }
                 completion(["result": "failed"])
                 return
             }
@@ -188,7 +228,10 @@ struct MainServiceAPI {
     }
     
     func sendFriendRequest(uuid: String, target: String, completion: @escaping ([String: Any])->Void) {
-        guard let tokenInfo = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue) else { return }
+        guard let tokenInfo = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue) else {
+            completion(["result": "Invalid Token"])
+            return
+        }
         let url = URL(string: "\(mainServiceUrl)/friends/\(uuid)")!
         var request = URLRequest(url: url)
         let postData : [String: Any] = ["target": target]
@@ -197,10 +240,15 @@ struct MainServiceAPI {
         request.httpBody = jsonData
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("Bearer \(tokenInfo)", forHTTPHeaderField: "Authorization")
+        
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             let successRange = 200 ..< 300
             guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode), let resultData = data else {
                 print("\(error?.localizedDescription ?? "no error") \((response as? HTTPURLResponse)?.statusCode ?? 0)")
+                if let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode == 401 {
+                    completion(["result": "Invalid Token"])
+                    return
+                }
                 completion(["result": "failed"])
                 return
             }
@@ -216,7 +264,10 @@ struct MainServiceAPI {
     }
     
     func deleteFriend(uuid: String, target: String, completion: @escaping ([String: Any])->Void) {
-        guard let tokenInfo = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue) else { return }
+        guard let tokenInfo = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue) else {
+            completion(["result": "Invalid Token"])
+            return
+        }
         let url = URL(string: "\(mainServiceUrl)/friends/\(uuid)")!
         var request = URLRequest(url: url)
         let postData : [String: Any] = ["target": target]
@@ -229,6 +280,10 @@ struct MainServiceAPI {
             let successRange = 200 ..< 300
             guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode), let resultData = data else {
                 print("\(error?.localizedDescription ?? "no error") \((response as? HTTPURLResponse)?.statusCode ?? 0)")
+                if let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode == 401 {
+                    completion(["result": "Invalid Token"])
+                    return
+                }
                 completion(["result": "failed"])
                 return
             }
@@ -246,8 +301,12 @@ struct MainServiceAPI {
     func loadFriendRequests(uuid: String, completion: @escaping ([String: Any])->Void) {
         let original = "\(mainServiceUrl)/friends/manage/\(uuid)"
         
-        guard let target = original.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed), let tokenInfo = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue) else {
+        guard let target = original.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
             print("error encoding")
+            return
+        }
+        guard let tokenInfo = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue) else {
+            completion(["result": "Invalid Token"])
             return
         }
         let session = URLSession(configuration: .ephemeral)
@@ -256,10 +315,15 @@ struct MainServiceAPI {
         var request = URLRequest(url: requestURL)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("Bearer \(tokenInfo)", forHTTPHeaderField: "Authorization")
-        let task = session.dataTask(with: requestURL) { data, response, error in
+        
+        let task = session.dataTask(with: request) { data, response, error in
             let successRange = 200 ..< 300
             guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode), let resultData = data else {
                 print("\(error?.localizedDescription ?? "no error") \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
+                if let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode == 401 {
+                    completion(["result": "Invalid Token"])
+                    return
+                }
                 completion(["result": "failed"])
                 return
             }
@@ -282,7 +346,10 @@ struct MainServiceAPI {
     }
     
     func acceptFriendRequest(friendUUID: String, myUUID: String, completion: @escaping ([String: Any])->Void) {
-        guard let tokenInfo = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue) else { return }
+        guard let tokenInfo = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue) else {
+            completion(["result": "Invalid Token"])
+            return
+        }
         let url = URL(string: "\(mainServiceUrl)/friends/manage/\(myUUID)")!
         var request = URLRequest(url: url)
         let postData : [String: Any] = ["sender": friendUUID]
@@ -295,6 +362,10 @@ struct MainServiceAPI {
             let successRange = 200 ..< 300
             guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode), let resultData = data else {
                 print("\(error?.localizedDescription ?? "no error") \((response as? HTTPURLResponse)?.statusCode ?? 0)")
+                if let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode == 401 {
+                    completion(["result": "Invalid Token"])
+                    return
+                }
                 completion(["result": "failed"])
                 return
             }
@@ -311,7 +382,10 @@ struct MainServiceAPI {
     }
     
     func deleteFriendRequest(friendUUID: String, myUUID: String, completion: @escaping ([String: Any])->Void) {
-        guard let tokenInfo = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue) else { return }
+        guard let tokenInfo = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue) else {
+            completion(["result": "Invalid Token"])
+            return
+        }
         let url = URL(string: "\(mainServiceUrl)/friends/manage/\(myUUID)")!
         var request = URLRequest(url: url)
         let postData : [String: Any] = ["sender": friendUUID]
@@ -324,6 +398,10 @@ struct MainServiceAPI {
             let successRange = 200 ..< 300
             guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode), let resultData = data else {
                 print("\(error?.localizedDescription ?? "no error") \((response as? HTTPURLResponse)?.statusCode ?? 0)")
+                if let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode == 401 {
+                    completion(["result": "Invalid Token"])
+                    return
+                }
                 completion(["result": "failed"])
                 return
             }
@@ -342,8 +420,12 @@ struct MainServiceAPI {
         
         let original = "\(mainServiceUrl)/friends/watch/\(friendUUID)"
         
-        guard let target = original.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed), let tokenInfo = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue) else {
+        guard let target = original.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
             print("error encoding")
+            return
+        }
+        guard let tokenInfo = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue) else {
+            completion(["result": "Invalid Token"])
             return
         }
         let session = URLSession(configuration: .ephemeral)
@@ -352,10 +434,15 @@ struct MainServiceAPI {
         var request = URLRequest(url: requestURL)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("Bearer \(tokenInfo)", forHTTPHeaderField: "Authorization")
-        let task = session.dataTask(with: requestURL) { data, response, error in
+        
+        let task = session.dataTask(with: request) { data, response, error in
             let successRange = 200 ..< 300
             guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode), let resultData = data else {
                 print("\(error?.localizedDescription ?? "no error") \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
+                if let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode == 401 {
+                    completion(["result": "Invalid Token"])
+                    return
+                }
                 completion(["result": "failed"])
                 return
             }

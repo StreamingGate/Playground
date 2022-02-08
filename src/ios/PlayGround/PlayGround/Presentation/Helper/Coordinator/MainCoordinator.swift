@@ -21,7 +21,7 @@ class MainCoordinator: NSObject, Coordinator {
         self.parentCoordinator = parent
     }
 
-    func start() {
+    func dismissToRoot() {
     }
 
     func showTabPage() {

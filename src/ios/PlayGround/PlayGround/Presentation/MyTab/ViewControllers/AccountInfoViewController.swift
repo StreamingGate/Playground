@@ -28,7 +28,7 @@ class AccountInfoViewController: UIViewController {
         bindViewModel()
         bindData()
         setupUI()
-        self.viewModel.loadFriend()
+        self.viewModel.loadFriend(vc: self, coordinator: self.navVC?.coordinator)
     }
     
     func bindViewModel() {
@@ -88,7 +88,7 @@ extension AccountInfoViewController: UITableViewDataSource, UITableViewDelegate 
         }
         cell.setupUI_manage(info: self.viewModel.friendList[indexPath.row])
         cell.deleteHandler = {
-            self.viewModel.deleteFriend(friendUuid: self.viewModel.friendList[indexPath.row].uuid, vc: self)
+            self.viewModel.deleteFriend(friendUuid: self.viewModel.friendList[indexPath.row].uuid, vc: self, coordinator: self.navVC?.coordinator)
         }
         return cell
     }

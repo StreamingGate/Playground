@@ -68,7 +68,7 @@ class HomeListViewController: UIViewController {
         self.viewModel.$selectedCategory.receive(on: DispatchQueue.main, options: nil)
             .sink { [weak self] selected in
                 guard let self = self else { return }
-                self.viewModel.loadAllList()
+                self.viewModel.loadAllList(vc: self, coordinator: self.navVC?.coordinator)
             }.store(in: &cancellable)
     }
     
@@ -202,7 +202,7 @@ extension HomeListViewController: UITableViewDataSource, UITableViewDelegate {
                 return
             }
             self.tableView.tableFooterView = createSpinnerFooter()
-            self.viewModel.loadAllList()
+            self.viewModel.loadAllList(vc: self, coordinator: self.navVC?.coordinator)
         } else {
             // 더이상 로드할 데이터가 없을 경우, spinner 멈춤
             self.spinner.stopAnimating()

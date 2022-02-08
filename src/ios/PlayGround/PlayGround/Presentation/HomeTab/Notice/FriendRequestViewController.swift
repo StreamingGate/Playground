@@ -52,7 +52,7 @@ extension FriendRequestViewController: UITableViewDataSource, UITableViewDelegat
         }
         cell.updateUI(info: self.viewModel.friendRequestList[indexPath.row])
         cell.buttonHandler = { action in
-            self.viewModel.answerFriendRequest(vc: self, action: action, friendUuid: self.viewModel.friendRequestList[indexPath.row].uuid)
+            self.viewModel.answerFriendRequest(vc: self, action: action, friendUuid: self.viewModel.friendRequestList[indexPath.row].uuid, coordinator: self.navVC?.coordinator)
         }
         return cell
     }

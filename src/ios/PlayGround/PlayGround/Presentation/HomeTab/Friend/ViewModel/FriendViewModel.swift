@@ -15,10 +15,10 @@ class FriendViewModel {
     
     var currentFriend: Friend?
     
-    func loadFriend(vc: UIViewController) {
+    func loadFriend(vc: UIViewController, coordinator: Coordinator?) {
         guard let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else { return }
         MainServiceAPI.shared.loadFriends(uuid: uuid) { result in
-            if let friendData = NetworkResultManager.shared.analyze(result: result, vc: vc) as? [Friend] {
+            if let friendData = NetworkResultManager.shared.analyze(result: result, vc: vc, coordinator: coordinator) as? [Friend] {
                 self.friendList = friendData
             }
         }

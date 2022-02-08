@@ -36,6 +36,10 @@ class HomeTabCoordinator: Coordinator {
         }
     }
     
+    func dismissToRoot() {
+        self.parentCoordinator?.navigation.popToRootViewController(animated: true)
+    }
+    
     func showPlayer(info: GeneralVideo?) {
         let childCoordinator = PlayerCoordinator(parent: self.parentCoordinator, navigation: self.navigation)
         self.childCoordinators.append(childCoordinator)

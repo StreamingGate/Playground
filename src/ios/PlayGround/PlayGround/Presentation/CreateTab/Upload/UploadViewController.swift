@@ -60,11 +60,8 @@ class UploadViewController: UIViewController {
         imagePicker.sourceType = .photoLibrary
         imagePicker.mediaTypes = [kUTTypeImage as String]
         MainServiceAPI.shared.getAllList(lastVideoId: -1, lastLiveId: -1, category: "ALL", size: 1) { result in
-            if result["result"] as? String == "success" {
-                guard let data = result["data"] as? HomeList else { return }
-//                self.categoryList = data.categories.compactMap({ self.categoryDic[$0] ?? "기타" }).filter({ $0 != "전체" && $0 != "기타" })
-                self.categoryList = data.categories.filter({ $0 != "ALL" })
-            }
+            guard let data = NetworkResultManager.shared.analyze(result: result, vc: self, coordinator: self.navVC?.coordinator) as? HomeList else { return }
+            self.categoryList = data.categories.filter({ $0 != "ALL" })
         }
         bindData()
         setupUI()

@@ -147,7 +147,7 @@ class AccountEditViewController: UIViewController {
             }
             UserServiceAPI.shared.updateUserInfo(nickName: nicknameInfo, profileImage: nil) { result in
                 print("==> \(result)")
-                guard let userInfo = result["data"] as? UserInfo else { return }
+                guard let userInfo = NetworkResultManager.shared.analyze(result: result, vc: self, coordinator: self.coordinator) as? UserInfo else { return }
                 UserManager.shared.userInfo = userInfo
                 DispatchQueue.main.async {
                     self.updateButton.isEnabled = true
@@ -167,7 +167,7 @@ class AccountEditViewController: UIViewController {
             let binaryImage = imageData.base64EncodedString()
             UserServiceAPI.shared.updateUserInfo(nickName: (nicknameInfo == UserManager.shared.userInfo?.nickName ? nil : nicknameInfo), profileImage: binaryImage) { result in
                 print("==> \(result)")
-                guard let userInfo = result["data"] as? UserInfo else { return }
+                guard let userInfo = NetworkResultManager.shared.analyze(result: result, vc: self, coordinator: self.coordinator) as? UserInfo else { return }
                 UserManager.shared.userInfo = userInfo
                 DispatchQueue.main.async {
                     self.updateButton.isEnabled = true

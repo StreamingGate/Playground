@@ -14,38 +14,38 @@ class NoticeViewModel {
     @Published var noticeList: [Notice] = []
     @Published var friendRequestList: [Friend] = []
     
-    func loadNotice(vc: UIViewController) {
+    func loadNotice(vc: UIViewController, coordinator: Coordinator?) {
         guard let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else { return }
         MainServiceAPI.shared.loadNotifications(uuid: uuid) { result in
-            if let noticeData = NetworkResultManager.shared.analyze(result: result, vc: vc) as? [Notice] {
+            if let noticeData = NetworkResultManager.shared.analyze(result: result, vc: vc, coordinator: coordinator) as? [Notice] {
                 self.noticeList = noticeData
             }
         }
     }
     
-    func loadFriendRequest(vc: UIViewController) {
+    func loadFriendRequest(vc: UIViewController, coordinator: Coordinator?) {
         guard let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else { return }
         MainServiceAPI.shared.loadFriendRequests(uuid: uuid) { result in
-            if let requestData = NetworkResultManager.shared.analyze(result: result, vc: vc) as? [Friend] {
+            if let requestData = NetworkResultManager.shared.analyze(result: result, vc: vc, coordinator: coordinator) as? [Friend] {
                 self.friendRequestList = requestData
             }
         }
     }
     
-    func answerFriendRequest(vc: UIViewController, action: Int, friendUuid: String) {
+    func answerFriendRequest(vc: UIViewController, action: Int, friendUuid: String, coordinator: Coordinator?) {
         guard let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else { return }
         if action == 0 {
             // 거절
             MainServiceAPI.shared.deleteFriendRequest(friendUUID: friendUuid, myUUID: uuid) { result in
-                if NetworkResultManager.shared.analyze(result: result, vc: vc) != nil {
-                    self.loadFriendRequest(vc: vc)
+                if NetworkResultManager.shared.analyze(result: result, vc: vc, coordinator: coordinator) != nil {
+                    self.loadFriendRequest(vc: vc, coordinator: coordinator)
                 }
             }
         } else {
             // 수락
             MainServiceAPI.shared.acceptFriendRequest(friendUUID: friendUuid, myUUID: uuid) { result in
-                if NetworkResultManager.shared.analyze(result: result, vc: vc) != nil {
-                    self.loadFriendRequest(vc: vc)
+                if NetworkResultManager.shared.analyze(result: result, vc: vc, coordinator: coordinator) != nil {
+                    self.loadFriendRequest(vc: vc, coordinator: coordinator)
                 }
             }
         }
