@@ -52,11 +52,11 @@
                                 <rect key="frame" x="0.0" y="110" width="414" height="752"/>
                                 <color key="backgroundColor" name="Background"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ChatCell" rowHeight="55" id="PE6-Pp-X4V" customClass="ChatCell" customModule="PlayGround" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="44.5" width="414" height="55"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ChatCell" rowHeight="43" id="PE6-Pp-X4V" customClass="ChatCell" customModule="PlayGround" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="44.5" width="414" height="43"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="PE6-Pp-X4V" id="VZO-rV-lsZ">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="55"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xqC-eh-qNo">
@@ -73,13 +73,13 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3BX-bp-beZ">
-                                                    <rect key="frame" x="145" y="8" width="42" height="20.5"/>
+                                                    <rect key="frame" x="145" y="8" width="42" height="20"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" text="채팅 내용" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kO7-A1-XNy">
-                                                    <rect key="frame" x="201" y="8" width="193" height="35"/>
+                                                    <rect key="frame" x="201" y="10" width="193" height="18"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -92,10 +92,10 @@
                                                 <constraint firstItem="kO7-A1-XNy" firstAttribute="leading" secondItem="3BX-bp-beZ" secondAttribute="trailing" constant="14" id="FMI-xh-HBh"/>
                                                 <constraint firstAttribute="trailing" secondItem="kO7-A1-XNy" secondAttribute="trailing" constant="20" id="Pdq-18-1va"/>
                                                 <constraint firstItem="3BX-bp-beZ" firstAttribute="centerY" secondItem="MeX-58-tGG" secondAttribute="centerY" id="YkM-ac-SyK"/>
-                                                <constraint firstAttribute="bottom" secondItem="kO7-A1-XNy" secondAttribute="bottom" constant="12" id="ZEW-ty-Vpj"/>
+                                                <constraint firstAttribute="bottom" secondItem="kO7-A1-XNy" secondAttribute="bottom" constant="15" id="ZEW-ty-Vpj"/>
                                                 <constraint firstItem="3BX-bp-beZ" firstAttribute="leading" secondItem="MeX-58-tGG" secondAttribute="trailing" constant="10" id="ddi-Tw-6Xi"/>
-                                                <constraint firstItem="kO7-A1-XNy" firstAttribute="top" secondItem="3BX-bp-beZ" secondAttribute="top" id="ecM-85-mxZ"/>
                                                 <constraint firstItem="xqC-eh-qNo" firstAttribute="leading" secondItem="VZO-rV-lsZ" secondAttribute="leading" constant="20" id="hLo-zd-t2O"/>
+                                                <constraint firstItem="kO7-A1-XNy" firstAttribute="top" secondItem="VZO-rV-lsZ" secondAttribute="top" constant="10" id="hNS-qx-U7l"/>
                                                 <constraint firstItem="xqC-eh-qNo" firstAttribute="top" secondItem="VZO-rV-lsZ" secondAttribute="top" constant="3" id="qqV-9E-Myn"/>
                                             </constraints>
                                         </tableViewCellContentView>
