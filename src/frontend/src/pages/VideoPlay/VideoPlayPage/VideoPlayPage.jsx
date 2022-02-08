@@ -1,8 +1,11 @@
 import React, { memo, useRef, useState, useEffect } from 'react';
-import Hls from 'hls.js';
+import { useLocation, useParams } from 'react-router-dom';
 import protooClient from 'protoo-client';
+import Hls from 'hls.js';
 
 import * as S from './VideoPlayPage.style';
+import { lStorageService } from '@utils/service';
+import { useGetVideoInfo } from '@utils/hook/query';
 
 import VideoMetaData from '@pages/VideoPlay/VideoMetaData/VideoMetaData';
 import { ChatRoom } from '@components/chats';
@@ -10,17 +13,21 @@ import { ChatRoom } from '@components/chats';
 const mediasoupClient = require('mediasoup-client');
 
 function VideoPlayPage() {
+  const { pathname } = useLocation();
+  const { id } = useParams();
+  const userId = lStorageService.getItem('uuid');
+
   const videoPlayerRef = useRef(null);
+  const playType = useRef(pathname.includes('/video-play') ? 'video' : 'live');
 
-  const [peer, setPeer] = useState(null);
+  const handleVideoUrlLoad = data => {
+    const { streamingUrl } = data;
+    const hls = new Hls();
+    hls.loadSource(streamingUrl);
+    hls.attachMedia(videoPlayerRef.current);
+  };
 
-  // useEffect(() => {
-  //   // const videoSrc = process.env.REACT_APP_DUMMY_VIDEO;
-  //   const videoSrc = '';
-  //   const hls = new Hls();
-  //   hls.loadSource(videoSrc);
-  //   hls.attachMedia(videoPlayerRef.current);
-  // }, []);
+  const { data } = useGetVideoInfo(playType.current, id, userId, handleVideoUrlLoad);
 
   const handleProcessConsume = async peer => {
     try {
@@ -70,15 +77,15 @@ function VideoPlayPage() {
     }
   };
 
-  useEffect(() => {
-    const newTransport = new protooClient.WebSocketTransport(
-      'ws://localhost:4443/?room=test1&peer=peer3&role=consume'
-    );
-    const newPeer = new protooClient.Peer(newTransport);
-    newPeer.on('open', () => {
-      handleProcessConsume(newPeer);
-    });
-  }, []);
+  // useEffect(() => {
+  //   const newTransport = new protooClient.WebSocketTransport(
+  //     'ws://localhost:4443/?room=test1&peer=peer3&role=consume'
+  //   );
+  //   const newPeer = new protooClient.Peer(newTransport);
+  //   newPeer.on('open', () => {
+  //     handleProcessConsume(newPeer);
+  //   });
+  // }, []);
 
   return (
     <S.VideoPlayPageContainer>
