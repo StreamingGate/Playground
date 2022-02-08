@@ -27,6 +27,10 @@ const getButtonColor = props => {
         color: ${theme.colors[color]};
         border: 1px solid ${theme.colors[color]};
       `;
+    case 'text':
+      return css`
+        color: ${theme.colors[color]};
+      `;
     // default variant is 'contained'
     default:
       return css`

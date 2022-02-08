@@ -4,7 +4,9 @@ import { Typography } from '@components/cores';
 import { Avatar } from '@components/dataDisplays';
 import { Button } from '@components/buttons';
 
-export const VideoMetaDataContainer = styled.div``;
+export const VideoMetaDataContainer = styled.div`
+  margin-top: 40px;
+`;
 
 export const VideoCategory = styled(Typography)`
   color: ${({ theme }) => theme.colors.pgBlue};
@@ -69,10 +71,15 @@ export const SubscribePeople = styled(Typography)`
 export const ContentOverview = styled(Typography)`
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: ${({ isExpand }) => (isExpand ? 'none' : 3)};
   overflow: hidden;
-  text-overflow: ellopsis;
-  width: 60%;
+  text-overflow: ellipsis;
+`;
+
+export const ExpandContenOverviewBtn = styled(Button)`
+  color: ${({ theme }) => theme.colors.customDarkGray};
+  font-size: ${({ theme }) => theme.fontSizes.bottomTab};
+  margin-left: -18px;
 `;
 
 export const SubScribeBtn = styled(Button)`

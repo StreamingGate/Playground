@@ -13,7 +13,7 @@ export default {
     margin-left: 0px;
     margin-right: var(--side-friend-list-width);
     height: 100vh;
-    overflow: auto;
+    /* overflow: auto; */
 
     ${({ sideNavState }) =>
       sideNavState.open &&

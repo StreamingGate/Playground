@@ -53,6 +53,19 @@ services:
     networks:
       - sg-network
 
+  upload-service:
+    container_name: upload-service
+    image: rlagksml99/upload-service:latest
+    environment:
+      eureka.client.serviceUrl.defaultZone: http://service-discovery:8761/eureka/
+    depends_on:
+      - pg-mariadb
+    links:
+      - pg-mariadb
+    restart: always
+    networks:
+      - sg-network
+
   chat-service:
     container_name: chat-service
     image: rlagksml99/chat-service:latest
@@ -63,6 +76,19 @@ services:
     restart: always
     ports:
       - "8888:8888"
+    networks:
+      - sg-network
+
+  video-service:
+    container_name: video-service
+    image: rlagksml99/video-service:latest
+    environment:
+      eureka.client.serviceUrl.defaultZone: http://service-discovery:8761/eureka/
+    depends_on:
+      - pg-mariadb
+    links:
+      - pg-mariadb
+    restart: always
     networks:
       - sg-network
 

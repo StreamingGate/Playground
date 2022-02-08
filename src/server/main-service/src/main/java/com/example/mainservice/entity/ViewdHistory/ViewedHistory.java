@@ -1,6 +1,6 @@
 package com.example.mainservice.entity.ViewdHistory;
 
-import com.example.mainservice.entity.User.UserEntity;
+import com.example.mainservice.entity.User.User;
 import com.example.mainservice.entity.Video.Video;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +16,7 @@ public class ViewedHistory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDateTime viewedProgress;
+    private Long viewedProgress; // ms
 
     private boolean liked = false;
 
@@ -32,13 +32,11 @@ public class ViewedHistory {
 
     @ManyToOne
     @JoinColumn(name = "users_id")
-    private UserEntity userEntity;
+    private User user;
 
-    public ViewedHistory(UserEntity userEntity, Video video) {
-        this.userEntity = userEntity;
+    public ViewedHistory(User user, Video video) {
+        this.user = user;
         this.video = video;
-        userEntity.getViewedHistories().add(this);
-        video.getViewedHistories().add(this);
     }
 
     public void setLiked(boolean liked) {

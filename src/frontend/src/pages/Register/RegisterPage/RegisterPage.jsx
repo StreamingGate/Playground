@@ -65,7 +65,7 @@ function RegisterPage() {
         verifyNickName.mutate(nickName);
         break;
       case 3:
-        userRegister.mutate({ ...values, profileImage });
+        userRegister.mutate({ ...values, profileImage: profileImage.split(',')[1] });
         break;
       default:
         break;

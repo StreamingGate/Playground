@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import SwiftKeychainWrapper
 
 class PlayExplainViewController: UIViewController {
     // MARK: - Properties
@@ -19,6 +20,10 @@ class PlayExplainViewController: UIViewController {
     @IBOutlet weak var explainContentLabel: UILabel!
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var likeButton: UIButton!
+    @IBOutlet weak var dislikeButton: UIButton!
+    @IBOutlet weak var reportButton: UIButton!
+    let viewModel = PlayViewModel()
     
     // MARK: - View Life Cycle
     override func viewDidLayoutSubviews() {
@@ -45,6 +50,11 @@ class PlayExplainViewController: UIViewController {
         channelLabel.font = UIFont.Content
         explainContentLabel.font = UIFont.caption
         explainContentLabel.textColor = UIColor.customDarkGray
+        guard let info = viewModel.currentInfo else { return }
+        videoTitleLabel.text = info.title
+        categoryLabel.text = "#\(viewModel.categoryDic[info.category] ?? "기타")"
+        channelLabel.text = (info.uploaderNickname == nil) ? info.hostNickname : info.uploaderNickname
+//        channelProfileImageView.downloadImageFrom(link: info., contentMode: <#T##UIView.ContentMode#>)
     }
     
     // MARK: - Animation
@@ -75,8 +85,58 @@ class PlayExplainViewController: UIViewController {
         })
     }
     
-    // MARK: - Tap Action
+    // MARK: - Button Action
     
+    @IBAction func likeButtonDidTap(_ sender: Any) {
+        guard let info = viewModel.currentInfo, let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else { return }
+        likeButton.isEnabled = false
+        MainServiceAPI.shared.tapButtons(videoId: info.id, type: (info.hostNickname == nil ? 0 : 1), action: Action.Like, uuid: uuid) { result in
+            print("result: \(result)")
+            DispatchQueue.main.async {
+                self.likeButton.isEnabled = true
+                if result["result"] as? String == "success" {
+                    // UI 변경 및 유저정보 업데이트
+                }
+            }
+        }
+    }
+    
+    @IBAction func dislikeButtonDidTap(_ sender: Any) {
+        guard let info = viewModel.currentInfo, let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else { return }
+        dislikeButton.isEnabled = false
+        MainServiceAPI.shared.tapButtons(videoId: info.id, type: (info.hostNickname == nil ? 0 : 1), action: Action.Dislike, uuid: uuid) { result in
+            print("result: \(result)")
+            DispatchQueue.main.async {
+                self.dislikeButton.isEnabled = true
+                if result["result"] as? String == "success" {
+                    // UI 변경 및 유저정보 업데이트
+                }
+            }
+        }
+    }
+    
+    @IBAction func shareButtonDidTap(_ sender: Any) {
+        guard let url = URL(string: "naver.com") else { return }
+        let shareSheetVC = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+        present(shareSheetVC, animated: true, completion: nil)
+    }
+    
+    
+    @IBAction func reportButtonDidTap(_ sender: Any) {
+        guard let info = viewModel.currentInfo, let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else { return }
+        reportButton.isEnabled = false
+        MainServiceAPI.shared.tapButtons(videoId: info.id, type: (info.hostNickname == nil ? 0 : 1), action: Action.Report, uuid: uuid) { result in
+            print("result: \(result)")
+            DispatchQueue.main.async {
+                self.reportButton.isEnabled = true
+                if result["result"] as? String == "success" {
+                    // UI 변경 및 유저정보 업데이트
+                }
+            }
+        }
+    }
+    
+    // MARK: - Tap Action
     // move to certain channel
     @IBAction func channelDidTap(_ sender: Any) {
         guard let parent = self.parent as? PlayViewController else { return }

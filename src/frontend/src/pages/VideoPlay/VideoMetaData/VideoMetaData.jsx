@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import * as S from './VideoMetaData.style';
@@ -16,6 +16,12 @@ function ActionButton({ element, content, onClick }) {
 }
 
 function VideoMetaData() {
+  const [isOverviewExpand, setOverviewExpand] = useState(false);
+
+  const handleExpandBtnClick = () => {
+    setOverviewExpand(prev => !prev);
+  };
+
   return (
     <S.VideoMetaDataContainer>
       <S.VideoCategory type='caption'>#음악</S.VideoCategory>
@@ -36,12 +42,19 @@ function VideoMetaData() {
             <S.ChannelName>채널 이름</S.ChannelName>
             <S.SubscribePeople type='bottomTab'>2.01천 명</S.SubscribePeople>
           </S.ChannelInfo>
-          <S.ContentOverview>
-            한 달 후, 천 년 만에 찾아온다는 혜성을 기다리고 있는 일본. 산골 깊은 시골 마을에 살고
-            있는 여고생 미츠하는 우울한 나날을 보내고 있다. 촌장인 아버지의 선거활동과 신사 집안의
-            낡은 풍습. 좁고 작은 마을에서는 주위의 시선이 너무나도 신경 쓰이는 나이인 만큼 도시를
-            향한 동경심은 커지기만 한다.
-          </S.ContentOverview>
+          <div>
+            <S.ContentOverview isExpand={isOverviewExpand}>
+              때는 1920년대, 당시 유럽은 그린델왈드의 득세로 혼란스러운 시기였다. 영화가
+              시작하자마자 한밤중에 오러 5명이 루모스 마법을 사용해 어느 한 대저택에 조심조심
+              접근하는데 갑자기 대문이 열리더니 초록색 불빛과 함께 오러 5명은 순식간에 충격파로 죽게
+              된다. 이후 그들의 시체 앞에 그린델왈드의 뒷모습이 나타나며 영화 시작. 그 후에는
+              그린델왈드 관련 소식과 각 나라마다의 대처 등의 이슈를 담은 신문기사들이 해리 포터
+              5편처럼 빠르게 지나간다. 그런데 어느 순간 그린델왈드가 유럽에서 자취를 감추게 된다.
+            </S.ContentOverview>
+            <S.ExpandContenOverviewBtn variant='text' onClick={handleExpandBtnClick}>
+              {isOverviewExpand ? '간략히' : '더보기'}
+            </S.ExpandContenOverviewBtn>
+          </div>
         </S.VideoSubInfo>
         <S.SubScribeBtn>친구 신청</S.SubScribeBtn>
       </S.VideoSubInfoContainer>

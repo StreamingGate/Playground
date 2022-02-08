@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
+import PropTypes from 'prop-types';
 import { Outlet } from 'react-router-dom';
 
 import { MainLayoutContext } from '@utils/context';
@@ -14,12 +15,27 @@ import { Friends } from '@components/cores';
 const { screenSize } = breakPoint;
 
 const sideComponentInitState = { open: false, backdrop: false };
+const modalInitState = { addVideo: false, profile: false, alarm: false, friend: false };
 
-function MainLayout() {
+function MainLayout({ children }) {
   const { innerWidth } = useWindowSize();
 
   const [sideNavState, setSideNavState] = useState({ ...sideComponentInitState });
   const [sideFriendState, setSideFriendState] = useState({ ...sideComponentInitState });
+  const [modalState, setModalState] = useState({ ...modalInitState });
+
+  const handleModalClose = () => {
+    setModalState({ ...modalInitState });
+  };
+
+  useEffect(() => {
+    if (modalState.addVideo || modalState.profile || modalState.friend || modalState.alarm) {
+      window.addEventListener('click', handleModalClose);
+    }
+    return () => {
+      window.removeEventListener('click', handleModalClose);
+    };
+  }, [modalState]);
 
   const setInitNavState = () => {
     // wide laptop 사이즈 보다 작을때 backdrop true!!
@@ -52,14 +68,29 @@ function MainLayout() {
     setSideFriendState(prev => ({ ...prev, open: !prev.open }));
   };
 
+  const handleModalToggle = e => {
+    const { currentTarget } = e;
+    e.stopPropagation();
+    const { name } = currentTarget.dataset;
+
+    if (modalState[name]) {
+      setModalState(prev => ({ ...prev, [name]: false }));
+    } else {
+      const newModalState = { ...modalInitState };
+      setModalState({ ...newModalState, [name]: true });
+    }
+  };
+
   const mainLayoutContextValue = useMemo(
     () => ({
       sideNavState,
       sideFriendState,
+      modalState,
       onToggleSideNav: handleToggleSideNav,
       onToggleSideFriend: handleToggleSideFriend,
+      onToggleModal: handleModalToggle,
     }),
-    [sideNavState, sideFriendState]
+    [sideNavState, sideFriendState, modalState]
   );
 
   return (
@@ -68,6 +99,7 @@ function MainLayout() {
       <SideNavigation />
       <S.MainContentContainer sideNavState={sideNavState}>
         <Outlet />
+        {children !== undefined && children}
       </S.MainContentContainer>
       <SideFriendList />
       <S.FriendListToggleBtn onClick={handleToggleSideFriend} isShow={sideFriendState.open}>
@@ -76,5 +108,13 @@ function MainLayout() {
     </MainLayoutContext.Provider>
   );
 }
+
+MainLayout.propTypes = {
+  children: PropTypes.element,
+};
+
+MainLayout.defaultProps = {
+  children: undefined,
+};
 
 export default MainLayout;

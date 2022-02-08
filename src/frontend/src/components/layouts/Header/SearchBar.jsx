@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 
 import { HeaderContext } from '@utils/context';
-import S from './Header.style';
+import * as S from './Header.style';
 
 import { IconButton } from '@components/buttons';
 import { ArrowBack } from '@components/cores';

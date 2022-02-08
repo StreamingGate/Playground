@@ -1,15 +1,25 @@
 import React, { useContext } from 'react';
 
-import S from './Header.style';
+import * as S from './Header.style';
 import { HeaderContext, MainLayoutContext } from '@utils/context';
 
 import { IconButton } from '@components/buttons';
-import { HamburgerBar, AddEmptyCircle, Alarm, Search } from '@components/cores';
+import {
+  HamburgerBar,
+  AddEmptyCircle,
+  AddFullCircle,
+  FullAlarm,
+  Alarm,
+  Search,
+} from '@components/cores';
 import SearchForm from './SearchForm';
+import AddVideoDropdown from './Dropdowns/AddVideoDropdown';
+import AlarmDropdown from './Dropdowns/AlarmDropdown';
+import ProfileDropdown from './Dropdowns/ProfileDropdown';
 
 function BaseHeader() {
   const { onToggle } = useContext(HeaderContext);
-  const { onToggleSideNav } = useContext(MainLayoutContext);
+  const { onToggleSideNav, modalState, onToggleModal } = useContext(MainLayoutContext);
 
   return (
     <>
@@ -17,20 +27,29 @@ function BaseHeader() {
         <S.HambergurIconButton onClick={onToggleSideNav}>
           <HamburgerBar />
         </S.HambergurIconButton>
-        <S.VerticalLogo />
+        <S.VerticalLogoIcon />
       </S.HeaderLeftDiv>
       <SearchForm />
       <S.HeaderRightDiv>
         <S.SearchBarIconButton onClick={onToggle}>
           <Search />
         </S.SearchBarIconButton>
-        <IconButton>
-          <AddEmptyCircle />
-        </IconButton>
-        <IconButton>
-          <Alarm />
-        </IconButton>
-        <S.HeaderAvatar />
+        <div>
+          <IconButton name='addVideo' onClick={onToggleModal}>
+            {modalState.addVideo ? <AddFullCircle /> : <AddEmptyCircle />}
+          </IconButton>
+          <AddVideoDropdown />
+        </div>
+        <div>
+          <IconButton name='alarm' onClick={onToggleModal}>
+            {modalState.alarm ? <FullAlarm /> : <Alarm />}
+          </IconButton>
+          <AlarmDropdown />
+        </div>
+        <div>
+          <S.HeaderAvatar name='profile' onClick={onToggleModal} />
+          <ProfileDropdown />
+        </div>
       </S.HeaderRightDiv>
     </>
   );
