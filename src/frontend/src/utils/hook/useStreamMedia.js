@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 const constraints = {
   audio: { echoCancellation: false },
-  video: { width: 1280, height: 720 },
+  // video: { width: 1280, height: 720 },
 };
 
 export default function useStreamMedia(streamPlayerRef, device = 'web') {
@@ -12,10 +12,13 @@ export default function useStreamMedia(streamPlayerRef, device = 'web') {
     try {
       // iphone 접근시 constraints 동적으로 변경
       if (device === 'mobile') {
-        constraints.video = { ...constraints.video, facingMode: 'user' };
+        // constraints.video = { ...constraints.video, facingMode: 'user' };
       }
 
-      const newStream = await navigator.mediaDevices.getUserMedia(constraints);
+      const newStream = await navigator.mediaDevices.getUserMedia({
+        audio: { echoCancellation: false },
+        video: { facingMode: 'user' },
+      });
       const videoDom = streamPlayerRef.current;
 
       videoDom.srcObject = newStream;

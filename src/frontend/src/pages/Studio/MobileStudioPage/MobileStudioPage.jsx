@@ -10,8 +10,8 @@ function MobileStudioPage() {
   const { stream, switchCamera, stopStream } = useStreamMedia(streamPlayerRef, 'mobile');
 
   useEffect(() => {
-    alert('아이폰으로 접근시 어떤 문구 나오는지 알려주세요!!');
-    alert(navigator.userAgent);
+    // alert('아이폰으로 접근시 어떤 문구 나오는지 알려주세요!!');
+    // alert(navigator.userAgent);
   }, []);
 
   const handleCameraSwitchBtnClick = () => {
