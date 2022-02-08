@@ -75,6 +75,8 @@
 		49E6168227B23ECE0092AE21 /* RoomClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E6167927B23ECD0092AE21 /* RoomClient.swift */; };
 		49E6168327B23ECE0092AE21 /* RoomListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E6167A27B23ECD0092AE21 /* RoomListener.swift */; };
 		49E6168427B23ECE0092AE21 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E6167C27B23ECD0092AE21 /* Request.swift */; };
+		49E6168827B28A8B0092AE21 /* VideoServiceAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E6168727B28A8B0092AE21 /* VideoServiceAPI.swift */; };
+		49E6168A27B292DA0092AE21 /* VideoDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E6168927B292DA0092AE21 /* VideoDataModel.swift */; };
 		49E6BE31279100BC000E475C /* HomeNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E6BE30279100BC000E475C /* HomeNavigationController.swift */; };
 		49E6BE372791951D000E475C /* FriendListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E6BE362791951D000E475C /* FriendListViewController.swift */; };
 		49E6BE3927919C7A000E475C /* FriendPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E6BE3827919C7A000E475C /* FriendPopUpViewController.swift */; };
@@ -188,6 +190,8 @@
 		49E6167927B23ECD0092AE21 /* RoomClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomClient.swift; sourceTree = "<group>"; };
 		49E6167A27B23ECD0092AE21 /* RoomListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomListener.swift; sourceTree = "<group>"; };
 		49E6167C27B23ECD0092AE21 /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
+		49E6168727B28A8B0092AE21 /* VideoServiceAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoServiceAPI.swift; sourceTree = "<group>"; };
+		49E6168927B292DA0092AE21 /* VideoDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoDataModel.swift; sourceTree = "<group>"; };
 		49E6BE30279100BC000E475C /* HomeNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNavigationController.swift; sourceTree = "<group>"; };
 		49E6BE362791951D000E475C /* FriendListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendListViewController.swift; sourceTree = "<group>"; };
 		49E6BE3827919C7A000E475C /* FriendPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendPopUpViewController.swift; sourceTree = "<group>"; };
@@ -544,6 +548,8 @@
 			children = (
 				49E72FD227A168C600DFBCC3 /* ChatServiceAPI.swift */,
 				49E72FF827A256EE00DFBCC3 /* ChatDataModel.swift */,
+				49E6168727B28A8B0092AE21 /* VideoServiceAPI.swift */,
+				49E6168927B292DA0092AE21 /* VideoDataModel.swift */,
 			);
 			path = ChatService;
 			sourceTree = "<group>";
@@ -795,6 +801,7 @@
 				496279D627828BB3005A2BDC /* PlayExplainViewController.swift in Sources */,
 				491EF26727A7C2CE00A7AF91 /* String+getDateString.swift in Sources */,
 				49E72FD127A166E300DFBCC3 /* GatewayManager.swift in Sources */,
+				49E6168A27B292DA0092AE21 /* VideoDataModel.swift in Sources */,
 				49E6168027B23ECE0092AE21 /* EchoSocket.swift in Sources */,
 				49D7A0B727840595001CAC60 /* IdInputViewController.swift in Sources */,
 				4935FD44277C0ED100760675 /* ChatCell.swift in Sources */,
@@ -802,6 +809,7 @@
 				49F18C2C278E5E0800EBDCF8 /* CreateNavigationController.swift in Sources */,
 				492C62252795326B00AE546E /* MainCoordinator.swift in Sources */,
 				49E8E8A0278BC264003AD1DF /* LiveViewController.swift in Sources */,
+				49E6168827B28A8B0092AE21 /* VideoServiceAPI.swift in Sources */,
 				49F4E3CD27ACA9CC002869F4 /* FriendRequestCell.swift in Sources */,
 				496279E02782C1AA005A2BDC /* CreateInfoViewController.swift in Sources */,
 				492C62192794F90500AE546E /* LoginNavigationController.swift in Sources */,
