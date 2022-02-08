@@ -33,7 +33,8 @@
     let data = {
         roomId: localStorage.getItem('wschat.roomId'),
         room: {},
-        sender: localStorage.getItem('wschat.sender'),
+        senderUuid: localStorage.getItem('wschat.senderUuid'),
+        senderNickname: localStorage.getItem('wschat.senderNickname'),
         uuid: localStorage.getItem('wschat.uuid'),
         pinnedChats: []
     }
@@ -61,11 +62,11 @@
         ws.send("/app/chat/message/" + data.roomId, {}, JSON.stringify(
                 {
                     roomId: data.roomId,
-                    nickname: data.sender,
+                    nickname: data.senderNickname,
+                    uuid: data.senderUuid,
                     senderRole: "VIEWER",   // VIEWER, STREAMER
                     chatType: "NORMAL",     // NORMAL, PINNED
                     message: inputMsg,
-                    // timestamp: new Date()   // GMT(대한민국 표준시) -> No Need..
                 }));
     }
     pinMessage = (isFake, senderRole) => {
@@ -77,18 +78,18 @@
         ws.send("/app/chat/message/" + data.roomId, {}, JSON.stringify(
                 {
                     roomId: data.roomId,
-                    nickname: data.sender,
+                    nickname: data.senderNickname,
+                    uuid: data.senderUuid,
                     senderRole: senderRole,   // VIEWER, STREAMER
                     chatType: "PINNED",     // NORMAL, PINNED
                     message: inputVal,
-                    // timestamp: new Date()   // GMT(대한민국 표준시) -> No Need..
                 }));
     }
 
     recvMessage = (chat) => {
         console.log("received msg...");
         const liElem = document.createElement("li");
-        liElem.innerText = "[" + chat.nickname + "] " + "("+chat.pstTime+")    " +  chat.message;
+        liElem.innerText = "[" + chat.nickname + "] " + "("+chat.timeStamp+")    " +  chat.message;
         msgList.append(liElem);
     }
 
@@ -111,7 +112,7 @@
         // 에러메시지 핸들링
         // ws.subscribe('/user/'+data.uuid+'/queue/errors', function (message) {
         //     console.log(message);
-        //     alert("[error] receive User : " + data.sender + " " + message);
+        //     alert("[error] receive User : " + data.senderNickname + " " + message);
         // });
 
     }, function (error) {
@@ -127,6 +128,4 @@
             })
         }
     }
-
-
 </script>
