@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback, memo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import * as S from './VideoOverview.style';
@@ -7,7 +8,9 @@ import ThumbNailDummy from '@assets/image/ThumbNailDummy.jpg';
 import { Avatar } from '@components/dataDisplays';
 
 function VideoOverview({ direction, isLibrary, videoInfo, isLive }) {
-  const { thumbnail, title, uploaderNickname, hostNickname, content, hits, createdAt } = videoInfo;
+  const { id, thumbnail, title, uploaderNickname, hostNickname, content, hits, createdAt } =
+    videoInfo;
+  const navigate = useNavigate();
 
   const [userName, setUserName] = useState('');
   useEffect(() => {
@@ -52,8 +55,13 @@ function VideoOverview({ direction, isLibrary, videoInfo, isLive }) {
     );
   }, [direction, userName]);
 
+  const handleVideoClick = () => {
+    const path = uploaderNickname ? `/video-play/${id}` : `/live-play/${id}`;
+    navigate(path);
+  };
+
   return (
-    <S.ViedeoOverviewContainer direction={direction}>
+    <S.ViedeoOverviewContainer direction={direction} onClick={handleVideoClick}>
       <S.ThumbNailContainer>
         <S.ThumbNail src={thumbnail} alt='thumbnail' />
         {isLive && <S.RealTimeIcon />}
