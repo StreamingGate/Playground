@@ -15,10 +15,8 @@ spring:
   servlet:
     multipart:
       enabled: true
-#      file-size-threshold:  #??? ???? ???? ??? (default: 0B)
-#      location:               #???? ??? ?? ?? ??
-      max-file-size: 100MB
-      max-request-size: 100MB
+      max-file-size: 1024MB
+      max-request-size: 1024MB
 
 ---
 spring.config.activate.on-profile: local
