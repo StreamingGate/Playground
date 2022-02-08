@@ -69,6 +69,12 @@
 		49D7A0B727840595001CAC60 /* IdInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D7A0B027840595001CAC60 /* IdInputViewController.swift */; };
 		49D7A0B827840595001CAC60 /* PwInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D7A0B127840595001CAC60 /* PwInputViewController.swift */; };
 		49D7A0B927840595001CAC60 /* RegisterNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D7A0B227840595001CAC60 /* RegisterNavigationController.swift */; };
+		49E6167F27B23ECE0092AE21 /* MessageObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E6167527B23ECD0092AE21 /* MessageObserver.swift */; };
+		49E6168027B23ECE0092AE21 /* EchoSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E6167627B23ECD0092AE21 /* EchoSocket.swift */; };
+		49E6168127B23ECE0092AE21 /* ActionEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E6167727B23ECD0092AE21 /* ActionEvent.swift */; };
+		49E6168227B23ECE0092AE21 /* RoomClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E6167927B23ECD0092AE21 /* RoomClient.swift */; };
+		49E6168327B23ECE0092AE21 /* RoomListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E6167A27B23ECD0092AE21 /* RoomListener.swift */; };
+		49E6168427B23ECE0092AE21 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E6167C27B23ECD0092AE21 /* Request.swift */; };
 		49E6BE31279100BC000E475C /* HomeNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E6BE30279100BC000E475C /* HomeNavigationController.swift */; };
 		49E6BE372791951D000E475C /* FriendListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E6BE362791951D000E475C /* FriendListViewController.swift */; };
 		49E6BE3927919C7A000E475C /* FriendPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E6BE3827919C7A000E475C /* FriendPopUpViewController.swift */; };
@@ -176,6 +182,12 @@
 		49D7A0B027840595001CAC60 /* IdInputViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdInputViewController.swift; sourceTree = "<group>"; };
 		49D7A0B127840595001CAC60 /* PwInputViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PwInputViewController.swift; sourceTree = "<group>"; };
 		49D7A0B227840595001CAC60 /* RegisterNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterNavigationController.swift; sourceTree = "<group>"; };
+		49E6167527B23ECD0092AE21 /* MessageObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageObserver.swift; sourceTree = "<group>"; };
+		49E6167627B23ECD0092AE21 /* EchoSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EchoSocket.swift; sourceTree = "<group>"; };
+		49E6167727B23ECD0092AE21 /* ActionEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionEvent.swift; sourceTree = "<group>"; };
+		49E6167927B23ECD0092AE21 /* RoomClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomClient.swift; sourceTree = "<group>"; };
+		49E6167A27B23ECD0092AE21 /* RoomListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomListener.swift; sourceTree = "<group>"; };
+		49E6167C27B23ECD0092AE21 /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
 		49E6BE30279100BC000E475C /* HomeNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNavigationController.swift; sourceTree = "<group>"; };
 		49E6BE362791951D000E475C /* FriendListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendListViewController.swift; sourceTree = "<group>"; };
 		49E6BE3827919C7A000E475C /* FriendPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendPopUpViewController.swift; sourceTree = "<group>"; };
@@ -207,6 +219,7 @@
 		49F18C2B278E5E0800EBDCF8 /* CreateNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNavigationController.swift; sourceTree = "<group>"; };
 		49F18C51278F0FB100EBDCF8 /* UITabBarController+Visibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITabBarController+Visibility.swift"; sourceTree = "<group>"; };
 		49F18C53278F2EED00EBDCF8 /* PlayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayViewController.swift; sourceTree = "<group>"; };
+		49F2725727B232CC00E98180 /* mediasoup-ios-client-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mediasoup-ios-client-Bridging-Header.h"; sourceTree = "<group>"; };
 		49F4E3CA27ACA886002869F4 /* NoticeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeCell.swift; sourceTree = "<group>"; };
 		49F4E3CC27ACA9CC002869F4 /* FriendRequestCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestCell.swift; sourceTree = "<group>"; };
 		49F4E3CE27ACAADC002869F4 /* NoticeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeViewModel.swift; sourceTree = "<group>"; };
@@ -390,6 +403,7 @@
 		49B9C9B8277ACE9C006AE134 /* PlayGround */ = {
 			isa = PBXGroup;
 			children = (
+				49F2725727B232CC00E98180 /* mediasoup-ios-client-Bridging-Header.h */,
 				492C62272795377D00AE546E /* Presentation */,
 				49E72FFC27A2573800DFBCC3 /* Network */,
 				49B9C9C2277ACE9F006AE134 /* Assets.xcassets */,
@@ -458,6 +472,43 @@
 			path = ViewControllers;
 			sourceTree = "<group>";
 		};
+		49E6167427B23ECD0092AE21 /* socket */ = {
+			isa = PBXGroup;
+			children = (
+				49E6167527B23ECD0092AE21 /* MessageObserver.swift */,
+				49E6167627B23ECD0092AE21 /* EchoSocket.swift */,
+				49E6167727B23ECD0092AE21 /* ActionEvent.swift */,
+			);
+			path = socket;
+			sourceTree = "<group>";
+		};
+		49E6167827B23ECD0092AE21 /* room */ = {
+			isa = PBXGroup;
+			children = (
+				49E6167927B23ECD0092AE21 /* RoomClient.swift */,
+				49E6167A27B23ECD0092AE21 /* RoomListener.swift */,
+			);
+			path = room;
+			sourceTree = "<group>";
+		};
+		49E6167B27B23ECD0092AE21 /* request */ = {
+			isa = PBXGroup;
+			children = (
+				49E6167C27B23ECD0092AE21 /* Request.swift */,
+			);
+			path = request;
+			sourceTree = "<group>";
+		};
+		49E6168627B23ED50092AE21 /* Mediasoup */ = {
+			isa = PBXGroup;
+			children = (
+				49E6167B27B23ECD0092AE21 /* request */,
+				49E6167827B23ECD0092AE21 /* room */,
+				49E6167427B23ECD0092AE21 /* socket */,
+			);
+			path = Mediasoup;
+			sourceTree = "<group>";
+		};
 		49E6BE3A2791A066000E475C /* Friend */ = {
 			isa = PBXGroup;
 			children = (
@@ -504,6 +555,7 @@
 				49C6CFA027A3DABA007C2895 /* MainService */,
 				49EF543427AEC769002A2A53 /* UploadService */,
 				49E72FFB27A2570200DFBCC3 /* ChatService */,
+				49E6168627B23ED50092AE21 /* Mediasoup */,
 				49E72FD027A166E300DFBCC3 /* GatewayManager.swift */,
 				49F4E3D427ACE436002869F4 /* NetworkResultManager.swift */,
 				490770A42797F7A300ADD8E8 /* ErrorCodeConverter.swift */,
@@ -734,13 +786,16 @@
 				496279DA278297C2005A2BDC /* VideoListViewController.swift in Sources */,
 				4957CBC227AD5A8400554967 /* UploadViewController.swift in Sources */,
 				49F4E3D327ACCE81002869F4 /* AccountInfoViewModel.swift in Sources */,
+				49E6168227B23ECE0092AE21 /* RoomClient.swift in Sources */,
 				49D7A0AA2783DBB9001CAC60 /* LoginViewController.swift in Sources */,
 				49F18C52278F0FB100EBDCF8 /* UITabBarController+Visibility.swift in Sources */,
 				49E8E89E278BB5B0003AD1DF /* CameraView.swift in Sources */,
+				49E6168327B23ECE0092AE21 /* RoomListener.swift in Sources */,
 				49D7A0B927840595001CAC60 /* RegisterNavigationController.swift in Sources */,
 				496279D627828BB3005A2BDC /* PlayExplainViewController.swift in Sources */,
 				491EF26727A7C2CE00A7AF91 /* String+getDateString.swift in Sources */,
 				49E72FD127A166E300DFBCC3 /* GatewayManager.swift in Sources */,
+				49E6168027B23ECE0092AE21 /* EchoSocket.swift in Sources */,
 				49D7A0B727840595001CAC60 /* IdInputViewController.swift in Sources */,
 				4935FD44277C0ED100760675 /* ChatCell.swift in Sources */,
 				49D7A0AC2783ECAD001CAC60 /* AppUtility.swift in Sources */,
@@ -771,11 +826,14 @@
 				49E72FD327A168C600DFBCC3 /* ChatServiceAPI.swift in Sources */,
 				49EA4E0E279461B200A038E3 /* Coordinator.swift in Sources */,
 				49E72FF927A256EE00DFBCC3 /* ChatDataModel.swift in Sources */,
+				49E6168127B23ECE0092AE21 /* ActionEvent.swift in Sources */,
 				4907709F2797AC8C00ADD8E8 /* RegisterHelper.swift in Sources */,
 				49E6BE3927919C7A000E475C /* FriendPopUpViewController.swift in Sources */,
 				492C622C27954F9800AE546E /* UIView+takeScreenshot.swift in Sources */,
 				49E72FF527A23F8C00DFBCC3 /* ChatViewModel.swift in Sources */,
+				49E6167F27B23ECE0092AE21 /* MessageObserver.swift in Sources */,
 				49EC9A022782033E00DE4F79 /* CreatePopOverViewController.swift in Sources */,
+				49E6168427B23ECE0092AE21 /* Request.swift in Sources */,
 				492C62232795325000AE546E /* HomeTabCoordinator.swift in Sources */,
 				49EA82D327B1850A00F75546 /* UploadProgress.swift in Sources */,
 				49F777D927AA58B800AD2D78 /* FriendRequestViewController.swift in Sources */,
@@ -963,6 +1021,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8U52U9S3AX;
+				ENABLE_BITCODE = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PlayGround/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "실시간 스트리밍을 하기 위해서는 PlayGround에 카메라 권한을 허용해주셔야 합니다";
@@ -980,6 +1039,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.chaehui.PlayGround;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "PlayGround/mediasoup-ios-client-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -994,6 +1054,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8U52U9S3AX;
+				ENABLE_BITCODE = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PlayGround/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "실시간 스트리밍을 하기 위해서는 PlayGround에 카메라 권한을 허용해주셔야 합니다";
@@ -1011,6 +1072,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.chaehui.PlayGround;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "PlayGround/mediasoup-ios-client-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
