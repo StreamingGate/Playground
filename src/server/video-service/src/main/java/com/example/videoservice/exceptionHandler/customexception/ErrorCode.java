@@ -1,4 +1,4 @@
-package com.example.roomservice.exceptionHandler.customexception;
+package com.example.videoservice.exceptionHandler.customexception;
 
 import lombok.Getter;
 
@@ -14,7 +14,6 @@ public enum ErrorCode {
     V001("존재하지 않는 일반 영상입니다."),
 
     L001("존재하지 않는 실시간 스트리밍입니다."),
-    L002("방을 생성할수 없습니다."),
 
     F001("해당 유저로부터 받은 친구 요청이 존재하지 않습니다."),
     F002("이미 해당 유저에게 친구 신청을 보냈습니다."),
