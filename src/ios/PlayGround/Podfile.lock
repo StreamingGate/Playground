@@ -1,24 +1,52 @@
 PODS:
+  - Alamofire (5.5.0)
+  - mediasoup_ios_client (1.3.5)
+  - PromiseKit (6.16.3):
+    - PromiseKit/CorePromise (= 6.16.3)
+    - PromiseKit/Foundation (= 6.16.3)
+    - PromiseKit/UIKit (= 6.16.3)
+  - PromiseKit/CorePromise (6.16.3)
+  - PromiseKit/Foundation (6.16.3):
+    - PromiseKit/CorePromise
+  - PromiseKit/UIKit (6.16.3):
+    - PromiseKit/CorePromise
   - SocketRocket (0.6.0)
+  - Starscream (3.0.6)
   - StompClientLib (1.4.1):
     - SocketRocket
   - SwiftKeychainWrapper (4.0.1)
+  - SwiftyJSON (4.3.0)
 
 DEPENDENCIES:
+  - Alamofire
+  - mediasoup_ios_client (~> 1.3.5)
+  - PromiseKit (~> 6.8)
+  - Starscream (~> 3.0.2)
   - StompClientLib
   - SwiftKeychainWrapper
+  - SwiftyJSON (~> 4.0)
 
 SPEC REPOS:
   trunk:
+    - Alamofire
+    - mediasoup_ios_client
+    - PromiseKit
     - SocketRocket
+    - Starscream
     - StompClientLib
     - SwiftKeychainWrapper
+    - SwiftyJSON
 
 SPEC CHECKSUMS:
+  Alamofire: 1c4fb5369c3fe93d2857c780d8bbe09f06f97e7c
+  mediasoup_ios_client: d0af70aa38bd95b02d1d26cb9788630444f155c0
+  PromiseKit: ed0e2a8e3f3cd59d5d98ca0a6de481a2c5c59c0b
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
+  Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   StompClientLib: ac40390e9660c574675f1c933bec81c8e2811a4f
   SwiftKeychainWrapper: 807ba1d63c33a7d0613288512399cd1eda1e470c
+  SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
 
-PODFILE CHECKSUM: f8228eeb7105d0e985ec633802c15fc15944fbe5
+PODFILE CHECKSUM: 3942dae7c5994eb0cf84b1a6568b2663e2743d3b
 
 COCOAPODS: 1.11.2
