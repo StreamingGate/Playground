@@ -182,15 +182,17 @@ class UploadViewController: UIViewController {
                 guard let self = self else { return }
                 switch progress {
                 case .inProgress:
+                    self.toastLabel.alpha = 0.7
                     self.toastLabel.text = "비디오 업로드 중입니다..."
                 case .fail:
                     self.toastLabel.text = "업로드에 실패했습니다"
+                    UIView.animate(withDuration: 2, delay: 0.3, options: .curveEaseOut) {
+                        self.toastLabel.alpha = 0.0
+                    }
                 default:
                     self.toastLabel.text = "업로드를 완료했습니다"
                     UIView.animate(withDuration: 2, delay: 0.3, options: .curveEaseOut) {
                         self.toastLabel.alpha = 0.0
-                    } completion: { _ in
-                        self.toastLabel.removeFromSuperview()
                     }
                 }
             }.store(in: &cancellable)
