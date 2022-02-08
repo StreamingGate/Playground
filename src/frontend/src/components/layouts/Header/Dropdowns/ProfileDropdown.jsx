@@ -11,6 +11,9 @@ import { DeleteFriendModal, ModifyProfileModal } from '@components/feedbacks/Mod
 
 function ProfileDropdown() {
   const userId = lStorageService.getItem('uuid');
+  const nickName = lStorageService.getItem('nickName');
+  const userProfileImage = lStorageService.getItem('profileImage');
+
   const { modalState } = useContext(MainLayoutContext);
   const { data: friendList } = useFriendList(userId);
 
@@ -31,7 +34,7 @@ function ProfileDropdown() {
         myId: userId,
       });
     } else if (buttonId === 'modifyProfile') {
-      modalService.show(ModifyProfileModal, { nickName: '이재윤' });
+      modalService.show(ModifyProfileModal, { nickName });
     } else if (buttonId === 'logout') {
       lStorageService.removeItem('nickName');
       lStorageService.removeItem('profileImage');
@@ -46,9 +49,9 @@ function ProfileDropdown() {
       {modalState.profile && (
         <S.ProfileDropdown>
           <S.UserProfileInfo>
-            <S.UserAvartar size='xl' />
+            <S.UserAvartar size='xl' imgSrc={userProfileImage} />
             <S.UserName>
-              <Typography type='content'>닉네임</Typography>
+              <Typography type='content'>{nickName}</Typography>
               <S.ModifyUserInfoBtn variant='text' id='modifyProfile'>
                 정보 수정
               </S.ModifyUserInfoBtn>
