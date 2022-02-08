@@ -17,7 +17,7 @@ export default function useStreamMedia(streamPlayerRef, device = 'web') {
 
       const newStream = await navigator.mediaDevices.getUserMedia({
         audio: { echoCancellation: false },
-        video: { facingMode: 'user' },
+        video: { facingMode: { exact: 'environment' } },
       });
       const videoDom = streamPlayerRef.current;
 
@@ -61,11 +61,16 @@ export default function useStreamMedia(streamPlayerRef, device = 'web') {
 
   const switchCamera = () => {
     const constraints = stream.videoTrack.getConstraints();
+
+    alert.log(constraints);
+
     if (constraints.facingMode === 'user') {
       constraints.facingMode = { exact: 'environment' };
     } else {
       constraints.facingMode = 'user';
     }
+
+    alert.log(constraints);
 
     stream.videoTrack.applyConstraints(constraints);
   };
