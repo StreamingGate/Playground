@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import * as S from './Dropdown.style';
-import { modalService } from '@utils/service';
+import { modalService, lStorageService } from '@utils/service';
 import { MainLayoutContext } from '@utils/context';
 import { useFriendList } from '@utils/hook/query';
 
@@ -9,8 +10,11 @@ import { Typography } from '@components/cores';
 import { DeleteFriendModal, ModifyProfileModal } from '@components/feedbacks/Modals';
 
 function ProfileDropdown() {
+  const userId = lStorageService.getItem('uuid');
   const { modalState } = useContext(MainLayoutContext);
-  const { data: friendList } = useFriendList('33333333-1234-1234-123456789012');
+  const { data: friendList } = useFriendList(userId);
+
+  const navigate = useNavigate();
 
   const handleProfileModalClick = e => {
     e.stopPropagation();
@@ -24,10 +28,14 @@ function ProfileDropdown() {
       modalService.show(DeleteFriendModal, {
         friendName: nickname,
         target: uuid,
-        myId: '33333333-1234-1234-123456789012',
+        myId: userId,
       });
     } else if (buttonId === 'modifyProfile') {
       modalService.show(ModifyProfileModal, { nickName: '이재윤' });
+    } else if (buttonId === 'logout') {
+      lStorageService.removeItem('uuid');
+      lStorageService.removeItem('token');
+      navigate('/login');
     }
   };
 
