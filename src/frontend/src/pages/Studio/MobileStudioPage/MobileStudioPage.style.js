@@ -24,9 +24,9 @@ export const MobileStreamStopBtn = styled(Button)`
 `;
 
 export const SwitchCameraIcon = styled(Switch)`
-  width: 35px;
+  /* width: 35px;
   height: 35px;
-  min-width: 35px;
+  min-width: 35px; */
 `;
 
 export const MobilePlayerContainer = styled.div`

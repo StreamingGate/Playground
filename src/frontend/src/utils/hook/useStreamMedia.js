@@ -68,7 +68,7 @@ export default function useStreamMedia(streamPlayerRef, device = 'web') {
     console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!');
 
     if (constraints.facingMode === 'user') {
-      constraints.facingMode = 'environment';
+      constraints.facingMode = { exact: 'environment' };
     } else {
       constraints.facingMode = 'user';
     }
@@ -78,12 +78,19 @@ export default function useStreamMedia(streamPlayerRef, device = 'web') {
     console.log(constraints);
     console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
 
-    stream.videoTrack.applyConstraints({ facingMode: 'environment' });
-
-    console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
-    alert(JSON.stringify(stream.videoTrack.getConstraints()));
-    console.log(stream.videoTrack.getConstraints());
-    console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
+    stream.videoTrack
+      .applyConstraints(constraints)
+      .then(() => {
+        console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
+        alert(JSON.stringify(stream.videoTrack.getConstraints()));
+        console.log(stream.videoTrack.getConstraints());
+        console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
+        // Do something with the track such as using the Image Capture API.
+      })
+      .catch(e => {
+        alert(e.message);
+        // The constraints could not be satisfied by the available devices.
+      });
   };
 
   return { stream, toggleMuteAudio, stopStream, switchCamera };
