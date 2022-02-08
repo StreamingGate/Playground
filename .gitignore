@@ -23,7 +23,7 @@ Pods/
 
 # AWS User-specific
 .idea/**/aws.xml
-
+**/application-**
 # Generated files
 .idea/**/contentModel.xml
 
