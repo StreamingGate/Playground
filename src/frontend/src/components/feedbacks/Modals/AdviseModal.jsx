@@ -19,7 +19,7 @@ function AdviseModal({ content, btnContent, btnPos, onClick }) {
   };
 
   return (
-    <Dialog open={modal.visible}>
+    <Dialog open={modal.visible} zIndex={3}>
       <S.AdviseModalContainer>
         <S.AdviseModalContent>
           <Typography type='component'>{content}</Typography>

@@ -44,4 +44,11 @@ const login = yup.object().shape({
     ),
 });
 
-export default { register, login };
+const modifyProfile = yup.object().shape({
+  nickName: yup
+    .string()
+    .required('닉네임을 입력해 주세요')
+    .max(8, '최대 8글자까지 입력하실 수 있습니다'),
+});
+
+export default { register, login, modifyProfile };

@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import { Input } from '@components/forms';
 import { Button, IconButton } from '@components/buttons';
-import { VerticalLogo, Logout, Typography } from '@components/cores';
+import { VerticalLogo } from '@components/cores';
 import { Avatar } from '@components/dataDisplays';
 
 import { breakPoint } from '@utils/constant';
@@ -78,115 +78,6 @@ export const SearchBarIconButton = styled(IconButton)`
   @media (${queries.tabletMax}) {
     display: revert;
   }
-`;
-
-export const AddVideoDropdownContainer = styled.div`
-  position: relative;
-  top: 0;
-  margin-left: -200px; ;
-`;
-
-export const AddVideoMenus = styled.ul`
-  position: absolute;
-  width: 100%;
-  background-color: #ffffff;
-  padding: 9px;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  z-index: 1;
-`;
-
-export const AddVideoMenu = styled.li`
-  display: flex;
-  gap: 15px;
-  padding: 8px 4px;
-  cursor: pointer;
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.background};
-  }
-`;
-
-export const ProfileDropdownContainer = styled.div`
-  position: relative;
-  margin-left: -300px;
-`;
-
-export const ProfileDropdown = styled.div`
-  position: absolute;
-  width: 100%;
-  background-color: #ffffff;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  z-index: 1;
-`;
-
-export const UserProfileInfo = styled.div`
-  display: flex;
-  align-items: center;
-  padding: 15px;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.separator};
-`;
-
-export const UserAvartar = styled(Avatar)`
-  margin-right: 15px;
-`;
-
-export const UserName = styled.div`
-  display: flex;
-  flex-grow: 1;
-  flex-direction: column;
-  align-items: flex-start;
-`;
-
-export const ModifyUserInfoBtn = styled(Button)`
-  color: ${({ theme }) => theme.colors.pgBlue};
-  margin-left: -18px;
-  font-size: ${({ theme }) => theme.fontSizes.caption};
-`;
-
-export const LogoutButton = styled(Button)`
-  display: flex;
-  color: ${({ theme }) => theme.colors.placeHolder};
-  font-size: ${({ theme }) => theme.fontSizes.component};
-`;
-
-export const LogoutBtnIcon = styled(Logout)`
-  margin-right: 10px;
-  & > path {
-    stroke: ${({ theme }) => theme.colors.placeHolder};
-  }
-`;
-
-export const FriendListContainer = styled.div`
-  padding: 15px 0px 0px 15px;
-`;
-
-export const FriendListTitle = styled(Typography)`
-  color: ${({ theme }) => theme.colors.placeHolder};
-  margin-bottom: 20px;
-`;
-
-export const FriendList = styled.ul`
-  height: 270px;
-  overflow: auto;
-`;
-
-export const FriendInfo = styled.li`
-  display: flex;
-  align-items: center;
-  margin-bottom: 30px;
-`;
-
-export const FriendAvatar = styled(Avatar)`
-  margin-right: 10px;
-`;
-
-export const FriendName = styled(Typography)`
-  flex-grow: 1;
-`;
-
-export const FriendDeleteBtn = styled(Button)`
-  color: ${({ theme }) => theme.colors.pgRed};
-  font-size: ${({ theme }) => theme.fontSizes.highlightCaption};
-  align-self: flex-end;
 `;
 
 export const SearchBarAvatar = styled(Avatar)`

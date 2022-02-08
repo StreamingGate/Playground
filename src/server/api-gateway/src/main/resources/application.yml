@@ -81,3 +81,11 @@ spring:
           filters:
             - RewritePath=/room-service(?<segment>/?.*), /$\{segment}
             - AuthenticationFilter
+        - id: video-service
+          uri: lb://VIDEO-SERVICE
+          predicates:
+            - Path=/video-service/**
+            - Method=POST,GET,DELETE,PUT
+          filters:
+            - RewritePath=/video-service(?<segment>/?.*), /$\{segment}
+            - AuthenticationFilter
