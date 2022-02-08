@@ -11,6 +11,7 @@ public class VideoResponseDto {
 
     private Long id;
     private String title;
+    private String uuid;
     private String uploaderNickname;
     private String uploaderProfileImage;
     private String fileLink;
@@ -22,6 +23,7 @@ public class VideoResponseDto {
     public VideoResponseDto(Video video) {//, Long viewedProgress){
         this.id = video.getId();
         this.title = video.getTitle();
+        this.uuid = video.getUuid();
         this.uploaderNickname = video.getUser().getNickName();
         this.uploaderProfileImage = video.getUser().getProfileImage();
         this.hits = video.getHits();
