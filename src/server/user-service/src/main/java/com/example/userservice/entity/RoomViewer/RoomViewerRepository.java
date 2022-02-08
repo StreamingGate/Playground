@@ -7,15 +7,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface RoomViewerRepository extends JpaRepository<RoomViewer,Long> {
-    @Query("select r FROM RoomViewer r where r.userUuid = :userUuid ORDER BY r.lastViewedAt DESC")
+    @Query("SELECT r FROM RoomViewer r WHERE r.userUuid = :userUuid ORDER BY r.lastViewedAt DESC")
     Page<RoomViewer> findByAll (@Param("userUuid") String userUuid, Pageable pageable);
 
-    @Query("select r FROM RoomViewer r where r.userUuid = :userUuid AND r.Id < :lastLiveId ORDER BY r.lastViewedAt DESC")
+    @Query("SELECT r FROM RoomViewer r WHERE r.userUuid = :userUuid AND r.Id < :lastLiveId ORDER BY r.lastViewedAt DESC")
     Page<RoomViewer> findByAll (@Param("userUuid") String userUuid, @Param("lastLiveId") Long lastLiveId, Pageable pageable);
 
-    @Query("select r FROM RoomViewer r where r.userUuid = :userUuid AND r.liked = true ORDER BY r.lastViewedAt DESC")
+    @Query("SELECT r FROM RoomViewer r WHERE r.userUuid = :userUuid AND r.liked = true ORDER BY r.lastViewedAt DESC")
     Page<RoomViewer> findByLiked (@Param("userUuid") String userUuid, Pageable pageable);
 
-    @Query("select r FROM RoomViewer r where r.userUuid = :userUuid AND r.Id < :lastLiveId AND r.liked = true ORDER BY r.lastViewedAt DESC")
+    @Query("SELECT r FROM RoomViewer r WHERE r.userUuid = :userUuid AND r.Id < :lastLiveId AND r.liked = true ORDER BY r.lastViewedAt DESC")
     Page<RoomViewer> findByLiked (@Param("userUuid") String userUuid, @Param("lastLiveId") Long lastLiveId, Pageable pageable);
 }
