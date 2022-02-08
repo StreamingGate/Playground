@@ -2,9 +2,12 @@ package com.example.userservice.service;
 
 import com.example.userservice.dto.history.ResponseRoom;
 import com.example.userservice.dto.history.ResponseVideo;
+import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class HistoryService {
     public List<?> watchedHistory(List<ResponseVideo> videoList, List<ResponseRoom> roomList) {
         List<? super Object> res = new ArrayList<>();

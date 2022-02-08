@@ -14,6 +14,7 @@ public class ResponseVideo {
     private String thumbnail;
     private String uploaderNickname;
     private LocalDateTime likedAt;
+    private LocalDateTime lastViewedAt;
 
     public ResponseVideo (ViewedHistory video) {
         this.id = video.getId();
@@ -23,6 +24,7 @@ public class ResponseVideo {
         this.fileLink = video.getVideo().getMetadata().getFileLink();
         this.thumbnail = video.getVideo().getThumbnail();
         this.likedAt = video.getLikedAt();
+        this.lastViewedAt = video.getLastViewedAt();
     }
 
     public ResponseVideo (Video video) {
@@ -33,5 +35,6 @@ public class ResponseVideo {
         this.thumbnail = video.getThumbnail();
         this.uploaderNickname = video.getUser().getNickName();
         this.likedAt = video.getViewedHistories().get(0).getLikedAt();
+        this.lastViewedAt = video.getViewedHistories().get(0).getLastViewedAt();
     }
 }

@@ -13,6 +13,7 @@ public class ResponseRoom {
     private int hits;
     private String thumbnail;
     private LocalDateTime likedAt;
+    private LocalDateTime lastViewedAt;
 
     public ResponseRoom (RoomViewer room) {
         this.streamingId = room.getRoom().getId();
@@ -22,5 +23,6 @@ public class ResponseRoom {
         this.hits = room.getRoom().getLikeCnt();
         this.thumbnail = room.getRoom().getThumbnail();
         this.likedAt = room.getLikedAt();
+        this.lastViewedAt = room.getLastViewedAt();
     }
 }
