@@ -87,6 +87,9 @@
 		49E8E8A0278BC264003AD1DF /* LiveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E8E89F278BC264003AD1DF /* LiveViewController.swift */; };
 		49E8F64027A962B900E030F6 /* PlayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E8F63F27A962B900E030F6 /* PlayViewModel.swift */; };
 		49EA4E0E279461B200A038E3 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EA4E0D279461B200A038E3 /* Coordinator.swift */; };
+		49EA82D127B184E400F75546 /* UIViewController+toastMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EA82D027B184E400F75546 /* UIViewController+toastMessage.swift */; };
+		49EA82D327B1850A00F75546 /* UploadProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EA82D227B1850A00F75546 /* UploadProgress.swift */; };
+		49EA82D527B1851800F75546 /* Progress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EA82D427B1851800F75546 /* Progress.swift */; };
 		49EC99FD2782015A00DE4F79 /* RecentViewedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EC99FC2782015A00DE4F79 /* RecentViewedCell.swift */; };
 		49EC9A00278201C600DE4F79 /* Create.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49EC99FF278201C600DE4F79 /* Create.storyboard */; };
 		49EC9A022782033E00DE4F79 /* CreatePopOverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EC9A012782033E00DE4F79 /* CreatePopOverViewController.swift */; };
@@ -191,6 +194,9 @@
 		49E8E89F278BC264003AD1DF /* LiveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveViewController.swift; sourceTree = "<group>"; };
 		49E8F63F27A962B900E030F6 /* PlayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayViewModel.swift; sourceTree = "<group>"; };
 		49EA4E0D279461B200A038E3 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
+		49EA82D027B184E400F75546 /* UIViewController+toastMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+toastMessage.swift"; sourceTree = "<group>"; };
+		49EA82D227B1850A00F75546 /* UploadProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadProgress.swift; sourceTree = "<group>"; };
+		49EA82D427B1851800F75546 /* Progress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Progress.swift; sourceTree = "<group>"; };
 		49EC99FC2782015A00DE4F79 /* RecentViewedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentViewedCell.swift; sourceTree = "<group>"; };
 		49EC99FF278201C600DE4F79 /* Create.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Create.storyboard; sourceTree = "<group>"; };
 		49EC9A012782033E00DE4F79 /* CreatePopOverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePopOverViewController.swift; sourceTree = "<group>"; };
@@ -396,6 +402,7 @@
 		49B9C9F3277AF0E5006AE134 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				49EA82D027B184E400F75546 /* UIViewController+toastMessage.swift */,
 				491EF26827A7C31000A7AF91 /* UIImageView+downloadImageFrom.swift */,
 				491EF26627A7C2CD00A7AF91 /* String+getDateString.swift */,
 				49E72FFD27A265D200DFBCC3 /* UITablewView+ScrollToBottom.swift */,
@@ -542,12 +549,22 @@
 			path = Coordinator;
 			sourceTree = "<group>";
 		};
+		49EA82D627B1852200F75546 /* Upload */ = {
+			isa = PBXGroup;
+			children = (
+				4957CBBF27AD58AC00554967 /* Upload.storyboard */,
+				4957CBC127AD5A8400554967 /* UploadViewController.swift */,
+				49EA82D227B1850A00F75546 /* UploadProgress.swift */,
+				49EA82D427B1851800F75546 /* Progress.swift */,
+			);
+			path = Upload;
+			sourceTree = "<group>";
+		};
 		49EC99FE278201B500DE4F79 /* CreateTab */ = {
 			isa = PBXGroup;
 			children = (
 				49EC99FF278201C600DE4F79 /* Create.storyboard */,
-				4957CBBF27AD58AC00554967 /* Upload.storyboard */,
-				4957CBC127AD5A8400554967 /* UploadViewController.swift */,
+				49EA82D627B1852200F75546 /* Upload */,
 				49F18C2B278E5E0800EBDCF8 /* CreateNavigationController.swift */,
 				49EC9A012782033E00DE4F79 /* CreatePopOverViewController.swift */,
 				496279DF2782C1AA005A2BDC /* CreateInfoViewController.swift */,
@@ -760,6 +777,7 @@
 				49E72FF527A23F8C00DFBCC3 /* ChatViewModel.swift in Sources */,
 				49EC9A022782033E00DE4F79 /* CreatePopOverViewController.swift in Sources */,
 				492C62232795325000AE546E /* HomeTabCoordinator.swift in Sources */,
+				49EA82D327B1850A00F75546 /* UploadProgress.swift in Sources */,
 				49F777D927AA58B800AD2D78 /* FriendRequestViewController.swift in Sources */,
 				492C622E27955F6C00AE546E /* Player.swift in Sources */,
 				49EC9A06278205D200DE4F79 /* UIView+RoundCorners.swift in Sources */,
@@ -771,6 +789,7 @@
 				492C62212795323700AE546E /* CreateTabCoordinator.swift in Sources */,
 				492C621B279531F200AE546E /* AccountEditCoordinator.swift in Sources */,
 				49F18C54278F2EED00EBDCF8 /* PlayViewController.swift in Sources */,
+				49EA82D127B184E400F75546 /* UIViewController+toastMessage.swift in Sources */,
 				49E8F64027A962B900E030F6 /* PlayViewModel.swift in Sources */,
 				49D7A0B627840595001CAC60 /* NickNameInputViewController.swift in Sources */,
 				49C6CFA227A3E080007C2895 /* HomeViewModel.swift in Sources */,
@@ -785,6 +804,7 @@
 				49E6BE372791951D000E475C /* FriendListViewController.swift in Sources */,
 				49B9C9BC277ACE9C006AE134 /* SceneDelegate.swift in Sources */,
 				49AB6FE9278C545100D4D1E9 /* LiveChatCell.swift in Sources */,
+				49EA82D527B1851800F75546 /* Progress.swift in Sources */,
 				49ECFDB627A292C000BA6DF6 /* ChatSendDelegate.swift in Sources */,
 				492C621D2795320C00AE546E /* PlayerCoordinator.swift in Sources */,
 				49C52CE0278B4379009D6FBB /* ChannelViewController.swift in Sources */,
