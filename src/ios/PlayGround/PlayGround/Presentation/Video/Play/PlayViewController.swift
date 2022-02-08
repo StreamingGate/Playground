@@ -319,8 +319,9 @@ class PlayViewController: UIViewController {
     }
     
     // add chat view
-    func connectChatView() {
+    func connectChatView(roomId: String?) {
         guard let chattingVC = UIStoryboard(name: "Chat", bundle: nil).instantiateViewController(withIdentifier: "ChattingViewController") as? ChattingViewController else { return }
+        chattingVC.roomId = roomId ?? ""
         self.addChild(chattingVC)
         self.chatDelegate = chattingVC
         self.chatContainerView.addSubview((chattingVC.view)!)
@@ -357,6 +358,18 @@ class PlayViewController: UIViewController {
                 self.miniPlayPauseButton.alpha = self.viewModel.isLive ? 0 : 1
                 self.setPlayer(urlInfo: info.fileLink ?? "")
                 self.connectChatView()
+        self.viewModel.$currentInfo.receive(on: DispatchQueue.main, options: nil)
+            .sink { [weak self] currentInfo in
+                guard let self = self, let info = currentInfo else { return }
+                if info.uploaderNickname == nil {
+                    self.remoteVideoView.isHidden = false
+                    self.connectWebSocket()
+                } else {
+                    self.remoteVideoView.isHidden = true
+                }
+                self.channelNicknameLabel.text = (info.uploaderNickname == nil) ? info.hostNickname : info.uploaderNickname
+                self.miniChannelNameLabel.text = (info.uploaderNickname == nil) ? info.hostNickname : info.uploaderNickname
+                self.connectChatView(roomId: info.uuid)
             }.store(in: &cancellable)
         self.$isPlay.receive(on: DispatchQueue.main, options: nil)
             .sink { [weak self] tf in
