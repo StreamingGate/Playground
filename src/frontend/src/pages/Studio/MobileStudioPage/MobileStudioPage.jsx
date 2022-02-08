@@ -14,8 +14,8 @@ function MobileStudioPage() {
     // alert(navigator.userAgent);
   }, []);
 
-  const handleCameraSwitchBtnClick = () => {
-    switchCamera();
+  const handleCameraSwitchBtnClick = async () => {
+    await switchCamera();
   };
 
   const handleStopStreamBtnClick = () => {
