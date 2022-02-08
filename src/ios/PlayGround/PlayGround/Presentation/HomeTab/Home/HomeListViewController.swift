@@ -78,6 +78,7 @@ class HomeListViewController: UIViewController {
         searchButton.setTitle("", for: .normal)
         noticeButton.setTitle("", for: .normal)
         friendButton.setTitle("", for: .normal)
+        initRefresh()
     }
     
     // 인피니트 스크롤을 위해서 푸터 스피너 추가
@@ -87,6 +88,19 @@ class HomeListViewController: UIViewController {
        footerView.addSubview(spinner)
        spinner.startAnimating()
        return footerView
+    }
+    
+    func initRefresh() {
+        let refresh = UIRefreshControl()
+        refresh.addTarget(self, action: #selector(updateUI(refresh:)), for: .valueChanged)
+        tableView.refreshControl = refresh
+    }
+    
+    @objc func updateUI(refresh: UIRefreshControl) {
+        refresh.endRefreshing()
+        self.viewModel.lastLiveId = -1
+        self.viewModel.lastVideoId = -1
+        self.viewModel.loadAllList(vc: self, coordinator: self.navVC?.coordinator)
     }
     
     // MARK: - Player Control
