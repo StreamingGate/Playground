@@ -62,14 +62,16 @@ export default function useStreamMedia(streamPlayerRef, device = 'web') {
   const switchCamera = () => {
     const constraints = stream.videoTrack.getConstraints();
 
-    alert(constraints);
+    alert(JSON.stringify(constraints));
+    console.log(constraints);
     if (constraints.facingMode === 'user') {
-      constraints.facingMode = { exact: 'environment' };
+      constraints.facingMode = 'environment';
     } else {
       constraints.facingMode = 'user';
     }
 
-    alert(constraints);
+    alert(JSON.stringify(constraints));
+    console.log(constraints);
 
     stream.videoTrack.applyConstraints(constraints);
 
