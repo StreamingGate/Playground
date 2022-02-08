@@ -35,6 +35,7 @@ function App() {
               <Route path='*' element={<MainLayout />}>
                 <Route path='home' element={<HomePage />} />
                 <Route path='video-play/:id' element={<VideoPlayPage />} />
+                <Route path='live-play/:id' element={<VideoPlayPage />} />
                 <Route path='channel/:id' element={<ChannelPage />} />
                 <Route path='mypage/:type' element={<MyPage />} />
                 <Route path='studio' element={<StudioPage />} />
