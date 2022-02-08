@@ -7,8 +7,10 @@
 
 import Foundation
 import UIKit
+import Combine
 
 class UserManager {
     static let shared = UserManager()
     
+    @Published var userInfo: UserInfo?
 }

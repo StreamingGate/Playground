@@ -13,7 +13,7 @@ struct HomeList: Codable {
     let categories: [String]
     
     enum CodingKeys: String, CodingKey {
-        case liveRooms
+        case liveRooms = "rooms"
         case videos
         case categories
     }
@@ -53,6 +53,14 @@ enum Action: String {
     case Report = "REPORT"
 }
 
+struct NoticeResult: Codable {
+    let result: [Notice]
+    
+    enum CodingKeys: String, CodingKey {
+        case result
+    }
+}
+
 struct Notice: Codable {
     let notiType: String
     let content: String
@@ -60,6 +68,14 @@ struct Notice: Codable {
     enum CodingKeys: String, CodingKey {
         case notiType
         case content
+    }
+}
+
+struct FriendResult: Codable {
+    let result: [Friend]
+    
+    enum CodingKeys: String, CodingKey {
+        case result
     }
 }
 
@@ -75,17 +91,17 @@ struct Friend: Codable {
     }
 }
 
-struct FriendRequest: Codable {
-    let uuid: String
-    let nickname: String
-    let profileImage: String
-    
-    enum CodingKeys: String, CodingKey {
-        case uuid
-        case nickname
-        case profileImage
-    }
-}
+//struct FriendRequest: Codable {
+//    let uuid: String
+//    let nickname: String
+//    let profileImage: String
+//    
+//    enum CodingKeys: String, CodingKey {
+//        case uuid
+//        case nickname
+//        case profileImage
+//    }
+//}
 
 struct WatchingInfo: Codable {
     let roomId: String

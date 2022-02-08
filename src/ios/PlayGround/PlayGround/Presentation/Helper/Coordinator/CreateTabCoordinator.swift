@@ -21,7 +21,7 @@ class CreateTabCoordinator: Coordinator {
     func start() {
         DispatchQueue.main.async {
             guard let tabVC = self.parentCoordinator?.navigation.viewControllers.last as? CustomTabViewController else { return }
-            tabVC.selectedTanIndex = 1
+            tabVC.selectedTabIndex = 1
             self.navigation.modalPresentationStyle = .overFullScreen
             self.navigation.modalTransitionStyle = .crossDissolve
             tabVC.present(self.navigation, animated: true, completion: nil)
@@ -29,9 +29,26 @@ class CreateTabCoordinator: Coordinator {
     }
     
     func showCreatingPage() {
-        guard let liveInfoVC = UIStoryboard(name: "Create", bundle: nil).instantiateViewController(withIdentifier: "createInfoViewController") as? createInfoViewController else { return }
+        guard let liveInfoVC = UIStoryboard(name: "Create", bundle: nil).instantiateViewController(withIdentifier: "createInfoViewController") as? createInfoViewController, let tabVC = self.parentCoordinator?.navigation.viewControllers.last as? CustomTabViewController else { return }
+        for i in tabVC.children {
+            if let player = i as? PlayViewController {
+                player.coordinator?.closeMiniPlayer(vc: player)
+            }
+        }
         var viewControllers = navigation.viewControllers
         viewControllers[viewControllers.count - 1] = liveInfoVC
+        navigation.setViewControllers(viewControllers, animated: true)
+    }
+    
+    func showUploadPage() {
+        guard let vc = UIStoryboard(name: "Upload", bundle: nil).instantiateViewController(withIdentifier: "UploadViewController") as? UploadViewController, let tabVC = self.parentCoordinator?.navigation.viewControllers.last as? CustomTabViewController else { return }
+        for i in tabVC.children {
+            if let player = i as? PlayViewController {
+                player.coordinator?.closeMiniPlayer(vc: player)
+            }
+        }
+        var viewControllers = navigation.viewControllers
+        viewControllers[viewControllers.count - 1] = vc
         navigation.setViewControllers(viewControllers, animated: true)
     }
     
@@ -44,5 +61,9 @@ class CreateTabCoordinator: Coordinator {
     
     func dismiss() {
         self.navigation.dismiss(animated: true, completion: nil)
+    }
+    
+    func dismissToRoot() {
+        self.parentCoordinator?.navigation.popToRootViewController(animated: true)
     }
 }

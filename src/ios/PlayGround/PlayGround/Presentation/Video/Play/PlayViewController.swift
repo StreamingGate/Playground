@@ -67,6 +67,8 @@ class PlayViewController: UIViewController {
     @IBOutlet weak var separatorView: UIView!
     @IBOutlet weak var stackView: UIStackView!
     @IBOutlet weak var explainContainerView: UIView!
+    @IBOutlet weak var friendRequestLabel: UILabel!
+    @IBOutlet weak var friendRequestButton: UIButton!
     
     // chatting
     @IBOutlet weak var chatSendButton: UIButton!
@@ -117,6 +119,11 @@ class PlayViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(adjustInputView), name: UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(playerDidFinishPlaying), name: .AVPlayerItemDidPlayToEndTime, object: nil)
         setupUI()
+        
+        // setting for mini player
+        setMiniPlayerlayout()
+        setMiniPlayerAction()
+        
         bindingData()
     }
     
@@ -194,6 +201,9 @@ class PlayViewController: UIViewController {
         miniChannelNameLabel.translatesAutoresizingMaskIntoConstraints = false
         miniPlayPauseButton.translatesAutoresizingMaskIntoConstraints = false
         miniCloseButton.translatesAutoresizingMaskIntoConstraints = false
+        friendRequestButton.setTitle("", for: .normal)
+        friendRequestLabel.font = UIFont.Content
+        // TODO: 내가 올린 영상일 경우, '친구 신청' 보이지 않도록
     }
     
     
@@ -244,10 +254,6 @@ class PlayViewController: UIViewController {
             guard let currentTime = self.playView.player?.currentTime() else { return }
             self.updateVideoPlayerState(currentTime: currentTime)
         })
-        
-        // setting for mini player
-        setMiniPlayerlayout()
-        setMiniPlayerAction()
     }
 
     @objc func playerDidFinishPlaying() {
@@ -381,7 +387,6 @@ class PlayViewController: UIViewController {
     }
     
     // MARK: - Button Action
-    
     @IBAction func likeButtonDidTap(_ sender: Any) {
         guard let info = viewModel.currentInfo, let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else { return }
         likeButton.isEnabled = false
@@ -410,6 +415,13 @@ class PlayViewController: UIViewController {
         }
     }
     
+    @IBAction func shareButtonDidTap(_ sender: Any) {
+        guard let url = URL(string: "naver.com") else { return }
+        let shareSheetVC = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+        present(shareSheetVC, animated: true, completion: nil)
+    }
+    
+    
     @IBAction func reportButtonDidTap(_ sender: Any) {
         guard let info = viewModel.currentInfo, let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else { return }
         reportButton.isEnabled = false
@@ -424,12 +436,32 @@ class PlayViewController: UIViewController {
         }
     }
     
+    @IBAction func friendRequestButtonDidTap(_ sender: Any) {
+        guard let info = viewModel.currentInfo, let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else { return }
+        // TODO: uuid 생기면 추가하기
+//        if let target = info.hostNickname {
+//            MainServiceAPI.shared.sendFriendRequest(uuid: uuid, target: target) { result in
+//                if result["result"] as? String == "success" {
+//                    print("성공: \(result)")
+//                }
+//            }
+//        } else if let target = info.uploaderNickname {
+//            MainServiceAPI.shared.sendFriendRequest(uuid: uuid, target: target) { result in
+//                if result["result"] as? String == "success" {
+//                    print("성공")
+//                    print("성공: \(result)")
+//                }
+//            }
+//        }
+    }
+    
     func setMiniPlayerAction() {
         miniCloseButton.addTarget(self, action: #selector(miniCLoseButtonDidTap), for: .touchUpInside)
         miniPlayPauseButton.addTarget(self, action: #selector(miniPlayPauseButtonDidTap), for: .touchUpInside)
     }
     
     @objc func miniCLoseButtonDidTap() {
+        chatTextView.resignFirstResponder()
         coordinator?.closeMiniPlayer(vc: self)
     }
     
@@ -465,6 +497,7 @@ class PlayViewController: UIViewController {
     }
     
     @IBAction func explainStretchButtonDidTap(_ sender: Any) {
+        chatTextView.resignFirstResponder()
         coordinator?.showExplain(vc: self)
     }
     
@@ -611,6 +644,7 @@ class PlayViewController: UIViewController {
                 let currentTime = CMTimeMakeWithSeconds(Float64(seekbar.value), preferredTimescale: Int32(NSEC_PER_SEC))
                 self.updateVideoPlayerState(currentTime: currentTime)
             case .ended:
+                self.didEndPlay = false
                 self.playControllTimer.invalidate()
                 playView.player?.seek(to: CMTimeMakeWithSeconds(Float64(seekbar.value), preferredTimescale: Int32(NSEC_PER_SEC)))
                 self.isPlay = true
@@ -626,6 +660,7 @@ class PlayViewController: UIViewController {
     }
     
     @objc func sliderTapped(gestureRecognizer: UIGestureRecognizer) {
+        self.didEndPlay = false
         let pointTapped: CGPoint = gestureRecognizer.location(in: self.view)
         let positionOfSlider: CGPoint = seekbar.frame.origin
         let widthOfSlider: CGFloat = seekbar.frame.size.width
@@ -638,10 +673,12 @@ class PlayViewController: UIViewController {
     
     // MARK: - PlayView layout change
     func setPlayViewOriginalSize() {
+        chatTextView.resignFirstResponder()
         coordinator?.setPlayViewOriginalSize(vc: self)
     }
     
     func setPlayViewMinimizing() {
+        chatTextView.resignFirstResponder()
         coordinator?.setPlayMinimizing(vc: self)
     }
 }
