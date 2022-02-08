@@ -1,11 +1,10 @@
-package com.example.userservice.dto;
+package com.example.userservice.dto.user;
 
 import lombok.Data;
 
 @Data
-public class ResponseUser {
+public class ResponseLogin {
     private String email;
     private String name;
     private String nickName;
-    private String profileImage;
 }

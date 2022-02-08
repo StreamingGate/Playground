@@ -2,19 +2,16 @@ package com.example.chatservice.controller;
 
 import com.example.chatservice.exception.CustomChatException;
 import com.example.chatservice.exception.ErrorResponse;
-import com.example.chatservice.model.chat.Chat;
+import com.example.chatservice.model.chat.ChatProduce;
 import com.example.chatservice.model.chat.ChatType;
 import com.example.chatservice.redis.RedisRoomService;
-import com.example.chatservice.redis.RedisSubscriber;
 import com.example.chatservice.utils.ClientMessaging;
 import com.example.chatservice.utils.RedisMessaging;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Controller;
-import java.security.Principal;
 import static com.example.chatservice.exception.ErrorCode.C001;
 
 
@@ -35,7 +32,7 @@ public class RedisPubSubController {    /* TODO: Scheduling 적용 */
 
     /* TODO: 일반 채팅, 채팅 고정 분리하기 */
     @MessageMapping("/chat/message/{roomId}")
-    public void message(@DestinationVariable String roomId, Chat chat) throws Exception{
+    public void message(@DestinationVariable String roomId, ChatProduce chat) throws Exception{
         try {
             if (chat.getChatType().equals(ChatType.PINNED)) {
                 int pinnedCnt = redisRoomService.addPinnedChat(roomId, chat);

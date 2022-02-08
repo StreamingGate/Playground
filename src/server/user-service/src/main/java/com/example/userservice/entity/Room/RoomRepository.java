@@ -1,4 +1,4 @@
-package com.example.roomservice.entity.Room;
+package com.example.userservice.entity.Room;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
