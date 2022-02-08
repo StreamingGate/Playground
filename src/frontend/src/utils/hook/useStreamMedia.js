@@ -62,20 +62,27 @@ export default function useStreamMedia(streamPlayerRef, device = 'web') {
   const switchCamera = () => {
     const constraints = stream.videoTrack.getConstraints();
 
+    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!');
     alert(JSON.stringify(constraints));
     console.log(constraints);
+    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!');
+
     if (constraints.facingMode === 'user') {
       constraints.facingMode = 'environment';
     } else {
       constraints.facingMode = 'user';
     }
 
+    console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
     alert(JSON.stringify(constraints));
     console.log(constraints);
+    console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
 
-    stream.videoTrack.applyConstraints(constraints);
+    stream.videoTrack.applyConstraints({ facingMode: 'environment' });
 
+    console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
     alert(stream.videoTrack.getConstraints());
+    console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
   };
 
   return { stream, toggleMuteAudio, stopStream, switchCamera };
