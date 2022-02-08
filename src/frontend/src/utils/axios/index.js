@@ -9,9 +9,11 @@ axiosInstance.interceptors.request.use(
   config => {
     const token = lStorageService.getItem('token');
     const uuid = lStorageService.getItem('uuid');
+    const nickName = lStorageService.getItem('nickName');
+    const profileImage = lStorageService.getItem('profileImage');
 
     // token, uuid가 없을시 로그인 페이지로 리다이렉트
-    if (!token || !uuid) {
+    if (!token || !uuid || !nickName || !profileImage) {
       history.push('/login');
       history.go();
     }

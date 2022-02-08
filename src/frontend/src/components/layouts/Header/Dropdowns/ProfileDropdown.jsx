@@ -33,6 +33,8 @@ function ProfileDropdown() {
     } else if (buttonId === 'modifyProfile') {
       modalService.show(ModifyProfileModal, { nickName: '이재윤' });
     } else if (buttonId === 'logout') {
+      lStorageService.removeItem('nickName');
+      lStorageService.removeItem('profileImage');
       lStorageService.removeItem('uuid');
       lStorageService.removeItem('token');
       navigate('/login');
