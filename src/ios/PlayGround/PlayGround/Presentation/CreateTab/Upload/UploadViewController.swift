@@ -184,7 +184,7 @@ class UploadViewController: UIViewController {
                 case .inProgress:
                     self.toastLabel.text = "비디오 업로드 중입니다..."
                 case .fail:
-                    self.toastLabel.text = "업로드애 실패했습니다"
+                    self.toastLabel.text = "업로드에 실패했습니다"
                 default:
                     self.toastLabel.text = "업로드를 완료했습니다"
                     UIView.animate(withDuration: 2, delay: 0.3, options: .curveEaseOut) {
