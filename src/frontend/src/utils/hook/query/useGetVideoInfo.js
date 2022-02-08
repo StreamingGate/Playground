@@ -19,6 +19,6 @@ export default function useGetVideoInfo(type, videoId, uuid, onSuccess) {
 
       return reqMethod(videoId, uuid);
     },
-    { onSuccess, refetchOnWindowFocus: false }
+    { onSuccess, refetchOnWindowFocus: false, enabled: type === 'video' }
   );
 }
