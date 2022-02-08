@@ -6,15 +6,19 @@ const getVideoInfo = async (videoId, uuid) => {
   return data;
 };
 
-export default function useGetVideoInfo(type, videoId, uuid) {
-  return useQuery([type, videoId], () => {
-    let reqMethod = null;
-    switch (type) {
-      default:
-        reqMethod = getVideoInfo;
-        break;
-    }
+export default function useGetVideoInfo(type, videoId, uuid, onSuccess) {
+  return useQuery(
+    [type, videoId],
+    () => {
+      let reqMethod = null;
+      switch (type) {
+        default:
+          reqMethod = getVideoInfo;
+          break;
+      }
 
-    return reqMethod(videoId, uuid);
-  });
+      return reqMethod(videoId, uuid);
+    },
+    { onSuccess, refetchOnWindowFocus: false }
+  );
 }
