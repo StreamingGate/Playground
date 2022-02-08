@@ -34,7 +34,7 @@ function MobileStudioPage() {
         </IconButton>
       </S.MobileActionContainer>
       <S.MobilePlayerContainer>
-        <S.MobileStreamPlayer ref={streamPlayerRef} />
+        <S.MobileStreamPlayer ref={streamPlayerRef} playsInline autoPlay />
       </S.MobilePlayerContainer>
     </S.MobileStudioPageContainer>
   );

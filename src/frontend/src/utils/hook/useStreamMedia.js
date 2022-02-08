@@ -22,15 +22,16 @@ export default function useStreamMedia(streamPlayerRef, device = 'web') {
       const videoDom = streamPlayerRef.current;
 
       videoDom.srcObject = newStream;
-      videoDom.onloadedmetadata = () => {
-        videoDom.play();
-      };
+      // videoDom.onloadedmetadata = () => {
+      //   videoDom.play();
+      // };
 
       setStream({
         videoTrack: newStream.getVideoTracks()[0],
         audioTrack: newStream.getAudioTracks()[0],
       });
     } catch (err) {
+      alert(err);
       console.log(err.message);
     }
   }
