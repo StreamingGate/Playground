@@ -1,0 +1,38 @@
+{{>header}}
+<body>
+<div>
+    <h3>로그인 하기</h3>
+    <form>
+        <button type="button" onClick="login()">유저#1 로그인 하기</button>
+    </form>
+    <div id="login-result">
+    </div>
+</div>
+{{>footer}}
+<!-- JavaScript -->
+<script>
+    userData=[
+        {
+            //"name": "user1",
+            "id": "u1@email.com",
+            "password": "1234"
+        },
+        {
+            //"name": "user3",
+            "id": "u3@email.com",
+            "password": "1234"
+        }
+    ];
+
+    login = () => {
+        // 로그인 요청 
+        axios.post('http://localhost:8000/user-service/login',
+        userData[0])
+        .then(resp => {
+            let loginResultDiv = document.querySelector("#login-result");
+            loginResultDiv.innerText = resp.data;
+        })
+    };
+
+
+</script>

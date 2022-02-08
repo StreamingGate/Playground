@@ -1,0 +1,132 @@
+{{>header}}
+<body>
+<div>
+    <h2 id="roomId"></h2>
+    <span id="userCnt">x 명 접속중</span>
+</div>
+<div>
+    <label>채팅 내용</label><br>
+    <input type="text" id="inputMsg">
+    <button type="button" onClick="sendMessage()">보내기</button>
+    <br>
+    <label>스트리머권한으로 고정 하기</label><br>
+    <input type="text" id="inputPin">
+    <button type="button" onClick="pinMessage(true, 'STREAMER')">고정하기</button>
+    <br>
+    <label>시청자권한으로 고정 하기</label><br>
+    <input type="text" id="fakePin">
+    <button type="button" onClick="pinMessage(false, 'VIEWER')">고정하기</button>
+</div>
+<ul id="msglist">
+
+</ul>
+{{>footer}}
+<!-- JavaScript -->
+<script>
+    // websocket & stomp initialize
+    let sock = new SockJS("/ws");
+    let ws = Stomp.over(sock);
+    let roomTitle = document.querySelector("#roomId");
+    let msgList = document.querySelector("#msglist");
+    let userCntElem = document.querySelector("#userCnt");
+
+    let data = {
+        roomId: localStorage.getItem('wschat.roomId'),
+        room: {},
+        sender: localStorage.getItem('wschat.sender'),
+        uuid: localStorage.getItem('wschat.uuid'),
+        pinnedChats: []
+    }
+
+    findRoom = function () {
+        axios.get('/chat/room/' + data.roomId).then(response => {
+            data.room = response.data.name;
+            data.pinnedChats = response.data.pinnedChats;
+            console.log("resp:", response.data);
+
+            document.querySelector("#roomId").innerText = data.room;
+
+            if (data.pinnedChats !== undefined) {
+                for (let i = 0; i < data.pinnedChats.length; i++) {
+                    const liElem = document.createElement("li");
+                    liElem.innerText = "[PINNED]" + data.pinnedChats[i].nickname + "-" + data.pinnedChats[i].message;
+                    msgList.append(liElem);
+                }
+            }
+        });
+    }
+    sendMessage = () => {
+        console.log("send btn");
+        const inputMsg = document.querySelector("#inputMsg").value;
+        ws.send("/app/chat/message/" + data.roomId, {}, JSON.stringify(
+                {
+                    roomId: data.roomId,
+                    nickname: data.sender,
+                    senderRole: "VIEWER",   // VIEWER, STREAMER
+                    chatType: "NORMAL",     // NORMAL, PINNED
+                    message: inputMsg,
+                    // timestamp: new Date()   // GMT(대한민국 표준시) -> No Need..
+                }));
+    }
+    pinMessage = (isFake, senderRole) => {
+        console.log("pin btn");
+        let inputVal = "";
+        if (isFake === true) inputVal = document.querySelector("#inputPin").value;
+        else inputVal = document.querySelector("#fakePin").value;
+
+        ws.send("/app/chat/message/" + data.roomId, {}, JSON.stringify(
+                {
+                    roomId: data.roomId,
+                    nickname: data.sender,
+                    senderRole: senderRole,   // VIEWER, STREAMER
+                    chatType: "PINNED",     // NORMAL, PINNED
+                    message: inputVal,
+                    // timestamp: new Date()   // GMT(대한민국 표준시) -> No Need..
+                }));
+    }
+
+    recvMessage = (chat) => {
+        console.log("received msg...");
+        const liElem = document.createElement("li");
+        liElem.innerText = "[" + chat.nickname + "] " + "("+chat.pstTime+")    " +  chat.message;
+        msgList.append(liElem);
+    }
+
+    findRoom();
+
+    // pub/sub event
+    ws.connect({}, function (frame) {
+        ws.subscribe("/topic/chat/room/" + data.roomId, function (resp) {
+            console.log("received");
+            const chat = JSON.parse(resp.body);
+            recvMessage(chat);
+        });
+
+        // 현재 접속자 수
+        ws.subscribe("/topic/user-cnt/room/" + data.roomId, function (message) {
+            console.log(message);
+            userCntElem.innerText=JSON.parse(message.body)+' 명 접속중';
+        });
+
+        // 에러메시지 핸들링
+        // ws.subscribe('/user/'+data.uuid+'/queue/errors', function (message) {
+        //     console.log(message);
+        //     alert("[error] receive User : " + data.sender + " " + message);
+        // });
+
+    }, function (error) {
+        alert("error " + error);
+    });
+
+
+    window.onbeforeunload = function(e){
+        if(ws !== null) {
+            ws.disconnect(function() {
+                ws.send("/app/user-cnt/room/" + data.roomId + "/exit", {}, {});
+                console.log("disconnected..");
+            })
+        }
+    }
+
+
+</script>
