@@ -99,7 +99,7 @@ public class UserService implements UserDetailsService {
         user.delete(localDate);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public EmailDto checkEmail(EmailDto email) throws CustomUserException {
         if(!userRepository.findByEmail(email.getEmail()).isPresent()) {
             String randomCode = sendEmail(email.getEmail());
@@ -110,7 +110,7 @@ public class UserService implements UserDetailsService {
         throw new CustomUserException(ErrorCode.U001);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public PwdDto checkUser(PwdDto pwdDto) throws CustomUserException {
         if(userRepository.findByNameAndEmail(pwdDto.getName(),pwdDto.getEmail()).isPresent()) {
             String randomCode = sendEmail(pwdDto.getEmail());
@@ -130,7 +130,7 @@ public class UserService implements UserDetailsService {
         throw new CustomUserException(ErrorCode.U003);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public String checkNickName(String nickName) throws CustomUserException {
         if(!userRepository.findByNickName(nickName).isPresent()) return nickName;
         throw new CustomUserException(ErrorCode.U004);
@@ -146,7 +146,7 @@ public class UserService implements UserDetailsService {
         return pwdDto;
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public UserDto getUserByEmail(String email) throws CustomUserException {
         User user = userRepository.findByEmail(email).orElseThrow(()-> new CustomUserException(ErrorCode.U002));
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
@@ -154,7 +154,7 @@ public class UserService implements UserDetailsService {
         return userDto;
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public List<?> watchedHistory(String uuid, Long lastVideoId, Long lastLiveId,int size) throws CustomUserException {
         if (!userRepository.findByUuid(uuid).isPresent()) throw new CustomUserException(ErrorCode.U002);
         Stream<ViewedHistory> videoStream;

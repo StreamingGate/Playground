@@ -11,9 +11,9 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
     @Query("SELECT r.createdAt FROM room r WHERE r.title=:title")
     LocalDate getCreatedAt(String title);
 
-    @Query("SELECT r.id from room r WHERE r.uuid = :uuid")
+    @Query("SELECT r.id FROM room r WHERE r.uuid = :uuid")
     Long getRoomId(String uuid);
 
-    @Query("SELECT r.id from room r WHERE r.id = :roomId")
+    @Query("SELECT r.id FROM room r WHERE r.id = :roomId")
     Room getRoom(Long roomId);
 }
