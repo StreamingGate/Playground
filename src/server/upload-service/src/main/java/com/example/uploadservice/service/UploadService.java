@@ -58,17 +58,18 @@ public class UploadService {
         String videoUuid = UUID.randomUUID().toString();
 
         // upload video
-        if (multipartFileVideo.isEmpty()) throw new CustomUploadException(ErrorCode.I001, "첨부한 비디오 파일이 비어있습니다");
+        if (multipartFileVideo == null || multipartFileVideo.isEmpty()) throw new CustomUploadException(ErrorCode.I001, "첨부한 비디오 파일이 비어있습니다");
         String fileLink = getKey(multipartFileVideo, videoUuid);
         log.info("fileLink:" + fileLink);
         upload(multipartFileVideo, fileLink);
         videoDto.updateMetaData(videoUuid, multipartFileVideo.getSize(), LocalDateTime.now());
 
         // upload thumbnail
-        if (multipartFileThumbnail != null) {
+        if (multipartFileThumbnail !=null && !multipartFileThumbnail.isEmpty()) {
             String thumbnailLink = getKey(multipartFileThumbnail, videoUuid);
             upload(multipartFileThumbnail, thumbnailLink);
             log.info("thumbnailLink:" + thumbnailLink);
+            videoDto.updateThumbnailName(multipartFileThumbnail.getOriginalFilename());
         }
         return videoUuid;
     }

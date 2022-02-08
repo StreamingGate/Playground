@@ -1,6 +1,6 @@
 package com.example.uploadservice.service;
 
-import com.amazonaws.services.s3.AmazonS3;
+import com.example.uploadservice.dto.VideoDto;
 import com.example.uploadservice.exceptionHandler.customexception.CustomUploadException;
 import com.example.uploadservice.exceptionHandler.customexception.ErrorCode;
 import lombok.extern.slf4j.Slf4j;
@@ -43,7 +43,7 @@ public class TranscodeService {
         this.FFPROBE_PATH = ffprobePath;
     }
 
-    public void convertMp4ToTs(String videoUuid, MultipartFile multipartFileThumbnail) throws CustomUploadException {
+    public void convertMp4ToTs(String videoUuid, MultipartFile multipartFileThumbnail, VideoDto videoDto) throws CustomUploadException {
         final String INPUT_FILEPATH = S3_DOMAIN + "/" + BUCKET + "/" + INPUT_DIR + "/" + videoUuid + "/" + DEFAULT_VIDEO_FILE;
         log.info("FFMPEG_PATH " + FFMPEG_PATH);
         log.info("FFPROBE_PATH " + FFPROBE_PATH);
@@ -78,7 +78,7 @@ public class TranscodeService {
             FFmpegExecutor excutor = new FFmpegExecutor(ffmpeg, ffprobe);
             excutor.createJob(builder).run();
 
-            if(multipartFileThumbnail == null) {
+            if(multipartFileThumbnail == null || multipartFileThumbnail.isEmpty()) {
                 // 이미지 파일 생성
                 FFmpegBuilder builderThumbNail = new FFmpegBuilder()
                         .overrideOutputFiles(true)          // 오버라이드 여부
@@ -89,6 +89,7 @@ public class TranscodeService {
                         .setFrames(1) // 프레임 수
                         .done();
                 excutor.createJob(builderThumbNail).run();
+                videoDto.updateThumbnailName(DEFAULT_THUMBNAIL_NAME + ".png");
             }
         } catch (Exception e) {
             e.printStackTrace();
