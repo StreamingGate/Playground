@@ -103,6 +103,8 @@
 		49EC9A022782033E00DE4F79 /* CreatePopOverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EC9A012782033E00DE4F79 /* CreatePopOverViewController.swift */; };
 		49EC9A06278205D200DE4F79 /* UIView+RoundCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EC9A05278205D200DE4F79 /* UIView+RoundCorners.swift */; };
 		49ECFDB627A292C000BA6DF6 /* ChatSendDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49ECFDB527A292C000BA6DF6 /* ChatSendDelegate.swift */; };
+		49EDECCE27B3E16700B5EFA5 /* RoomServiceAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EDECCD27B3E16700B5EFA5 /* RoomServiceAPI.swift */; };
+		49EDECD027B3E16E00B5EFA5 /* RoomDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EDECCF27B3E16E00B5EFA5 /* RoomDataModel.swift */; };
 		49EF543327AEA218002A2A53 /* UploadServiceAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EF543227AEA218002A2A53 /* UploadServiceAPI.swift */; };
 		49F0213E2799505400684A25 /* UIViewController+SimpleAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F0213D2799505400684A25 /* UIViewController+SimpleAlert.swift */; };
 		49F18C2C278E5E0800EBDCF8 /* CreateNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F18C2B278E5E0800EBDCF8 /* CreateNavigationController.swift */; };
@@ -218,6 +220,8 @@
 		49EC9A012782033E00DE4F79 /* CreatePopOverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePopOverViewController.swift; sourceTree = "<group>"; };
 		49EC9A05278205D200DE4F79 /* UIView+RoundCorners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+RoundCorners.swift"; sourceTree = "<group>"; };
 		49ECFDB527A292C000BA6DF6 /* ChatSendDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatSendDelegate.swift; sourceTree = "<group>"; };
+		49EDECCD27B3E16700B5EFA5 /* RoomServiceAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomServiceAPI.swift; sourceTree = "<group>"; };
+		49EDECCF27B3E16E00B5EFA5 /* RoomDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomDataModel.swift; sourceTree = "<group>"; };
 		49EF543227AEA218002A2A53 /* UploadServiceAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadServiceAPI.swift; sourceTree = "<group>"; };
 		49F0213D2799505400684A25 /* UIViewController+SimpleAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+SimpleAlert.swift"; sourceTree = "<group>"; };
 		49F18C2B278E5E0800EBDCF8 /* CreateNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNavigationController.swift; sourceTree = "<group>"; };
@@ -560,6 +564,7 @@
 				49EF543427AEC769002A2A53 /* UploadService */,
 				49E72FFB27A2570200DFBCC3 /* ChatService */,
 				49EB97F627B34ACD0017A816 /* VideoService */,
+				49EDECD127B3E83D00B5EFA5 /* RoomServiceAPI */,
 				49E6168627B23ED50092AE21 /* Mediasoup */,
 				49E72FD027A166E300DFBCC3 /* GatewayManager.swift */,
 				49F4E3D427ACE436002869F4 /* NetworkResultManager.swift */,
@@ -640,6 +645,15 @@
 				49E8E89D278BB5B0003AD1DF /* CameraView.swift */,
 			);
 			path = CreateTab;
+			sourceTree = "<group>";
+		};
+		49EDECD127B3E83D00B5EFA5 /* RoomServiceAPI */ = {
+			isa = PBXGroup;
+			children = (
+				49EDECCD27B3E16700B5EFA5 /* RoomServiceAPI.swift */,
+				49EDECCF27B3E16E00B5EFA5 /* RoomDataModel.swift */,
+			);
+			path = RoomServiceAPI;
 			sourceTree = "<group>";
 		};
 		49EF543427AEC769002A2A53 /* UploadService */ = {
@@ -861,6 +875,7 @@
 				49EF543327AEA218002A2A53 /* UploadServiceAPI.swift in Sources */,
 				49E72FF727A253DA00DFBCC3 /* DataHelper.swift in Sources */,
 				492C62212795323700AE546E /* CreateTabCoordinator.swift in Sources */,
+				49EDECCE27B3E16700B5EFA5 /* RoomServiceAPI.swift in Sources */,
 				492C621B279531F200AE546E /* AccountEditCoordinator.swift in Sources */,
 				49F18C54278F2EED00EBDCF8 /* PlayViewController.swift in Sources */,
 				49EA82D127B184E400F75546 /* UIViewController+toastMessage.swift in Sources */,
@@ -881,6 +896,7 @@
 				49EA82D527B1851800F75546 /* Progress.swift in Sources */,
 				49ECFDB627A292C000BA6DF6 /* ChatSendDelegate.swift in Sources */,
 				492C621D2795320C00AE546E /* PlayerCoordinator.swift in Sources */,
+				49EDECD027B3E16E00B5EFA5 /* RoomDataModel.swift in Sources */,
 				49C52CE0278B4379009D6FBB /* ChannelViewController.swift in Sources */,
 				49F4E3CF27ACAADC002869F4 /* NoticeViewModel.swift in Sources */,
 				4907709B27979A1D00ADD8E8 /* UserServiceAPI.swift in Sources */,

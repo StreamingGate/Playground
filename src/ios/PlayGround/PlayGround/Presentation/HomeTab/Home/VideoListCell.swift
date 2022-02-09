@@ -31,14 +31,16 @@ class VideoListCell: UITableViewCell {
         nicknameLabel.text = info.hostNickname
         liveSign.isHidden = false
         thumbnailImageView.downloadImageFrom(link: info.thumbnail, contentMode: .scaleAspectFit)
-        nicknameLabel.text = "\(info.hostNickname ?? "익명") • \(info.createdAt.getDateString())"
+        guard let create = info.createdAt else { return }
+        nicknameLabel.text = "\(info.hostNickname ?? "익명") • \(create.getDateString())"
     }
     
     func setupVideo(info: GeneralVideo) {
         titleLabel.text = info.title
-        nicknameLabel.text = "\(info.uploaderNickname ?? "익명") • 조회수 \(info.hits ?? 0)회 • \(info.createdAt.getDateString())"
         liveSign.isHidden = true
         thumbnailImageView.downloadImageFrom(link: info.thumbnail, contentMode: .scaleAspectFit)
+        guard let create = info.createdAt else { return }
+        nicknameLabel.text = "\(info.uploaderNickname ?? "익명") • 조회수 \(info.hits ?? 0)회 • \(create.getDateString())"
     }
     
     @IBAction func channelProfileDidTap(_ sender: Any) {

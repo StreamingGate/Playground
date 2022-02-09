@@ -28,7 +28,7 @@ struct GeneralVideo: Codable {
     let thumbnail: String
     let hits: Int?
     let category: String
-    let createdAt: String
+    let createdAt: String?
     let streamingId: String?
     let chatRoomId: String?
     let uuid: String?
