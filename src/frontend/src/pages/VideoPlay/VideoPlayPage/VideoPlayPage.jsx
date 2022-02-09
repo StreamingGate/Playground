@@ -43,7 +43,7 @@ function VideoPlayPage() {
       <S.ChatRoomContainer>
         <ChatRoom />
       </S.ChatRoomContainer>
-      <VideoMetaData videoData={data} />
+      <VideoMetaData videoData={data} playType={playType} />
     </S.VideoPlayPageContainer>
   );
 }

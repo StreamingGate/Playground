@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import * as S from './VideoMetaData.style';
+import { lStorageService, modalService } from '@utils/service';
+import { useVideoAction } from '@utils/hook/query';
 
 import { IconButton } from '@components/buttons';
-import { ThumbUp, ThumbDown, Share, Report } from '@components/cores';
+import { Share, Report } from '@components/cores';
+import { AdviseModal } from '@components/feedbacks/Modals';
 
 function ActionButton({ element, content, onClick }) {
   return (
@@ -15,11 +19,101 @@ function ActionButton({ element, content, onClick }) {
   );
 }
 
-function VideoMetaData({ videoData }) {
+function VideoMetaData({ videoData, playType }) {
+  const { id } = useParams();
+  const userId = lStorageService.getItem('uuid');
+
   const [isOverviewExpand, setOverviewExpand] = useState(false);
+  const [preferToggleState, setPreferToggleState] = useState({ liked: false, disliked: false });
+  const [likeCount, setLikeCount] = useState(0);
+
+  useEffect(() => {
+    if (videoData?.liked !== undefined) {
+      const { liked, disliked, likeCnt } = videoData;
+      setLikeCount(likeCnt);
+      setPreferToggleState({ liked, disliked });
+    }
+  }, [videoData]);
 
   const handleExpandBtnClick = () => {
     setOverviewExpand(prev => !prev);
+  };
+
+  const handleVideoActionSuccess = actionType => {
+    if (actionType === 'LIKE') {
+      if (preferToggleState.liked) {
+        setLikeCount(prev => prev - 1);
+        setPreferToggleState(prev => ({ ...prev, liked: false }));
+      } else {
+        setLikeCount(prev => prev + 1);
+        setPreferToggleState(prev => ({ ...prev, liked: true }));
+      }
+    } else if (actionType === 'DISLIKE') {
+      if (videoData.disliked) {
+        setPreferToggleState(prev => ({ ...prev, disliked: false }));
+      } else {
+        setPreferToggleState(prev => ({ ...prev, disliked: true }));
+      }
+    } else if (actionType === 'REPORT') {
+      modalService.show(AdviseModal, { content: '신고되었습니다' });
+    }
+  };
+
+  const { mutate } = useVideoAction(handleVideoActionSuccess);
+
+  const handleLikeBtnClick = () => {
+    const actionBody = {
+      id,
+      type: playType.current === 'video' ? 0 : 1,
+      action: 'LIKE',
+      uuid: userId,
+    };
+
+    if (preferToggleState.liked) {
+      mutate({
+        type: 'delete',
+        actionBody,
+      });
+    } else {
+      mutate({
+        type: 'post',
+        actionBody,
+      });
+    }
+  };
+
+  const handleDisLikeBtnClick = () => {
+    const actionBody = {
+      id,
+      type: playType.current === 'video' ? 0 : 1,
+      action: 'DISLIKE',
+      uuid: userId,
+    };
+
+    if (preferToggleState.disliked) {
+      mutate({
+        type: 'delete',
+        actionBody,
+      });
+    } else {
+      mutate({
+        type: 'post',
+        actionBody,
+      });
+    }
+  };
+
+  const handleRoportBtnClick = () => {
+    const actionBody = {
+      id,
+      type: playType.current === 'video' ? 0 : 1,
+      action: 'REPORT',
+      uuid: userId,
+    };
+    mutate({
+      type: 'post',
+      actionBody,
+    });
   };
 
   if (!videoData) {
@@ -33,10 +127,18 @@ function VideoMetaData({ videoData }) {
       <S.VideoInfoContainer>
         <S.WatchPeople type='caption'>6702명 시청 중</S.WatchPeople>
         <S.ActionContainer>
-          <ActionButton element={<ThumbUp />} content={`${videoData.likeCnt} 회`} />
-          <ActionButton element={<ThumbDown />} content='싫어요' />
+          <ActionButton
+            onClick={handleLikeBtnClick}
+            element={<S.ThumbUpIcon isToggle={preferToggleState.liked} />}
+            content={`${likeCount} 회`}
+          />
+          <ActionButton
+            onClick={handleDisLikeBtnClick}
+            element={<S.ThumbDownIcon isToggle={preferToggleState.disliked} />}
+            content='싫어요'
+          />
           <ActionButton element={<Share />} content='공유' />
-          <ActionButton element={<Report />} content='신고' />
+          <ActionButton onClick={handleRoportBtnClick} element={<Report />} content='신고' />
         </S.ActionContainer>
       </S.VideoInfoContainer>
       <S.VideoSubInfoContainer>
