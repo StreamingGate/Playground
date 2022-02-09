@@ -71,6 +71,7 @@ export const ViedeoOverviewContainer = styled.li`
   flex-direction: ${({ direction }) => (direction === 'vertical' ? 'column' : 'row')};
   gap: 10px;
   max-width: ${({ direction }) => (direction === 'vertical' ? '450px' : 'none')};
+  cursor: pointer;
 
   ${ThumbNailContainer} {
     ${({ direction }) =>

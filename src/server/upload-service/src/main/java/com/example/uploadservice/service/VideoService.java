@@ -12,6 +12,10 @@ import com.example.uploadservice.exceptionHandler.customexception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.AsyncRestTemplate;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -44,8 +48,16 @@ public class VideoService {
                 .user(user)
                 .build();
 
+        createChatRoom(video.getUuid());
+
         metadataRepository.save(metadata);
         videoRepository.save(video);
         video.setMetadata(metadata);
+    }
+
+    private void createChatRoom(String uuid){
+        AsyncRestTemplate asyncRestTemplate = new AsyncRestTemplate();
+        asyncRestTemplate.postForEntity("http://localhost:8888/chat/room?name="+uuid,
+                null, String.class);
     }
 }
