@@ -102,26 +102,28 @@ function MakeStreamModal({ type }) {
         </S.StreamModalTitleContainer>
         <S.StreamModalBody>
           <S.StreamInfoContainer>
-            <S.VideoSelectContainer>
-              <S.InputLabel>동영상 선택</S.InputLabel>
-              <S.VideoPreviewContainer>
-                <S.VideoPreview
-                  id='videoSelect'
-                  src={filePreview.videoUrl}
-                  autoPlay
-                  controls={filePreview.videoUrl && true}
-                  onClick={handleFileSelectBtn}
-                />
-                <S.VideoIcon />
-                <S.VideoFileInput
-                  id='videoFile'
-                  type='file'
-                  accept='.mp4'
-                  ref={videoInputRef}
-                  onChange={handleFileInputChange}
-                />
-              </S.VideoPreviewContainer>
-            </S.VideoSelectContainer>
+            {type === 'video' && (
+              <S.VideoSelectContainer>
+                <S.InputLabel>동영상 선택</S.InputLabel>
+                <S.VideoPreviewContainer>
+                  <S.VideoPreview
+                    id='videoSelect'
+                    src={filePreview.videoUrl}
+                    autoPlay
+                    controls={filePreview.videoUrl && true}
+                    onClick={handleFileSelectBtn}
+                  />
+                  <S.VideoIcon />
+                  <S.VideoFileInput
+                    id='videoFile'
+                    type='file'
+                    accept='.mp4'
+                    ref={videoInputRef}
+                    onChange={handleFileInputChange}
+                  />
+                </S.VideoPreviewContainer>
+              </S.VideoSelectContainer>
+            )}
             <S.VideoDetailInfoContainer>
               <S.InputLabel>세부정보</S.InputLabel>
               <S.InputContainer>
@@ -165,10 +167,12 @@ function MakeStreamModal({ type }) {
             </S.CategorySelect>
           </S.CategorySelectContainer>
           <S.ThumbnailSelectContainer>
-            <S.InputLabel>썸네일 이미지 (선택)</S.InputLabel>
-            <S.InputSubLabel type='caption'>
-              * 썸네일 이미지를 선택하지 않으면 랜덤으로 추출합니다
-            </S.InputSubLabel>
+            <S.InputLabel>썸네일 이미지 {type === 'video' && '(선택)'}</S.InputLabel>
+            {type === 'video' && (
+              <S.InputSubLabel type='caption'>
+                * 썸네일 이미지를 선택하지 않으면 랜덤으로 추출합니다
+              </S.InputSubLabel>
+            )}
             <S.ThumbnailPreviewContainer>
               <S.ThumbnailPreview
                 id='thumbnailSelect'
@@ -198,7 +202,7 @@ function MakeStreamModal({ type }) {
 }
 
 MakeStreamModal.propTypes = {
-  type: PropTypes.string.isRequired,
+  type: PropTypes.oneOf(['video', 'live']).isRequired,
 };
 
 export default modalService.create(MakeStreamModal);
