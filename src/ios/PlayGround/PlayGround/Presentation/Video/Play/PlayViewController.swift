@@ -10,8 +10,10 @@ import UIKit
 import Combine
 import AVFoundation
 import SwiftKeychainWrapper
+import WebRTC
 
 class PlayViewController: UIViewController {
+    @IBOutlet var remoteVideoView: RTCEAGLVideoView!
     var roomId = ""
     
     // MARK: - Properties
