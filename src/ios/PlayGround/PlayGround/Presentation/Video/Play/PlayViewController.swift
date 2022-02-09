@@ -414,6 +414,11 @@ class PlayViewController: UIViewController {
                     self.dislikeImageView.image = UIImage(named: "thumbDown_empty")
                 }
             }.store(in: &cancellable)
+        self.viewModel.$likeCount.receive(on: DispatchQueue.main, options: nil)
+            .sink { [weak self] num in
+                guard let self = self else { return }
+                self.likeLabel.text = "\(num)회"
+            }.store(in: &cancellable)
     }
     
     // MARK: - Animation Setting
@@ -437,6 +442,7 @@ class PlayViewController: UIViewController {
                 DispatchQueue.main.async {
                     self.likeButton.isEnabled = true
                     if result["result"] as? String == "success" {
+                        self.viewModel.likeCount = (self.viewModel.likeCount == 0 ? 0 : self.viewModel.likeCount - 1)
                         self.viewModel.isLiked = false
                     }
                 }
@@ -447,6 +453,7 @@ class PlayViewController: UIViewController {
                 DispatchQueue.main.async {
                     self.likeButton.isEnabled = true
                     if result["result"] as? String == "success" {
+                        self.viewModel.likeCount += 1
                         self.viewModel.isLiked = true
                     }
                 }

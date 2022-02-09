@@ -14,6 +14,8 @@ class PlayViewModel {
     
     @Published var isLiked: Bool?
     @Published var isDisliked: Bool?
+    @Published var likeCount = 0
+    
     @Published var currentInfo: GeneralVideo?
     @Published var videoInfo: VideoInfo?
     var videoId: Int? {
@@ -38,6 +40,7 @@ class PlayViewModel {
                 self.videoInfo = data
                 self.isLiked = data.liked
                 self.isDisliked = data.disliked
+                self.likeCount = data.likeCnt
             }
         }
     }
