@@ -12,6 +12,8 @@ import Combine
 class PlayViewModel {
     let categoryDic = ["ALL": "전체", "EDU": "교육", "SPORTS": "스포츠", "KPOP": "K-POP"]
     
+    @Published var isLiked: Bool?
+    @Published var isDisliked: Bool?
     @Published var currentInfo: GeneralVideo?
     @Published var videoInfo: VideoInfo?
     var videoId: Int? {
@@ -34,6 +36,8 @@ class PlayViewModel {
             VideoServiceAPI.shared.loadSingleVideo(videoId: id) { result in
                 guard let data = NetworkResultManager.shared.analyze(result: result, vc: vc, coordinator: coordinator) as? VideoInfo else { return }
                 self.videoInfo = data
+                self.isLiked = data.liked
+                self.isDisliked = data.disliked
             }
         }
     }
