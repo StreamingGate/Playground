@@ -3,11 +3,12 @@ import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import * as S from './VideoMetaData.style';
-import { lStorageService } from '@utils/service';
+import { lStorageService, modalService } from '@utils/service';
 import { useVideoAction } from '@utils/hook/query';
 
 import { IconButton } from '@components/buttons';
 import { Share, Report } from '@components/cores';
+import { AdviseModal } from '@components/feedbacks/Modals';
 
 function ActionButton({ element, content, onClick }) {
   return (
@@ -38,7 +39,7 @@ function VideoMetaData({ videoData, playType }) {
     setOverviewExpand(prev => !prev);
   };
 
-  const videoPreferUiUpdate = actionType => {
+  const handleVideoActionSuccess = actionType => {
     if (actionType === 'LIKE') {
       if (preferToggleState.liked) {
         setLikeCount(prev => prev - 1);
@@ -53,10 +54,12 @@ function VideoMetaData({ videoData, playType }) {
       } else {
         setPreferToggleState(prev => ({ ...prev, disliked: true }));
       }
+    } else if (actionType === 'REPORT') {
+      modalService.show(AdviseModal, { content: '신고되었습니다' });
     }
   };
 
-  const { mutate } = useVideoAction(videoPreferUiUpdate);
+  const { mutate } = useVideoAction(handleVideoActionSuccess);
 
   const handleLikeBtnClick = () => {
     const actionBody = {
@@ -100,6 +103,19 @@ function VideoMetaData({ videoData, playType }) {
     }
   };
 
+  const handleRoportBtnClick = () => {
+    const actionBody = {
+      id,
+      type: playType.current === 'video' ? 0 : 1,
+      action: 'REPORT',
+      uuid: userId,
+    };
+    mutate({
+      type: 'post',
+      actionBody,
+    });
+  };
+
   if (!videoData) {
     return null;
   }
@@ -122,7 +138,7 @@ function VideoMetaData({ videoData, playType }) {
             content='싫어요'
           />
           <ActionButton element={<Share />} content='공유' />
-          <ActionButton element={<Report />} content='신고' />
+          <ActionButton onClick={handleRoportBtnClick} element={<Report />} content='신고' />
         </S.ActionContainer>
       </S.VideoInfoContainer>
       <S.VideoSubInfoContainer>
