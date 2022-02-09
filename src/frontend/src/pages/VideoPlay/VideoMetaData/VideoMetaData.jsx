@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import * as S from './VideoMetaData.style';
 
 import { IconButton } from '@components/buttons';
-import { ThumbUp, ThumbDown, Share, Report } from '@components/cores';
+import { Share, Report } from '@components/cores';
 
 function ActionButton({ element, content, onClick }) {
   return (
@@ -17,6 +17,14 @@ function ActionButton({ element, content, onClick }) {
 
 function VideoMetaData({ videoData }) {
   const [isOverviewExpand, setOverviewExpand] = useState(false);
+  const [preferToggleState, setPreferToggleState] = useState({ liked: false, disliked: false });
+
+  useEffect(() => {
+    if (videoData?.liked !== undefined) {
+      const { liked, disliked } = videoData;
+      setPreferToggleState({ liked, disliked });
+    }
+  }, [videoData]);
 
   const handleExpandBtnClick = () => {
     setOverviewExpand(prev => !prev);
@@ -33,8 +41,14 @@ function VideoMetaData({ videoData }) {
       <S.VideoInfoContainer>
         <S.WatchPeople type='caption'>6702명 시청 중</S.WatchPeople>
         <S.ActionContainer>
-          <ActionButton element={<ThumbUp />} content={`${videoData.likeCnt} 회`} />
-          <ActionButton element={<ThumbDown />} content='싫어요' />
+          <ActionButton
+            element={<S.ThumbUpIcon isToggle={preferToggleState.liked} />}
+            content={`${videoData.likeCnt} 회`}
+          />
+          <ActionButton
+            element={<S.ThumbDownIcon isToggle={preferToggleState.disliked} />}
+            content='싫어요'
+          />
           <ActionButton element={<Share />} content='공유' />
           <ActionButton element={<Report />} content='신고' />
         </S.ActionContainer>
