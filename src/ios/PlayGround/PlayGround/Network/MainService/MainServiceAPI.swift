@@ -97,14 +97,14 @@ struct MainServiceAPI {
         task.resume()
     }
     
-    func cancelButtons(videoId: String, type: Int, action: String, uuid: String, completion: @escaping ([String: Any])->Void) {
+    func cancelButtons(videoId: Int, type: Int, action: Action, uuid: String, completion: @escaping ([String: Any])->Void) {
         guard let tokenInfo = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue) else {
             completion(["result": "Invalid Token"])
             return
         }
         let url = URL(string: "\(mainServiceUrl)/action")!
         var request = URLRequest(url: url)
-        let postData : [String: Any] = ["id": videoId, "type" : type, "action": action, "uuid": uuid]
+        let postData : [String: Any] = ["id": videoId, "type" : type, "action": action.rawValue, "uuid": uuid]
         let jsonData = try? JSONSerialization.data(withJSONObject: postData)
         request.httpMethod = "DELETE"
         request.httpBody = jsonData

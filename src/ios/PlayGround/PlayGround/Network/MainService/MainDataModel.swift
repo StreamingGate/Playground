@@ -31,6 +31,7 @@ struct GeneralVideo: Codable {
     let createdAt: String
     let streamingId: String?
     let chatRoomId: String?
+    let uuid: String?
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -44,6 +45,7 @@ struct GeneralVideo: Codable {
         case createdAt
         case streamingId
         case chatRoomId
+        case uuid
     }
 }
 

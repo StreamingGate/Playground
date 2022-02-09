@@ -18,12 +18,13 @@ class ChattingViewController: UIViewController {
     @Published var isBottomFocused = true
     @IBOutlet weak var bottomScrollImageView: UIImageView!
     @IBOutlet weak var bottomScrollButton: UIButton!
+    var roomId = ""
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         // 추후에 실제 roomId로 변경
-        viewModel.roomId = "05e354e8-61bd-4764-96f7-7ebb4ac845de"
+        viewModel.roomId = self.roomId
         viewModel.connectToSocket()
         bindViewModelData()
         setupUI()

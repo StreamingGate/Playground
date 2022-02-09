@@ -10,8 +10,11 @@ import UIKit
 import Combine
 import AVFoundation
 import SwiftKeychainWrapper
+import WebRTC
 
 class PlayViewController: UIViewController {
+    @IBOutlet var remoteVideoView: RTCEAGLVideoView!
+    var roomId = ""
     
     // MARK: - Properties
     // player
@@ -136,6 +139,7 @@ class PlayViewController: UIViewController {
         super.viewDidDisappear(animated)
         if let observer = timeObserver {
             self.playView.player?.removeTimeObserver(observer)
+            self.timeObserver = nil
         }
         self.playView.player?.replaceCurrentItem(with: nil)
     }
@@ -309,18 +313,19 @@ class PlayViewController: UIViewController {
             miniChannelNameLabel.topAnchor.constraint(equalTo: self.miniTitleLabel.bottomAnchor, constant: 1),
             miniCloseButton.centerYAnchor.constraint(equalTo: self.miniBackView.centerYAnchor),
             miniCloseButton.trailingAnchor.constraint(equalTo: self.miniBackView.trailingAnchor, constant: -15),
-            miniCloseButton.widthAnchor.constraint(equalToConstant: 24),
-            miniCloseButton.heightAnchor.constraint(equalToConstant: 24),
+            miniCloseButton.widthAnchor.constraint(equalToConstant: 40),
+            miniCloseButton.heightAnchor.constraint(equalToConstant: 40),
             miniPlayPauseButton.trailingAnchor.constraint(equalTo: self.miniCloseButton.leadingAnchor, constant: -20),
             miniPlayPauseButton.centerYAnchor.constraint(equalTo: self.miniBackView.centerYAnchor),
-            miniPlayPauseButton.widthAnchor.constraint(equalToConstant: 24),
-            miniPlayPauseButton.heightAnchor.constraint(equalToConstant: 24),
+            miniPlayPauseButton.widthAnchor.constraint(equalToConstant: 40),
+            miniPlayPauseButton.heightAnchor.constraint(equalToConstant: 40),
         ])
     }
     
     // add chat view
-    func connectChatView() {
+    func connectChatView(roomId: String?) {
         guard let chattingVC = UIStoryboard(name: "Chat", bundle: nil).instantiateViewController(withIdentifier: "ChattingViewController") as? ChattingViewController else { return }
+        chattingVC.roomId = roomId ?? ""
         self.addChild(chattingVC)
         self.chatDelegate = chattingVC
         self.chatContainerView.addSubview((chattingVC.view)!)
@@ -343,20 +348,32 @@ class PlayViewController: UIViewController {
                     AppUtility.lockOrientation(.all)
                 }
             }.store(in: &cancellable)
-        self.viewModel.$currentInfo.receive(on: DispatchQueue.main, options: nil)
+        self.viewModel.$videoInfo.receive(on: DispatchQueue.main, options: nil)
             .sink { [weak self] currentInfo in
                 guard let self = self, let info = currentInfo else { return }
                 self.titleLabel.text = info.title
                 self.categoryLabel.text = "#\(self.viewModel.categoryDic[info.category] ?? "기타")"
-                self.channelNicknameLabel.text = (info.uploaderNickname == nil) ? info.hostNickname : info.uploaderNickname
                 self.miniTitleLabel.text = info.title
-                self.miniChannelNameLabel.text = (info.uploaderNickname == nil) ? info.hostNickname : info.uploaderNickname
-        //        channelProfileImageView.downloadImageFrom(link: info., contentMode: <#T##UIView.ContentMode#>)
-                self.viewLabel.text = info.hits == nil ? "" : "조회수 \(info.hits ?? 0)회"
+                self.channelProfileImageView.downloadImageFrom(link: info.uploaderProfileImage, contentMode: .scaleAspectFill)
+                self.viewLabel.text = "조회수 \(info.hits)회"
                 self.playControllView.isHidden = self.viewModel.isLive
                 self.miniPlayPauseButton.alpha = self.viewModel.isLive ? 0 : 1
-                self.setPlayer(urlInfo: info.fileLink ?? "")
-                self.connectChatView()
+                self.setPlayer(urlInfo: info.streamingUrl)
+//                self.connectChatView(roomId: info.videoUuid)
+            }.store(in: &cancellable)
+        self.viewModel.$currentInfo.receive(on: DispatchQueue.main, options: nil)
+            .sink { [weak self] currentInfo in
+                guard let self = self, let info = currentInfo else { return }
+                if info.uploaderNickname == nil {
+                    self.remoteVideoView.isHidden = false
+                    self.connectWebSocket()
+                } else {
+                    self.remoteVideoView.isHidden = true
+                }
+                self.channelNicknameLabel.text = (info.uploaderNickname == nil) ? info.hostNickname : info.uploaderNickname
+                self.miniChannelNameLabel.text = (info.uploaderNickname == nil) ? info.hostNickname : info.uploaderNickname
+                self.connectChatView(roomId: info.uuid)
+                self.viewModel.loadSingleInfo(vc: self, coordinator: self.coordinator)
             }.store(in: &cancellable)
         self.$isPlay.receive(on: DispatchQueue.main, options: nil)
             .sink { [weak self] tf in
@@ -371,6 +388,39 @@ class PlayViewController: UIViewController {
                     self.miniPlayPauseButton.setImage(UIImage(named: "play_black"), for: .normal)
                     self.playPauseButton.setImage(UIImage(named: "play_white"), for: .normal)
                 }
+            }.store(in: &cancellable)
+        self.viewModel.$isLiked.receive(on: DispatchQueue.main, options: nil)
+            .sink { [weak self] tf in
+                guard let self = self else { return }
+                guard let liked = tf else {
+                    self.likeButton.isEnabled = false
+                    return
+                }
+                self.likeButton.isEnabled = true
+                if liked {
+                    self.likeImageView.image = UIImage(named: "thumbUp_fill_black")
+                } else {
+                    self.likeImageView.image = UIImage(named: "thumbUp_empty")
+                }
+            }.store(in: &cancellable)
+        self.viewModel.$isDisliked.receive(on: DispatchQueue.main, options: nil)
+            .sink { [weak self] tf in
+                guard let self = self else { return }
+                guard let disliked = tf else {
+                    self.dislikeButton.isEnabled = false
+                    return
+                }
+                self.dislikeButton.isEnabled = true
+                if disliked {
+                    self.dislikeImageView.image = UIImage(named: "thumbDown_fill_black")
+                } else {
+                    self.dislikeImageView.image = UIImage(named: "thumbDown_empty")
+                }
+            }.store(in: &cancellable)
+        self.viewModel.$likeCount.receive(on: DispatchQueue.main, options: nil)
+            .sink { [weak self] num in
+                guard let self = self else { return }
+                self.likeLabel.text = "\(num)회"
             }.store(in: &cancellable)
     }
     
@@ -390,12 +440,25 @@ class PlayViewController: UIViewController {
     @IBAction func likeButtonDidTap(_ sender: Any) {
         guard let info = viewModel.currentInfo, let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else { return }
         likeButton.isEnabled = false
-        MainServiceAPI.shared.tapButtons(videoId: info.id, type: (info.hostNickname == nil ? 0 : 1), action: Action.Like, uuid: uuid) { result in
-            print("result: \(result)")
-            DispatchQueue.main.async {
-                self.likeButton.isEnabled = true
-                if result["result"] as? String == "success" {
-                    // UI 변경 및 유저정보 업데이트
+        if let liked = self.viewModel.isLiked, liked == true {
+            MainServiceAPI.shared.cancelButtons(videoId: info.id, type: (info.hostNickname == nil ? 0 : 1), action: Action.Like, uuid: uuid) { result in
+                DispatchQueue.main.async {
+                    self.likeButton.isEnabled = true
+                    if result["result"] as? String == "success" {
+                        self.viewModel.likeCount = (self.viewModel.likeCount == 0 ? 0 : self.viewModel.likeCount - 1)
+                        self.viewModel.isLiked = false
+                    }
+                }
+            }
+        } else {
+            MainServiceAPI.shared.tapButtons(videoId: info.id, type: (info.hostNickname == nil ? 0 : 1), action: Action.Like, uuid: uuid) { result in
+                print("result: \(result)")
+                DispatchQueue.main.async {
+                    self.likeButton.isEnabled = true
+                    if result["result"] as? String == "success" {
+                        self.viewModel.likeCount += 1
+                        self.viewModel.isLiked = true
+                    }
                 }
             }
         }
@@ -404,19 +467,30 @@ class PlayViewController: UIViewController {
     @IBAction func dislikeButtonDidTap(_ sender: Any) {
         guard let info = viewModel.currentInfo, let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else { return }
         dislikeButton.isEnabled = false
-        MainServiceAPI.shared.tapButtons(videoId: info.id, type: (info.hostNickname == nil ? 0 : 1), action: Action.Dislike, uuid: uuid) { result in
-            print("result: \(result)")
-            DispatchQueue.main.async {
-                self.dislikeButton.isEnabled = true
-                if result["result"] as? String == "success" {
-                    // UI 변경 및 유저정보 업데이트
+        if let disliked = self.viewModel.isDisliked, disliked == true {
+            MainServiceAPI.shared.cancelButtons(videoId: info.id, type: (info.hostNickname == nil ? 0 : 1), action: Action.Dislike, uuid: uuid) { result in
+                DispatchQueue.main.async {
+                    self.dislikeButton.isEnabled = true
+                    if result["result"] as? String == "success" {
+                        self.viewModel.isDisliked = false
+                    }
+                }
+            }
+        } else {
+            MainServiceAPI.shared.tapButtons(videoId: info.id, type: (info.hostNickname == nil ? 0 : 1), action: Action.Dislike, uuid: uuid) { result in
+                print("result: \(result)")
+                DispatchQueue.main.async {
+                    self.dislikeButton.isEnabled = true
+                    if result["result"] as? String == "success" {
+                        self.viewModel.isDisliked = true
+                    }
                 }
             }
         }
     }
     
     @IBAction func shareButtonDidTap(_ sender: Any) {
-        guard let url = URL(string: "naver.com") else { return }
+        guard let id = self.viewModel.currentInfo?.id, let url = URL(string: "https://streaminggate.shop/video-play/\(id)") else { return }
         let shareSheetVC = UIActivityViewController(activityItems: [url], applicationActivities: nil)
         present(shareSheetVC, animated: true, completion: nil)
     }
@@ -430,7 +504,7 @@ class PlayViewController: UIViewController {
             DispatchQueue.main.async {
                 self.reportButton.isEnabled = true
                 if result["result"] as? String == "success" {
-                    // UI 변경 및 유저정보 업데이트
+                    self.simpleAlert(message: "신고되었습니다")
                 }
             }
         }
