@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import * as S from './VideoMetaData.style';
+import { lStorageService } from '@utils/service';
+import { useVideoAction } from '@utils/hook/query';
 
 import { IconButton } from '@components/buttons';
 import { Share, Report } from '@components/cores';
@@ -15,19 +18,86 @@ function ActionButton({ element, content, onClick }) {
   );
 }
 
-function VideoMetaData({ videoData }) {
+function VideoMetaData({ videoData, playType }) {
+  const { id } = useParams();
+  const userId = lStorageService.getItem('uuid');
+
   const [isOverviewExpand, setOverviewExpand] = useState(false);
   const [preferToggleState, setPreferToggleState] = useState({ liked: false, disliked: false });
+  const [likeCount, setLikeCount] = useState(0);
 
   useEffect(() => {
     if (videoData?.liked !== undefined) {
-      const { liked, disliked } = videoData;
+      const { liked, disliked, likeCnt } = videoData;
+      setLikeCount(likeCnt);
       setPreferToggleState({ liked, disliked });
     }
   }, [videoData]);
 
   const handleExpandBtnClick = () => {
     setOverviewExpand(prev => !prev);
+  };
+
+  const videoPreferUiUpdate = actionType => {
+    if (actionType === 'LIKE') {
+      if (preferToggleState.liked) {
+        setLikeCount(prev => prev - 1);
+        setPreferToggleState(prev => ({ ...prev, liked: false }));
+      } else {
+        setLikeCount(prev => prev + 1);
+        setPreferToggleState(prev => ({ ...prev, liked: true }));
+      }
+    } else if (actionType === 'DISLIKE') {
+      if (videoData.disliked) {
+        setPreferToggleState(prev => ({ ...prev, disliked: false }));
+      } else {
+        setPreferToggleState(prev => ({ ...prev, disliked: true }));
+      }
+    }
+  };
+
+  const { mutate } = useVideoAction(videoPreferUiUpdate);
+
+  const handleLikeBtnClick = () => {
+    const actionBody = {
+      id,
+      type: playType.current === 'video' ? 0 : 1,
+      action: 'LIKE',
+      uuid: userId,
+    };
+
+    if (preferToggleState.liked) {
+      mutate({
+        type: 'delete',
+        actionBody,
+      });
+    } else {
+      mutate({
+        type: 'post',
+        actionBody,
+      });
+    }
+  };
+
+  const handleDisLikeBtnClick = () => {
+    const actionBody = {
+      id,
+      type: playType.current === 'video' ? 0 : 1,
+      action: 'DISLIKE',
+      uuid: userId,
+    };
+
+    if (preferToggleState.disliked) {
+      mutate({
+        type: 'delete',
+        actionBody,
+      });
+    } else {
+      mutate({
+        type: 'post',
+        actionBody,
+      });
+    }
   };
 
   if (!videoData) {
@@ -42,10 +112,12 @@ function VideoMetaData({ videoData }) {
         <S.WatchPeople type='caption'>6702명 시청 중</S.WatchPeople>
         <S.ActionContainer>
           <ActionButton
+            onClick={handleLikeBtnClick}
             element={<S.ThumbUpIcon isToggle={preferToggleState.liked} />}
-            content={`${videoData.likeCnt} 회`}
+            content={`${likeCount} 회`}
           />
           <ActionButton
+            onClick={handleDisLikeBtnClick}
             element={<S.ThumbDownIcon isToggle={preferToggleState.disliked} />}
             content='싫어요'
           />
