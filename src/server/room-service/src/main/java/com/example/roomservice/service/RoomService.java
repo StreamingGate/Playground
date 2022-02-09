@@ -56,4 +56,9 @@ public class RoomService {
 
         return Optional.of(responseDto).orElseThrow(()-> new CustomRoomException(ErrorCode.L002));
     }
+
+    @Transactional
+    public String check(String uuid) throws CustomRoomException {
+        return Optional.of(roomRepository.findByUuid(uuid).get().getUuid()).orElseThrow(() -> new CustomRoomException(ErrorCode.L002));
+    }
 }

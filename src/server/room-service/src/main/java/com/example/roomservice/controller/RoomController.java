@@ -16,14 +16,14 @@ import java.util.Map;
 @RestController
 public class RoomController {
     private final RoomService roomService;
-
+    /* 방 참가 */
     @GetMapping("/room")
     public ResponseEntity<ResponseDto> join(@RequestParam (value = "roomId") Long roomId,
                                             @RequestParam (value = "uuid") String uuid) throws Exception {
         ResponseDto responseDto = roomService.join(roomId,uuid);
         return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     }
-
+    /* 방 생성 */
     @PostMapping("/room")
     public ResponseEntity<Map<String,String>> create(@RequestBody RequestDto requestDto) throws Exception {
         ResponseDto responseDto = roomService.create(requestDto);
@@ -32,4 +32,10 @@ public class RoomController {
         res.put("uuid",requestDto.getUuid());
         return ResponseEntity.status(HttpStatus.CREATED).body(res);
     }
+    /* 방 생성 가능한 uuid인지 체크 */
+    @GetMapping("/check")
+    public ResponseEntity<String> check(@RequestParam (value = "uuid") String uuid) throws Exception {
+        return ResponseEntity.status(HttpStatus.OK).body(roomService.check(uuid));
+    }
+
 }

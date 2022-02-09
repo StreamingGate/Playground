@@ -38,11 +38,12 @@ public class RoomViewer {
 
 
     @Builder
-    public RoomViewer(Boolean liked,Long roomUuid,String userUuid) {
+    public RoomViewer(Boolean liked,Long roomUuid,String userUuid,LocalDateTime lastViewedAt) {
         this.liked = liked;
         this.disliked = liked? false : true;
         this.roomUuid = roomUuid;
         this.userUuid = userUuid;
+        this.lastViewedAt = lastViewedAt;
     }
 
     public static RoomViewer join(Long roomUuid,String userUuid,Boolean liked) {
@@ -50,7 +51,7 @@ public class RoomViewer {
                 .roomUuid(roomUuid)
                 .userUuid(userUuid)
                 .liked(liked)
+                .lastViewedAt(LocalDateTime.now())
                 .build();
     }
-
 }
