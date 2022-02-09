@@ -11,7 +11,7 @@ const cancelAction = async actionBody => {
   return { data, action: actionBody.action };
 };
 
-export default function useVideoAction(videoPreferUiUpdate) {
+export default function useVideoAction(handleReqSucess) {
   return useMutation(
     ({ type, actionBody }) => {
       let reqMethod = null;
@@ -29,7 +29,7 @@ export default function useVideoAction(videoPreferUiUpdate) {
     {
       onSuccess: data => {
         const { action } = data;
-        videoPreferUiUpdate(action);
+        handleReqSucess(action);
       },
     }
   );
