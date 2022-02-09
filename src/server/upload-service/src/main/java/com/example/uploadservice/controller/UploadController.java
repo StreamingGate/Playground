@@ -28,15 +28,39 @@ public class UploadController {
 
     @PostMapping(value = "/upload", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<Map<String, String>> video(@RequestPart(value = "video") MultipartFile multipartFileVideo,
-                                        @RequestPart(value = "thumbnail", required = false) MultipartFile multipartFileThumbnail,
-                                        @RequestPart(value = "data") UploadRequestDto dto) throws CustomUploadException  {
+                                                     @RequestPart(value = "thumbnail", required = false) MultipartFile multipartFileThumbnail,
+                                                     @RequestPart(value = "data") UploadRequestDto dto) throws CustomUploadException  {
         VideoDto videoDto = new VideoDto(dto);
         String videoUuid = uploadService.uploadRawFile(multipartFileVideo, multipartFileThumbnail, videoDto);
-        transcodeService.convertMp4ToTs(videoUuid, multipartFileThumbnail);
+        transcodeService.convertMp4ToTs(videoUuid, multipartFileThumbnail, videoDto);
         String s3OutputPath = uploadService.uploadTranscodedFile(videoUuid);
         videoDto.updateMetaData(s3OutputPath);
         videoService.add(videoDto);
 
+        return ResponseEntity.ok(Map.of("result", "success"));
+    }
+
+    @PostMapping(value="/live/{roomId}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<Map<String, String>> live(@RequestPart(value = "video") MultipartFile multipartFileVideo,
+                                                    @RequestPart(value = "thumbnail", required = false) MultipartFile multipartFileThumbnail,
+                                                    @RequestPart(value = "data") UploadRequestDto dto,
+                                                    @PathVariable(value = "roomId") Long roomId) throws CustomUploadException  {
+
+        VideoDto videoDto = new VideoDto(dto);
+        String videoUuid = uploadService.uploadRawFile(multipartFileVideo, multipartFileThumbnail, videoDto);
+        transcodeService.convertMp4ToTs(videoUuid, multipartFileThumbnail, videoDto);
+        String s3OutputPath = uploadService.uploadTranscodedFile(videoUuid);
+        videoDto.updateMetaData(s3OutputPath);
+
+        Video video = videoService.add(videoDto);
+        videoService.remove(video, roomId);
+        return ResponseEntity.ok(Map.of("result", "success"));
+    }
+
+    @PostMapping(value="/aws-converter", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<Map<String, String>> videoByAwsConverter (@RequestPart(value = "video") MultipartFile multipartFileVideo,
+                                                     @RequestPart(value = "thumbnail", required = false) MultipartFile multipartFileThumbnail,
+                                                     @RequestPart(value = "data") UploadRequestDto dto) throws CustomUploadException  {
         return ResponseEntity.ok(Map.of("result", "success"));
     }
 }

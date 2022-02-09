@@ -9,6 +9,8 @@ import java.time.LocalDateTime;
 @Data
 public class VideoDto {
 
+    private static final String DEFAULT_THUMBNAIL_NAME = "thumbnail";
+
     private String title;
     private String content;
     private Category category;
@@ -25,6 +27,9 @@ public class VideoDto {
         this.uploaderUuid = dto.getUuid();
     }
 
+    public void updateThumbnailName(String originalName){
+        this.thumbnailName = DEFAULT_THUMBNAIL_NAME + "." + originalName.split("\\.")[1];
+    }
     /**
      * raw file upload 직후
      */

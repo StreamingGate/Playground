@@ -109,6 +109,18 @@ services:
       - service-discovery
     networks:
       - sg-network
+  room-service:
+    image: wodndl895/room-service:1.0
+    environment:
+      spring.datasource.url: jdbc:mariadb://pg-mariadb:3306/playground
+      eureka.client.serviceUrl.defaultZone: http://service-discovery:8761/eureka/
+    depends_on:
+      - pg-mariadb
+    links:
+      - pg-mariadb
+    restart: always
+    networks:
+      - sg-network
 
 networks:
   sg-network:
