@@ -29,6 +29,10 @@ class PlayerCoordinator: Coordinator {
                 if playVC.viewModel.currentInfo?.id != info?.id {
                     playVC.viewModel.currentInfo = info
                 }
+                if let observer = playVC.timeObserver {
+                    playVC.playView.player?.removeTimeObserver(observer)
+                    playVC.timeObserver = nil
+                }
                 playVC.isMinimized = false
                 mainVC.playViewTopMargin.constant = 0
                 mainVC.tabBarHeight.constant = 0

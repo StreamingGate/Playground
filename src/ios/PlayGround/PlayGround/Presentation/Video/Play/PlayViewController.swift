@@ -137,6 +137,7 @@ class PlayViewController: UIViewController {
         super.viewDidDisappear(animated)
         if let observer = timeObserver {
             self.playView.player?.removeTimeObserver(observer)
+            self.timeObserver = nil
         }
         self.playView.player?.replaceCurrentItem(with: nil)
     }
@@ -310,12 +311,12 @@ class PlayViewController: UIViewController {
             miniChannelNameLabel.topAnchor.constraint(equalTo: self.miniTitleLabel.bottomAnchor, constant: 1),
             miniCloseButton.centerYAnchor.constraint(equalTo: self.miniBackView.centerYAnchor),
             miniCloseButton.trailingAnchor.constraint(equalTo: self.miniBackView.trailingAnchor, constant: -15),
-            miniCloseButton.widthAnchor.constraint(equalToConstant: 24),
-            miniCloseButton.heightAnchor.constraint(equalToConstant: 24),
+            miniCloseButton.widthAnchor.constraint(equalToConstant: 40),
+            miniCloseButton.heightAnchor.constraint(equalToConstant: 40),
             miniPlayPauseButton.trailingAnchor.constraint(equalTo: self.miniCloseButton.leadingAnchor, constant: -20),
             miniPlayPauseButton.centerYAnchor.constraint(equalTo: self.miniBackView.centerYAnchor),
-            miniPlayPauseButton.widthAnchor.constraint(equalToConstant: 24),
-            miniPlayPauseButton.heightAnchor.constraint(equalToConstant: 24),
+            miniPlayPauseButton.widthAnchor.constraint(equalToConstant: 40),
+            miniPlayPauseButton.heightAnchor.constraint(equalToConstant: 40),
         ])
     }
     
