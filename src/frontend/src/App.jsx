@@ -26,8 +26,9 @@ function App() {
       <ThemeProvider theme={theme}>
         <GlobalStyle />
         <NormalizeStyle />
-        <modalService.Provider>
-          <Router navigator={history}>
+
+        <Router navigator={history}>
+          <modalService.Provider>
             <Routes>
               <Route path='/' element={<Navigate to='/login' />} />
               <Route path='/login' element={<LoginPage />} />
@@ -38,12 +39,12 @@ function App() {
                 <Route path='live-play/:id' element={<VideoPlayPage />} />
                 <Route path='channel/:id' element={<ChannelPage />} />
                 <Route path='mypage/:type' element={<MyPage />} />
-                <Route path='studio' element={<StudioPage />} />
+                <Route path='studio/:roomId' element={<StudioPage />} />
               </Route>
               <Route path='/m/studio' element={<MobileStudioPage />} />
             </Routes>
-          </Router>
-        </modalService.Provider>
+          </modalService.Provider>
+        </Router>
       </ThemeProvider>
       <ReactQueryDevtools initialIsOpen={false} position='bottom-right' />
     </QueryClientProvider>
