@@ -6,12 +6,20 @@ const getVideoInfo = async (videoId, uuid) => {
   return data;
 };
 
+const getLiveInfo = async (roomId, uuid) => {
+  const data = await axios.get(`/room-service/room?roomId=${roomId}&uuid=${uuid}`);
+  return data;
+};
+
 export default function useGetVideoInfo(type, videoId, uuid, onSuccess) {
   return useQuery(
     [type, videoId],
     () => {
       let reqMethod = null;
       switch (type) {
+        case 'live':
+          reqMethod = getLiveInfo;
+          break;
         default:
           reqMethod = getVideoInfo;
           break;
@@ -19,6 +27,6 @@ export default function useGetVideoInfo(type, videoId, uuid, onSuccess) {
 
       return reqMethod(videoId, uuid);
     },
-    { onSuccess, refetchOnWindowFocus: false, enabled: type === 'video' }
+    { onSuccess, refetchOnWindowFocus: false }
   );
 }
