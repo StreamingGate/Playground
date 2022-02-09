@@ -32,5 +32,16 @@ extension String {
             return "\(differenceYear)년 전"
         }
     }
+    
+    func getDateString_chat() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
+        dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+        guard let dateInfo = dateFormatter.date(from: self) else { return "정보 없음" }
+        dateFormatter.timeZone = TimeZone.current
+        dateFormatter.locale = Locale(identifier: "ko_KR")
+        dateFormatter.dateFormat = "a hh:mm"
+        return dateFormatter.string(from: dateInfo)
+    }
 }
 

@@ -13,4 +13,6 @@ struct ChatData: Codable {
     let nickname: String
     let roomId: String
     let senderRole: String
+    let profileImage: String
+    let timeStamp: String
 }

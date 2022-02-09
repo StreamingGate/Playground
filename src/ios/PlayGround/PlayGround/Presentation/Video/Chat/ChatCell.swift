@@ -15,13 +15,16 @@ class ChatCell: UITableViewCell {
     @IBOutlet weak var contentLabel: UILabel!
     
     func setupUI(info: ChatData) {
+        profileImageView.image = nil
         profileImageView.backgroundColor = UIColor.placeHolder
         profileImageView.layer.cornerRadius = 15
+        profileImageView.downloadImageFrom(link: info.profileImage, contentMode: .scaleAspectFill)
         timeLabel.font = UIFont.bottomTab
         nicknameLabel.font = UIFont.highlightCaption
         nicknameLabel.textColor = UIColor.placeHolder
         contentLabel.font = UIFont.Content
         contentLabel.text = info.message
         nicknameLabel.text = info.nickname
+        timeLabel.text = info.timeStamp.getDateString_chat()
     }
 }
