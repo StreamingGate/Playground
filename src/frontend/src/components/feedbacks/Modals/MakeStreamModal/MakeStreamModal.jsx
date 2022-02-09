@@ -8,7 +8,6 @@ import { modalService, mediaService } from '@utils/service';
 
 import { Dialog } from '@components/feedbacks';
 import { AdviseModal } from '@components/feedbacks/Modals';
-import { Select } from '@components/forms';
 
 const TITLE_MAX_LEN = 100;
 const CONTENT_MAX_LEN = 5000;
