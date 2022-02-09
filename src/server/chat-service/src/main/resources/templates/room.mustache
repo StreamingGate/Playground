@@ -46,8 +46,10 @@
     };
     enterRoom= (roomId) => {
         console.log("enterRoom btn");
-        const sender = prompt('대화명을 입력해 주세요.');
-        localStorage.setItem('wschat.sender',sender);
+        const senderUuid = prompt('본인의 uuid를 입력해 주세요. 11111111-1234-1234-123456789012');
+        const senderNickname = prompt('본인의 닉네임을 입력해 주세요.');
+        localStorage.setItem('wschat.senderUuid',senderUuid);
+        localStorage.setItem('wschat.senderNickname',senderNickname);
         localStorage.setItem('wschat.roomId',roomId);
         location.href="/chat/room/enter/"+roomId;
     };

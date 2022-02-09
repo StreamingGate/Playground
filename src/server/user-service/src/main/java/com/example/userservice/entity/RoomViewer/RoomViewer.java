@@ -1,7 +1,7 @@
-package com.example.roomservice.entity.RoomViewer;
+package com.example.userservice.entity.RoomViewer;
 
-import com.example.roomservice.entity.Room.Room;
-import com.example.roomservice.entity.User.User;
+import com.example.userservice.entity.Room.Room;
+import com.example.userservice.entity.User.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @Getter
-@Entity(name = "room_viewer")
+@Entity
 public class RoomViewer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,22 +36,12 @@ public class RoomViewer {
     @JoinColumn(name = "room_id")
     private Room room;
 
-
     @Builder
-    public RoomViewer(Boolean liked,Long roomUuid,String userUuid,LocalDateTime lastViewedAt) {
+    public RoomViewer(Boolean liked,Long roomUuid,String userUuid) {
         this.liked = liked;
         this.disliked = liked? false : true;
         this.roomUuid = roomUuid;
         this.userUuid = userUuid;
-        this.lastViewedAt = lastViewedAt;
     }
 
-    public static RoomViewer join(Long roomUuid,String userUuid,Boolean liked) {
-        return RoomViewer.builder()
-                .roomUuid(roomUuid)
-                .userUuid(userUuid)
-                .liked(liked)
-                .lastViewedAt(LocalDateTime.now())
-                .build();
-    }
 }

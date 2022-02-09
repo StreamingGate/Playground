@@ -1,18 +1,23 @@
 package com.example.userservice.entity.User;
 
-import com.example.userservice.dto.RegisterUser;
-import com.example.userservice.dto.RequestMyinfo;
+import com.example.userservice.dto.user.RegisterUser;
+import com.example.userservice.dto.user.RequestMyinfo;
+import com.example.userservice.entity.RoomViewer.RoomViewer;
+import com.example.userservice.entity.Video.Video;
+import com.example.userservice.entity.ViewdHistory.ViewedHistory;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.LinkedList;
+import java.util.List;
 
 @NoArgsConstructor
 @Getter
 @Entity(name = "users")
-public class UserEntity {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
@@ -53,10 +58,19 @@ public class UserEntity {
     private String timeZone;
 
     @Column
-    private  LocalDate lastAt;
+    private LocalDate lastAt;
+
+    @OneToMany(mappedBy = "user")
+    private List<RoomViewer> roomViewers = new LinkedList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Video> videos = new LinkedList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<ViewedHistory> viewedHistories = new LinkedList<>();
 
     @Builder
-    public UserEntity(String email,String uuid,String pwd,String name,String nickName,String profileImage,UserState state) {
+    public User(String email, String uuid, String pwd, String name, String nickName, String profileImage, UserState state) {
         this.email = email;
         this.uuid = uuid;
         this.pwd = pwd;
@@ -66,8 +80,8 @@ public class UserEntity {
         this.state = state;
     }
 
-    public static UserEntity create(RegisterUser userDto,String uuid,String pwd) {
-        return UserEntity.builder()
+    public static User create(RegisterUser userDto, String uuid, String pwd) {
+        return User.builder()
                 .email(userDto.getEmail())
                 .uuid(uuid)
                 .pwd(pwd)

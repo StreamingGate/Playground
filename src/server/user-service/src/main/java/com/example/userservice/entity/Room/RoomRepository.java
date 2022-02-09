@@ -1,4 +1,4 @@
-package com.example.roomservice.entity.Room;
+package com.example.userservice.entity.Room;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,6 +16,4 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
 
     @Query("SELECT r.id FROM room r WHERE r.id = :roomId")
     Room getRoom(Long roomId);
-
-    Optional<Room> findByUuid(String uuid);
 }

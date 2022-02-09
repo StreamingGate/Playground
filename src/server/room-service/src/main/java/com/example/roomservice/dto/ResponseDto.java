@@ -7,9 +7,10 @@ import java.time.LocalDate;
 @Data
 public class ResponseDto {
     private Long roomId;
-    private String uuid;
+    private String uuid; // room={uuid}
     private String hostNickname;
     private String hostUuid;
+    private String title;
     private String content;
     private Integer likeCnt;
     private Category category;

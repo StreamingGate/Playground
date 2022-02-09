@@ -1,12 +1,11 @@
 package com.example.chatservice.model.room;
 
+import com.example.chatservice.model.chat.ChatConsume;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
-import com.example.chatservice.model.chat.Chat;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 /**
  * Redis에 저장되는 객체들은 Serialize가능해야한다.
@@ -20,11 +19,11 @@ public class Room implements Serializable {
     private String id;
     private String name;
     private int userCnt;
-    private List<Chat> pinnedChats = new ArrayList<>();
+    private List<ChatConsume> pinnedChats = new ArrayList<>();
 
-    public Room(String name)  {
-        this.id = UUID.randomUUID().toString();
-        this.name = name;
+    public Room(String uuid)  {
+        this.id = uuid;
+        this.name = uuid;
         this.userCnt = 0;
     }
 
