@@ -130,6 +130,17 @@ class PlayViewController: UIViewController {
         bindingData()
     }
     
+    private func connectWebSocket(roomUUID: String) {
+        guard let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else { return }
+        self.socket = EchoSocket.init();
+        self.socket?.register(observer: self)
+        do {
+            self.roomId = roomUUID
+            try self.socket!.connect(wsUri: "wss://streaminggate.shop:4443/?room=\(roomUUID)&peer=\(uuid)&role=consume")
+        } catch {
+            print("Failed to connect to server")
+        }
+    }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         AppUtility.lockOrientation(.all)
@@ -351,6 +362,7 @@ class PlayViewController: UIViewController {
         self.viewModel.$videoInfo.receive(on: DispatchQueue.main, options: nil)
             .sink { [weak self] currentInfo in
                 guard let self = self, let info = currentInfo else { return }
+                if self.viewModel.isLive == true { return }
                 self.titleLabel.text = info.title
                 self.categoryLabel.text = "#\(self.viewModel.categoryDic[info.category] ?? "기타")"
                 self.miniTitleLabel.text = info.title
@@ -361,13 +373,28 @@ class PlayViewController: UIViewController {
                 self.setPlayer(urlInfo: info.streamingUrl)
 //                self.connectChatView(roomId: info.videoUuid)
             }.store(in: &cancellable)
+        self.viewModel.$roomInfo.receive(on: DispatchQueue.main, options: nil)
+            .sink { [weak self] currentInfo in
+                guard let self = self, let info = currentInfo else { return }
+                if self.viewModel.isLive == false { return }
+                self.titleLabel.text = info.title
+                self.categoryLabel.text = "#\(self.viewModel.categoryDic[info.category] ?? "기타")"
+                self.miniTitleLabel.text = info.title
+                self.channelProfileImageView.downloadImageFrom(link: "https://d8knntbqcc7jf.cloudfront.net/profiles/\(info.hostUuid)", contentMode: .scaleAspectFill)
+//                self.viewLabel.text = "조회수 \(info.hits)회"
+                self.playControllView.isHidden = self.viewModel.isLive
+                self.miniPlayPauseButton.alpha = self.viewModel.isLive ? 0 : 1
+                self.connectWebSocket(roomUUID: info.uuid ?? "")
+            }.store(in: &cancellable)
         self.viewModel.$currentInfo.receive(on: DispatchQueue.main, options: nil)
             .sink { [weak self] currentInfo in
                 guard let self = self, let info = currentInfo else { return }
                 if info.uploaderNickname == nil {
+                    // 실시간 스트리밍인 경우
                     self.remoteVideoView.isHidden = false
-                    self.connectWebSocket()
+                    self.playView.player?.replaceCurrentItem(with: nil)
                 } else {
+                    // 비디오 스트리밍인 경우
                     self.remoteVideoView.isHidden = true
                 }
                 self.channelNicknameLabel.text = (info.uploaderNickname == nil) ? info.hostNickname : info.uploaderNickname
