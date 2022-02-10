@@ -10,7 +10,7 @@ import { VideoOverview } from '@components/videos';
 const dummyData = [
   {
     id: 1,
-    thumbNailSrc: ThumbNailDummy,
+    thumbnail: ThumbNailDummy,
     title:
       '[오래된정원] 6화 맛집 공덕동 맛집 포장해서 즐기기 (떡볶이 맛집, 코끼리분식, 마포원조떡볶이, 영광보쌈, 마포오향족발)',
     content: `최근 외모 바이러스라는 질병이 만연하는 대한민국에 사는 평범한 고등학교 1학년생인 박장미는 모든 게 다 보통이지만 딱 하나, 
@@ -27,7 +27,7 @@ const dummyData = [
   },
   {
     id: 2,
-    thumbNailSrc: ThumbNailDummy,
+    thumbnail: ThumbNailDummy,
     title: 'KTX vs 홍보맨, 누가 더 빠를까?ㅣ국내 최초 200m 달리기 대결',
     userName: 'test',
     viewCount: 1,
@@ -35,7 +35,7 @@ const dummyData = [
   },
   {
     id: 3,
-    thumbNailSrc: ThumbNailDummy,
+    thumbnail: ThumbNailDummy,
     title: `ST워너비 '아리랑' Official MV (원곡 : SG워너비)`,
     userName: 'test',
     viewCount: 1,
@@ -43,7 +43,7 @@ const dummyData = [
   },
   {
     id: 4,
-    thumbNailSrc: ThumbNailDummy,
+    thumbnail: ThumbNailDummy,
     title:
       '[EN] 국대등장 세계랭킹1위와 붙어버렸습니다🤼 | 태권도 | 이대훈 | 국가대표 | 워크맨 ep.134',
     userName: 'test',
@@ -52,7 +52,7 @@ const dummyData = [
   },
   {
     id: 5,
-    thumbNailSrc: ThumbNailDummy,
+    thumbnail: ThumbNailDummy,
     title: 'After all this time? Always.',
     userName: 'test',
     viewCount: 1,
@@ -60,7 +60,7 @@ const dummyData = [
   },
   {
     id: 6,
-    thumbNailSrc: ThumbNailDummy,
+    thumbnail: ThumbNailDummy,
     title: `Harry Potter and the Deathly Hallows part 2 - Snape's memories part 2 (HD)`,
     userName: 'test',
     viewCount: 1,
@@ -68,7 +68,7 @@ const dummyData = [
   },
   {
     id: 7,
-    thumbNailSrc: ThumbNailDummy,
+    thumbnail: ThumbNailDummy,
     title: `After All This Time? (Snape's Story) | Learn English With Harry Potter`,
     userName: 'test',
     viewCount: 1,
@@ -76,7 +76,7 @@ const dummyData = [
   },
   {
     id: 8,
-    thumbNailSrc: ThumbNailDummy,
+    thumbnail: ThumbNailDummy,
     title: `Harry Potter and the Deathly Hallows part 2 - Snape's memories part 2 (HD)`,
     userName: 'test',
     viewCount: 1,
@@ -84,7 +84,7 @@ const dummyData = [
   },
   {
     id: 9,
-    thumbNailSrc: ThumbNailDummy,
+    thumbnail: ThumbNailDummy,
     title: `Harry Potter and the Deathly Hallows part 2 - Snape's memories part 2 (HD)`,
     userName: 'test',
     viewCount: 1,
@@ -92,7 +92,7 @@ const dummyData = [
   },
   {
     id: 10,
-    thumbNailSrc: ThumbNailDummy,
+    thumbnail: ThumbNailDummy,
     title: `Harry Potter and the Deathly Hallows part 2 - Snape's memories part 2 (HD)`,
     userName: 'test',
     viewCount: 1,
@@ -100,7 +100,7 @@ const dummyData = [
   },
   {
     id: 11,
-    thumbNailSrc: ThumbNailDummy,
+    thumbnail: ThumbNailDummy,
     title: `Harry Potter and the Deathly Hallows part 2 - Snape's memories part 2 (HD)`,
     userName: 'test',
     viewCount: 1,
