@@ -99,7 +99,7 @@ export default function useMediaSoupConsume(isLive, videoPlayerRef, roomId) {
     console.log(audio);
 
     console.log(consumer);
-    videoPlayerRef.current.srcObject = new MediaStream([audio]);
+    videoPlayerRef.current.srcObject = new MediaStream([track, audio]);
     await peer.request('consumerResume');
   };
 
