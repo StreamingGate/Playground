@@ -43,25 +43,32 @@ public class ViewedHistory {
 
     /* 좋아요 실행 또는 취소 (좋아요 누를 시 싫어요 효과는 취소 된다.) */
     public void setLiked(boolean liked) {
-        this.liked = liked;
-        if(this.liked == true){
+
+        /* 좋아요 값 변경시 likedAt, likeCnt이 변경된다 */
+        if (this.liked == false && liked == true) {
+            video.addLikeCnt(1);
             this.likedAt = LocalDateTime.now();
             this.disliked = false;
-            video.addLikeCnt(1);
-        }
-        else{
-            this.likedAt = null;
+        } else if(this.liked == true && liked == false){
             video.addLikeCnt(-1);
+            this.likedAt = null;
         }
+        this.liked = liked;
     }
 
     /* 싫어요 실행 또는 취소 (싫어요 누를 시 좋아요 효과는 취소 된다.) */
     public void setDisliked(boolean disliked) {
-        this.disliked = disliked;
-        if(this.disliked == true){
-            this.liked = false;
-            video.addLikeCnt(-1);
-            this.likedAt = null;
+
+        /* 반영하려는 값이 현재 값과 다를때만 값 적용한다. */
+        if (this.disliked == false && disliked == true) {
+            if(this.liked == true){
+                setLiked(false);
+            }
         }
+        this.disliked = disliked;
+    }
+
+    public void updateLastViewedAt(){
+        this.lastViewedAt = LocalDateTime.now();
     }
 }
