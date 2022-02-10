@@ -55,8 +55,10 @@ class LiveViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(adjustInputView), name: UIResponder.keyboardWillHideNotification, object: nil)
         guard let nav = self.navigationController as? CreateNavigationController, let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else { return }
         self.navVC = nav
+        let config = SFSafariViewController.Configuration()
+        config.entersReaderIfAvailable = true
         guard let url = URL(string: "https://streaminggate.shop/m/studio/\(nav.roomUuid)/\(uuid)") else { return }
-        let safariViewController = SFSafariViewController(url: url)
+        let safariViewController = SFSafariViewController(url: url, configuration: config)
         safariViewController.delegate = self
         safariViewController.view.frame = self.view.bounds
         self.view.addSubview(safariViewController.view)
@@ -64,7 +66,7 @@ class LiveViewController: UIViewController {
         safariViewController.didMove(toParent: self)
         self.view.sendSubviewToBack(safariViewController.view)
         setupUI()
-        viewModel.roomId = "ae0a8eb9-ff2c-4256-8be7-f8a9e84a3afa"
+        viewModel.roomId = nav.roomUuid
         viewModel.connectToSocket()
         bindViewModelData()
     }
