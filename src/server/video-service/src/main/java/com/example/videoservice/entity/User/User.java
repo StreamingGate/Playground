@@ -1,18 +1,11 @@
-package com.example.mainservice.entity.User;
+package com.example.videoservice.entity.User;
 
-import com.example.mainservice.entity.FriendWait.FriendWait;
-import com.example.mainservice.entity.Room.Room;
-import com.example.mainservice.entity.RoomViewer.RoomViewer;
-import com.example.mainservice.entity.Notification.Notification;
-import com.example.mainservice.entity.Video.Video;
-import com.example.mainservice.entity.ViewdHistory.ViewedHistory;
-import com.example.mainservice.exceptionHandler.customexception.CustomMainException;
-import com.example.mainservice.exceptionHandler.customexception.ErrorCode;
+import com.example.videoservice.entity.Video.Video;
+import com.example.videoservice.entity.ViewdHistory.ViewedHistory;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.ColumnDefault;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -43,7 +36,7 @@ public class User {
     @Column
     private String nickName;
 
-    @Column(columnDefinition = "MEDIUMBLOB")
+    @Column(columnDefinition = "TEXT")
     private String profileImage;
 
     @Column
@@ -67,8 +60,8 @@ public class User {
     @Column
     private LocalDate lastAt;
 
-    @OneToMany(mappedBy = "user")
-    private List<RoomViewer> roomViewers = new LinkedList<>();
+//    @OneToMany(mappedBy = "user")
+//    private List<RoomViewer> roomViewers = new LinkedList<>();
 
     @OneToMany(mappedBy = "user")
     private List<Video> videos = new LinkedList<>();
@@ -76,14 +69,14 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<ViewedHistory> viewedHistories = new LinkedList<>();
 
-    @OneToMany(mappedBy = "user")
-    private List<Room> lives = new ArrayList<>();
+//    @OneToMany(mappedBy = "user")
+//    private List<Room> rooms = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
-    private List<Notification> notifications = new LinkedList<>();
-
-    @OneToMany(mappedBy = "user")
-    private List<FriendWait> friendWaits = new LinkedList<>();
+//    @OneToMany(mappedBy = "user")
+//    private List<Notification> notifications = new LinkedList<>();
+//
+//    @OneToMany(mappedBy = "user")
+//    private List<FriendWait> friendWaits = new LinkedList<>();
 
     /**
      * =============Friend=============
@@ -101,18 +94,4 @@ public class User {
     /**
      * ================================
      **/
-
-    public void addFriend(User target) throws CustomMainException {
-        if (target == null || target == this) return;
-        if (friends.contains(target)) throw new CustomMainException(ErrorCode.F003);
-        this.friends.add(target);
-        target.getFriends().add(this);
-    }
-
-    public void deleteFriend(User target) throws CustomMainException {
-        if (target == null || target == this) return;
-        if (!friends.contains(target)) throw new CustomMainException(ErrorCode.F004);
-        this.friends.remove(target);
-        target.getFriends().remove(this);
-    }
 }

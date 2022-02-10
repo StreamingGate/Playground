@@ -1,8 +1,8 @@
-package com.example.mainservice.entity.Room;
+package com.example.uploadservice.entity.Room;
 
-import com.example.mainservice.entity.Category;
-import com.example.mainservice.entity.RoomViewer.RoomViewer;
-import com.example.mainservice.entity.User.User;
+import com.example.uploadservice.entity.Category;
+import com.example.uploadservice.entity.RoomViewer.RoomViewer;
+import com.example.uploadservice.entity.User.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +33,7 @@ public class Room {
     @Column(length = 5000)
     private String content;
 
-    @Column(columnDefinition = "MEDIUMBLOB")
+    @Column(columnDefinition = "TEXT")
     private String thumbnail;
 
     private int likeCnt;
@@ -53,20 +53,4 @@ public class Room {
 
     @OneToMany(mappedBy = "room")
     private List<RoomViewer> roomViewers;
-
-    public Room(String title) {
-        this.title = title;
-    }
-
-    public void addReportCnt(int reportCnt){
-        if(reportCnt != 1 && reportCnt != -1) log.error("잘못된 신고 수가 업데이트됩니다. parameter:"+reportCnt);
-        this.reportCnt+=reportCnt;
-        if(this.reportCnt<0) this.reportCnt = 0;
-    }
-
-    public void addLikeCnt(int likeCnt){
-        if(likeCnt != 1 && likeCnt != -1) log.error("잘못된 좋아요 수가 업데이트됩니다. parameter:"+likeCnt);
-        this.likeCnt+=likeCnt;
-        if(this.likeCnt<0) this.likeCnt = 0;
-    }
 }

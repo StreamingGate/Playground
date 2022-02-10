@@ -1,11 +1,12 @@
-package com.example.userservice.entity.ViewdHistory;
+package com.example.uploadservice.entity.ViewdHistory;
 
-
-import com.example.userservice.entity.User.User;
-import com.example.userservice.entity.Video.Video;
+import com.example.uploadservice.entity.RoomViewer.RoomViewer;
+import com.example.uploadservice.entity.User.User;
+import com.example.uploadservice.entity.Video.Video;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -17,7 +18,7 @@ public class ViewedHistory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long viewedProgress;
+    private Long viewedProgress; // ms
 
     private boolean liked = false;
 
@@ -39,8 +40,15 @@ public class ViewedHistory {
     public ViewedHistory(User user, Video video) {
         this.user = user;
         this.video = video;
-        user.getViewedHistories().add(this);
-        video.getViewedHistories().add(this);
+    }
+
+    public ViewedHistory(RoomViewer roomViewer, Video video){
+        this.liked = roomViewer.isLiked();
+        this.disliked = roomViewer.isDisliked();
+        this.likedAt = roomViewer.getLikedAt();
+        this.lastViewedAt = roomViewer.getLastViewedAt();
+        this.user = roomViewer.getUser();
+        this.video = video;
     }
 
     public void setLiked(boolean liked) {
