@@ -42,6 +42,7 @@ public class Video {
     @Column(length = 10)
     private Category category;
 
+    @ColumnDefault(value = "CURRENT_TIMESTAMP")
     private LocalDateTime createdAt;
 
     @ManyToOne

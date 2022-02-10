@@ -30,7 +30,7 @@ public class Room {
 
     private String hostUuid;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "MEDIUMBLOB")
     private String thumbnail;
 
     private int likeCnt;
@@ -53,16 +53,17 @@ public class Room {
     private List<RoomViewer> roomViewer;
 
     @Builder
-    public Room(String uuid,String title,String content,String hostUuid,String thumbnail,Category category) {
+    public Room(String uuid,String title,String content,String hostUuid,String thumbnail,Category category,User user) {
         this.uuid = uuid;
         this.title = title;
         this.content = content;
         this.hostUuid = hostUuid;
         this.thumbnail = thumbnail;
         this.category = category;
+        this.user = user;
     }
 
-    public static Room create(RequestDto requestDto) {
+    public static Room create(RequestDto requestDto, User user) {
         return Room.builder()
             .uuid(requestDto.getUuid())
             .hostUuid(requestDto.getHostUuid())
@@ -70,6 +71,7 @@ public class Room {
             .content(requestDto.getContent())
             .thumbnail(requestDto.getThumbnail())
             .category(requestDto.getCategory())
+            .user(user)
             .build();
     }
 

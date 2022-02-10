@@ -23,6 +23,7 @@ public class ViewedHistory {
 
     private LocalDateTime likedAt;
 
+    @ColumnDefault(value = "CURRENT_TIMESTAMP")
     private LocalDateTime lastViewedAt;
 
     @ManyToOne

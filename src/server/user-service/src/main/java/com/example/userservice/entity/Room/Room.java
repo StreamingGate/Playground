@@ -1,6 +1,5 @@
 package com.example.userservice.entity.Room;
 
-;
 import com.example.userservice.entity.RoomViewer.RoomViewer;
 import com.example.userservice.entity.User.Category;
 import com.example.userservice.entity.User.User;
@@ -30,7 +29,7 @@ public class Room {
 
     private String hostUuid;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "MEDIUMBLOB")
     private String thumbnail;
 
     private int likeCnt;
