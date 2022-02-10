@@ -14,7 +14,6 @@ axiosInstance.interceptors.request.use(
 
     // token, uuid가 없을시 로그인 페이지로 리다이렉트
     if (!token || !uuid || !nickName || !profileImage) {
-      alert('here');
       history.push('/login');
       history.go();
     }
