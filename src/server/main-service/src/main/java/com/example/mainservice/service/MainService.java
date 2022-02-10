@@ -123,14 +123,9 @@ public class MainService {
         if (dto.getAction() == VideoActionDto.ACTION.REPORT) {
             video.addReportCnt(1);
         } else if (dto.getAction() == VideoActionDto.ACTION.LIKE) {
-            if (isCancel) {
-                viewedHistory.setLiked(false);
-                video.addLikeCnt(-1);
-            } else {
-                viewedHistory.setLiked(true);
-                video.addLikeCnt(1);
-                notificationRepository.save(Notification.createLikes(user, video)); /* TODO push알림으로 수정하기 */
-            }
+            if (isCancel) viewedHistory.setLiked(false);
+            else viewedHistory.setLiked(true);
+//                notificationRepository.save(Notification.createLikes(user, video)); /* TODO push알림으로 수정하기 */
         } else if (dto.getAction() == VideoActionDto.ACTION.DISLIKE) {
             if (isCancel) viewedHistory.setDisliked(false);
             else viewedHistory.setDisliked(true);
@@ -153,17 +148,13 @@ public class MainService {
         if (dto.getAction() == VideoActionDto.ACTION.REPORT) {
             room.addReportCnt(1);
         } else if (dto.getAction() == VideoActionDto.ACTION.LIKE) {
-            if (isCancel) {
-                roomViewer.setLiked(false);
-                room.addLikeCnt(-1);
-            } else {
-                roomViewer.setLiked(true);
-                room.addLikeCnt(1);
-
-            }
+            if (isCancel) roomViewer.setLiked(false);
+            else roomViewer.setLiked(true);
+//                notificationRepository.save(Notification.createLikes(user, video)); /* TODO push알림으로 수정하기 */
         } else if (dto.getAction() == VideoActionDto.ACTION.DISLIKE) {
-            if (isCancel) roomViewer.setDisliked(false);
+            if (isCancel)  roomViewer.setDisliked(false);
             else roomViewer.setDisliked(true);
         }
     }
+
 }
