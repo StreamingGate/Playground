@@ -128,7 +128,7 @@ function MakeStreamModal({ type }) {
       uuid: uuidv4(),
       title,
       content,
-      thumbnail: '12312231',
+      thumbnail: filePreview.thumbnailUrl.split(',')[1],
     });
   };
 
