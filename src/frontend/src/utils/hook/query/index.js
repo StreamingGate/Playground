@@ -9,3 +9,4 @@ export { default as useGetNotiList } from './useGetNotiList';
 export { default as useUploadVideo } from './useUploadVideo';
 export { default as useGetVideoInfo } from './useGetVideoInfo';
 export { default as useVideoAction } from './useVideoAction';
+export { default as useMakeLive } from './useMakeLive';

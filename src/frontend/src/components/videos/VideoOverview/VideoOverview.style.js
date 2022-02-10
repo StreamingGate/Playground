@@ -24,6 +24,7 @@ export const ThumbNail = styled.img`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  object-fit: contain;
 `;
 
 export const RealTimeIcon = styled(RealTimeMark)`

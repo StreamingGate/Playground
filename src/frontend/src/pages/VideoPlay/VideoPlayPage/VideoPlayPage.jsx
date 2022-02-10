@@ -31,7 +31,7 @@ function VideoPlayPage() {
   };
 
   const { data } = useGetVideoInfo(playType.current, id, userId, handleVideoUrlLoad);
-  const { consumer } = useMediaSoupConsume(playType.current === 'live');
+  const { consumer } = useMediaSoupConsume(playType.current === 'live', videoPlayerRef, data?.uuid);
 
   return (
     <S.VideoPlayPageContainer>

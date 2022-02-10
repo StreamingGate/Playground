@@ -1,14 +1,15 @@
 import React, { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { v4 as uuidv4 } from 'uuid';
 
 import * as S from './MakeStreamModal.style';
 import { useForm } from '@utils/hook';
-import { useUploadVideo } from '@utils/hook/query';
-import { modalService, mediaService } from '@utils/service';
+import { useUploadVideo, useMakeLive } from '@utils/hook/query';
+import { modalService, mediaService, lStorageService } from '@utils/service';
 
 import { Dialog } from '@components/feedbacks';
 import { AdviseModal } from '@components/feedbacks/Modals';
-import { Select } from '@components/forms';
 
 const TITLE_MAX_LEN = 100;
 const CONTENT_MAX_LEN = 5000;
@@ -16,8 +17,12 @@ const CONTENT_MAX_LEN = 5000;
 function MakeStreamModal({ type }) {
   const videoInputRef = useRef(null);
   const thumbnailInputRef = useRef(null);
+  const userId = lStorageService.getItem('uuid');
+
+  const navigate = useNavigate();
 
   const { mutate } = useUploadVideo();
+
   const { values, handleInputChange } = useForm({ initialValues: { title: '', content: '' } });
   const modal = modalService.useModal();
 
@@ -94,6 +99,39 @@ function MakeStreamModal({ type }) {
     mutate(formData);
   };
 
+  const handleMakeLiveSuccess = data => {
+    const { uuid, _ } = data;
+    modal.hide();
+    navigate(`/studio/${uuid}`);
+  };
+
+  const { mutate: makeLive } = useMakeLive(handleMakeLiveSuccess);
+
+  const handleStartLiveBtnClick = () => {
+    const { title, content } = values;
+    const modalProps = {};
+
+    if (!title || !content || !category || !filePreview.thumbnailUrl) {
+      modalProps.content = '모든 필드는 필수값 입니다';
+    } else if (title.length > TITLE_MAX_LEN || content.length > CONTENT_MAX_LEN) {
+      modalProps.content = '글자수를 초과했습니다';
+    }
+
+    if (Object.keys(modalProps).length !== 0) {
+      modalService.show(AdviseModal, { ...modalProps });
+      return;
+    }
+
+    makeLive({
+      hostUuid: userId,
+      category,
+      uuid: uuidv4(),
+      title,
+      content,
+      thumbnail: filePreview.thumbnailUrl.split(',')[1],
+    });
+  };
+
   return (
     <Dialog open={modal.visible} maxWidth='md' zIndex={2} onClose={() => modal.hide()}>
       <S.MakeStreamModalContainer onClick={e => e.stopPropagation()}>
@@ -102,26 +140,28 @@ function MakeStreamModal({ type }) {
         </S.StreamModalTitleContainer>
         <S.StreamModalBody>
           <S.StreamInfoContainer>
-            <S.VideoSelectContainer>
-              <S.InputLabel>동영상 선택</S.InputLabel>
-              <S.VideoPreviewContainer>
-                <S.VideoPreview
-                  id='videoSelect'
-                  src={filePreview.videoUrl}
-                  autoPlay
-                  controls={filePreview.videoUrl && true}
-                  onClick={handleFileSelectBtn}
-                />
-                <S.VideoIcon />
-                <S.VideoFileInput
-                  id='videoFile'
-                  type='file'
-                  accept='.mp4'
-                  ref={videoInputRef}
-                  onChange={handleFileInputChange}
-                />
-              </S.VideoPreviewContainer>
-            </S.VideoSelectContainer>
+            {type === 'video' && (
+              <S.VideoSelectContainer>
+                <S.InputLabel>동영상 선택</S.InputLabel>
+                <S.VideoPreviewContainer>
+                  <S.VideoPreview
+                    id='videoSelect'
+                    src={filePreview.videoUrl}
+                    autoPlay
+                    controls={filePreview.videoUrl && true}
+                    onClick={handleFileSelectBtn}
+                  />
+                  <S.VideoIcon />
+                  <S.VideoFileInput
+                    id='videoFile'
+                    type='file'
+                    accept='.mp4'
+                    ref={videoInputRef}
+                    onChange={handleFileInputChange}
+                  />
+                </S.VideoPreviewContainer>
+              </S.VideoSelectContainer>
+            )}
             <S.VideoDetailInfoContainer>
               <S.InputLabel>세부정보</S.InputLabel>
               <S.InputContainer>
@@ -165,10 +205,12 @@ function MakeStreamModal({ type }) {
             </S.CategorySelect>
           </S.CategorySelectContainer>
           <S.ThumbnailSelectContainer>
-            <S.InputLabel>썸네일 이미지 (선택)</S.InputLabel>
-            <S.InputSubLabel type='caption'>
-              * 썸네일 이미지를 선택하지 않으면 랜덤으로 추출합니다
-            </S.InputSubLabel>
+            <S.InputLabel>썸네일 이미지 {type === 'video' && '(선택)'}</S.InputLabel>
+            {type === 'video' && (
+              <S.InputSubLabel type='caption'>
+                * 썸네일 이미지를 선택하지 않으면 랜덤으로 추출합니다
+              </S.InputSubLabel>
+            )}
             <S.ThumbnailPreviewContainer>
               <S.ThumbnailPreview
                 id='thumbnailSelect'
@@ -187,8 +229,12 @@ function MakeStreamModal({ type }) {
             </S.ThumbnailPreviewContainer>
           </S.ThumbnailSelectContainer>
           <S.UploadBtnContainer>
-            <S.UploadButton color='pgBlue' size='md' onClick={handleUploadBtnClick}>
-              업로드
+            <S.UploadButton
+              color='pgBlue'
+              size='md'
+              onClick={type === 'video' ? handleUploadBtnClick : handleStartLiveBtnClick}
+            >
+              {type === 'video' ? '업로드' : '스트리밍 시작'}
             </S.UploadButton>
           </S.UploadBtnContainer>
         </S.StreamModalBody>
@@ -198,7 +244,7 @@ function MakeStreamModal({ type }) {
 }
 
 MakeStreamModal.propTypes = {
-  type: PropTypes.string.isRequired,
+  type: PropTypes.oneOf(['video', 'live']).isRequired,
 };
 
 export default modalService.create(MakeStreamModal);

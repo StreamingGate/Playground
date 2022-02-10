@@ -11,6 +11,9 @@ eureka:
 spring:
   application:
     name: gateway-service
+  profiles:
+    include:
+      - auth
   cloud:
     gateway:
       globalcors:
@@ -49,6 +52,34 @@ spring:
             - Method=POST
           filters:
             - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/refresh
+            - Method=POST,GET,DELETE,PUT
+          filters:
+            - RewritePath=/user-service(?<segment>/?.*), /$\{segment}
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/email
+            - Method=POST,GET,DELETE,PUT
+          filters:
+            - RewritePath=/user-service(?<segment>/?.*), /$\{segment}
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/password
+            - Method=POST,GET,DELETE,PUT
+          filters:
+            - RewritePath=/user-service(?<segment>/?.*), /$\{segment}
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/nickname
+            - Method=POST,GET,DELETE,PUT
+          filters:
+            - RewritePath=/user-service(?<segment>/?.*), /$\{segment}
         - id: user-service
           uri: lb://USER-SERVICE
           predicates:
