@@ -25,9 +25,7 @@ public class VideoService {
     private final VideoRepository videoRepository;
     private final ViewedRepository viewedRepository;
 
-    /**
-     * 시청기록이 존재하면 가져오고, 없으면 새로 저장한다.(조회수 증가)
-     */
+    /* 시청기록이 존재하면 가져오고, 없으면 새로 저장함 */
     @Transactional
     public VideoResponseDto getVideo(Long videoId, String uuid) throws CustomVideoException{
         Optional<ViewedHistory> viewedHistory = viewedRepository.findByVideoIdAndUserUuid(uuid, videoId);
