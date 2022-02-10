@@ -10,64 +10,59 @@ import UIKit
 import AVFoundation
 import Photos
 import Combine
+import SafariServices
+import SwiftKeychainWrapper
 
 class LiveViewController: UIViewController {
-    let captureSession = AVCaptureSession()
-    var videoDeviceInput: AVCaptureDeviceInput!
-    let photoOutput = AVCapturePhotoOutput()
-    
-    let sessionQueue = DispatchQueue(label: "session queue")
-    let videoDeviceDiscoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInDualCamera, .builtInWideAngleCamera, .builtInTrueDepthCamera], mediaType: .video, position: .unspecified)
-    
     let viewModel = ChatViewModel()
     private var cancellable: Set<AnyCancellable> = []
     @Published var isBottomFocused = true
     @Published var isPinned = false
-    
+    @IBOutlet weak var topBlackViewTopMargin: NSLayoutConstraint!
+    @IBOutlet weak var topBlackViewHeight: NSLayoutConstraint!
     @IBOutlet weak var chatViewBottom: NSLayoutConstraint!
     @IBOutlet weak var bottomScrollImageView: UIImageView!
     @IBOutlet weak var bottomScrollButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var cameraView: CameraView!
-    @IBOutlet weak var cameraViewTopMargin: NSLayoutConstraint!
-    @IBOutlet weak var cameraViewBottomMargin: NSLayoutConstraint!
     @IBOutlet weak var liveSignRedView: UIView!
     @IBOutlet weak var liveSignLabel: UILabel!
     @IBOutlet weak var timeBlackView: UIView!
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var participantsNumLabel: UILabel!
     @IBOutlet weak var likeNumLabel: UILabel!
-    @IBOutlet weak var switchButton: UIButton!
     @IBOutlet weak var sendButton: UIButton!
     @IBOutlet weak var chatTextView: UITextView!
     @IBOutlet weak var chatPlaceHolderLabel: UILabel!
     @IBOutlet weak var chatCountLabel: UILabel!
-    
     var safeBottom: CGFloat = 0
-    
-    // transition handler
     var coordinator: PlayerCoordinator?
 
+    var navVC: CreateNavigationController?
     
     // MARK: - View Life Cycle
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        cameraViewTopMargin.constant = -(self.view.safeAreaInsets.top)
-        cameraViewBottomMargin.constant = -(self.view.safeAreaInsets.bottom)
         liveSignRedView.roundCorners([.topLeft , .bottomLeft], radius: 3)
         timeBlackView.roundCorners([.topRight , .bottomRight], radius: 3)
         safeBottom = self.parent?.view.safeAreaInsets.bottom ?? 0
+        topBlackViewTopMargin.constant = -(self.parent?.view.safeAreaInsets.top ?? 0)
+        topBlackViewHeight.constant = 50 + (self.parent?.view.safeAreaInsets.top ?? 0)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(self, selector: #selector(adjustInputView), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(adjustInputView), name: UIResponder.keyboardWillHideNotification, object: nil)
-        cameraView.session = captureSession
-        sessionQueue.async {
-            self.setupSession()
-            self.startSession()
-        }
+        guard let nav = self.navigationController as? CreateNavigationController, let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else { return }
+        self.navVC = nav
+        guard let url = URL(string: "https://streaminggate.shop/m/studio/\(nav.roomUuid)/\(uuid)") else { return }
+        let safariViewController = SFSafariViewController(url: url)
+        safariViewController.delegate = self
+        safariViewController.view.frame = self.view.bounds
+        self.view.addSubview(safariViewController.view)
+        self.addChild(safariViewController)
+        safariViewController.didMove(toParent: self)
+        self.view.sendSubviewToBack(safariViewController.view)
         setupUI()
         viewModel.roomId = "ae0a8eb9-ff2c-4256-8be7-f8a9e84a3afa"
         viewModel.connectToSocket()
@@ -80,7 +75,6 @@ class LiveViewController: UIViewController {
     }
     
     func setupUI() {
-        switchButton.setTitle("", for: .normal)
         sendButton.setTitle("", for: .normal)
         liveSignLabel.font = UIFont.caption
         timeLabel.font = UIFont.caption
@@ -112,129 +106,19 @@ class LiveViewController: UIViewController {
             }.store(in: &cancellable)
     }
     
-    
-    @IBAction func switchCamera(sender: Any) {
-        guard videoDeviceDiscoverySession.devices.count > 1 else {
-            return
-        }
-        sessionQueue.async {
-            let currentVideoDevice = self.videoDeviceInput.device
-            let currentPosition = currentVideoDevice.position
-            let isFront = currentPosition == .front
-            let preferredPosition: AVCaptureDevice.Position = isFront ? .back : .front
-            
-            let devices = self.videoDeviceDiscoverySession.devices
-            var newVideoDevice: AVCaptureDevice?
-            newVideoDevice = devices.first { $0.position == preferredPosition }
-            
-            // update captureSession
-            
-            if let newDevice = newVideoDevice {
-                do {
-                    let videoDeviceInput = try AVCaptureDeviceInput(device: newDevice)
-                    self.captureSession.beginConfiguration()
-                    self.captureSession.removeInput(self.videoDeviceInput)
-                    
-                    // add new device input
-                    if self.captureSession.canAddInput(videoDeviceInput) {
-                        self.captureSession.addInput(videoDeviceInput)
-                        self.videoDeviceInput = videoDeviceInput
-                    } else {
-                        self.captureSession.addInput(self.videoDeviceInput)
-                    }
-                
-                    self.captureSession.commitConfiguration()
-                } catch let error {
-                    print("error occured while creating device input: \(error.localizedDescription)")
-                }
-            }
-        }
-    }
-    
     @IBAction func sendButtonDidTap(_ sender: Any) {
         chatTextView.resignFirstResponder()
-        guard let message = chatTextView.text, message.isEmpty == false else { return }
+        guard let message = chatTextView.text, message.isEmpty == false, let userInfo = UserManager.shared.userInfo, let nickname = userInfo.nickName else { return }
         chatTextView.text = ""
         chatPlaceHolderLabel.isHidden = false
         chatCountLabel.textColor = UIColor.placeHolder
         chatCountLabel.text = "0/200"
-        viewModel.sendMessage(message: message, nickname: "nickname", type: isPinned == true ? "PINNED" : "NORMAL", role: "VIEWER")
-    }
-    
-    @IBAction func finishButtonDidTap(_ sender: Any) {
-        self.dismiss(animated: true, completion: nil)
+        viewModel.sendMessage(message: message, nickname: nickname, type: isPinned == true ? "PINNED" : "NORMAL", role: "VIEWER")
     }
     
     @IBAction func bottomScrollDidTap(_ sender: Any) {
         self.tableView.scrollToBottom()
         isBottomFocused = true
-    }
-}
-
-
-extension LiveViewController {
-    // MARK: - Setup session and preview
-    func setupSession() {
-        captureSession.sessionPreset = .photo
-        captureSession.beginConfiguration()
-        
-        // Add Video Input
-        do {
-            var defaultVideoDevice: AVCaptureDevice?
-            if let dualCameraDevice = AVCaptureDevice.default(.builtInDualCamera, for: .video, position: .back) {
-                defaultVideoDevice = dualCameraDevice
-            } else if let backCameraDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back) {
-                defaultVideoDevice = backCameraDevice
-            } else if let frontCameraDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front) {
-                defaultVideoDevice = frontCameraDevice
-            }
-            
-            guard let camera = defaultVideoDevice else {
-                captureSession.commitConfiguration()
-                return
-            }
-            
-            let videoDeviceInput = try AVCaptureDeviceInput(device: camera)
-            
-            if captureSession.canAddInput(videoDeviceInput) {
-                captureSession.addInput(videoDeviceInput)
-                self.videoDeviceInput = videoDeviceInput
-            } else {
-                captureSession.commitConfiguration()
-                return
-            }
-        } catch {
-            captureSession.commitConfiguration()
-            return
-        }
-        
-        
-        // Add photo output
-        photoOutput.setPreparedPhotoSettingsArray([AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.jpeg])], completionHandler: nil)
-        if captureSession.canAddOutput(photoOutput) {
-            captureSession.addOutput(photoOutput)
-        } else {
-            captureSession.commitConfiguration()
-            return
-        }
-        
-        captureSession.commitConfiguration()
-    }
-    
-    func startSession() {
-        if !captureSession.isRunning {
-            sessionQueue.async {
-                self.captureSession.startRunning()
-            }
-        }
-    }
-    
-    func stopSession() {
-        if captureSession.isRunning {
-            sessionQueue.async {
-                self.captureSession.stopRunning()
-            }
-        }
     }
 }
 
@@ -295,12 +179,12 @@ extension LiveViewController: UITextViewDelegate {
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
             textView.resignFirstResponder()
-            guard let message = chatTextView.text, message.isEmpty == false else { return false }
+            guard let message = chatTextView.text, message.isEmpty == false, let userInfo = UserManager.shared.userInfo, let nickname = userInfo.nickName else { return false }
             chatTextView.text = ""
             chatPlaceHolderLabel.isHidden = false
             chatCountLabel.textColor = UIColor.placeHolder
             chatCountLabel.text = "0/200"
-            viewModel.sendMessage(message: message, nickname: "nickname", type: "NORMAL", role: "VIEWER")
+            viewModel.sendMessage(message: message, nickname: nickname, type: "NORMAL", role: "VIEWER")
             return false
         }
         return true
@@ -321,4 +205,20 @@ extension LiveViewController {
             self.view.layoutIfNeeded()
         }
     }
+}
+
+extension LiveViewController: SFSafariViewControllerDelegate {
+    func safariViewController(_ controller: SFSafariViewController, didCompleteInitialLoad didLoadSuccessfully: Bool) {
+        print("did load: \(didLoadSuccessfully)")
+    }
+    
+    func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
+        print("Did finish")
+    }
+    
+    func safariViewController(_ controller: SFSafariViewController, initialLoadDidRedirectTo URL: URL) {
+        print("redirect to :\(URL)")
+    }
+
+    
 }
