@@ -166,6 +166,8 @@ class createInfoViewController: UIViewController {
     }
     
     @IBAction func categoryButtonDidTap(_ sender: Any) {
+        titleTextView.resignFirstResponder()
+        explainTextView.resignFirstResponder()
         let alert = UIAlertController(title: "", message: "카테고리를 선택해주세요", preferredStyle: .actionSheet)
         for i in categoryList {
             guard let categoryInfo = categoryDic[i] else { return }
@@ -223,6 +225,8 @@ class createInfoViewController: UIViewController {
     }
     
     @IBAction func thumbnailButtonDidTap(_ sender: Any) {
+        titleTextView.resignFirstResponder()
+        explainTextView.resignFirstResponder()
         self.present(imagePicker, animated: true, completion: nil)
     }
     
