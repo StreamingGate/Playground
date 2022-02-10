@@ -11,10 +11,15 @@ import Combine
 import AVFoundation
 import SwiftKeychainWrapper
 import WebRTC
+import SwiftyJSON
 
 class PlayViewController: UIViewController {
+    private var socket: EchoSocket?
+    private var client: RoomClient?
     @IBOutlet var remoteVideoView: RTCEAGLVideoView!
     @IBOutlet weak var remoteVideoViewLeading: NSLayoutConstraint!
+    var videoTrack: RTCVideoTrack?
+    private var delegate: RoomListener?
     var roomId = ""
     
     // MARK: - Properties
@@ -142,6 +147,34 @@ class PlayViewController: UIViewController {
             print("Failed to connect to server")
         }
     }
+    
+    private func handleWebSocketConnected() {
+        // Initialize mediasoup client
+        self.initializeMediasoup()
+
+        // Get router rtp capabilities
+        guard let getRoomRtpCapabilitiesResponse: JSON = Request.shared.sendGetRoomRtpCapabilitiesRequest(socket: self.socket!, roomId: self.roomId) else { return }
+//        print("response! " + (getRoomRtpCapabilitiesResponse["data"].description))
+        
+        // Initialize mediasoup device
+        let device: Device = Device.init()
+        device.load(getRoomRtpCapabilitiesResponse["data"].description)
+        
+        print("handleWebSocketConnected() device loaded: \(device)")
+
+        self.delegate = self
+        self.client = RoomClient.init(socket: self.socket!, device: device, roomId: self.roomId, roomListener: self.delegate!)
+        self.client!.createRecvTransport()
+    }
+    
+    private func initializeMediasoup() {
+        Mediasoupclient.initializePC()
+        print("initializeMediasoup() client initialized")
+
+        Logger.setDefaultHandler()
+        Logger.setLogLevel(LogLevel.LOG_WARN)
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         AppUtility.lockOrientation(.all)
@@ -392,13 +425,21 @@ class PlayViewController: UIViewController {
         self.viewModel.$currentInfo.receive(on: DispatchQueue.main, options: nil)
             .sink { [weak self] currentInfo in
                 guard let self = self, let info = currentInfo else { return }
+                self.remoteVideoView.isHidden = true
+                self.socket?.unregister(observer: self)
+                self.socket?.disconnect()
+                self.socket = nil
+                self.client = nil
+                self.delegate = nil
                 if info.uploaderNickname == nil {
                     // 실시간 스트리밍인 경우
-                    self.remoteVideoView.isHidden = false
                     self.playView.player?.replaceCurrentItem(with: nil)
+                    self.remoteVideoView.delegate = self
                 } else {
                     // 비디오 스트리밍인 경우
-                    self.remoteVideoView.isHidden = true
+                    self.videoTrack?.isEnabled = false
+                    self.videoTrack?.remove(self.remoteVideoView)
+                    self.videoTrack = nil
                 }
                 self.channelNicknameLabel.text = (info.uploaderNickname == nil) ? info.hostNickname : info.uploaderNickname
                 self.miniChannelNameLabel.text = (info.uploaderNickname == nil) ? info.hostNickname : info.uploaderNickname
@@ -848,6 +889,63 @@ extension PlayViewController: UIGestureRecognizerDelegate {
         return true
     }
 }
+
+extension PlayViewController : MessageObserver {
+    func on(event: String, data: JSON?) {
+        switch event {
+        case ActionEvent.OPEN:
+            print("socket connected")
+            self.handleWebSocketConnected()
+            break
+        case ActionEvent.NEW_USER:
+            print("NEW_USER id =" + data!["userId"]["userId"].stringValue)
+            break
+        case ActionEvent.NEW_CONSUMER:
+            print("NEW_CONSUMER data=" + data!.description)
+            self.handleNewConsumerEvent(consumerInfo: data!["consumerData"])
+            break
+        default:
+            print("Unknown event " + event)
+        }
+    }
+    
+    private func handleNewConsumerEvent(consumerInfo: JSON) {
+        print("handleNewConsumerEvent info = " + consumerInfo.description)
+        // Start consuming
+        self.client!.consumeTrack(consumerInfo: consumerInfo)
+    }
+}
+
+// Extension for RoomListener
+extension PlayViewController : RoomListener {
+    func onNewConsumer(consumer: Consumer) {
+        print("RoomListener::onNewConsumer kind=" + consumer.getKind())
+        
+        if consumer.getKind() == "video" {
+            if let track = consumer.getTrack() as? RTCVideoTrack {
+                self.videoTrack = track
+                self.videoTrack?.isEnabled = true
+                self.videoTrack?.add(self.remoteVideoView)
+                DispatchQueue.main.async {                
+                    self.remoteVideoView.isHidden = false
+                }
+            } else {
+                self.videoTrack?.isEnabled = false
+                self.videoTrack?.remove(self.remoteVideoView)
+                self.videoTrack = nil
+            }
+        }
+        
+        do {
+            consumer.getKind() == "video"
+                ? try self.client!.resumeRemoteVideo()
+                : try self.client!.resumeRemoteAudio()
+        } catch {
+            print("onNewConsumer() failed to resume remote track")
+        }
+    }
+}
+
 extension PlayViewController: RTCVideoViewDelegate {
     func videoView(_ videoView: RTCVideoRenderer, didChangeVideoSize size: CGSize) {
         remoteVideoView.translatesAutoresizingMaskIntoConstraints = false
