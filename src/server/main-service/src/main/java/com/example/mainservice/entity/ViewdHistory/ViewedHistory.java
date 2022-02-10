@@ -41,22 +41,27 @@ public class ViewedHistory {
         this.video = video;
     }
 
-    /* 좋아요 실행 또는 취소 (좋아요 누를 시 싫어요는 취소 된다.) */
+    /* 좋아요 실행 또는 취소 (좋아요 누를 시 싫어요 효과는 취소 된다.) */
     public void setLiked(boolean liked) {
         this.liked = liked;
-        this.likedAt = liked? LocalDateTime.now(): null;
         if(this.liked == true){
+            this.likedAt = LocalDateTime.now();
             this.disliked = false;
             video.addLikeCnt(1);
         }
+        else{
+            this.likedAt = null;
+            video.addLikeCnt(-1);
+        }
     }
 
-    /* 싫어요 실행 또는 취소 (싫어요 누를 시 좋아요는 취소 된다.) */
+    /* 싫어요 실행 또는 취소 (싫어요 누를 시 좋아요 효과는 취소 된다.) */
     public void setDisliked(boolean disliked) {
         this.disliked = disliked;
         if(this.disliked == true){
             this.liked = false;
             video.addLikeCnt(-1);
+            this.likedAt = null;
         }
     }
 }

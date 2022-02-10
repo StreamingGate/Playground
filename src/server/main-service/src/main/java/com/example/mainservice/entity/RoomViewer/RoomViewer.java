@@ -43,20 +43,27 @@ public class RoomViewer {
         room.getRoomViewers().add(this);
     }
 
+    /* 좋아요 실행 또는 취소 (좋아요 누를 시 싫어요 효과는 취소 된다.) */
     public void setLiked(boolean liked) {
         this.liked = liked;
-        this.likedAt = LocalDateTime.now();
         if(this.liked == true){
+            this.likedAt = LocalDateTime.now();
             this.disliked = false;
             room.addLikeCnt(1);
         }
+        else{
+            this.likedAt = null;
+            room.addLikeCnt(-1);
+        }
     }
 
+    /* 싫어요 실행 또는 취소 (싫어요 누를 시 좋아요 효과는 취소 된다.) */
     public void setDisliked(boolean disliked) {
         this.disliked = disliked;
         if(this.disliked == true){
             this.liked = false;
             room.addLikeCnt(-1);
+            this.likedAt = null;
         }
     }
 }
