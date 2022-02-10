@@ -4,6 +4,8 @@ import com.example.videoservice.entity.User.User;
 import com.example.videoservice.entity.Video.Video;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
