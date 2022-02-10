@@ -46,13 +46,16 @@ function VideoMetaData({ videoData, playType }) {
         setPreferToggleState(prev => ({ ...prev, liked: false }));
       } else {
         setLikeCount(prev => prev + 1);
-        setPreferToggleState(prev => ({ ...prev, liked: true }));
+        setPreferToggleState({ liked: true, disliked: false });
       }
     } else if (actionType === 'DISLIKE') {
-      if (videoData.disliked) {
+      if (preferToggleState.disliked) {
         setPreferToggleState(prev => ({ ...prev, disliked: false }));
       } else {
-        setPreferToggleState(prev => ({ ...prev, disliked: true }));
+        if (preferToggleState.liked) {
+          setLikeCount(prev => prev - 1);
+        }
+        setPreferToggleState({ liked: false, disliked: true });
       }
     } else if (actionType === 'REPORT') {
       modalService.show(AdviseModal, { content: '신고되었습니다' });
