@@ -46,9 +46,17 @@ public class RoomViewer {
     public void setLiked(boolean liked) {
         this.liked = liked;
         this.likedAt = LocalDateTime.now();
+        if(this.liked == true){
+            this.disliked = false;
+            room.addLikeCnt(1);
+        }
     }
 
     public void setDisliked(boolean disliked) {
         this.disliked = disliked;
+        if(this.disliked == true){
+            this.liked = false;
+            room.addLikeCnt(-1);
+        }
     }
 }
