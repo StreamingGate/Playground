@@ -13,6 +13,7 @@ function MobileStudioPage() {
   const streamPlayerRef = useRef(null);
 
   const { roomId, hostId } = useParams();
+  alert(roomId, hostId);
   const { stream, switchCamera, stopStream } = useStreamMedia(streamPlayerRef, 'mobile');
 
   const handleProcessProduce = async peer => {
