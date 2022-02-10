@@ -218,6 +218,8 @@ class PlayViewController: UIViewController {
         miniCloseButton.translatesAutoresizingMaskIntoConstraints = false
         friendRequestButton.setTitle("", for: .normal)
         friendRequestLabel.font = UIFont.Content
+        guard let userInfo = UserManager.shared.userInfo else { return }
+        chatProfileImageView.downloadImageFrom(link: userInfo.profileImage, contentMode: .scaleAspectFill)
         // TODO: 내가 올린 영상일 경우, '친구 신청' 보이지 않도록
     }
     
@@ -576,12 +578,12 @@ class PlayViewController: UIViewController {
     
     @IBAction func chatSendButtonDidTap(_ sender: Any) {
         chatTextView.resignFirstResponder()
-        guard let message = chatTextView.text, message.isEmpty == false else { return }
+        guard let message = chatTextView.text, message.isEmpty == false, let userInfo = UserManager.shared.userInfo, let nickname = userInfo.nickName else { return }
         chatTextView.text = ""
         chatPlaceHolderLabel.isHidden = false
         chatCountLabel.textColor = UIColor.placeHolder
         chatCountLabel.text = "0/200"
-        self.chatDelegate?.sendChatMessage(nickname: "test", message: message, senderRole: "VIEWER", chatType: "NORMAL")
+        self.chatDelegate?.sendChatMessage(nickname: nickname, message: message, senderRole: "VIEWER", chatType: "NORMAL")
     }
     
     func togglePlay() {
@@ -807,12 +809,12 @@ extension PlayViewController: UITextViewDelegate {
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
             textView.resignFirstResponder()
-            guard let message = chatTextView.text, message.isEmpty == false else { return false }
+            guard let message = chatTextView.text, message.isEmpty == false, let userInfo = UserManager.shared.userInfo, let nickname = userInfo.nickName else { return false }
             chatTextView.text = ""
             chatPlaceHolderLabel.isHidden = false
             chatCountLabel.textColor = UIColor.placeHolder
             chatCountLabel.text = "0/200"
-            self.chatDelegate?.sendChatMessage(nickname: "test", message: message, senderRole: "VIEWER", chatType: "NORMAL")
+            self.chatDelegate?.sendChatMessage(nickname: nickname, message: message, senderRole: "VIEWER", chatType: "NORMAL")
             return false
         }
         return true
