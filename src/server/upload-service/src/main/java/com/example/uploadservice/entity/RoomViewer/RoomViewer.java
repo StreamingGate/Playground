@@ -4,6 +4,8 @@ import com.example.uploadservice.entity.Room.Room;
 import com.example.uploadservice.entity.User.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -21,6 +23,7 @@ public class RoomViewer {
 
     private LocalDateTime likedAt;
 
+    @ColumnDefault(value = "CURRENT_TIMESTAMP")
     private LocalDateTime lastViewedAt;
 
     @ManyToOne

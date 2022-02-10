@@ -2,3 +2,6 @@ playground:
   mail:
     username: sgssgmanager@gmail.com
     password: streamingsgs!
+
+jwts:
+  secret-key: token_secret

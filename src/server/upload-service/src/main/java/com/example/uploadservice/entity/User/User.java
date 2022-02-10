@@ -50,6 +50,7 @@ public class User {
     private LocalDate createdAt;
 
     @Column
+    @ColumnDefault(value = "CURRENT_TIMESTAMP")
     private LocalDate modifiedAt;
 
     @Column
