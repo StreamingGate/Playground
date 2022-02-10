@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.HttpHeaders;
@@ -21,6 +22,9 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
     public AuthenticationFilter() {
         super(Config.class);
     }
+
+    @Value("${jwts.secret-key}")
+    private String SECRET_KEY;
 
     @Override
     public GatewayFilter apply(Config config) {
@@ -46,7 +50,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
     private boolean isJwtValid(String jwt) {
         boolean res = true;
         try {
-            Claims accessClaims = Jwts.parser().setSigningKey("token_secret".getBytes())
+            Claims accessClaims = Jwts.parser().setSigningKey(SECRET_KEY.getBytes())
                     .parseClaimsJws(jwt)
                     .getBody();
         }

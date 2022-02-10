@@ -50,6 +50,7 @@ public class User {
     private LocalDate createdAt;
 
     @Column
+    @ColumnDefault(value = "CURRENT_TIMESTAMP")
     private LocalDate modifiedAt;
 
     @Column
@@ -57,9 +58,6 @@ public class User {
 
     @Column
     private String timeZone;
-
-    @Column
-    private LocalDate lastAt;
 
     @OneToMany(mappedBy = "user")
     private List<Video> videos = new LinkedList<>();

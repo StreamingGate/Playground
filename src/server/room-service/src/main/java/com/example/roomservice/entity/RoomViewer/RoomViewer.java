@@ -5,6 +5,8 @@ import com.example.roomservice.entity.User.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -22,6 +24,7 @@ public class RoomViewer {
 
     private LocalDateTime likedAt;
 
+    @ColumnDefault(value = "CURRENT_TIMESTAMP")
     private LocalDateTime lastViewedAt;
 
     private Long roomUuid;
@@ -38,19 +41,21 @@ public class RoomViewer {
 
 
     @Builder
-    public RoomViewer(Boolean liked,Long roomUuid,String userUuid) {
+    public RoomViewer(Boolean liked,Boolean disliked ,Long roomUuid,String userUuid,LocalDateTime lastViewedAt) {
         this.liked = liked;
-        this.disliked = liked? false : true;
+        this.disliked = disliked;
         this.roomUuid = roomUuid;
         this.userUuid = userUuid;
+        this.lastViewedAt = lastViewedAt;
     }
 
-    public static RoomViewer join(Long roomUuid,String userUuid,Boolean liked) {
+    public static RoomViewer join(Long roomUuid,String userUuid,Boolean liked,Boolean disliked) {
         return RoomViewer.builder()
                 .roomUuid(roomUuid)
                 .userUuid(userUuid)
                 .liked(liked)
+                .disliked(disliked)
+                .lastViewedAt(LocalDateTime.now())
                 .build();
     }
-
 }

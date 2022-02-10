@@ -1,14 +1,13 @@
-package com.example.userservice.config.security;
+package com.example.userservice.configure.security;
 
 import com.example.userservice.dto.user.UserDto;
 import com.example.userservice.service.UserService;
 import com.example.userservice.dto.user.RequestLogin;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,15 +22,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @RequiredArgsConstructor
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final UserService userService;
+    private final RedisTemplate<String,Object> redisTemplate;
+    private final Jwt jwt;
+    private long REFRESH_TMIE = 60 * 60 * 24 * 7 * 1000L;
+
     public AuthenticationFilter(AuthenticationManager authenticationManager,
-                                UserService userService) {
+                                UserService userService, RedisTemplate<String, Object> redisTemplate,Jwt jwt) {
         super.setAuthenticationManager(authenticationManager);
+        this.redisTemplate = redisTemplate;
         this.userService = userService;
+        this.jwt = jwt;
     }
 
     @Override
@@ -58,20 +64,19 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, DELETE, PUT");
         response.setHeader("Access-Control-Allow-Headers", "Content-Type,Access-Control-Allow-Headers, " +
                 "Authorization,Accept,X-Requested-With,observe,Content-Length");
-        response.setHeader("Access-Control-Expose-Headers","uuid,token");
+        response.setHeader("Access-Control-Expose-Headers","uuid,token,refreshToken");
         response.setContentType("application/json");
         response.setCharacterEncoding("utf-8");
 
         if(request.getMethod().equals(HttpMethod.OPTIONS.name())) {
             response.setStatus(HttpStatus.OK.value());
         }
-        String secretKey= Base64.getEncoder().encodeToString("token_secret".getBytes());
-        String token = Jwts.builder()
-                .setSubject(userDto.getUuid())
-                .setExpiration(new Date(System.currentTimeMillis() + 600000))
-                .signWith(SignatureAlgorithm.HS512, secretKey)
-                .compact();
 
+        String token = jwt.createToken(userDto.getUuid());
+        String refreshToken = jwt.createRefreshToken(userDto.getUuid());
+        redisTemplate.opsForValue().set(refreshToken,userDto.getUuid(),REFRESH_TMIE, TimeUnit.SECONDS);
+
+        response.addHeader("refreshToken",refreshToken);
         response.addHeader("uuid",userDto.getUuid());
         response.addHeader("token",token);
         res.put("email",userDto.getEmail());
