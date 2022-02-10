@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import * as S from './VideoOverview.style';
-import ThumbNailDummy from '@assets/image/ThumbNailDummy.jpg';
+import { timeService } from '@utils/service';
 
 import { Avatar } from '@components/dataDisplays';
 
@@ -21,7 +21,9 @@ function VideoOverview({ direction, isLibrary, videoInfo, isLive }) {
     const NumberDataComponent = (
       <>
         <S.VideoCaption type='caption'>조회수 {hits}회</S.VideoCaption>
-        <S.VideoCaption type='caption'>{createdAt}</S.VideoCaption>
+        <S.VideoCaption type='caption'>
+          {timeService.processVideoUploadTime(createdAt)}
+        </S.VideoCaption>
       </>
     );
 
@@ -50,7 +52,9 @@ function VideoOverview({ direction, isLibrary, videoInfo, isLive }) {
     ) : (
       <S.VideoMetaContainer>
         <S.VideoCaption type='caption'>{userName}</S.VideoCaption>
-        <S.VideoCaption type='caption'>{createdAt}</S.VideoCaption>
+        <S.VideoCaption type='caption'>
+          {timeService.processVideoUploadTime(createdAt)}
+        </S.VideoCaption>
       </S.VideoMetaContainer>
     );
   }, [direction, userName]);
