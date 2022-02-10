@@ -59,9 +59,6 @@ public class User {
     @Column
     private String timeZone;
 
-    @Column
-    @ColumnDefault(value = "CURRENT_TIMESTAMP")
-    private LocalDateTime lastAt;
 
     @OneToMany(mappedBy = "user")
     private List<RoomViewer> roomViewers = new LinkedList<>();
@@ -95,13 +92,12 @@ public class User {
                 .build();
     }
 
-    public void update(RequestMyinfo requestDto, LocalDateTime modifiedAt) {
+    public void update(RequestMyinfo requestDto) {
         this.nickName = requestDto.getNickName() == null ? nickName : requestDto.getNickName();
         this.profileImage = requestDto.getProfileImage() == null ? profileImage : requestDto.getProfileImage();
-        this.modifiedAt = modifiedAt;
     }
 
-    public void updatePwd(String bcryptPwd, LocalDate modifiedAt) {
+    public void updatePwd(String bcryptPwd) {
         this.pwd = bcryptPwd;
     }
 

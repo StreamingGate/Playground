@@ -19,7 +19,7 @@ spring:
     username: root
     password: test
   redis:
-    host: localhost
+    host: redis
     port: 6379
 
   mail:

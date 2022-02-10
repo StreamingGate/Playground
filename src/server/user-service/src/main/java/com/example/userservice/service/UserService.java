@@ -79,13 +79,12 @@ public class UserService implements UserDetailsService {
         User user = userRepository.findByUuid(uuid).orElseThrow(()-> new CustomUserException(ErrorCode.U002));
         ResponseUser responseDto = mapper.map(user,ResponseUser.class);
         try {
-            LocalDateTime localDateTime = LocalDateTime.now();
             if (requestDto.getProfileImage() != null) {
                 amazonS3Service.delete(uuid);
                 responseDto.setProfileImage(amazonS3Service.upload(requestDto.getProfileImage(),uuid));
                 requestDto.setProfileImage(responseDto.getProfileImage());
             }
-            if (checkNickName(requestDto.getNickName()) != null) user.update(requestDto,localDateTime);
+            if (checkNickName(requestDto.getNickName()) != null) user.update(requestDto);
             responseDto.setNickName(requestDto.getNickName());
         } catch (CustomUserException e){
             throw new CustomUserException(ErrorCode.U004);
@@ -140,10 +139,8 @@ public class UserService implements UserDetailsService {
     @Transactional
     public PwdDto updatePwd(String uuid, PwdDto pwdDto) throws CustomUserException {
         User user = userRepository.findByUuid(uuid).orElseThrow(()-> new CustomUserException(ErrorCode.U002));
-        Date date = new Date();
-        LocalDate localDate = new java.sql.Date(date.getTime()).toLocalDate();
         String bcryptPwd = bCryptPasswordEncoder.encode(pwdDto.getPassword());
-        user.updatePwd(bcryptPwd,localDate);
+        user.updatePwd(bcryptPwd);
         return pwdDto;
     }
 
