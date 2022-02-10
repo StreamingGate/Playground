@@ -27,15 +27,17 @@ class VideoListCell: UITableViewCell {
     }
     
     func setupLive(info: GeneralVideo) {
+        thumbnailImageView.image = nil
         titleLabel.text = info.title
         nicknameLabel.text = info.hostNickname
         liveSign.isHidden = false
-        thumbnailImageView.downloadImageFrom(link: info.thumbnail, contentMode: .scaleAspectFit)
-        guard let create = info.createdAt else { return }
+        guard let create = info.createdAt, let uuid = info.uuid else { return }
         nicknameLabel.text = "\(info.hostNickname ?? "익명") • \(create.getDateString())"
+        thumbnailImageView.downloadImageFrom(link: "https://d8knntbqcc7jf.cloudfront.net/thumbnail/\(uuid)", contentMode: .scaleAspectFit)
     }
     
     func setupVideo(info: GeneralVideo) {
+        thumbnailImageView.image = nil
         titleLabel.text = info.title
         liveSign.isHidden = true
         thumbnailImageView.downloadImageFrom(link: info.thumbnail, contentMode: .scaleAspectFit)

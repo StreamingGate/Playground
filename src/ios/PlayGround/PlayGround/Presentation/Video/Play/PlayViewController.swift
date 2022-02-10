@@ -14,9 +14,9 @@ import WebRTC
 
 class PlayViewController: UIViewController {
     @IBOutlet var remoteVideoView: RTCEAGLVideoView!
+    @IBOutlet weak var remoteVideoViewLeading: NSLayoutConstraint!
     var roomId = ""
     
-    @IBOutlet weak var remoteViewWidth: NSLayoutConstraint!
     // MARK: - Properties
     // player
     @IBOutlet weak var playView: PlayerView!
@@ -850,8 +850,13 @@ extension PlayViewController: UIGestureRecognizerDelegate {
 }
 extension PlayViewController: RTCVideoViewDelegate {
     func videoView(_ videoView: RTCVideoRenderer, didChangeVideoSize size: CGSize) {
+        remoteVideoView.translatesAutoresizingMaskIntoConstraints = false
         let playerHeight = UIScreen.main.bounds.width / 16 * 9
-        self.remoteViewWidth.constant = playerHeight / size.height * size.width
+        let remoteVideoWidth = playerHeight / size.height * size.width
+        remoteVideoViewLeading.constant = remoteVideoWidth >= UIScreen.main.bounds.width ? 0 : (UIScreen.main.bounds.width - remoteVideoWidth) / 2
+        NSLayoutConstraint.activate([
+            remoteVideoView.widthAnchor.constraint(equalTo: remoteVideoView.heightAnchor, multiplier: size.width / size.height)
+        ])
         self.view.layoutIfNeeded()
         self.remoteVideoView.layoutIfNeeded()
     }
