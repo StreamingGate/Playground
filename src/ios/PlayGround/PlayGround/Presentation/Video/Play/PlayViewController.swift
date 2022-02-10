@@ -16,6 +16,7 @@ class PlayViewController: UIViewController {
     @IBOutlet var remoteVideoView: RTCEAGLVideoView!
     var roomId = ""
     
+    @IBOutlet weak var remoteViewWidth: NSLayoutConstraint!
     // MARK: - Properties
     // player
     @IBOutlet weak var playView: PlayerView!
@@ -845,5 +846,13 @@ extension PlayViewController: UIGestureRecognizerDelegate {
             return false
         }
         return true
+    }
+}
+extension PlayViewController: RTCVideoViewDelegate {
+    func videoView(_ videoView: RTCVideoRenderer, didChangeVideoSize size: CGSize) {
+        let playerHeight = UIScreen.main.bounds.width / 16 * 9
+        self.remoteViewWidth.constant = playerHeight / size.height * size.width
+        self.view.layoutIfNeeded()
+        self.remoteVideoView.layoutIfNeeded()
     }
 }
