@@ -34,15 +34,6 @@ export default function useStreamMedia(streamPlayerRef, device = 'web') {
     }
   }
 
-  useEffect(() => {
-    getMediaStream();
-  }, []);
-
-  const toggleMuteAudio = () => {
-    const curAudioEnable = stream.audioTrack.enabled;
-    stream.audioTrack.enabled = !curAudioEnable;
-  };
-
   const stopStream = () => {
     const { videoTrack, audioTrack } = stream;
 
@@ -55,6 +46,23 @@ export default function useStreamMedia(streamPlayerRef, device = 'web') {
 
     streamPlayerRef.current.srcObject = null;
     setStream({ videoTrack: null, audioTrack: null });
+  };
+
+  useEffect(() => {
+    getMediaStream();
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (stream.videoTrack || stream.audioTrack) {
+        stopStream();
+      }
+    };
+  }, [stream]);
+
+  const toggleMuteAudio = () => {
+    const curAudioEnable = stream.audioTrack.enabled;
+    stream.audioTrack.enabled = !curAudioEnable;
   };
 
   const switchCamera = async () => {
