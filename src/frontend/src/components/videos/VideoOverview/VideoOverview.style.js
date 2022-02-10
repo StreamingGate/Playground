@@ -78,7 +78,8 @@ export const ViedeoOverviewContainer = styled.li`
     ${({ direction }) =>
       direction === 'horizontal' &&
       css`
-        max-width: 160px;
+        min-height: 0;
+        width: 160px;
         height: 90px;
         flex-shrink 0;
       `}
