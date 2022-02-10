@@ -65,7 +65,6 @@ create table users
     created_at    datetime default CURRENT_TIMESTAMP not null,
     deleted_at    datetime,
     email         varchar(255),
-    last_at       datetime,
     modified_at   datetime default CURRENT_TIMESTAMP,
     name          varchar(30),
     nick_name     varchar(255),

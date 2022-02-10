@@ -1,6 +1,5 @@
 package com.example.userservice.entity.Room;
 
-;
 import com.example.userservice.entity.RoomViewer.RoomViewer;
 import com.example.userservice.entity.User.Category;
 import com.example.userservice.entity.User.User;
