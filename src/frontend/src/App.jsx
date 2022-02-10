@@ -41,7 +41,7 @@ function App() {
                 <Route path='mypage/:type' element={<MyPage />} />
                 <Route path='studio/:roomId' element={<StudioPage />} />
               </Route>
-              <Route path='/m/studio' element={<MobileStudioPage />} />
+              <Route path='/m/studio/:roomId/:hostId' element={<MobileStudioPage />} />
             </Routes>
           </modalService.Provider>
         </Router>
