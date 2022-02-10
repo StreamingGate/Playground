@@ -1,4 +1,4 @@
-package com.example.userservice.config;
+package com.example.userservice.configure;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

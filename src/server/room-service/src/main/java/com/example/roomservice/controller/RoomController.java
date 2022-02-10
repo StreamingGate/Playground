@@ -1,6 +1,7 @@
 package com.example.roomservice.controller;
 
 import com.example.roomservice.dto.RequestDto;
+import com.example.roomservice.dto.RequestExitDto;
 import com.example.roomservice.dto.ResponseDto;
 import com.example.roomservice.service.RoomService;
 import lombok.RequiredArgsConstructor;
@@ -37,5 +38,11 @@ public class RoomController {
     public ResponseEntity<String> check(@RequestParam (value = "uuid") String uuid) throws Exception {
         return ResponseEntity.status(HttpStatus.OK).body(roomService.check(uuid));
     }
+
+    /* 방 종료 */
+//    @DeleteMapping("/room")
+//    public ResponseEntity<Map<String,String>> exit(@RequestBody RequestExitDto requestExitDto) throws Exception {
+//
+//    }
 
 }
