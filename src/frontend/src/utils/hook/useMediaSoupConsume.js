@@ -13,15 +13,20 @@ export default function useMediaSoupConsume(isLive, videoPlayerRef, roomId) {
 
   const createConsumeDevice = async rptCapabilities => {
     const consumerDevice = new mediasoupClient.Device();
+    const audioConsumerDevice = new mediasoupClient.Device();
 
     await consumerDevice.load({
       routerRtpCapabilities: rptCapabilities,
     });
 
-    return consumerDevice;
+    await audioConsumerDevice.load({
+      routerRtpCapabilities: rptCapabilities,
+    });
+
+    return { consumerDevice, audioConsumerDevice };
   };
 
-  const createConsumeTransport = async (peer, consumeDevice) => {
+  const createConsumeTransport = async (peer, consumeDevice, audioConsumerDevice) => {
     const recvTransportParams = await peer.request('createWebRtcTransport');
     const consumerTransport = consumeDevice.createRecvTransport(recvTransportParams);
 
@@ -36,10 +41,31 @@ export default function useMediaSoupConsume(isLive, videoPlayerRef, roomId) {
       }
     });
 
-    return consumerTransport;
+    const audioRecvTransportParams = await peer.request('createAudioWebRtcTransport');
+    const audioConsumerTransport =
+      audioConsumerDevice.createRecvTransport(audioRecvTransportParams);
+
+    audioConsumerTransport.on('connect', async ({ dtlsParameters }, callback, errback) => {
+      try {
+        await peer.request('connectAudioConsume', {
+          dtlsParameters,
+        });
+        callback();
+      } catch (error) {
+        errback(error);
+      }
+    });
+
+    return { consumerTransport, audioConsumerTransport };
   };
 
-  const connectWithConsumeRouter = async (peer, consumerDevice, consumerTransport) => {
+  const connectWithConsumeRouter = async (
+    peer,
+    consumerDevice,
+    consumerTransport,
+    audioConsumerDevice,
+    audioConsumerTransport
+  ) => {
     const params = await peer.request('consume', {
       rtpCapabilities: consumerDevice.rtpCapabilities,
     });
@@ -51,23 +77,50 @@ export default function useMediaSoupConsume(isLive, videoPlayerRef, roomId) {
       rtpParameters: params.rtpParameters,
     });
 
-    return consumer;
+    const audioParams = await peer.request('audioConsume', {
+      rtpCapabilities: audioConsumerDevice.rtpCapabilities,
+    });
+
+    const audioConsumer = await audioConsumerTransport.consume({
+      id: audioParams.id,
+      producerId: audioParams.producerId,
+      kind: audioParams.kind,
+      rtpParameters: audioParams.rtpParameters,
+    });
+
+    return { consumer, audioConsumer };
   };
 
-  const handleVideoLiveLoad = async (peer, consumer) => {
+  const handleVideoLiveLoad = async (peer, consumer, audioConsumer) => {
     const { track } = consumer;
-    videoPlayerRef.current.srcObject = new MediaStream([track]);
+    const { track: audio } = audioConsumer;
+
+    console.log(track);
+    console.log(audio);
+
+    console.log(consumer);
+    videoPlayerRef.current.srcObject = new MediaStream([audio]);
     await peer.request('consumerResume');
   };
 
   const initConsume = async peer => {
     const rptCapabilities = await getRtpCapabilities(peer);
-    const consumerDevice = await createConsumeDevice(rptCapabilities);
-    const consumerTransport = await createConsumeTransport(peer, consumerDevice);
-    const newConsumer = await connectWithConsumeRouter(peer, consumerDevice, consumerTransport);
-    await handleVideoLiveLoad(peer, newConsumer);
+    const { consumerDevice, audioConsumerDevice } = await createConsumeDevice(rptCapabilities);
+    const { consumerTransport, audioConsumerTransport } = await createConsumeTransport(
+      peer,
+      consumerDevice,
+      audioConsumerDevice
+    );
+    const { consumer, audioConsumer } = await connectWithConsumeRouter(
+      peer,
+      consumerDevice,
+      consumerTransport,
+      audioConsumerDevice,
+      audioConsumerTransport
+    );
+    await handleVideoLiveLoad(peer, consumer, audioConsumer);
 
-    setConsumer(newConsumer);
+    setConsumer(consumer);
   };
 
   useEffect(() => {

@@ -13,18 +13,30 @@ export default function useMediaSoupProduce(stream, roomId, userId) {
 
   const createProducerDevice = async rtpCapabilities => {
     const producerDevice = new mediasoupClient.Device();
+    const producerAudioDevice = new mediasoupClient.Device();
+
     await producerDevice.load({
       routerRtpCapabilities: rtpCapabilities,
     });
 
-    return producerDevice;
+    await producerAudioDevice.load({
+      routerRtpCapabilities: rtpCapabilities,
+    });
+
+    return { producerDevice, producerAudioDevice };
   };
 
-  const createProducerTransport = async (peer, producerDevice) => {
+  const createProducerTransport = async (peer, producerDevice, producerAudioDevice) => {
     const producerTransportParams = await peer.request('createWebRtcTransport');
     const producerTransport = producerDevice.createSendTransport(producerTransportParams);
 
+    const producerAudioTransportParams = await peer.request('createAudioWebRtcTransport');
+    const producerAudioTransport = producerAudioDevice.createSendTransport(
+      producerAudioTransportParams
+    );
+
     producerTransport.on('connect', async ({ dtlsParameters }, callback, errback) => {
+      console.log('hi');
       try {
         await peer.request('produceConnect', {
           dtlsParameters,
@@ -37,20 +49,46 @@ export default function useMediaSoupProduce(stream, roomId, userId) {
 
     producerTransport.on('produce', async (parameters, callback, errback) => {
       try {
-        await peer.request('produceProduce', {
+        const { id } = await peer.request('produceProduce', {
           kind: parameters.kind,
           rtpParameters: parameters.rtpParameters,
           appData: parameters.appData,
         });
+        callback(id);
       } catch (error) {
         errback(error);
       }
     });
 
-    return producerTransport;
+    producerAudioTransport.on('connect', async ({ dtlsParameters }, callback, errback) => {
+      console.log('hello');
+      try {
+        await peer.request('produceAudioConnect', {
+          dtlsParameters,
+        });
+        callback();
+      } catch (error) {
+        errback(error);
+      }
+    });
+
+    producerAudioTransport.on('produce', async (parameters, callback, errback) => {
+      try {
+        const { id } = await peer.request('produceAudioProduce', {
+          kind: parameters.kind,
+          rtpParameters: parameters.rtpParameters,
+          appData: parameters.appData,
+        });
+        callback(id);
+      } catch (error) {
+        errback(error);
+      }
+    });
+
+    return { producerTransport, producerAudioTransport };
   };
 
-  const connectWithProduceRouter = async producerTransport => {
+  const connectWithProduceRouter = async (producerTransport, producerAudioTransport) => {
     const producer = await producerTransport.produce({
       track: stream.videoTrack,
       // mediasoup params
@@ -85,14 +123,30 @@ export default function useMediaSoupProduce(stream, roomId, userId) {
       console.log('transport ended');
     });
 
+    const audioProducer = await producerAudioTransport.produce({
+      track: stream.audioTrack,
+    });
+
+    audioProducer.on('trackend', () => {
+      console.log('track ended');
+    });
+
+    audioProducer.on('transportClose', () => {
+      console.log('transport ended');
+    });
+
     return producer;
   };
 
   const initProduce = async peer => {
     const rptCapabilities = await getRtpCapabilites(peer);
-    const producerDevice = await createProducerDevice(rptCapabilities);
-    const producerTransport = await createProducerTransport(peer, producerDevice);
-    const producer = await connectWithProduceRouter(producerTransport);
+    const { producerDevice, producerAudioDevice } = await createProducerDevice(rptCapabilities);
+    const { producerTransport, producerAudioTransport } = await createProducerTransport(
+      peer,
+      producerDevice,
+      producerAudioDevice
+    );
+    const producer = await connectWithProduceRouter(producerTransport, producerAudioTransport);
 
     setProducer(producer);
   };
