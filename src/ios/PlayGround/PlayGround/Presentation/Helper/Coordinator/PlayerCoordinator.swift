@@ -26,6 +26,32 @@ class PlayerCoordinator: Coordinator {
                 vc is PlayViewController
             }) as? PlayViewController {
                 print("exist")
+                if info?.uploaderNickname == nil && playVC.viewModel.currentInfo?.id != info?.id {
+                    UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) {
+                        mainVC.playContainerView.isHidden = true
+                        mainVC.playViewTopMargin.constant = 0
+                        mainVC.removePlayer()
+                        playVC.view.removeFromSuperview()
+                    } completion: { _ in
+                        guard let newPlayVC = UIStoryboard(name: "Play", bundle: nil).instantiateViewController(withIdentifier: "PlayViewController" ) as? PlayViewController else { return }
+                        mainVC.playContainerView.isHidden = false
+                        newPlayVC.viewModel.currentInfo = info
+                        newPlayVC.coordinator = self
+                        mainVC.addChild(newPlayVC)
+                        mainVC.playContainerView.addSubview((newPlayVC.view)!)
+                        newPlayVC.view.frame = mainVC.playContainerView.bounds
+                        newPlayVC.didMove(toParent: mainVC)
+                        newPlayVC.isMinimized = false
+                        newPlayVC.setPlayViewOriginalSize()
+                        newPlayVC.safeTop = mainVC.safeTop
+                        newPlayVC.safeBottom = mainVC.safeBottom
+                        mainVC.tabBarHeight.constant = 0
+                        mainVC.tabBarStackView.isHidden = true
+                        mainVC.tabBarSeparatorView.isHidden = true
+                        mainVC.bottomWhiteView.isHidden = true
+                    }
+                    return
+                }
                 if playVC.viewModel.currentInfo?.id != info?.id {
                     playVC.viewModel.currentInfo = info
                 }
