@@ -509,6 +509,10 @@
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sil-jT-MW1" customClass="RTCEAGLVideoView">
                                 <rect key="frame" x="0.0" y="44" width="414" height="233"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="zwY-xG-CeZ" appends="YES" id="tqk-Ok-IFi"/>
+                                </connections>
                             </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="O9k-78-gSx"/>
@@ -656,6 +660,11 @@
                         <action selector="backTapped:" destination="zL7-Q9-x2b" id="d9q-7L-SEd"/>
                     </connections>
                 </tapGestureRecognizer>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="zwY-xG-CeZ">
+                    <connections>
+                        <action selector="playViewDidPan:" destination="zL7-Q9-x2b" id="HbA-Jx-sv8"/>
+                    </connections>
+                </panGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1589.8550724637682" y="51.5625"/>
         </scene>
