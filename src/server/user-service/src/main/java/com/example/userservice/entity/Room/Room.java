@@ -30,7 +30,7 @@ public class Room {
 
     private String hostUuid;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "MEDIUMBLOB")
     private String thumbnail;
 
     private int likeCnt;

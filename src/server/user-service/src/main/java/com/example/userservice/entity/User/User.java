@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -37,7 +38,7 @@ public class User {
     @Column
     private String nickName;
 
-    @Column
+    @Column(columnDefinition = "MEDIUMBLOB")
     private String profileImage;
 
     @Column
@@ -46,19 +47,21 @@ public class User {
 
     @Column(nullable = false, updatable = false, insertable = false)
     @ColumnDefault(value = "CURRENT_TIMESTAMP")
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
 
     @Column
-    private LocalDate modifiedAt;
+    @ColumnDefault(value = "CURRENT_TIMESTAMP")
+    private LocalDateTime modifiedAt;
 
     @Column
-    private LocalDate deletedAt;
+    private LocalDateTime deletedAt;
 
     @Column
     private String timeZone;
 
     @Column
-    private LocalDate lastAt;
+    @ColumnDefault(value = "CURRENT_TIMESTAMP")
+    private LocalDateTime lastAt;
 
     @OneToMany(mappedBy = "user")
     private List<RoomViewer> roomViewers = new LinkedList<>();
@@ -92,7 +95,7 @@ public class User {
                 .build();
     }
 
-    public void update(RequestMyinfo requestDto, LocalDate modifiedAt) {
+    public void update(RequestMyinfo requestDto, LocalDateTime modifiedAt) {
         this.nickName = requestDto.getNickName() == null ? nickName : requestDto.getNickName();
         this.profileImage = requestDto.getProfileImage() == null ? profileImage : requestDto.getProfileImage();
         this.modifiedAt = modifiedAt;
@@ -102,7 +105,7 @@ public class User {
         this.pwd = bcryptPwd;
     }
 
-    public void delete(LocalDate deletedAt) {
+    public void delete(LocalDateTime deletedAt) {
         this.deletedAt = deletedAt;
         this.state = UserState.QUIT;
     }

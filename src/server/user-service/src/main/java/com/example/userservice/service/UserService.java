@@ -1,5 +1,6 @@
 package com.example.userservice.service;
 
+import com.example.userservice.configure.security.Jwt;
 import com.example.userservice.dto.history.ResponseRoom;
 import com.example.userservice.dto.history.ResponseVideo;
 import com.example.userservice.dto.user.*;
@@ -31,6 +32,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -50,6 +52,7 @@ public class UserService implements UserDetailsService {
     private final RedisTemplate<String,Object> redisTemplate;
     private final AmazonS3Service amazonS3Service;
     private final HistoryService historyService;
+    private final Jwt jwt;
 
     public String sendEmail(String address) {
         SimpleMailMessage message = new SimpleMailMessage();
@@ -65,8 +68,8 @@ public class UserService implements UserDetailsService {
     public RegisterUser register(RegisterUser userDto) throws CustomUserException {
         String uuid =  UUID.randomUUID().toString();
         String bcryptPwd = bCryptPasswordEncoder.encode(userDto.getPassword());
-        userRepository.save(User.create(userDto,uuid,bcryptPwd));
         userDto.setProfileImage(amazonS3Service.upload(userDto.getProfileImage(),uuid));
+        userRepository.save(User.create(userDto,uuid,bcryptPwd));
         return userDto;
     }
 
@@ -76,14 +79,13 @@ public class UserService implements UserDetailsService {
         User user = userRepository.findByUuid(uuid).orElseThrow(()-> new CustomUserException(ErrorCode.U002));
         ResponseUser responseDto = mapper.map(user,ResponseUser.class);
         try {
-            Date date = new Date();
-            LocalDate localDate = new java.sql.Date(date.getTime()).toLocalDate();
+            LocalDateTime localDateTime = LocalDateTime.now();
             if (requestDto.getProfileImage() != null) {
                 amazonS3Service.delete(uuid);
                 responseDto.setProfileImage(amazonS3Service.upload(requestDto.getProfileImage(),uuid));
                 requestDto.setProfileImage(responseDto.getProfileImage());
             }
-            if (checkNickName(requestDto.getNickName()) != null) user.update(requestDto,localDate);
+            if (checkNickName(requestDto.getNickName()) != null) user.update(requestDto,localDateTime);
             responseDto.setNickName(requestDto.getNickName());
         } catch (CustomUserException e){
             throw new CustomUserException(ErrorCode.U004);
@@ -94,9 +96,8 @@ public class UserService implements UserDetailsService {
     @Transactional
     public void delete(String uuid) throws CustomUserException {
         User user = userRepository.findByUuid(uuid).orElseThrow(()-> new CustomUserException(ErrorCode.U002));
-        Date date = new Date();
-        LocalDate localDate = new java.sql.Date(date.getTime()).toLocalDate();
-        user.delete(localDate);
+        LocalDateTime localDateTime = LocalDateTime.now();
+        user.delete(localDateTime);
     }
 
     @Transactional
@@ -192,7 +193,7 @@ public class UserService implements UserDetailsService {
                 .collect(Collectors.toList());
         List<ResponseRoom> roomList = liveStream.map(ResponseRoom::new)
                 .collect(Collectors.toList());
-
+        /* 두 리스트 정렬해서 합치기(Two Pointer) */
         return historyService.likedHistory(videoList,roomList);
     }
 
@@ -206,6 +207,13 @@ public class UserService implements UserDetailsService {
         return videoStream.map(ResponseVideo::new).collect(Collectors.toList());
     }
 
+    public String refreshToken(String token, String refreshToken) throws CustomUserException {
+        if(!redisTemplate.hasKey(refreshToken)) throw new CustomUserException(ErrorCode.U007);
+        String userUuid = jwt.getUserUuid(token);
+        if(!userRepository.findByUuid(userUuid).isPresent()) throw new CustomUserException(ErrorCode.U007);
+        String newAccessToken = jwt.createToken(userUuid);
+        return newAccessToken;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws CustomUserException {

@@ -30,7 +30,7 @@ public class User {
     @Column
     private String nickName;
 
-    @Column
+    @Column(columnDefinition = "MEDIUMBLOB")
     private String profileImage;
 
     @Column

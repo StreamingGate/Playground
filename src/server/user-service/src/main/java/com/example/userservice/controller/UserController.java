@@ -124,4 +124,12 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userService.uploadedHistory(uuid, lastVideoId, size));
     }
 
+    /* refresh Token 발행 */
+    @PostMapping("/refresh")
+    public ResponseEntity<Map<String,String>> refreshToken(@RequestHeader("token") String token,
+                                                      @RequestHeader("refreshToken") String refreshToken) throws Exception {
+        Map<String,String> res = new HashMap<>();
+        res.put("token",userService.refreshToken(token, refreshToken));
+        return ResponseEntity.status(HttpStatus.OK).body(res);
+    }
 }
