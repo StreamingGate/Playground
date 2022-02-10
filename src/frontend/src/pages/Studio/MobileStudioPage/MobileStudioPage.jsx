@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
+import { useParams } from 'react-router-dom';
 import protooClient from 'protoo-client';
 
 import * as S from './MobileStudioPage.style';
@@ -10,7 +11,10 @@ const mediasoupClient = require('mediasoup-client');
 
 function MobileStudioPage() {
   const streamPlayerRef = useRef(null);
+
+  const { roomId, hostId } = useParams();
   const { stream, switchCamera, stopStream } = useStreamMedia(streamPlayerRef, 'mobile');
+
   const handleProcessProduce = async peer => {
     const rtpCapabilities = await peer.request('getRouterRtpCapabilities');
 
@@ -85,7 +89,7 @@ function MobileStudioPage() {
   useEffect(() => {
     if (stream.videoTrack) {
       const newTransport = new protooClient.WebSocketTransport(
-        'ws://localhost:4443/?room=test1&peer=peer3&role=produce'
+        `${process.env.REACT_APP_LIVE_SOCKET}/?room=${roomId}&peer=${hostId}&role=produce`
       );
       const newPeer = new protooClient.Peer(newTransport);
       newPeer.on('open', () => {

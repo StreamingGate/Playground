@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import protooClient from 'protoo-client';
+import { useParams } from 'react-router-dom';
 
 import * as S from './StudioPage.style';
 import { useStreamMedia } from '@utils/hook';
+import { lStorageService } from '@utils/service';
 
 import StreamStatusBar from '../StreamStatusBar/StreamStatusBar';
 import { ChatRoom } from '@components/chats';
@@ -15,6 +17,8 @@ function StudioPage() {
   const streamPlayerRef = useRef(null);
 
   const { stream, toggleMuteAudio, stopStream } = useStreamMedia(streamPlayerRef);
+  const { roomId } = useParams();
+  const userId = lStorageService.getItem('uuid');
 
   const [isMuteToggle, setMuteToggle] = useState(false);
   const [isCounterStop, setIsCounterStop] = useState(false);
@@ -93,7 +97,7 @@ function StudioPage() {
   useEffect(() => {
     if (stream.videoTrack) {
       const newTransport = new protooClient.WebSocketTransport(
-        'ws://localhost:4443/?room=test1&peer=peer3&role=produce'
+        `${process.env.REACT_APP_LIVE_SOCKET}/?room=${roomId}&peer=${userId}&role=produce`
       );
       const newPeer = new protooClient.Peer(newTransport);
       newPeer.on('open', () => {
