@@ -64,9 +64,6 @@ public class User {
     @Column
     private String timeZone;
 
-    @Column
-    private LocalDate lastAt;
-
     @OneToMany(mappedBy = "user")
     private List<RoomViewer> roomViewers = new LinkedList<>();
 

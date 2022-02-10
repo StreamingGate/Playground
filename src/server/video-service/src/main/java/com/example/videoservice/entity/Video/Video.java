@@ -7,6 +7,7 @@ import com.example.videoservice.entity.ViewdHistory.ViewedHistory;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.annotations.ColumnDefault;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
