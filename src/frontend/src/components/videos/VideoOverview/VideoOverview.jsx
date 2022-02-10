@@ -8,8 +8,19 @@ import { timeService } from '@utils/service';
 import { Avatar } from '@components/dataDisplays';
 
 function VideoOverview({ direction, isLibrary, videoInfo, isLive }) {
-  const { id, thumbnail, title, uploaderNickname, hostNickname, content, hits, createdAt, uuid } =
-    videoInfo;
+  const {
+    id,
+    thumbnail,
+    title,
+    uploaderNickname,
+    hostNickname,
+    content,
+    hits,
+    createdAt,
+    uuid,
+    hostProfileImage,
+    uploaderProfileImage,
+  } = videoInfo;
   const navigate = useNavigate();
 
   const [userName, setUserName] = useState('');
@@ -76,7 +87,7 @@ function VideoOverview({ direction, isLibrary, videoInfo, isLive }) {
       <S.VideoInfoContainer>
         {direction === 'vertical' && (
           <div>
-            <Avatar size='xs' />
+            <Avatar size='xs' imgSrc={isLive ? hostProfileImage : uploaderProfileImage} />
           </div>
         )}
         <S.VideoInfo>
