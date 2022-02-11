@@ -2,6 +2,16 @@ import { useEffect, useState } from 'react';
 
 let constraints = null;
 
+/**
+ * @param {Object} streamPlayerRef video dom ref
+ * @param {string} device 미디어 스트림을 재생시킬 디바이스 타입
+ * @returns
+ * stream: 로컬 미디어 스트림
+ * toggleMuteAudio: 오디오 스트림 음소거 토글 함수
+ * stopSteam: 미디어 스트림 정지 함수
+ * switchCamera: 모바일 전/후면 카메라 전환
+ */
+
 export default function useStreamMedia(streamPlayerRef, device = 'web') {
   const [stream, setStream] = useState({ videoTrack: null, audioTrack: null });
   const [facingMode, setFacingMode] = useState('user');
