@@ -34,6 +34,7 @@ public class VideoService {
         if(viewedHistory.isPresent()){
             Video video = viewedHistory.get().getVideo();
             video.addHits();
+            viewedHistory.get().updateLastViewedAt();
             result = new VideoResponseDto(video, video.getMetadata().getFileLink(), viewedHistory.get());
         }
         else{

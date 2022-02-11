@@ -107,7 +107,8 @@ public class MainService {
 //        return null;
 //    }
 
-    private void actionToVideo(VideoActionDto dto, boolean isCancel) throws Exception {
+    @Transactional
+    public void actionToVideo(VideoActionDto dto, boolean isCancel) throws Exception {
         ViewedHistory viewedHistory = viewedRepository.findByVideoIdAndUserUuid(dto.getUuid(), dto.getId()).orElse(null);
         User user = userRepository.findByUuid(dto.getUuid()).orElseThrow(() -> new CustomMainException(ErrorCode.U002));
         if (viewedHistory == null) { //봤지만 처음 저장하는 경우
@@ -132,7 +133,8 @@ public class MainService {
         }
     }
 
-    private void actionToLiveRoom(VideoActionDto dto, boolean isCancel) throws Exception {
+    @Transactional
+    public void actionToLiveRoom(VideoActionDto dto, boolean isCancel) throws Exception {
         RoomViewer roomViewer = liveRoomViewerRepository.findByLiveRoomIdAndUserUuid(dto.getUuid(), dto.getId())
                 .orElse(null);
         User user = userRepository.findByUuid(dto.getUuid()).orElseThrow(() -> new CustomMainException(ErrorCode.U002));

@@ -41,12 +41,16 @@ public class ViewedHistory {
         this.video = video;
     }
 
-    public void setLiked(boolean liked) {
-        this.liked = liked;
-        this.likedAt = liked? LocalDateTime.now(): null;
-    }
+//    public void setLiked(boolean liked) {
+//        this.liked = liked;
+//        this.likedAt = liked? LocalDateTime.now(): null;
+//    }
+//
+//    public void setDisliked(boolean disliked) {
+//        this.disliked = disliked;
+//    }
 
-    public void setDisliked(boolean disliked) {
-        this.disliked = disliked;
+    public void updateLastViewedAt(){
+        this.lastViewedAt = LocalDateTime.now();
     }
 }
