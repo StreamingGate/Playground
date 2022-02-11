@@ -4,7 +4,6 @@ import com.example.mainservice.entity.User.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 
 @NoArgsConstructor

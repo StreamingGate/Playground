@@ -33,8 +33,8 @@ public class StompHandler implements ChannelInterceptor {
                 break;
             case UNSUBSCRIBE:
                 log.info("unsubscribed....");
-            case DISCONNECT: //disconnect() or 세션이 끊어졌을 때(페이지 이동, 브라우저 닫기 등)
-                // `destination` is not appeared
+            case DISCONNECT: 
+                /* disconnect() or 세션이 끊어졌을 때(페이지 이동, 브라우저 닫기 등) */
                 log.info("disconnected....");
                 break;
             default:

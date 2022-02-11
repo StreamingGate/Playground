@@ -20,6 +20,7 @@ public class VideoResponseDto {
     private Category category;
     private LocalDateTime createdAt;
 
+    /* TODO : viewedProgress 구현하면 추가하기 */
     public VideoResponseDto(Video video) {//, Long viewedProgress){
         this.id = video.getId();
         this.title = video.getTitle();

@@ -11,7 +11,6 @@ import com.example.videoservice.entity.ViewdHistory.ViewedHistory;
 import com.example.videoservice.entity.ViewdHistory.ViewedRepository;
 import com.example.videoservice.exceptionHandler.customexception.CustomVideoException;
 import com.example.videoservice.exceptionHandler.customexception.ErrorCode;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

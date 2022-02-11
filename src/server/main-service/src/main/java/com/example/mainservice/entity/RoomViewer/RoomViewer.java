@@ -5,7 +5,6 @@ import com.example.mainservice.entity.User.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -25,8 +24,6 @@ public class RoomViewer {
 
     @ColumnDefault(value = "CURRENT_TIMESTAMP")
     private LocalDateTime lastViewedAt;
-
-
 
     @ManyToOne
     @JoinColumn(name = "users_id")

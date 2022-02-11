@@ -25,7 +25,7 @@ public class IndexController {
         model.addAttribute("rooms", rooms);
         return "room";
     }
-    
+
     @GetMapping("/room/enter/{roomId}")
     public String roomDetail(Model model, @PathVariable String roomId) {
         log.info("enter room....");
