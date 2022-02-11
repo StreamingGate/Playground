@@ -2,6 +2,11 @@ import React from 'react';
 
 import * as S from './RegisterFormStages.style';
 
+/**
+ *
+ * @returns 세 번째 회원가입 폼
+ */
+
 function RegisterFormState3({ values, errors, touched, onChange, onBlur }) {
   const { password, passwordCheck } = values;
 
