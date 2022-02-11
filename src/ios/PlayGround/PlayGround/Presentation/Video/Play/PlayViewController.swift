@@ -136,45 +136,6 @@ class PlayViewController: UIViewController {
         bindingData()
     }
     
-    private func connectWebSocket(roomUUID: String) {
-        guard let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else { return }
-        self.socket = EchoSocket.init();
-        self.socket?.register(observer: self)
-        do {
-            self.roomId = roomUUID
-            try self.socket!.connect(wsUri: "wss://streaminggate.shop:4443/?room=\(roomUUID)&peer=\(uuid)&role=consume")
-        } catch {
-            print("Failed to connect to server")
-        }
-    }
-    
-    private func handleWebSocketConnected() {
-        // Initialize mediasoup client
-        self.initializeMediasoup()
-
-        // Get router rtp capabilities
-        guard let getRoomRtpCapabilitiesResponse: JSON = Request.shared.sendGetRoomRtpCapabilitiesRequest(socket: self.socket!, roomId: self.roomId) else { return }
-//        print("response! " + (getRoomRtpCapabilitiesResponse["data"].description))
-        
-        // Initialize mediasoup device
-        let device: Device = Device.init()
-        device.load(getRoomRtpCapabilitiesResponse["data"].description)
-        
-        print("handleWebSocketConnected() device loaded: \(device)")
-
-        self.delegate = self
-        self.client = RoomClient.init(socket: self.socket!, device: device, roomId: self.roomId, roomListener: self.delegate!)
-        self.client!.createRecvTransport()
-    }
-    
-    private func initializeMediasoup() {
-        Mediasoupclient.initializePC()
-        print("initializeMediasoup() client initialized")
-
-        Logger.setDefaultHandler()
-        Logger.setLogLevel(LogLevel.LOG_WARN)
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         AppUtility.lockOrientation(.all)
@@ -420,7 +381,7 @@ class PlayViewController: UIViewController {
 //                self.viewLabel.text = "조회수 \(info.hits)회"
                 self.playControllView.isHidden = self.viewModel.isLive
                 self.miniPlayPauseButton.alpha = self.viewModel.isLive ? 0 : 1
-                self.connectWebSocket(roomUUID: info.uuid ?? "")
+                self.connectWebSocket(roomUUID: info.uuid ?? "test1")
             }.store(in: &cancellable)
         self.viewModel.$currentInfo.receive(on: DispatchQueue.main, options: nil)
             .sink { [weak self] currentInfo in
@@ -826,6 +787,46 @@ class PlayViewController: UIViewController {
         chatTextView.resignFirstResponder()
         coordinator?.setPlayMinimizing(vc: self)
     }
+}
+
+extension PlayViewController {
+    // MARK: - Watch live Streaming
+    private func connectWebSocket(roomUUID: String) {
+        guard let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else { return }
+        self.socket = EchoSocket.init();
+        self.socket?.register(observer: self)
+        do {
+            self.roomId = roomUUID
+            try self.socket!.connect(wsUri: "wss://streaminggate.shop:4443/?room=\(roomUUID)&peer=\(uuid)&role=consume")
+            print("--> wss://streaminggate.shop:4443/?room=\(roomUUID)&peer=\(uuid)&role=consume")
+        } catch {
+            print("Failed to connect to server")
+        }
+    }
+    
+    private func handleWebSocketConnected() {
+        // Initialize mediasoup client
+        self.initializeMediasoup()
+
+        // Get router rtp capabilities
+        guard let getRoomRtpCapabilitiesResponse: JSON = Request.shared.sendGetRoomRtpCapabilitiesRequest(socket: self.socket!, roomId: self.roomId) else { return }
+        
+        // Initialize mediasoup device
+        let device: Device = Device.init()
+        device.load(getRoomRtpCapabilitiesResponse["data"].description)
+        print("handleWebSocketConnected() device loaded: \(device)")
+        self.delegate = self
+        self.client = RoomClient.init(socket: self.socket!, device: device, roomId: self.roomId, roomListener: self.delegate!)
+        self.client!.createRecvTransport()
+    }
+    
+    private func initializeMediasoup() {
+        Mediasoupclient.initializePC()
+        print("initializeMediasoup() client initialized")
+        Logger.setDefaultHandler()
+        Logger.setLogLevel(LogLevel.LOG_WARN)
+    }
+    
 }
 
 // MARK: - Chattign Input

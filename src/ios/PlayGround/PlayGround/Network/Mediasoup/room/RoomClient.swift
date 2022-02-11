@@ -31,11 +31,9 @@ final internal class RoomClient : NSObject {
     private let device: Device
     
     private var joined: Bool
-    private var sendTransport: SendTransport?
     private var recvTransport: RecvTransport?
     
     private var recvTransportHandler: RecvTransportHandler?
-    private var producerHandler: ProducerHandler?
     private var consumerHandler: ConsumerHandler?
     
     private var roomListener: RoomListener?
@@ -172,12 +170,7 @@ final internal class RoomClient : NSObject {
         }
     }
     
-    // Class to handle producer listener events
-    private class ProducerHandler : NSObject, ProducerListener {
-        fileprivate weak var delegate: ProducerListener?
         
-        func onTransportClose(_ producer: Producer!) {
-            print("Producer::onTransportClose")
         }
     }
     
