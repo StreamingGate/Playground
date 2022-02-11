@@ -90,7 +90,7 @@
 		49E7374927906331000BC3FF /* Tab.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49E7374827906330000BC3FF /* Tab.storyboard */; };
 		49E7374B2790644C000BC3FF /* CustomTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E7374A2790644C000BC3FF /* CustomTabViewController.swift */; };
 		49E8E899278BB4C2003AD1DF /* HorizontalVideoListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E8E898278BB4C2003AD1DF /* HorizontalVideoListCell.swift */; };
-		49E8E89C278BB528003AD1DF /* Broadcast.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49E8E89B278BB528003AD1DF /* Broadcast.storyboard */; };
+		49E8E89C278BB528003AD1DF /* Live.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49E8E89B278BB528003AD1DF /* Live.storyboard */; };
 		49E8E89E278BB5B0003AD1DF /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E8E89D278BB5B0003AD1DF /* CameraView.swift */; };
 		49E8E8A0278BC264003AD1DF /* LiveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E8E89F278BC264003AD1DF /* LiveViewController.swift */; };
 		49E8F64027A962B900E030F6 /* PlayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E8F63F27A962B900E030F6 /* PlayViewModel.swift */; };
@@ -207,7 +207,7 @@
 		49E7374827906330000BC3FF /* Tab.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Tab.storyboard; sourceTree = "<group>"; };
 		49E7374A2790644C000BC3FF /* CustomTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabViewController.swift; sourceTree = "<group>"; };
 		49E8E898278BB4C2003AD1DF /* HorizontalVideoListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalVideoListCell.swift; sourceTree = "<group>"; };
-		49E8E89B278BB528003AD1DF /* Broadcast.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Broadcast.storyboard; sourceTree = "<group>"; };
+		49E8E89B278BB528003AD1DF /* Live.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Live.storyboard; sourceTree = "<group>"; };
 		49E8E89D278BB5B0003AD1DF /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 		49E8E89F278BC264003AD1DF /* LiveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveViewController.swift; sourceTree = "<group>"; };
 		49E8F63F27A962B900E030F6 /* PlayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayViewModel.swift; sourceTree = "<group>"; };
@@ -260,6 +260,27 @@
 				FD5FDC1E3E6EC365A13644FD /* Pods-PlayGround.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		49177C0427B6396000549C07 /* Create */ = {
+			isa = PBXGroup;
+			children = (
+				49EC99FF278201C600DE4F79 /* Create.storyboard */,
+				49F18C2B278E5E0800EBDCF8 /* CreateNavigationController.swift */,
+				49EC9A012782033E00DE4F79 /* CreatePopOverViewController.swift */,
+				496279DF2782C1AA005A2BDC /* CreateInfoViewController.swift */,
+			);
+			path = Create;
+			sourceTree = "<group>";
+		};
+		49177C0527B6398C00549C07 /* Live */ = {
+			isa = PBXGroup;
+			children = (
+				49E8E89B278BB528003AD1DF /* Live.storyboard */,
+				49E8E89F278BC264003AD1DF /* LiveViewController.swift */,
+				49AB6FE8278C545100D4D1E9 /* LiveChatCell.swift */,
+			);
+			path = Live;
 			sourceTree = "<group>";
 		};
 		492C62262795372B00AE546E /* Helper */ = {
@@ -634,14 +655,9 @@
 		49EC99FE278201B500DE4F79 /* CreateTab */ = {
 			isa = PBXGroup;
 			children = (
-				49EC99FF278201C600DE4F79 /* Create.storyboard */,
+				49177C0427B6396000549C07 /* Create */,
 				49EA82D627B1852200F75546 /* Upload */,
-				49F18C2B278E5E0800EBDCF8 /* CreateNavigationController.swift */,
-				49EC9A012782033E00DE4F79 /* CreatePopOverViewController.swift */,
-				496279DF2782C1AA005A2BDC /* CreateInfoViewController.swift */,
-				49E8E89B278BB528003AD1DF /* Broadcast.storyboard */,
-				49E8E89F278BC264003AD1DF /* LiveViewController.swift */,
-				49AB6FE8278C545100D4D1E9 /* LiveChatCell.swift */,
+				49177C0527B6398C00549C07 /* Live */,
 				49E8E89D278BB5B0003AD1DF /* CameraView.swift */,
 			);
 			path = CreateTab;
@@ -750,7 +766,7 @@
 				49EC9A00278201C600DE4F79 /* Create.storyboard in Resources */,
 				49D7A0B527840595001CAC60 /* Register.storyboard in Resources */,
 				49818AC82780C66100C0C956 /* MyPage.storyboard in Resources */,
-				49E8E89C278BB528003AD1DF /* Broadcast.storyboard in Resources */,
+				49E8E89C278BB528003AD1DF /* Live.storyboard in Resources */,
 				49B9C9C3277ACE9F006AE134 /* Assets.xcassets in Resources */,
 				4957CBBB27ACEA8C00554967 /* Friend.storyboard in Resources */,
 				4957CBC027AD58AC00554967 /* Upload.storyboard in Resources */,

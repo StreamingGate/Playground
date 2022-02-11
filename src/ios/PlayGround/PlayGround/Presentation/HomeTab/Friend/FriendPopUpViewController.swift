@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 
 class FriendPopUpViewController: UIViewController {
+    // MARK: - Properties
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var onlineMarkView: UIView!
     @IBOutlet weak var nickNameLabel: UILabel!
@@ -24,6 +25,7 @@ class FriendPopUpViewController: UIViewController {
         setupUI()
     }
     
+    // MARK: - UI Setting
     func setupUI() {
         self.view.backgroundColor = UIColor.black.withAlphaComponent(0.6)
         popUpView.layer.cornerRadius = 5
@@ -40,6 +42,7 @@ class FriendPopUpViewController: UIViewController {
         nickNameLabel.text = info.nickname
     }
     
+    // MARK: - Button Action
     @IBAction func cancelButtonDidTap(_ sender: Any) {
         self.view.removeFromSuperview()
     }

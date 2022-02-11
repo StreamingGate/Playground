@@ -10,6 +10,7 @@ import UIKit
 import Combine
 
 class NoticeListViewController: UIViewController {
+    // MARK: - Properties
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var friendRequestButton: UIButton!
     @IBOutlet weak var friendRequestCountView: UIView!
@@ -21,6 +22,7 @@ class NoticeListViewController: UIViewController {
     let viewModel = NoticeViewModel()
     private var cancellable: Set<AnyCancellable> = []
     
+    // MARK: - View LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         guard let nav = self.navigationController as? HomeNavigationController else { return }
@@ -35,6 +37,16 @@ class NoticeListViewController: UIViewController {
         self.viewModel.loadFriendRequest(vc: self, coordinator: navVC?.coordinator)
     }
     
+    // MARK: - UI Setting
+    func setupUI() {
+        titleLabel.font = UIFont.SubTitle
+        friendRequestButton.layer.cornerRadius = 20
+        friendRequestButton.setTitle("", for: .normal)
+        friendRequestCountView.layer.cornerRadius = 10
+        friendRequestBackView.layer.cornerRadius = 20
+    }
+    
+    // MARK: - Data Binding
     func bindViewModel() {
         self.viewModel.$noticeList.receive(on: DispatchQueue.main, options: nil)
             .sink { [weak self] _ in
@@ -48,14 +60,7 @@ class NoticeListViewController: UIViewController {
             }.store(in: &cancellable)
     }
     
-    func setupUI() {
-        titleLabel.font = UIFont.SubTitle
-        friendRequestButton.layer.cornerRadius = 20
-        friendRequestButton.setTitle("", for: .normal)
-        friendRequestCountView.layer.cornerRadius = 10
-        friendRequestBackView.layer.cornerRadius = 20
-    }
-    
+    // MARK: - Button Action
     @IBAction func backButtonDidTap(_ sender: Any) {
         navVC?.coordinator?.pop()
     }

@@ -10,12 +10,14 @@ import UIKit
 import Combine
 
 class FriendRequestViewController: UIViewController {
+    // MARK: - Properties
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
     var navVC: HomeNavigationController?
     let viewModel = NoticeViewModel()
     private var cancellable: Set<AnyCancellable> = []
     
+    // MARK: - View LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         guard let nav = self.navigationController as? HomeNavigationController else { return }
@@ -24,6 +26,12 @@ class FriendRequestViewController: UIViewController {
         setupUI()
     }
     
+    // MARK: - UI Setting
+    func setupUI() {
+        titleLabel.font = UIFont.SubTitle
+    }
+    
+    // MARK: - Data Binding
     func bindViewModel() {
         self.viewModel.$friendRequestList.receive(on: DispatchQueue.main, options: nil)
             .sink { [weak self] list in
@@ -32,10 +40,7 @@ class FriendRequestViewController: UIViewController {
             }.store(in: &cancellable)
     }
     
-    func setupUI() {
-        titleLabel.font = UIFont.SubTitle
-    }
-    
+    // MARK: - Button Action
     @IBAction func backButtonDidTap(_ sender: Any) {
         navVC?.coordinator?.pop()
     }
@@ -52,6 +57,7 @@ extension FriendRequestViewController: UITableViewDataSource, UITableViewDelegat
         }
         cell.updateUI(info: self.viewModel.friendRequestList[indexPath.row])
         cell.buttonHandler = { action in
+            // action: 1 - 수락, 0 - 거절
             self.viewModel.answerFriendRequest(vc: self, action: action, friendUuid: self.viewModel.friendRequestList[indexPath.row].uuid, coordinator: self.navVC?.coordinator)
         }
         return cell

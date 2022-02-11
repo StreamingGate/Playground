@@ -8,6 +8,9 @@
 import Foundation
 import UIKit
 
+/**
+ CreateNavigationController에서 발생하는 이동/전환을 위한 Coordinator
+ */
 class CreateTabCoordinator: Coordinator {
     var parentCoordinator: Coordinator?
     var navigation: UINavigationController
@@ -53,7 +56,7 @@ class CreateTabCoordinator: Coordinator {
     }
     
     func startBroadcasting() {
-        guard let vc = UIStoryboard(name: "Broadcast", bundle: nil).instantiateViewController(withIdentifier: "LiveViewController") as? LiveViewController else { return }
+        guard let vc = UIStoryboard(name: "Live", bundle: nil).instantiateViewController(withIdentifier: "LiveViewController") as? LiveViewController else { return }
         var viewControllers = navigation.viewControllers
         viewControllers[viewControllers.count - 1] = vc
         navigation.setViewControllers(viewControllers, animated: true)

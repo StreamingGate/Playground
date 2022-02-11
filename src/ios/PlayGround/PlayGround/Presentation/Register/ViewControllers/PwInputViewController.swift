@@ -21,7 +21,7 @@ class PwInputViewController: UIViewController{
     @IBOutlet weak var step2View: UIView!
     @IBOutlet weak var step3View: UIView!
     
-    // MARK: - View Life Cycle
+    // MARK: - View LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupUI()

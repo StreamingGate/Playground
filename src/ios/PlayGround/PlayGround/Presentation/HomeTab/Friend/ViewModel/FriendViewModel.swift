@@ -12,7 +12,6 @@ import Combine
 
 class FriendViewModel {
     @Published var friendList: [Friend] = []
-    
     var currentFriend: Friend?
     
     func loadFriend(vc: UIViewController, coordinator: Coordinator?) {

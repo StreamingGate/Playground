@@ -35,14 +35,14 @@ class NoticeViewModel {
     func answerFriendRequest(vc: UIViewController, action: Int, friendUuid: String, coordinator: Coordinator?) {
         guard let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else { return }
         if action == 0 {
-            // 거절
+            // 친구요청 거절
             MainServiceAPI.shared.deleteFriendRequest(friendUUID: friendUuid, myUUID: uuid) { result in
                 if NetworkResultManager.shared.analyze(result: result, vc: vc, coordinator: coordinator) != nil {
                     self.loadFriendRequest(vc: vc, coordinator: coordinator)
                 }
             }
         } else {
-            // 수락
+            // 친구요청 수락
             MainServiceAPI.shared.acceptFriendRequest(friendUUID: friendUuid, myUUID: uuid) { result in
                 if NetworkResultManager.shared.analyze(result: result, vc: vc, coordinator: coordinator) != nil {
                     self.loadFriendRequest(vc: vc, coordinator: coordinator)

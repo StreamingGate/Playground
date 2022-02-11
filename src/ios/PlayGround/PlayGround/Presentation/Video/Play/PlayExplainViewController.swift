@@ -25,7 +25,7 @@ class PlayExplainViewController: UIViewController {
     @IBOutlet weak var reportButton: UIButton!
     let viewModel = PlayViewModel()
     
-    // MARK: - View Life Cycle
+    // MARK: - View LifeCycle
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         backView.roundCorners([.topLeft , .topRight], radius: 20)
@@ -54,7 +54,6 @@ class PlayExplainViewController: UIViewController {
         videoTitleLabel.text = info.title
         categoryLabel.text = "#\(viewModel.categoryDic[info.category] ?? "기타")"
         channelLabel.text = (info.uploaderNickname == nil) ? info.hostNickname : info.uploaderNickname
-//        channelProfileImageView.downloadImageFrom(link: info., contentMode: <#T##UIView.ContentMode#>)
     }
     
     // MARK: - Animation
@@ -86,16 +85,28 @@ class PlayExplainViewController: UIViewController {
     }
     
     // MARK: - Button Action
-    
     @IBAction func likeButtonDidTap(_ sender: Any) {
         guard let info = viewModel.currentInfo, let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else { return }
         likeButton.isEnabled = false
-        MainServiceAPI.shared.tapButtons(videoId: info.id, type: (info.hostNickname == nil ? 0 : 1), action: Action.Like, uuid: uuid) { result in
-            print("result: \(result)")
-            DispatchQueue.main.async {
-                self.likeButton.isEnabled = true
-                if result["result"] as? String == "success" {
-                    // UI 변경 및 유저정보 업데이트
+        if let liked = self.viewModel.isLiked, liked == true {
+            MainServiceAPI.shared.cancelButtons(videoId: info.id, type: (info.hostNickname == nil ? 0 : 1), action: Action.Like, uuid: uuid) { result in
+                DispatchQueue.main.async {
+                    self.likeButton.isEnabled = true
+                    if result["result"] as? String == "success" {
+                        self.viewModel.likeCount = (self.viewModel.likeCount == 0 ? 0 : self.viewModel.likeCount - 1)
+                        self.viewModel.isLiked = false
+                    }
+                }
+            }
+        } else {
+            MainServiceAPI.shared.tapButtons(videoId: info.id, type: (info.hostNickname == nil ? 0 : 1), action: Action.Like, uuid: uuid) { result in
+                print("result: \(result)")
+                DispatchQueue.main.async {
+                    self.likeButton.isEnabled = true
+                    if result["result"] as? String == "success" {
+                        self.viewModel.likeCount += 1
+                        self.viewModel.isLiked = true
+                    }
                 }
             }
         }
@@ -104,19 +115,30 @@ class PlayExplainViewController: UIViewController {
     @IBAction func dislikeButtonDidTap(_ sender: Any) {
         guard let info = viewModel.currentInfo, let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else { return }
         dislikeButton.isEnabled = false
-        MainServiceAPI.shared.tapButtons(videoId: info.id, type: (info.hostNickname == nil ? 0 : 1), action: Action.Dislike, uuid: uuid) { result in
-            print("result: \(result)")
-            DispatchQueue.main.async {
-                self.dislikeButton.isEnabled = true
-                if result["result"] as? String == "success" {
-                    // UI 변경 및 유저정보 업데이트
+        if let disliked = self.viewModel.isDisliked, disliked == true {
+            MainServiceAPI.shared.cancelButtons(videoId: info.id, type: (info.hostNickname == nil ? 0 : 1), action: Action.Dislike, uuid: uuid) { result in
+                DispatchQueue.main.async {
+                    self.dislikeButton.isEnabled = true
+                    if result["result"] as? String == "success" {
+                        self.viewModel.isDisliked = false
+                    }
+                }
+            }
+        } else {
+            MainServiceAPI.shared.tapButtons(videoId: info.id, type: (info.hostNickname == nil ? 0 : 1), action: Action.Dislike, uuid: uuid) { result in
+                print("result: \(result)")
+                DispatchQueue.main.async {
+                    self.dislikeButton.isEnabled = true
+                    if result["result"] as? String == "success" {
+                        self.viewModel.isDisliked = true
+                    }
                 }
             }
         }
     }
     
     @IBAction func shareButtonDidTap(_ sender: Any) {
-        guard let url = URL(string: "naver.com") else { return }
+        guard let id = self.viewModel.currentInfo?.id, let url = URL(string: "https://streaminggate.shop/video-play/\(id)") else { return }
         let shareSheetVC = UIActivityViewController(activityItems: [url], applicationActivities: nil)
         present(shareSheetVC, animated: true, completion: nil)
     }
@@ -130,7 +152,7 @@ class PlayExplainViewController: UIViewController {
             DispatchQueue.main.async {
                 self.reportButton.isEnabled = true
                 if result["result"] as? String == "success" {
-                    // UI 변경 및 유저정보 업데이트
+                    self.simpleAlert(message: "신고되었습니다")
                 }
             }
         }

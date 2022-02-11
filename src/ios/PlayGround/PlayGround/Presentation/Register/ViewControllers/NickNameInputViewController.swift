@@ -26,7 +26,7 @@ class NickNameInputViewController: UIViewController {
     let profileImageView = UIImageView()
     var nameInfo: String = ""
     
-    // MARK: - View Life Cycle
+    // MARK: - View LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         self.imagePicker.sourceType = .photoLibrary
@@ -38,15 +38,17 @@ class NickNameInputViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-//        let image = profileView.snapshotView(afterScreenUpdates: true)?.takeScreenshot()
-//        RegisterHelper.shared.profileImage = image
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        profileView.layer.cornerRadius = 0
-        let image = profileView.snapshotView(afterScreenUpdates: true)?.takeScreenshot()
-        RegisterHelper.shared.profileImage = image
+        // 기본 이미지 상태 이후 아무 변경 사항이 없을 경우,
+        // step3로 넘어갈 때, cornerRadius가 들어가지 않은 기본 이미지를 저장
+        if profileImageView.isHidden {
+            profileView.layer.cornerRadius = 0
+            let image = profileView.snapshotView(afterScreenUpdates: true)?.takeScreenshot()
+            RegisterHelper.shared.profileImage = image
+        }
     }
     
     // MARK: - UI Setting

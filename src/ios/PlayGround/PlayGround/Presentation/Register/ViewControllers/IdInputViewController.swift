@@ -9,7 +9,6 @@ import Foundation
 import UIKit
 
 class IdInputViewController: UIViewController {
-    
     // MARK: - Properties
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var nameFormatCheckLabel: UILabel!
@@ -29,7 +28,7 @@ class IdInputViewController: UIViewController {
     var timeLeft = 600
     var timer = Timer()
     
-    // MARK: - View Life Cycle
+    // MARK: - View LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupUI()
@@ -83,18 +82,16 @@ class IdInputViewController: UIViewController {
     }
     
     // MARK: - TextField Input
-    // 이름(본명) textField 변경
     @IBAction func nameTextFieldEditingChanged(_ sender: Any) {
         sendButtonAvailability()
         guard let nameInfo = nameTextField.text, nameInfo.isEmpty == false else {
             return
         }
         nameFormatCheckLabel.isHidden = isValidName(nameInfo)
+        // 비정상 종료 시 회원가입 절차로 유도하기 위한 장치
         UserDefaults.standard.set(true, forKey: "onRegister")
         UserDefaults.standard.set(nameInfo, forKey: "onRegister-Name")
     }
-    
-    // 아이디(이메일) textField 변경
     
     @IBAction func idTextFieldEditingChanged(_ sender: Any) {
         sendButtonAvailability()
@@ -112,6 +109,7 @@ class IdInputViewController: UIViewController {
             idFormatCheckLabel.text = "올바른 이메일 형식을 입력해주세요"
             idFormatCheckLabel.textColor = UIColor.PGBlue
         }
+        // 비정상 종료 시 회원가입 절차로 유도하기 위한 장치
         UserDefaults.standard.set(true, forKey: "onRegister")
         UserDefaults.standard.set(idInfo, forKey: "onRegister-Email")
     }
@@ -215,6 +213,7 @@ class IdInputViewController: UIViewController {
                 RegisterHelper.shared.email = emailInput
                 RegisterHelper.shared.name = nameInput
                 RegisterHelper.shared.isVerified = true
+                // 정상적으로 step2로 넘어갈 경우, 회원가입 절차로 유도 해제
                 UserDefaults.standard.set(false, forKey: "onRegister")
                 UserDefaults.standard.removeObject(forKey: "onRegister-Email")
                 UserDefaults.standard.removeObject(forKey: "onRegister-Name")
@@ -237,6 +236,7 @@ class IdInputViewController: UIViewController {
     }
     
     @IBAction func backButtonDidTap(_ sender: Any) {
+        // 정상 종료 시 회원가입 절차로 유도 해제
         UserDefaults.standard.set(false, forKey: "onRegister")
         UserDefaults.standard.removeObject(forKey: "onRegister-Email")
         UserDefaults.standard.removeObject(forKey: "onRegister-Name")

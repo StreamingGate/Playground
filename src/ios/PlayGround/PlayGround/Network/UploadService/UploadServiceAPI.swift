@@ -13,6 +13,15 @@ struct UploadServiceAPI {
     static let shared = UploadServiceAPI()
     let uploadServiceUrl = "http://\(GatewayManager.shared.gatewayAddress)/upload-service"
     
+    /**
+     비디오 업로드하기
+     - Parameters:
+        - video: video data
+        - image: thumbnail data
+        - title: video title
+        - content: video content
+        - category: video category
+     */
     func post(video: Data, image: Data?, title: String, content: String, category: String, completion: @escaping ([String:Any])->Void){
         let urlPath = "\(uploadServiceUrl)/upload"
         guard let endpoint = URL(string: urlPath) else {

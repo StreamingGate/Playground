@@ -8,6 +8,9 @@
 import Foundation
 import UIKit
 
+/**
+ PlayViewController 에서 발생하는 이동/전환을 위한 Coordinator
+ */
 class PlayerCoordinator: Coordinator {
     var parentCoordinator: Coordinator?
     var navigation: UINavigationController

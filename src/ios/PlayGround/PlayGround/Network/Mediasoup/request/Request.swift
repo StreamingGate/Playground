@@ -10,8 +10,6 @@ import Foundation
 import SwiftyJSON
 
 final internal class Request : NSObject {
-    internal static let REQUEST_TIMEOUT_MS: NSInteger = 3000;
-    
     internal static let shared = Request.init();
     
     private override init() {}
@@ -30,12 +28,12 @@ final internal class Request : NSObject {
         Request.shared.sendSocketWithoutReponse(socket: socket, message: ["request" : true, "id": 7713, "method": "consumerResume",  "data": []] as [String : Any])
     }
     
-    func sendLoginRoomRequest(socket: EchoSocket, roomId: String, device: Device) -> JSON? {
-        print("REQ) send login room request")
-        let data: [String: Any] = ["request" : true, "id": 333, "method": "join", "data": ["displayName": "testUser", "device":  ["flag":"safari","name":"Safari","version":"14.1.2"], "roomId": roomId, "rtpCapabilities": device.getRtpCapabilities(), "sctpCapabilities": device.getSctpCapabilities()]]
-        return Request.shared.sendSocketAckRequest(socket: socket, data: data)
-    }
-    
+//    func sendLoginRoomRequest(socket: EchoSocket, roomId: String, device: Device) -> JSON? {
+//        print("REQ) send login room request")
+//        let data: [String: Any] = ["request" : true, "id": 333, "method": "join", "data": ["displayName": "testUser", "device":  ["flag":"safari","name":"Safari","version":"14.1.2"], "roomId": roomId, "rtpCapabilities": device.getRtpCapabilities(), "sctpCapabilities": device.getSctpCapabilities()]]
+//        return Request.shared.sendSocketAckRequest(socket: socket, data: data)
+//    }
+//    
     func sendCreateWebRtcTransportRequest(socket: EchoSocket, roomId: String, direction: String, device: Device) -> JSON? {
         print("REQ) createWebRtcTransport")
         if direction == "audio" {
@@ -45,9 +43,7 @@ final internal class Request : NSObject {
             let data: [String: Any] = ["request" : true, "id": 222, "method": "createWebRtcTransport", "data": []]
             return Request.shared.sendSocketAckRequest(socket: socket, data: data)
         }
-        
     }
-
     
     func consume(socket: EchoSocket, rtp: String) -> JSON? {
         print("REQ) consume")
@@ -55,6 +51,11 @@ final internal class Request : NSObject {
         return Request.shared.sendSocketAckRequest(socket: socket, data: data)
     }
 
+    func audioConsume(socket: EchoSocket, rtp: String) -> JSON? {
+        print("REQ) audio consume")
+        let data: [String: Any] = ["request" : true, "id": 666, "method": "audioConsume", "data" : ["rtpCapabilities": rtp]]
+        return Request.shared.sendSocketAckRequest(socket: socket, data: data)
+    }
     
     func sendConnectWebRtcTransportRequest(socket: EchoSocket, transportId: String, dtlsParameters: String) -> JSON? {
         print("REQ) connectWebRtcTransport")

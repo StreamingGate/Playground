@@ -8,6 +8,9 @@
 import Foundation
 import UIKit
 
+/**
+ CustomTabViewController에서 발생하는 이동/전환을 위한 coordinator
+ */
 class MainCoordinator: NSObject, Coordinator {
     var parentCoordinator: Coordinator?
     var navigation: UINavigationController
@@ -20,10 +23,7 @@ class MainCoordinator: NSObject, Coordinator {
         self.navigation = navigation
         self.parentCoordinator = parent
     }
-
-    func dismissToRoot() {
-    }
-
+    
     func showTabPage() {
         let childCoordinator = MainCoordinator(parent: self, navigation: self.navigation)
         self.childCoordinators.append(childCoordinator)
@@ -39,9 +39,7 @@ class MainCoordinator: NSObject, Coordinator {
         homeVC.view.frame = tabVC.homeContainerView.bounds
         homeVC.didMove(toParent: tabVC)
         self.homeCoordinator = HomeTabCoordinator(parent: self, navigation: homeVC)
-//        self.childCoordinators.append(homeCoordinator)
         homeVC.coordinator = homeCoordinator
-        
         tabVC.addChild(myVC)
         tabVC.myContainerView.addSubview((myVC.view)!)
         myVC.view.frame = tabVC.myContainerView.bounds
@@ -49,16 +47,18 @@ class MainCoordinator: NSObject, Coordinator {
         self.myCoordinator = MyTabCoordinator(parent: self, navigation: myVC)
         myVC.coordinator = myCoordinator
     }
+    
+    func dismissToRoot(){}
 
-
+    /**
+     하단 탭바를 선택할 경우 호출
+     
+     - 동일한 탭을 연속해서 선택할 경우 해당 탭의 최상단으로 이동
+     - 다른 탭에 이동했다가 돌아올 경우, 이전에 쌓였던 뷰가 유지됨
+     */
     func changeTab(index: Int, tabVC: CustomTabViewController) {
         switch index {
         case 0:
-//            guard let homeVC = UIStoryboard(name: "Home", bundle: nil).instantiateViewController(withIdentifier: "HomeNavigationController") as? HomeNavigationController else { return }
-//            let childCoordinator = HomeTabCoordinator(parent: self, navigation: homeVC)
-//            self.childCoordinators.append(childCoordinator)
-//            homeVC.coordinator = childCoordinator
-//            childCoordinator.start()
             self.homeCoordinator?.start()
         case 1:
             guard let popOverVC = UIStoryboard(name: "Create", bundle: nil).instantiateViewController(withIdentifier: "CreateNavigationController") as? CreateNavigationController else { return }
@@ -67,11 +67,6 @@ class MainCoordinator: NSObject, Coordinator {
             popOverVC.coordinator = childCoordinator
             childCoordinator.start()
         default:
-//            guard let myVC = UIStoryboard(name: "MyPage", bundle: nil).instantiateViewController(withIdentifier: "MyPageNavigationController") as? MyPageNavigationController else { return }
-//            let childCoordinator = MyTabCoordinator(parent: self, navigation: myVC)
-//            self.childCoordinators.append(childCoordinator)
-//            myVC.coordinator = childCoordinator
-//            childCoordinator.start()
             self.myCoordinator?.start()
         }
     }

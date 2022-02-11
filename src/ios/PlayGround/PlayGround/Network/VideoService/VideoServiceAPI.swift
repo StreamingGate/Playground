@@ -11,11 +11,14 @@ import SwiftKeychainWrapper
 
 struct VideoServiceAPI {
     static let shared = VideoServiceAPI()
-    
     let videoServiceUrl = "http://\(GatewayManager.shared.gatewayAddress)/video-service"
     
+    /**
+     동영상 정보 한 개 가져오기
+     - Parameters:
+        - videoId: video uuid
+     */
     func loadSingleVideo(videoId: Int, completion: @escaping ([String: Any])->Void) {
-        
         guard let tokenInfo = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue), let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else {
             completion(["result": "Invalid Token"])
             return

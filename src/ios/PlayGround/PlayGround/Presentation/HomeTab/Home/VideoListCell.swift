@@ -8,6 +8,9 @@
 import Foundation
 import UIKit
 
+/**
+ 동영상 리스트를 보여주는 셀
+ */
 class VideoListCell: UITableViewCell {
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
@@ -26,6 +29,9 @@ class VideoListCell: UITableViewCell {
         liveSign.layer.cornerRadius = 3
     }
     
+    /**
+     실시간 스트리밍 UI 세팅
+     */
     func setupLive(info: GeneralVideo) {
         thumbnailImageView.image = nil
         titleLabel.text = info.title
@@ -36,6 +42,9 @@ class VideoListCell: UITableViewCell {
         thumbnailImageView.downloadImageFrom(link: "https://d8knntbqcc7jf.cloudfront.net/thumbnail/\(uuid)", contentMode: .scaleAspectFit)
     }
     
+    /**
+     업로드된 비디오 UI 세팅
+     */
     func setupVideo(info: GeneralVideo) {
         thumbnailImageView.image = nil
         titleLabel.text = info.title

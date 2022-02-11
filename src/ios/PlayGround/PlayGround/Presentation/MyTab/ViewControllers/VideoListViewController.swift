@@ -9,13 +9,17 @@ import Foundation
 import UIKit
 
 class VideoListViewController: UIViewController {
+    // MARK: - Properties
     @IBOutlet weak var titleLabel: UILabel!
     var type = 0
+    
+    // MARK: - View LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
     }
     
+    // MARK: - UI Setting
     func setupUI() {
         titleLabel.font = UIFont.SubTitle
         switch type {
@@ -28,11 +32,13 @@ class VideoListViewController: UIViewController {
         }
     }
     
+    // MARK: - Button Action
     @IBAction func backButtonDidTap(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
     }
 }
 
+// TODO: 추가
 extension VideoListViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 5
