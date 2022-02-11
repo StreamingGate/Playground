@@ -1,6 +1,22 @@
 import { useEffect, useState } from 'react';
 import { ValidationError } from 'yup';
 
+/**
+ * 인풋 컴포넌트 이벤트 처리 커스텀 훅
+ *
+ * @param {Object} initialValues 인풋 컴포넌트 값 객체
+ * @param {Object} validSchema 인풋 컴포넌트 값 유효성 검사 객체 (yup 라이브러리로 생성)
+ * @param {Function} onSubmit 폼 컴포넌트 제출 이벤트 발생시 실행 시킬 함수 (handleSumbit 함수 내부에서 실행)
+ * @returns {Object}
+ * values: 인풋 컴포넌트 값 객체,
+ * errors: 유효성 검사 에러 메세지 객체,
+ * touched: 인풋 컴포넌트 포커싱 여부 객체,
+ * changeValue: 특정 인풋 컴포넌트 값 변경,
+ * handleInputChange: 인풋 컴포넌트 변경 이벤트 함수,
+ * handleInputBlur: 인풋 컴포넌트 'onBlur' 이벤트 함수,
+ * handleSubmit: 인풋 컴포넌트 제출 이벤트 함수
+ */
+
 export default function useForm({ initialValues, validSchema, onSubmit }) {
   const [values, setValues] = useState(initialValues);
   const [errors, setErrors] = useState({});
