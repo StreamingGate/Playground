@@ -49,7 +49,7 @@ public class Room {
     @JoinColumn(name = "users_id")
     private User user;
 
-    @OneToMany(mappedBy = "room")
+    @OneToMany(mappedBy = "room", cascade = CascadeType.REMOVE)
     private List<RoomViewer> roomViewer;
 
     @Builder

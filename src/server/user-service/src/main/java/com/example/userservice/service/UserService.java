@@ -1,6 +1,7 @@
 package com.example.userservice.service;
 
 import com.example.userservice.configure.security.Jwt;
+import com.example.userservice.dto.history.ResponseHistory;
 import com.example.userservice.dto.history.ResponseRoom;
 import com.example.userservice.dto.history.ResponseVideo;
 import com.example.userservice.dto.user.*;
@@ -153,7 +154,7 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public List<?> watchedHistory(String uuid, Long lastVideoId, Long lastLiveId,int size) throws CustomUserException {
+    public ResponseHistory watchedHistory(String uuid, Long lastVideoId, Long lastLiveId,int size) throws CustomUserException {
         if (!userRepository.findByUuid(uuid).isPresent()) throw new CustomUserException(ErrorCode.U002);
         Stream<ViewedHistory> videoStream;
         Stream<RoomViewer> liveStream;
@@ -170,11 +171,10 @@ public class UserService implements UserDetailsService {
         List<ResponseRoom> roomList = liveStream.map(ResponseRoom::new)
                 .collect(Collectors.toList());
 
-        /* 두 리스트 정렬해서 합치기(Two Pointer) */
-        return historyService.watchedHistory(videoList,roomList);
+        return new ResponseHistory(videoList,roomList);
     }
     @Transactional
-    public List<?> likedHistory(String uuid, Long lastVideoId, Long lastLiveId,int size) throws CustomUserException {
+    public ResponseHistory likedHistory(String uuid, Long lastVideoId, Long lastLiveId,int size) throws CustomUserException {
         if (!userRepository.findByUuid(uuid).isPresent()) throw new CustomUserException(ErrorCode.U002);
         Stream<ViewedHistory> videoStream;
         Stream<RoomViewer> liveStream;
@@ -190,8 +190,7 @@ public class UserService implements UserDetailsService {
                 .collect(Collectors.toList());
         List<ResponseRoom> roomList = liveStream.map(ResponseRoom::new)
                 .collect(Collectors.toList());
-        /* 두 리스트 정렬해서 합치기(Two Pointer) */
-        return historyService.likedHistory(videoList,roomList);
+        return new ResponseHistory(videoList,roomList);
     }
 
     @Transactional

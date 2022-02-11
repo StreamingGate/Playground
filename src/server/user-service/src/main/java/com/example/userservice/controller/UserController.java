@@ -1,5 +1,6 @@
 package com.example.userservice.controller;
 
+import com.example.userservice.dto.history.ResponseHistory;
 import com.example.userservice.dto.history.ResponseVideo;
 import com.example.userservice.dto.user.*;
 import com.example.userservice.service.UserService;
@@ -97,17 +98,17 @@ public class UserController {
 
     /* 시청한 동영상 목록 조회 */
     @GetMapping("/watch/{uuid}")
-    public ResponseEntity<?> watchedHistory(@PathVariable("uuid") String uuid,
-                                            @RequestParam("last-video") Long lastVideoId,
-                                            @RequestParam("last-live") Long lastLiveId,
-                                            @RequestParam("size") int size) throws Exception {
+    public ResponseEntity<ResponseHistory> watchedHistory(@PathVariable("uuid") String uuid,
+                                                          @RequestParam("last-video") Long lastVideoId,
+                                                          @RequestParam("last-live") Long lastLiveId,
+                                                          @RequestParam("size") int size) throws Exception {
 
         return ResponseEntity.status(HttpStatus.OK).body(userService.watchedHistory(uuid,lastVideoId,lastLiveId,size));
     }
 
     /* 좋아요 누른 동영상 조회 */
     @GetMapping("/liked/{uuid}")
-    public ResponseEntity<?> likedHistory(@PathVariable("uuid") String uuid,
+    public ResponseEntity<ResponseHistory> likedHistory(@PathVariable("uuid") String uuid,
                                           @RequestParam("last-video") Long lastVideoId,
                                           @RequestParam("last-live") Long lastLiveId,
                                           @RequestParam("size") int size) throws Exception {

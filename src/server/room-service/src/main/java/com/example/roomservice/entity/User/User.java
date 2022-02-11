@@ -42,6 +42,7 @@ public class User {
     private LocalDate createdAt;
 
     @Column
+    @ColumnDefault(value = "CURRENT_TIMESTAMP")
     private LocalDate modifiedAt;
 
     @Column
@@ -49,9 +50,6 @@ public class User {
 
     @Column
     private String timeZone;
-
-    @Column
-    private  LocalDate lastAt;
 
     @Builder
     public User(String email, String uuid, String pwd, String name, String nickName, String profileImage, UserState state) {
