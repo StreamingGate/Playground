@@ -81,6 +81,9 @@ function MainLayout({ children }) {
     }
   };
 
+  /**
+   * 메인 레이아웃 컴포넌트 제어 Context API value
+   */
   const mainLayoutContextValue = useMemo(
     () => ({
       sideNavState,
