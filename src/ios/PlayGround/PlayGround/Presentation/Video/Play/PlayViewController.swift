@@ -11,9 +11,15 @@ import Combine
 import AVFoundation
 import SwiftKeychainWrapper
 import WebRTC
+import SwiftyJSON
 
 class PlayViewController: UIViewController {
+    private var socket: EchoSocket?
+    private var client: RoomClient?
     @IBOutlet var remoteVideoView: RTCEAGLVideoView!
+    @IBOutlet weak var remoteVideoViewLeading: NSLayoutConstraint!
+    var videoTrack: RTCVideoTrack?
+    private var delegate: RoomListener?
     var roomId = ""
     
     // MARK: - Properties
@@ -207,6 +213,8 @@ class PlayViewController: UIViewController {
         miniCloseButton.translatesAutoresizingMaskIntoConstraints = false
         friendRequestButton.setTitle("", for: .normal)
         friendRequestLabel.font = UIFont.Content
+        guard let userInfo = UserManager.shared.userInfo else { return }
+        chatProfileImageView.downloadImageFrom(link: userInfo.profileImage, contentMode: .scaleAspectFill)
         // TODO: 내가 올린 영상일 경우, '친구 신청' 보이지 않도록
     }
     
@@ -351,6 +359,7 @@ class PlayViewController: UIViewController {
         self.viewModel.$videoInfo.receive(on: DispatchQueue.main, options: nil)
             .sink { [weak self] currentInfo in
                 guard let self = self, let info = currentInfo else { return }
+                if self.viewModel.isLive == true { return }
                 self.titleLabel.text = info.title
                 self.categoryLabel.text = "#\(self.viewModel.categoryDic[info.category] ?? "기타")"
                 self.miniTitleLabel.text = info.title
@@ -361,14 +370,37 @@ class PlayViewController: UIViewController {
                 self.setPlayer(urlInfo: info.streamingUrl)
 //                self.connectChatView(roomId: info.videoUuid)
             }.store(in: &cancellable)
+        self.viewModel.$roomInfo.receive(on: DispatchQueue.main, options: nil)
+            .sink { [weak self] currentInfo in
+                guard let self = self, let info = currentInfo else { return }
+                if self.viewModel.isLive == false { return }
+                self.titleLabel.text = info.title
+                self.categoryLabel.text = "#\(self.viewModel.categoryDic[info.category] ?? "기타")"
+                self.miniTitleLabel.text = info.title
+                self.channelProfileImageView.downloadImageFrom(link: "https://d8knntbqcc7jf.cloudfront.net/profiles/\(info.hostUuid)", contentMode: .scaleAspectFill)
+//                self.viewLabel.text = "조회수 \(info.hits)회"
+                self.playControllView.isHidden = self.viewModel.isLive
+                self.miniPlayPauseButton.alpha = self.viewModel.isLive ? 0 : 1
+                self.connectWebSocket(roomUUID: info.uuid ?? "test1")
+            }.store(in: &cancellable)
         self.viewModel.$currentInfo.receive(on: DispatchQueue.main, options: nil)
             .sink { [weak self] currentInfo in
                 guard let self = self, let info = currentInfo else { return }
+                self.remoteVideoView.isHidden = true
+                self.socket?.unregister(observer: self)
+                self.socket?.disconnect()
+                self.socket = nil
+                self.client = nil
+                self.delegate = nil
                 if info.uploaderNickname == nil {
-                    self.remoteVideoView.isHidden = false
-                    self.connectWebSocket()
+                    // 실시간 스트리밍인 경우
+                    self.playView.player?.replaceCurrentItem(with: nil)
+                    self.remoteVideoView.delegate = self
                 } else {
-                    self.remoteVideoView.isHidden = true
+                    // 비디오 스트리밍인 경우
+                    self.videoTrack?.isEnabled = false
+                    self.videoTrack?.remove(self.remoteVideoView)
+                    self.videoTrack = nil
                 }
                 self.channelNicknameLabel.text = (info.uploaderNickname == nil) ? info.hostNickname : info.uploaderNickname
                 self.miniChannelNameLabel.text = (info.uploaderNickname == nil) ? info.hostNickname : info.uploaderNickname
@@ -549,12 +581,12 @@ class PlayViewController: UIViewController {
     
     @IBAction func chatSendButtonDidTap(_ sender: Any) {
         chatTextView.resignFirstResponder()
-        guard let message = chatTextView.text, message.isEmpty == false else { return }
+        guard let message = chatTextView.text, message.isEmpty == false, let userInfo = UserManager.shared.userInfo, let nickname = userInfo.nickName else { return }
         chatTextView.text = ""
         chatPlaceHolderLabel.isHidden = false
         chatCountLabel.textColor = UIColor.placeHolder
         chatCountLabel.text = "0/200"
-        self.chatDelegate?.sendChatMessage(nickname: "test", message: message, senderRole: "VIEWER", chatType: "NORMAL")
+        self.chatDelegate?.sendChatMessage(nickname: nickname, message: message, senderRole: "VIEWER", chatType: "NORMAL")
     }
     
     func togglePlay() {
@@ -757,6 +789,46 @@ class PlayViewController: UIViewController {
     }
 }
 
+extension PlayViewController {
+    // MARK: - Watch live Streaming
+    private func connectWebSocket(roomUUID: String) {
+        guard let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else { return }
+        self.socket = EchoSocket.init();
+        self.socket?.register(observer: self)
+        do {
+            self.roomId = roomUUID
+            try self.socket!.connect(wsUri: "wss://streaminggate.shop:4443/?room=\(roomUUID)&peer=\(uuid)&role=consume")
+            print("--> wss://streaminggate.shop:4443/?room=\(roomUUID)&peer=\(uuid)&role=consume")
+        } catch {
+            print("Failed to connect to server")
+        }
+    }
+    
+    private func handleWebSocketConnected() {
+        // Initialize mediasoup client
+        self.initializeMediasoup()
+
+        // Get router rtp capabilities
+        guard let getRoomRtpCapabilitiesResponse: JSON = Request.shared.sendGetRoomRtpCapabilitiesRequest(socket: self.socket!, roomId: self.roomId) else { return }
+        
+        // Initialize mediasoup device
+        let device: Device = Device.init()
+        device.load(getRoomRtpCapabilitiesResponse["data"].description)
+        print("handleWebSocketConnected() device loaded: \(device)")
+        self.delegate = self
+        self.client = RoomClient.init(socket: self.socket!, device: device, roomId: self.roomId, roomListener: self.delegate!)
+        self.client!.createRecvTransport()
+    }
+    
+    private func initializeMediasoup() {
+        Mediasoupclient.initializePC()
+        print("initializeMediasoup() client initialized")
+        Logger.setDefaultHandler()
+        Logger.setLogLevel(LogLevel.LOG_WARN)
+    }
+    
+}
+
 // MARK: - Chattign Input
 extension PlayViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
@@ -780,12 +852,12 @@ extension PlayViewController: UITextViewDelegate {
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
             textView.resignFirstResponder()
-            guard let message = chatTextView.text, message.isEmpty == false else { return false }
+            guard let message = chatTextView.text, message.isEmpty == false, let userInfo = UserManager.shared.userInfo, let nickname = userInfo.nickName else { return false }
             chatTextView.text = ""
             chatPlaceHolderLabel.isHidden = false
             chatCountLabel.textColor = UIColor.placeHolder
             chatCountLabel.text = "0/200"
-            self.chatDelegate?.sendChatMessage(nickname: "test", message: message, senderRole: "VIEWER", chatType: "NORMAL")
+            self.chatDelegate?.sendChatMessage(nickname: nickname, message: message, senderRole: "VIEWER", chatType: "NORMAL")
             return false
         }
         return true
@@ -816,5 +888,75 @@ extension PlayViewController: UIGestureRecognizerDelegate {
             return false
         }
         return true
+    }
+}
+
+extension PlayViewController : MessageObserver {
+    func on(event: String, data: JSON?) {
+        switch event {
+        case ActionEvent.OPEN:
+            print("socket connected")
+            self.handleWebSocketConnected()
+            break
+        case ActionEvent.NEW_USER:
+            print("NEW_USER id =" + data!["userId"]["userId"].stringValue)
+            break
+        case ActionEvent.NEW_CONSUMER:
+            print("NEW_CONSUMER data=" + data!.description)
+            self.handleNewConsumerEvent(consumerInfo: data!["consumerData"])
+            break
+        default:
+            print("Unknown event " + event)
+        }
+    }
+    
+    private func handleNewConsumerEvent(consumerInfo: JSON) {
+        print("handleNewConsumerEvent info = " + consumerInfo.description)
+        // Start consuming
+        self.client!.consumeTrack(consumerInfo: consumerInfo)
+    }
+}
+
+// Extension for RoomListener
+extension PlayViewController : RoomListener {
+    func onNewConsumer(consumer: Consumer) {
+        print("RoomListener::onNewConsumer kind=" + consumer.getKind())
+        
+        if consumer.getKind() == "video" {
+            if let track = consumer.getTrack() as? RTCVideoTrack {
+                self.videoTrack = track
+                self.videoTrack?.isEnabled = true
+                self.videoTrack?.add(self.remoteVideoView)
+                DispatchQueue.main.async {                
+                    self.remoteVideoView.isHidden = false
+                }
+            } else {
+                self.videoTrack?.isEnabled = false
+                self.videoTrack?.remove(self.remoteVideoView)
+                self.videoTrack = nil
+            }
+        }
+        
+        do {
+            consumer.getKind() == "video"
+                ? try self.client!.resumeRemoteVideo()
+                : try self.client!.resumeRemoteAudio()
+        } catch {
+            print("onNewConsumer() failed to resume remote track")
+        }
+    }
+}
+
+extension PlayViewController: RTCVideoViewDelegate {
+    func videoView(_ videoView: RTCVideoRenderer, didChangeVideoSize size: CGSize) {
+        remoteVideoView.translatesAutoresizingMaskIntoConstraints = false
+        let playerHeight = UIScreen.main.bounds.width / 16 * 9
+        let remoteVideoWidth = playerHeight / size.height * size.width
+        remoteVideoViewLeading.constant = remoteVideoWidth >= UIScreen.main.bounds.width ? 0 : (UIScreen.main.bounds.width - remoteVideoWidth) / 2
+        NSLayoutConstraint.activate([
+            remoteVideoView.widthAnchor.constraint(equalTo: remoteVideoView.heightAnchor, multiplier: size.width / size.height)
+        ])
+        self.view.layoutIfNeeded()
+        self.remoteVideoView.layoutIfNeeded()
     }
 }

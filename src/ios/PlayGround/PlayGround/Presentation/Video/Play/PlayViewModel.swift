@@ -18,6 +18,7 @@ class PlayViewModel {
     
     @Published var currentInfo: GeneralVideo?
     @Published var videoInfo: VideoInfo?
+    @Published var roomInfo: RoomInfo?
     var videoId: Int? {
         guard let info = self.currentInfo else { return nil }
         return info.id
@@ -31,10 +32,16 @@ class PlayViewModel {
     }
     
     func loadSingleInfo(vc: UIViewController, coordinator: Coordinator?) {
+        guard let id = videoId else { return }
         if isLive {
-            print("room-service 추가 예정")
+            RoomServiceAPI.shared.loadRoom(roomId: id) { result in
+                guard let data = NetworkResultManager.shared.analyze(result: result, vc: vc, coordinator: coordinator) as? RoomInfo else { return }
+                self.roomInfo = data
+                self.isLiked = data.liked
+                self.isDisliked = data.disliked
+                self.likeCount = data.likeCnt
+            }
         } else {
-            guard let id = videoId else { return }
             VideoServiceAPI.shared.loadSingleVideo(videoId: id) { result in
                 guard let data = NetworkResultManager.shared.analyze(result: result, vc: vc, coordinator: coordinator) as? VideoInfo else { return }
                 self.videoInfo = data

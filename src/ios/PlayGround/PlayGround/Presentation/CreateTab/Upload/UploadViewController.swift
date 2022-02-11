@@ -286,7 +286,7 @@ class UploadViewController: UIViewController {
     
     @IBAction func uploadButtonDidTap(_ sender: Any) {
         guard let video = self.videoInfo as URL?, let titleInfo = titleTextView.text, titleInfo != "", let contentInfo = explainTextView.text, contentInfo != "", let categoryInfo = self.selectedCategory else {
-            self.simpleAlert(message: "실시간 스트리밍에 필요한 모든 정보를 입력해주세요")
+            self.simpleAlert(message: "동영상 업로드에 필요한 모든 정보를 입력해주세요")
             return
         }
         uploadButton.isEnabled = false

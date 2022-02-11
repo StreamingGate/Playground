@@ -79,8 +79,8 @@ class LoginViewController: UIViewController {
             if result["success"] as? Int == 1, let uuid = result["uuid"] as? String, let token = result["accessToken"] as? String, let userInfo = result["data"] as? UserInfo {
                 KeychainWrapper.standard.set(uuid, forKey: KeychainWrapper.Key.uuid.rawValue)
                 KeychainWrapper.standard.set(token, forKey: KeychainWrapper.Key.accessToken.rawValue)
+                UserManager.shared.userInfo = userInfo
                 DispatchQueue.main.async {
-                    UserManager.shared.userInfo = userInfo
                     self.coordinator?.showTabPage()
                 }
             } else {

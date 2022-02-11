@@ -38,8 +38,8 @@ final internal class Request : NSObject {
     
     func sendCreateWebRtcTransportRequest(socket: EchoSocket, roomId: String, direction: String, device: Device) -> JSON? {
         print("REQ) createWebRtcTransport")
-        if direction == "send" {
-            let data: [String: Any] = ["request" : true, "id": 222, "method": "createWebRtcTransport", "data": ["forceTcp": false, "producing": true, "consuming": false, "sctpCapabilities": device.getSctpCapabilities()]]
+        if direction == "audio" {
+            let data: [String: Any] = ["request" : true, "id": 223, "method": "createAudioWebRtcTransport", "data": []]
             return Request.shared.sendSocketAckRequest(socket: socket, data: data)
         } else {
             let data: [String: Any] = ["request" : true, "id": 222, "method": "createWebRtcTransport", "data": []]

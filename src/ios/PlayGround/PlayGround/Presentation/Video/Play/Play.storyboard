@@ -509,6 +509,10 @@
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sil-jT-MW1" customClass="RTCEAGLVideoView">
                                 <rect key="frame" x="0.0" y="44" width="414" height="233"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="zwY-xG-CeZ" appends="YES" id="tqk-Ok-IFi"/>
+                                </connections>
                             </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="O9k-78-gSx"/>
@@ -518,17 +522,17 @@
                             <constraint firstItem="z4m-dy-jqD" firstAttribute="width" secondItem="z4m-dy-jqD" secondAttribute="height" multiplier="1:1" id="0c4-hH-NwY"/>
                             <constraint firstItem="SOH-HM-MYK" firstAttribute="leading" secondItem="QMm-yw-Spv" secondAttribute="leading" priority="750" id="23X-W3-xWZ"/>
                             <constraint firstItem="zrS-u7-i04" firstAttribute="centerX" secondItem="O9k-78-gSx" secondAttribute="centerX" id="27b-Bv-xfa"/>
-                            <constraint firstItem="Sil-jT-MW1" firstAttribute="leading" secondItem="yqi-XC-h5e" secondAttribute="leading" id="3DY-dD-1o9"/>
                             <constraint firstItem="O9k-78-gSx" firstAttribute="bottom" secondItem="YG8-9c-nRp" secondAttribute="bottom" id="6MQ-Kw-EnQ"/>
                             <constraint firstItem="O9k-78-gSx" firstAttribute="bottom" secondItem="QMm-yw-Spv" secondAttribute="bottom" constant="80" id="6X7-eR-foj"/>
                             <constraint firstItem="LRj-f8-gzh" firstAttribute="centerY" secondItem="yqi-XC-h5e" secondAttribute="centerY" id="6gJ-Gd-tGY"/>
                             <constraint firstItem="O9k-78-gSx" firstAttribute="leading" secondItem="yqi-XC-h5e" secondAttribute="leading" id="7gx-rw-Hk6"/>
-                            <constraint firstItem="Sil-jT-MW1" firstAttribute="bottom" secondItem="yqi-XC-h5e" secondAttribute="bottom" id="8pX-iU-QV2"/>
+                            <constraint firstItem="Sil-jT-MW1" firstAttribute="centerY" secondItem="yqi-XC-h5e" secondAttribute="centerY" id="8e6-dn-y6E"/>
                             <constraint firstItem="SOH-HM-MYK" firstAttribute="trailing" secondItem="QMm-yw-Spv" secondAttribute="trailing" id="8ta-Xe-gKw"/>
                             <constraint firstItem="zrS-u7-i04" firstAttribute="leading" secondItem="O9k-78-gSx" secondAttribute="leading" id="9Az-bb-gkG"/>
                             <constraint firstItem="qkx-vn-sS9" firstAttribute="centerY" secondItem="yqi-XC-h5e" secondAttribute="centerY" id="BYR-47-HaI"/>
                             <constraint firstItem="wpe-05-P7u" firstAttribute="centerX" secondItem="cV8-tH-dwF" secondAttribute="centerX" id="Cop-Jt-R02"/>
                             <constraint firstItem="zrS-u7-i04" firstAttribute="top" secondItem="yqi-XC-h5e" secondAttribute="bottom" id="DpN-D7-Leq"/>
+                            <constraint firstItem="Sil-jT-MW1" firstAttribute="centerX" secondItem="yqi-XC-h5e" secondAttribute="centerX" id="EiK-ck-0PD"/>
                             <constraint firstItem="cV8-tH-dwF" firstAttribute="leading" secondItem="O9k-78-gSx" secondAttribute="leading" id="GvU-Mp-rPG"/>
                             <constraint firstItem="QMm-yw-Spv" firstAttribute="centerX" secondItem="O9k-78-gSx" secondAttribute="centerX" id="HMe-d4-Evq"/>
                             <constraint firstItem="QMm-yw-Spv" firstAttribute="top" secondItem="wpe-05-P7u" secondAttribute="bottom" priority="999" id="ONh-uJ-d8P"/>
@@ -546,10 +550,9 @@
                             <constraint firstItem="9wx-Cn-ZFu" firstAttribute="leading" secondItem="SOH-HM-MYK" secondAttribute="leading" id="Yb8-Rs-SyO"/>
                             <constraint firstItem="LRj-f8-gzh" firstAttribute="leading" secondItem="yqi-XC-h5e" secondAttribute="leading" id="YuO-TV-3ZY"/>
                             <constraint firstItem="yqi-XC-h5e" firstAttribute="centerX" secondItem="O9k-78-gSx" secondAttribute="centerX" priority="750" id="ZZ4-Fk-jH1"/>
-                            <constraint firstItem="Sil-jT-MW1" firstAttribute="top" secondItem="yqi-XC-h5e" secondAttribute="top" id="aC6-a3-UKn"/>
+                            <constraint firstItem="Sil-jT-MW1" firstAttribute="top" secondItem="yqi-XC-h5e" secondAttribute="top" priority="250" id="aC6-a3-UKn"/>
                             <constraint firstItem="LRj-f8-gzh" firstAttribute="centerX" secondItem="yqi-XC-h5e" secondAttribute="centerX" id="f8w-oc-jN1"/>
                             <constraint firstItem="YG8-9c-nRp" firstAttribute="top" secondItem="LRj-f8-gzh" secondAttribute="bottom" id="fBC-Go-5Za"/>
-                            <constraint firstItem="Sil-jT-MW1" firstAttribute="trailing" secondItem="yqi-XC-h5e" secondAttribute="trailing" id="fRq-VD-y2b"/>
                             <constraint firstItem="wpe-05-P7u" firstAttribute="top" secondItem="u2M-AS-nkI" secondAttribute="bottom" id="hsU-8N-oeZ"/>
                             <constraint firstItem="yqi-XC-h5e" firstAttribute="width" secondItem="yqi-XC-h5e" secondAttribute="height" multiplier="16:9" priority="750" id="igh-YA-jIM"/>
                             <constraint firstItem="O9k-78-gSx" firstAttribute="trailing" secondItem="QMm-yw-Spv" secondAttribute="trailing" id="jdK-iN-Dg1"/>
@@ -557,6 +560,7 @@
                             <constraint firstItem="z4m-dy-jqD" firstAttribute="trailing" secondItem="yqi-XC-h5e" secondAttribute="trailing" constant="-50" id="nqP-nS-H1C"/>
                             <constraint firstItem="ckV-PD-W2u" firstAttribute="trailing" secondItem="O9k-78-gSx" secondAttribute="trailing" constant="-20" id="o35-Yb-svD"/>
                             <constraint firstItem="u2M-AS-nkI" firstAttribute="centerX" secondItem="O9k-78-gSx" secondAttribute="centerX" id="qdT-KJ-HgK"/>
+                            <constraint firstItem="Sil-jT-MW1" firstAttribute="leading" secondItem="LRj-f8-gzh" secondAttribute="leading" priority="250" id="qs9-wW-CVM"/>
                             <constraint firstItem="ckV-PD-W2u" firstAttribute="top" secondItem="yqi-XC-h5e" secondAttribute="bottom" constant="10" id="rbd-EV-9jG"/>
                             <constraint firstItem="YG8-9c-nRp" firstAttribute="centerX" secondItem="O9k-78-gSx" secondAttribute="centerX" id="scs-6n-3Pj"/>
                             <constraint firstItem="qkx-vn-sS9" firstAttribute="leading" secondItem="yqi-XC-h5e" secondAttribute="leading" constant="50" id="tg0-Zm-y6m"/>
@@ -604,6 +608,7 @@
                         <outlet property="playViewTop" destination="S62-GT-XAz" id="qIm-Mw-v25"/>
                         <outlet property="playViewWidth" destination="v2O-eg-KOu" id="vaK-bl-PQP"/>
                         <outlet property="remoteVideoView" destination="Sil-jT-MW1" id="0nV-BE-M4t"/>
+                        <outlet property="remoteVideoViewLeading" destination="qs9-wW-CVM" id="1vw-ue-2YF"/>
                         <outlet property="reportButton" destination="2SI-sW-WsO" id="UjP-4J-AFh"/>
                         <outlet property="safeBottomView" destination="9wx-Cn-ZFu" id="Yjc-CZ-c12"/>
                         <outlet property="safeBottomViewHeight" destination="zNw-w9-rtl" id="Jrh-Ql-hNF"/>
@@ -656,6 +661,11 @@
                         <action selector="backTapped:" destination="zL7-Q9-x2b" id="d9q-7L-SEd"/>
                     </connections>
                 </tapGestureRecognizer>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="zwY-xG-CeZ">
+                    <connections>
+                        <action selector="playViewDidPan:" destination="zL7-Q9-x2b" id="HbA-Jx-sv8"/>
+                    </connections>
+                </panGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1589.8550724637682" y="51.5625"/>
         </scene>

@@ -10,6 +10,7 @@ import UIKit
 
 class CreateNavigationController: UINavigationController {
     var coordinator: CreateTabCoordinator?
+    var roomUuid = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()

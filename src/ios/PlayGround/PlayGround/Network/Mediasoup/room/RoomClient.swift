@@ -20,24 +20,20 @@ public enum RoomError : Error {
     case CONSUMER_NOT_FOUND
 }
 
-var produceId = ""
-
 final internal class RoomClient : NSObject {
     private static let STATS_INTERVAL_MS: NSInteger = 3000
     
     private let socket: EchoSocket
     private let roomId: String
-    private var producers: [String : Producer]
-    private var consumers: [String : Consumer]
+    private var producers: Producer
+    private var consumers: Consumer
     private var consumersInfo: [JSON]
     private let device: Device
     
     private var joined: Bool
-    private var sendTransport: SendTransport?
     private var recvTransport: RecvTransport?
     
     private var recvTransportHandler: RecvTransportHandler?
-    private var producerHandler: ProducerHandler?
     private var consumerHandler: ConsumerHandler?
     
     private var roomListener: RoomListener?
@@ -48,41 +44,16 @@ final internal class RoomClient : NSObject {
         self.socket = socket
         self.device = device
         self.roomId = roomId
+        self.roomListener = nil
         self.roomListener = roomListener
         
-        self.producers = [String : Producer]()
-        self.consumers = [String : Consumer]()
+        self.producers = Producer()
+        self.consumers = Consumer()
         self.consumersInfo = [JSON]()
         self.joined = false
-        
+        self.recvTransportHandler?.delegate = nil
+        self.consumerHandler?.delegate = nil
         super.init()
-    }
-    
-    func join() throws {
-        // Check if the device is loaded
-        if !self.device.isLoaded() {
-            throw RoomError.DEVICE_NOT_LOADED
-        }
-        
-        // if the user is already joined do nothing
-        if self.joined {
-            return
-        }
-        
-        _ = Request.shared.sendLoginRoomRequest(socket: self.socket, roomId: self.roomId, device: self.device)
-        self.joined = true
-        print("join() join success")
-    }
-    
-    func createSendTransport() {
-        // Do nothing if send transport is already created
-        if (self.sendTransport != nil) {
-            print("createSendTransport() send transport is already created...")
-            return
-        }
-        
-        self.createWebRtcTransport(direction: "send")
-        print("createSendTransport() send transport created")
     }
     
     func createRecvTransport() {
@@ -103,16 +74,7 @@ final internal class RoomClient : NSObject {
             self.consumersInfo.append(consumerInfo)
             return
         }
-        
         let kind: String = consumerInfo["kind"].stringValue
-        
-        // if already consuming type of track remove it, TODO support multiple remotes?
-        for consumer in self.consumers.values {
-            if consumer.getKind() == kind {
-                print("consumeTrack() removing consumer kind=" + kind)
-                self.consumers.removeValue(forKey: consumer.getId())
-            }
-        }
         
         let id: String = consumerInfo["id"].stringValue
         let producerId: String = consumerInfo["producerId"].stringValue
@@ -127,7 +89,7 @@ final internal class RoomClient : NSObject {
         self.consumerHandler!.delegate = self.consumerHandler
 
         let kindConsumer: Consumer = self.recvTransport!.consume(self.consumerHandler!.delegate!, id: id, producerId: producerId, kind: kind, rtpParameters: rtpParameters.description)
-        self.consumers[kindConsumer.getId()] = kindConsumer
+        self.consumers = kindConsumer
             
         print("consumeTrack() consuming id =" + kindConsumer.getId())
             
@@ -135,7 +97,6 @@ final internal class RoomClient : NSObject {
     }
     
     func resumeRemoteVideo() throws {
-        print("~~~produceId : \(produceId)")
     }
     
     func resumeRemoteAudio() throws {
@@ -144,13 +105,9 @@ final internal class RoomClient : NSObject {
     }
     
     private func createWebRtcTransport(direction: String) {
-        
         let response = Request.shared.sendCreateWebRtcTransportRequest(socket: self.socket, roomId: "test", direction: direction, device: device)
         
-        print("createWebRtcTransport() response = " + (response?["data"].description ?? "없음5"))
-        
         guard let webRtcTransportData: JSON = response?["data"] else { return }
-        
         let id: String = webRtcTransportData["id"].stringValue
         let iceParameters: JSON = webRtcTransportData["iceParameters"]
         let iceCandidatesArray: JSON = webRtcTransportData["iceCandidates"]
@@ -165,10 +122,9 @@ final internal class RoomClient : NSObject {
 
             let result = Request.shared.consume(socket: self.socket, rtp: device.getRtpCapabilities()!)
             guard let consumeData = result?["data"] else { return }
-//            produceId = consumeData["producerId"] as! String
             self.consumeTrack(consumerInfo: consumeData)
 
-            let result3 = Request.shared.consumerResume(socket: self.socket)
+            let _ = Request.shared.consumerResume(socket: self.socket)
             break
         default:
             print("createWebRtcTransport() invalid direction " + direction)
@@ -177,24 +133,19 @@ final internal class RoomClient : NSObject {
     
     private func handleLocalTransportConnectEvent(transport: Transport, dtlsParameters: String) {
         print("handleLocalTransportConnectEvent() id =" + transport.getId())
-        let result2 = Request.shared.connectConsume(socket: self.socket, dtlsParameters: dtlsParameters)
+        let _ = Request.shared.connectConsume(socket: self.socket, dtlsParameters: dtlsParameters)
     }
     
     private func getProducerByKind(kind: String) throws -> Producer {
-        for producer in self.producers.values {
-            if producer.getKind() == kind {
-                return producer
-            }
+        if self.producers.getKind() == kind {
+            return self.producers
         }
-        
         throw RoomError.PRODUCER_NOT_FOUND
     }
     
     private func getConsumerByKind(kind: String) throws -> Consumer {
-        for consumer in self.consumers.values {
-            if consumer.getKind() == kind {
-                return consumer
-            }
+        if self.consumers.getKind() == kind {
+            return self.consumers
         }
         
         throw RoomError.CONSUMER_NOT_FOUND
@@ -219,12 +170,7 @@ final internal class RoomClient : NSObject {
         }
     }
     
-    // Class to handle producer listener events
-    private class ProducerHandler : NSObject, ProducerListener {
-        fileprivate weak var delegate: ProducerListener?
         
-        func onTransportClose(_ producer: Producer!) {
-            print("Producer::onTransportClose")
         }
     }
     

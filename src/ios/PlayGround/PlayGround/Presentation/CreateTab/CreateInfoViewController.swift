@@ -81,7 +81,7 @@ class createInfoViewController: UIViewController {
         
         MainServiceAPI.shared.getAllList(lastVideoId: -1, lastLiveId: -1, category: "ALL", size: 1) { result in
             guard let data = NetworkResultManager.shared.analyze(result: result, vc: self, coordinator: self.navVC?.coordinator) as? HomeList else { return }
-            self.categoryList = data.categories.compactMap({ self.categoryDic[$0] ?? "기타" }).filter({ $0 != "전체" && $0 != "기타" })
+            self.categoryList = data.categories.filter({ $0 != "ALL" })
         }
         bindData()
         setupUI()
@@ -157,18 +157,21 @@ class createInfoViewController: UIViewController {
         self.$selectedCategory.receive(on: DispatchQueue.main, options: nil)
             .sink { [weak self] selected in
                 guard let self = self else { return }
-                guard let info = selected else {
+                guard let info = selected, let categoryString = self.categoryDic[info] else {
                     self.categoryContentLabel.text = "카테고리를 선택해주세요"
                     return
                 }
-                self.categoryContentLabel.text = info
+                self.categoryContentLabel.text = categoryString
             }.store(in: &cancellable)
     }
     
     @IBAction func categoryButtonDidTap(_ sender: Any) {
+        titleTextView.resignFirstResponder()
+        explainTextView.resignFirstResponder()
         let alert = UIAlertController(title: "", message: "카테고리를 선택해주세요", preferredStyle: .actionSheet)
         for i in categoryList {
-            alert.addAction(UIAlertAction(title: i, style: .default, handler: { _ in
+            guard let categoryInfo = categoryDic[i] else { return }
+            alert.addAction(UIAlertAction(title: categoryInfo, style: .default, handler: { _ in
                 self.selectedCategory = i
             }))
         }
@@ -177,8 +180,35 @@ class createInfoViewController: UIViewController {
     }
     
     @IBAction func startButtonDidTap(_ sender: Any) {
+        guard let titleInfo = titleTextView.text, titleInfo != "", let contentInfo = explainTextView.text, contentInfo != "", let categoryInfo = self.selectedCategory, let thumbnail = self.imageInfo, var imageData = thumbnail.pngData() else {
+            self.simpleAlert(message: "실시간 스트리밍에 필요한 모든 정보를 입력해주세요")
+            return
+        }
+        let roomUUID = UUID().uuidString
+        startButton.isEnabled = false
         UIView.animate(withDuration: 0.4, delay: 0, options: .curveEaseInOut) {
             self.loadingView.alpha = 1
+        }
+        var quality: CGFloat = 1
+        while imageData.count >= 1572864 {
+            quality -= 0.1
+            if let newData = thumbnail.jpegData(compressionQuality: quality) {
+                imageData = newData
+            }
+        }
+        let binaryImage = imageData.base64EncodedString()
+        RoomServiceAPI.shared.createRoom(uuid: roomUUID, title: titleInfo, content: contentInfo, thumbnail: binaryImage, category: categoryInfo) { result in
+            if result["result"] as? String == "success" {
+                DispatchQueue.main.async {
+                    self.navVC?.roomUuid = roomUUID
+                    self.navVC?.coordinator?.startBroadcasting()
+                }
+            } else {
+                DispatchQueue.main.async {
+                    self.simpleAlert(message: "동영상 데이터를 가져오는 데 실패했습니다. 동영상을 다시 업로드해주세요")
+                    self.startButton.isEnabled = true
+                }
+            }
         }
     }
     
@@ -195,6 +225,8 @@ class createInfoViewController: UIViewController {
     }
     
     @IBAction func thumbnailButtonDidTap(_ sender: Any) {
+        titleTextView.resignFirstResponder()
+        explainTextView.resignFirstResponder()
         self.present(imagePicker, animated: true, completion: nil)
     }
     
