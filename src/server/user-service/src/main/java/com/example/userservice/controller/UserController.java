@@ -47,10 +47,10 @@ public class UserController {
 
     /* 비밀번호 수정 */
     @PutMapping("/password/{uuid}")
-    public ResponseEntity<PwdDto> updatePwd(@PathVariable("uuid") String uuid,
-                                            @RequestBody PwdDto pwdDto) throws Exception {
+    public ResponseEntity<Pwd> updatePwd(@PathVariable("uuid") String uuid,
+                                         @RequestBody Pwd pwd) throws Exception {
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        PwdDto res = userService.updatePwd(uuid, pwdDto);
+        Pwd res = userService.updatePwd(uuid, pwd);
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
@@ -65,8 +65,8 @@ public class UserController {
 
     /* 이메일 인증코드 전송 */
     @PostMapping("/email")
-    public ResponseEntity<EmailDto> checkMail(@RequestBody EmailDto email) throws Exception {
-        EmailDto res = userService.checkEmail(email);
+    public ResponseEntity<String> checkMail(@RequestBody String email) throws Exception {
+        String res = userService.checkEmail(email);
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
     /* 인증코드 확인 */
@@ -80,8 +80,8 @@ public class UserController {
 
     /* 비밀번호 찾기 인증코드 전송 */
     @PostMapping("/password")
-    public ResponseEntity<Map<String,String>> findPassword(@RequestBody PwdDto pwdDto) {
-        PwdDto resultDto = userService.checkUser(pwdDto);
+    public ResponseEntity<Map<String,String>> findPassword(@RequestBody Pwd pwd) {
+        Pwd resultDto = userService.checkUser(pwd);
         Map<String,String> res = new HashMap<>();
         res.put("email",resultDto.getEmail());
         return ResponseEntity.status(HttpStatus.OK).body(res);
@@ -119,8 +119,8 @@ public class UserController {
     /* 내가 업로드한 영상 조회 */
     @GetMapping("/upload/{uuid}")
     public ResponseEntity<List<ResponseVideo>> uploadedHistory(@PathVariable("uuid") String uuid,
-                                                         @RequestParam("last-video") Long lastVideoId,
-                                                         @RequestParam("size") int size) throws Exception {
+                                                               @RequestParam("last-video") Long lastVideoId,
+                                                               @RequestParam("size") int size) throws Exception {
 
         return ResponseEntity.status(HttpStatus.OK).body(userService.uploadedHistory(uuid, lastVideoId, size));
     }
