@@ -6,7 +6,6 @@ import com.example.mainservice.entity.Room.Room;
 import com.example.mainservice.entity.Room.RoomRepository;
 import com.example.mainservice.entity.RoomViewer.RoomViewer;
 import com.example.mainservice.entity.RoomViewer.RoomViewerRepository;
-import com.example.mainservice.entity.Notification.Notification;
 import com.example.mainservice.entity.Notification.NotificationRepository;
 import com.example.mainservice.entity.User.User;
 import com.example.mainservice.entity.User.UserRepository;
@@ -23,7 +22,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
