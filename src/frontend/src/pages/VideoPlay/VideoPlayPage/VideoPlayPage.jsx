@@ -10,6 +10,12 @@ import { useGetVideoInfo } from '@utils/hook/query';
 import VideoMetaData from '@pages/VideoPlay/VideoMetaData/VideoMetaData';
 import { ChatRoom } from '@components/chats';
 
+/**
+ * 실시간 방송인지, 업로드된 비디오 인지 확인후
+ * 방송종류에 받는 로직을 실행
+ *
+ * @returns {React.Component} 실시간/비디오 재생 페이지
+ */
 function VideoPlayPage() {
   const { pathname } = useLocation();
   const { id } = useParams();
@@ -31,6 +37,8 @@ function VideoPlayPage() {
   };
 
   const { data } = useGetVideoInfo(playType.current, id, userId, handleVideoUrlLoad);
+
+  // 실시간 방송일 경우(playType.current === 'live') 실시간 시청 커스텀 훅 실행
   const { consumer } = useMediaSoupConsume(playType.current === 'live', videoPlayerRef, data?.uuid);
 
   return (
