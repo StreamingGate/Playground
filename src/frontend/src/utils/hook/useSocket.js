@@ -2,6 +2,15 @@ import { useEffect, useState } from 'react';
 import SockJS from 'sockjs-client';
 import { Client } from '@stomp/stompjs';
 
+/**
+ * 채팅방 소켓 연결 처리 커스텀 훅
+ *
+ * @param {string} roomId 채팅 방 id
+ * @returns {Object}
+ * chatData: 주고 받은 채팅 기록
+ * sendChatMessage: 채팅 전송 함수
+ */
+
 export default function useSocket(roomId) {
   const [stompClient, setStompClient] = useState(null);
   const [chatData, setChatData] = useState([]);
@@ -27,6 +36,7 @@ export default function useSocket(roomId) {
 
     newClient.activate();
 
+    // 소켓 연결 페이지에서 벗어날시 소켓 연결 해제
     return () => {
       newClient.deactivate();
     };
