@@ -60,10 +60,8 @@ public class RoomViewer {
     /* 싫어요 실행 또는 취소 (싫어요 누를 시 좋아요 효과는 취소 된다.) */
     public void setDisliked(boolean disliked) {
         /* 반영하려는 값이 현재 값과 다를때만 값 적용한다. */
-        if (this.disliked == false && disliked == true) {
-            if(this.liked == true){
+        if (this.disliked == false && disliked == true && this.liked == true) {
                 setLiked(false);
-            }
         }
         this.disliked = disliked;
     }

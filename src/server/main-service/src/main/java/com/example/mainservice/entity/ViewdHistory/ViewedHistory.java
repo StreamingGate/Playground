@@ -60,10 +60,8 @@ public class ViewedHistory {
     public void setDisliked(boolean disliked) {
 
         /* 반영하려는 값이 현재 값과 다를때만 값 적용한다. */
-        if (this.disliked == false && disliked == true) {
-            if(this.liked == true){
-                setLiked(false);
-            }
+        if (this.disliked == false && disliked == true && this.liked == true) {
+            setLiked(false);
         }
         this.disliked = disliked;
     }
