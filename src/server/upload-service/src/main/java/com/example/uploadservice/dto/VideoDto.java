@@ -31,18 +31,15 @@ public class VideoDto {
     public void updateThumbnailName(String originalName){
         this.thumbnailName = DEFAULT_THUMBNAIL_NAME + "." + originalName.split("\\.")[1];
     }
-    /**
-     * raw file upload 직후
-     */
+
+    /* raw file upload 직후 */
     public void updateMetaData(String videoUuid, Long size, LocalDateTime videoCreatedAt){
         this.videoUuid= videoUuid;
         this.size = size;
         this.videoCreatedAt = videoCreatedAt;
     }
 
-    /**
-     * DB Video 테이블에 업로드 시
-     */
+    /* DB Video 테이블에 업로드 시 */
     public void updateMetaData(String s3OutputPath){
         this.s3OutputPath = s3OutputPath;
     }
