@@ -3,6 +3,16 @@ import protooClient from 'protoo-client';
 
 const mediasoupClient = require('mediasoup-client');
 
+/**
+ * 실시간 방송을 시청 페이지 미디어 서버 제어 커스텀 훅
+ *
+ * @param {boolean} isLive 실시간 방송 유무
+ * @param {Object} videoPlayerRef video dom ref
+ * @param {String} roomId 실시간 방송 uuid
+ * @returns {Object}
+ * consumer: 미디어 서버에서 전달받은 미디어 정보 객체
+ */
+
 export default function useMediaSoupConsume(isLive, videoPlayerRef, roomId) {
   const [consumer, setConsumer] = useState(null);
 
@@ -95,13 +105,16 @@ export default function useMediaSoupConsume(isLive, videoPlayerRef, roomId) {
     const { track } = consumer;
     const { track: audio } = audioConsumer;
 
-    console.log(track);
-    console.log(audio);
-
-    console.log(consumer);
     videoPlayerRef.current.srcObject = new MediaStream([track, audio]);
     await peer.request('consumerResume');
   };
+
+  /**
+   * 미디어 서버에 전달되고 있는 실시간 미디어를 가져오기 위해
+   * 필요한 정보를 반환하는 함수를 실행하는 함수
+   *
+   * @param {Object} peer 미디어 서버의 시그널링 서버와 연결된 객체
+   */
 
   const initConsume = async peer => {
     const rptCapabilities = await getRtpCapabilities(peer);
@@ -123,6 +136,7 @@ export default function useMediaSoupConsume(isLive, videoPlayerRef, roomId) {
     setConsumer(consumer);
   };
 
+  // 실시간 방송일 경우에만 시그널링 서버에 접속
   useEffect(() => {
     let newPeer = null;
     if (isLive && roomId) {

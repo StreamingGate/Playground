@@ -3,6 +3,15 @@ import protooClient from 'protoo-client';
 
 const mediasoupClient = require('mediasoup-client');
 
+/**
+ *
+ * @param {Object} stream 로컬 미디어 스트림
+ * @param {string} roomId 실시간 방송 uuid
+ * @param {string} userId 실시간 방송을 진행하는 이용자 uuid
+ * @returns {Object}
+ * produce: 미디어 서버에 미디어를 전달하는 객체
+ */
+
 export default function useMediaSoupProduce(stream, roomId, userId) {
   const [producer, setProducer] = useState(null);
 
@@ -36,7 +45,6 @@ export default function useMediaSoupProduce(stream, roomId, userId) {
     );
 
     producerTransport.on('connect', async ({ dtlsParameters }, callback, errback) => {
-      console.log('hi');
       try {
         await peer.request('produceConnect', {
           dtlsParameters,
@@ -61,7 +69,6 @@ export default function useMediaSoupProduce(stream, roomId, userId) {
     });
 
     producerAudioTransport.on('connect', async ({ dtlsParameters }, callback, errback) => {
-      console.log('hello');
       try {
         await peer.request('produceAudioConnect', {
           dtlsParameters,
@@ -137,6 +144,13 @@ export default function useMediaSoupProduce(stream, roomId, userId) {
 
     return producer;
   };
+
+  /**
+   * 미디어 서버에 미디어를 전달하기 위해
+   * 필요한 정보를 반환하는 함수를 실행하는 함수
+   *
+   * @param {Object} peer 미디어 서버의 시그널링 서버와 연결된 객체
+   */
 
   const initProduce = async peer => {
     const rptCapabilities = await getRtpCapabilites(peer);
