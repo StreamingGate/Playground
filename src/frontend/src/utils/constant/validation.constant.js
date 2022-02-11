@@ -1,5 +1,9 @@
 import * as yup from 'yup';
 
+/**
+ * 인풋 유효성 검사를 위한 yup 객체
+ */
+
 const register = [
   yup.object().shape({
     name: yup
