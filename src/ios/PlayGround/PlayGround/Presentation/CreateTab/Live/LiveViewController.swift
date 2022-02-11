@@ -14,6 +14,7 @@ import SafariServices
 import SwiftKeychainWrapper
 
 class LiveViewController: UIViewController {
+    // MARK: - Properties
     let viewModel = ChatViewModel()
     private var cancellable: Set<AnyCancellable> = []
     @Published var isBottomFocused = true
@@ -39,7 +40,7 @@ class LiveViewController: UIViewController {
 
     var navVC: CreateNavigationController?
     
-    // MARK: - View Life Cycle
+    // MARK: - View LifeCycle
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         liveSignRedView.roundCorners([.topLeft , .bottomLeft], radius: 3)
@@ -76,6 +77,7 @@ class LiveViewController: UIViewController {
         viewModel.disconnectToSocket()
     }
     
+    // MARK: - UI Setting
     func setupUI() {
         sendButton.setTitle("", for: .normal)
         liveSignLabel.font = UIFont.caption
@@ -84,6 +86,7 @@ class LiveViewController: UIViewController {
         likeNumLabel.font = UIFont.caption
     }
     
+    // MARK: - Data Binding
     func bindViewModelData() {
         viewModel.$chatList.receive(on: DispatchQueue.main, options: nil)
             .sink { [weak self] list in
@@ -108,6 +111,7 @@ class LiveViewController: UIViewController {
             }.store(in: &cancellable)
     }
     
+    // MARK: - Button Action
     @IBAction func sendButtonDidTap(_ sender: Any) {
         chatTextView.resignFirstResponder()
         guard let message = chatTextView.text, message.isEmpty == false, let userInfo = UserManager.shared.userInfo, let nickname = userInfo.nickName else { return }
@@ -210,6 +214,8 @@ extension LiveViewController {
 }
 
 extension LiveViewController: SFSafariViewControllerDelegate {
+    
+    // TODO: 방송 종료 시 웹뷰와 통신
     func safariViewController(_ controller: SFSafariViewController, didCompleteInitialLoad didLoadSuccessfully: Bool) {
         print("did load: \(didLoadSuccessfully)")
     }
@@ -221,6 +227,4 @@ extension LiveViewController: SFSafariViewControllerDelegate {
     func safariViewController(_ controller: SFSafariViewController, initialLoadDidRedirectTo URL: URL) {
         print("redirect to :\(URL)")
     }
-
-    
 }

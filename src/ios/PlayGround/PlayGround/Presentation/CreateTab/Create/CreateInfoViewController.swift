@@ -12,6 +12,7 @@ import MobileCoreServices
 import Combine
 
 class createInfoViewController: UIViewController {
+    // MARK: - Properties
     @IBOutlet weak var currentAccountLabel: UILabel!
     @IBOutlet weak var accountNicknameLabel: UILabel!
     @IBOutlet weak var detailTitleLabel: UILabel!
@@ -46,16 +47,16 @@ class createInfoViewController: UIViewController {
     let captureSession = AVCaptureSession()
     var videoDeviceInput: AVCaptureDeviceInput!
     let photoOutput = AVCapturePhotoOutput()
-    
     let sessionQueue = DispatchQueue(label: "session queue")
     let videoDeviceDiscoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInDualCamera, .builtInWideAngleCamera, .builtInTrueDepthCamera], mediaType: .video, position: .unspecified)
     
     var navVC: CreateNavigationController?
     var categoryList: [String] = []
-    @Published var selectedCategory: String?
     let categoryDic = ["ALL": "전체", "EDU": "교육", "SPORTS": "스포츠", "KPOP": "K-POP"]
+    @Published var selectedCategory: String?
     private var cancellable: Set<AnyCancellable> = []
     
+    // MARK: - View LifeCycle
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         cameraViewTopMargin.constant = -(self.view.safeAreaInsets.top)
@@ -87,6 +88,7 @@ class createInfoViewController: UIViewController {
         setupUI()
     }
     
+    // MARK: - UI Setting
     func setupUI() {
         closeButton.setTitle("", for: .normal)
         currentAccountLabel.font = UIFont.bottomTab
@@ -153,6 +155,7 @@ class createInfoViewController: UIViewController {
         explainTextView.textContainerInset = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
     }
     
+    // MARK: - Data Binding
     func bindData() {
         self.$selectedCategory.receive(on: DispatchQueue.main, options: nil)
             .sink { [weak self] selected in
@@ -165,6 +168,7 @@ class createInfoViewController: UIViewController {
             }.store(in: &cancellable)
     }
     
+    // MARK: - Button Action
     @IBAction func categoryButtonDidTap(_ sender: Any) {
         titleTextView.resignFirstResponder()
         explainTextView.resignFirstResponder()
@@ -186,9 +190,13 @@ class createInfoViewController: UIViewController {
         }
         let roomUUID = UUID().uuidString
         startButton.isEnabled = false
+        
+        // DB에 생성하는 동안 로딩뷰가 보이고, 생성이 끝난 후 live뷰로 이동
         UIView.animate(withDuration: 0.4, delay: 0, options: .curveEaseInOut) {
             self.loadingView.alpha = 1
         }
+        
+        // 서버에서 받을 수 있는 크기로 imageData 압축
         var quality: CGFloat = 1
         while imageData.count >= 1572864 {
             quality -= 0.1
@@ -197,6 +205,7 @@ class createInfoViewController: UIViewController {
             }
         }
         let binaryImage = imageData.base64EncodedString()
+        
         RoomServiceAPI.shared.createRoom(uuid: roomUUID, title: titleInfo, content: contentInfo, thumbnail: binaryImage, category: categoryInfo) { result in
             if result["result"] as? String == "success" {
                 DispatchQueue.main.async {
@@ -220,37 +229,36 @@ class createInfoViewController: UIViewController {
         self.navVC?.coordinator?.dismiss()
     }
     
-    @IBAction func tempButtonDidTap(_ sender: Any) {
-        self.navVC?.coordinator?.startBroadcasting()
-    }
-    
     @IBAction func thumbnailButtonDidTap(_ sender: Any) {
         titleTextView.resignFirstResponder()
         explainTextView.resignFirstResponder()
         self.present(imagePicker, animated: true, completion: nil)
     }
     
+    // TODO: live 연결 완료 후 temp 버튼 삭제
+    @IBAction func tempButtonDidTap(_ sender: Any) {
+        self.navVC?.coordinator?.startBroadcasting()
+    }
+    
+    // MARK: - Gesture Action
     @IBAction func backgroundDidTap(_ sender: Any) {
         titleTextView.resignFirstResponder()
         explainTextView.resignFirstResponder()
     }
 }
 
-
-
 extension createInfoViewController {
-    // MARK: - Setup session and preview
+    // MARK: - Setup Preview Camera
     func setupSession() {
-        
         captureSession.sessionPreset = .photo
         captureSession.beginConfiguration()
         
         // Add Video Input
         do {
             var defaultVideoDevice: AVCaptureDevice?
-            if let dualCameraDevice = AVCaptureDevice.default(.builtInDualCamera, for: .video, position: .back) {
+            if let dualCameraDevice = AVCaptureDevice.default(.builtInDualCamera, for: .video, position: .front) {
                 defaultVideoDevice = dualCameraDevice
-            } else if let backCameraDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back) {
+            } else if let backCameraDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front) {
                 defaultVideoDevice = backCameraDevice
             } else if let frontCameraDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front) {
                 defaultVideoDevice = frontCameraDevice
@@ -306,6 +314,7 @@ extension createInfoViewController {
 }
 
 extension createInfoViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    // MARK: - Thumbnail selection
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         let imageInfo = info[UIImagePickerController.InfoKey.originalImage] as? UIImage
         self.imageInfo = imageInfo

@@ -9,14 +9,14 @@ import Foundation
 import UIKit
 
 class CreatePopOverViewController: UIViewController {
+    // MARK: - Properties
     @IBOutlet weak var backView: UIView!
-    
     @IBOutlet weak var createTitleLabel: UILabel!
     @IBOutlet weak var shortsCreateLabel: UILabel!
     @IBOutlet weak var liveCreateLabel: UILabel!
     var navVC: CreateNavigationController?
     
-    // MARK: - View Life Cycle
+    // MARK: - View LifeCycle
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         backView.roundCorners([.topLeft , .topRight], radius: 20)
@@ -80,12 +80,15 @@ class CreatePopOverViewController: UIViewController {
         self.navVC?.coordinator?.showCreatingPage()
     }
     
-    @IBAction func backgroundDidTap(_ sender: Any) {
-        disappearAnimation()
-    }
 }
 
 extension CreatePopOverViewController: UIGestureRecognizerDelegate {
+    // MARK: - Gesture Action
+    @IBAction func backgroundDidTap(_ sender: Any) {
+        disappearAnimation()
+    }
+    
+    // 하단 모달뷰가 눌렸을 경우 화면이 꺼지지 않도록 처리
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         if touch.view?.isDescendant(of: self.backView) == true {
             return false
