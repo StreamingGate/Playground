@@ -10,6 +10,7 @@ import UIKit
 import Combine
 
 class AccountEditViewController: UIViewController {
+    // MARK: - Properties
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var nicknameLabel: UILabel!
@@ -25,6 +26,7 @@ class AccountEditViewController: UIViewController {
     var imageInfo: UIImage?
     private var cancellable: Set<AnyCancellable> = []
     
+    // MARK: - View LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         self.imagePicker.sourceType = .photoLibrary
@@ -35,6 +37,7 @@ class AccountEditViewController: UIViewController {
         setupProfileImageLayout()
     }
     
+    // MARK: - UI Setting
     func setupUI() {
         titleLabel.font = UIFont.SubTitle
         nicknameLabel.textColor = UIColor.placeHolder
@@ -62,16 +65,6 @@ class AccountEditViewController: UIViewController {
         plainProfileImageView.layer.masksToBounds = true
     }
     
-    func bindData() {
-        UserManager.shared.$userInfo.receive(on: DispatchQueue.main, options: nil)
-            .sink { [weak self] user in
-                guard let self = self, let userInfo = user else { return }
-                self.profileImageView.downloadImageFrom(link: userInfo.profileImage, contentMode: .scaleAspectFill)
-                self.nicknameTextField.text = userInfo.nickName
-                self.nickNameCountingLabel.text = "\(userInfo.nickName?.count ?? 0)/8"
-            }.store(in: &cancellable)
-    }
-    
     // 기본 이미지 및 사진 파일을 위한 레이아웃 설정
     func setupProfileImageLayout() {
         self.profileView.addSubview(plainProfileImageView)
@@ -86,6 +79,19 @@ class AccountEditViewController: UIViewController {
             plainProfileImageView.bottomAnchor.constraint(equalTo: self.profileView.bottomAnchor)
         ])
     }
+    
+    // MARK: - Data Binding
+    func bindData() {
+        UserManager.shared.$userInfo.receive(on: DispatchQueue.main, options: nil)
+            .sink { [weak self] user in
+                guard let self = self, let userInfo = user else { return }
+                self.profileImageView.downloadImageFrom(link: userInfo.profileImage, contentMode: .scaleAspectFill)
+                self.nicknameTextField.text = userInfo.nickName
+                self.nickNameCountingLabel.text = "\(userInfo.nickName?.count ?? 0)/8"
+            }.store(in: &cancellable)
+    }
+    
+    // MARK: - Button Action
     @IBAction func profileEditDidTap(_ sender: Any) {
         let alert = UIAlertController(title: "", message: "프로필 수정", preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "갤러리에서 선택", style: .default, handler: { _ in
@@ -109,22 +115,6 @@ class AccountEditViewController: UIViewController {
         }))
         alert.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
         self.present(alert, animated: true, completion: nil)
-    }
-    
-    @IBAction func nickNameTextFieldEditingChanged(_ sender: Any) {
-        if let textInfo = nicknameTextField.text {
-            if textInfo.count <= 8 {
-                nickNameCountingLabel.text = "\(textInfo.count)/8"
-                nickNameCountingLabel.textColor = UIColor.placeHolder
-            } else {
-                nicknameTextField.deleteBackward()
-                nickNameCountingLabel.text = "8/8"
-                nickNameCountingLabel.textColor = UIColor.systemRed
-            }
-        } else {
-            nickNameCountingLabel.text = "0/8"
-            nickNameCountingLabel.textColor = UIColor.placeHolder
-        }
     }
     
     @IBAction func backButtonDidTap(_ sender: Any) {
@@ -155,9 +145,11 @@ class AccountEditViewController: UIViewController {
                 }
             }
         } else {
+            // 프로필 사진이 바뀐 케이스기 때문에 imageInfo가 있어야 함
             guard let selectedImage = self.imageInfo, var imageData = selectedImage.pngData() else { return }
-            var quality: CGFloat = 1
             
+            // 서버에서 받을 수 있는 크기로 imageData 압축
+            var quality: CGFloat = 1
             while imageData.count >= 1572864 {
                 quality -= 0.1
                 if let newData = selectedImage.jpegData(compressionQuality: quality) {
@@ -165,6 +157,7 @@ class AccountEditViewController: UIViewController {
                 }
             }
             let binaryImage = imageData.base64EncodedString()
+            
             UserServiceAPI.shared.updateUserInfo(nickName: (nicknameInfo == UserManager.shared.userInfo?.nickName ? nil : nicknameInfo), profileImage: binaryImage) { result in
                 print("==> \(result)")
                 guard let userInfo = NetworkResultManager.shared.analyze(result: result, vc: self, coordinator: self.coordinator) as? UserInfo else { return }
@@ -175,7 +168,23 @@ class AccountEditViewController: UIViewController {
                 }
             }
         }
-        
+    }
+    
+    // MARK: - input Text
+    @IBAction func nickNameTextFieldEditingChanged(_ sender: Any) {
+        if let textInfo = nicknameTextField.text {
+            if textInfo.count <= 8 {
+                nickNameCountingLabel.text = "\(textInfo.count)/8"
+                nickNameCountingLabel.textColor = UIColor.placeHolder
+            } else {
+                nicknameTextField.deleteBackward()
+                nickNameCountingLabel.text = "8/8"
+                nickNameCountingLabel.textColor = UIColor.systemRed
+            }
+        } else {
+            nickNameCountingLabel.text = "0/8"
+            nickNameCountingLabel.textColor = UIColor.placeHolder
+        }
     }
 }
 

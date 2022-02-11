@@ -20,13 +20,11 @@ final internal class EchoSocket : WebSocketDelegate, MessageSubscriber {
     private var socket: WebSocket?;
     
     func connect(wsUri: String) throws {
-        
         if (self.socket != nil && self.socket?.isConnected ?? false) { return }
-        
         var request = URLRequest(url:URL(string:wsUri)!)
         request.timeoutInterval = 5
+        // protoo 서버에 연결을 위해 header 추가
         request.setValue("protoo", forHTTPHeaderField: "Sec-WebSocket-Protocol")
-        
         self.socket = WebSocket(request:request)
         self.socket!.disableSSLCertValidation = true
         self.socket!.callbackQueue = DispatchQueue.global()
@@ -51,10 +49,8 @@ final internal class EchoSocket : WebSocketDelegate, MessageSubscriber {
             } catch {
                 print("JSON serialization failed: ", error)
             }
-            
         }
     }
-    
     
     func disconnect() {
         self.socket?.disconnect()

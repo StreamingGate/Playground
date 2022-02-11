@@ -11,6 +11,7 @@ import SwiftKeychainWrapper
 import Combine
 
 class AccountInfoViewController: UIViewController {
+    // MARK: - Properties
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var nicknameLabel: UILabel!
     @IBOutlet weak var logOutLabel: UILabel!
@@ -21,24 +22,17 @@ class AccountInfoViewController: UIViewController {
     private var cancellable: Set<AnyCancellable> = []
     let viewModel = AccountInfoViewModel()
     
+    // MARK: - View LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         guard let nav = self.navigationController as? MyPageNavigationController else { return }
         self.navVC = nav
-        bindViewModel()
         bindData()
         setupUI()
         self.viewModel.loadFriend(vc: self, coordinator: self.navVC?.coordinator)
     }
     
-    func bindViewModel() {
-        self.viewModel.$friendList.receive(on: DispatchQueue.main, options: nil)
-            .sink { [weak self] _ in
-                guard let self = self else { return }
-                self.tableView.reloadData()
-            }.store(in: &cancellable)
-    }
-    
+    // MARK: - UI Setting
     func setupUI() {
         logOutLabel.font = UIFont.Component
         nicknameLabel.font = UIFont.Content
@@ -49,7 +43,13 @@ class AccountInfoViewController: UIViewController {
         profileImageView.layer.borderWidth = 1
     }
     
+    // MARK: - Data Binding
     func bindData() {
+        self.viewModel.$friendList.receive(on: DispatchQueue.main, options: nil)
+            .sink { [weak self] _ in
+                guard let self = self else { return }
+                self.tableView.reloadData()
+            }.store(in: &cancellable)
         UserManager.shared.$userInfo.receive(on: DispatchQueue.main, options: nil)
             .sink { [weak self] user in
                 guard let self = self, let userInfo = user else { return }
@@ -58,6 +58,7 @@ class AccountInfoViewController: UIViewController {
             }.store(in: &cancellable)
     }
     
+    // MARK: - Button Action
     @IBAction func closeButtonDidTap(_ sender: Any) {
         self.navVC?.coordinator?.dismiss()
     }

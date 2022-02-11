@@ -9,9 +9,11 @@ import Foundation
 import UIKit
 
 class SearchViewController: UIViewController {
+    // MARK: - Properties
     @IBOutlet weak var searchTextField: UITextField!
     var navVC: HomeNavigationController?
     
+    // MARK: - View LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         guard let nav = self.navigationController as? HomeNavigationController else { return }
@@ -24,10 +26,12 @@ class SearchViewController: UIViewController {
         searchTextField.becomeFirstResponder()
     }
     
+    // MARK: - UI Setting
     func setupUI() {
         searchTextField.font = UIFont.Content
     }
     
+    // MARK: - Button Action
     @IBAction func backButtonDidTap(_ sender: Any) {
         navVC?.coordinator?.pop()
     }

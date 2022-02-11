@@ -10,6 +10,7 @@ import UIKit
 import SwiftKeychainWrapper
 
 class LoginViewController: UIViewController {
+    // MARK: - Properties
     @IBOutlet weak var idField: UITextField!
     @IBOutlet weak var pwField: UITextField!
     @IBOutlet weak var logInButton: UIButton!
@@ -17,14 +18,17 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var autoLogInImageView: UIImageView!
     @IBOutlet weak var autoLogInLabel: UILabel!
     @IBOutlet weak var autoLogInButton: UIButton!
-    
     var coordinator: MainCoordinator?
     
+    // MARK: - View LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         coordinator = MainCoordinator(parent: nil, navigation: self.navigationController ?? UINavigationController())
-//        coordinator?.start()
         setupUI()
+        
+        // 회원가입 step1에서 비정상적인 종료가 된 경우, 해당 정보를 userDefaults에서 가져와서 회원가입 페이지로 유도
+        // 비정상적인 종료 = 뒤로 가기나 닫기 등으로 종료되지 않은 모든 경우
+        // step1에서 이메일 인증을 해야 하기 때문에, step2 이후에 비정상 종료는 회원가입 페이지로 유도하지 않음
         if UserDefaults.standard.bool(forKey: "onRegister") == true, (UserDefaults.standard.string(forKey: "onRegister-Email") != nil || UserDefaults.standard.string(forKey: "onRegister-Name") != nil) {
             self.onRegister()
         }
@@ -35,6 +39,13 @@ class LoginViewController: UIViewController {
         AppUtility.lockOrientation(.portrait)
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        self.idField.text = ""
+        self.pwField.text = ""
+    }
+    
+    // MARK: - UI Setting
     func setupUI() {
         forgotPwButton.titleLabel?.font = UIFont.caption
         forgotPwButton.setTitleColor(UIColor.placeHolder, for: .normal)
@@ -45,9 +56,11 @@ class LoginViewController: UIViewController {
         logInButton.layer.cornerRadius = 5
     }
     
+    // MARK: - Move to Register page
     func onRegister() {
         let alert = UIAlertController(title: "", message: "회원가입 중이던 정보가 있습니다. 이어서 회원가입을 진행하시겠습니까?", preferredStyle: .alert)
         let action1 = UIAlertAction(title: "취소", style: .default) { _ in
+            // 취소를 1회 누른 후부터는 비정상적 종료 회원가입에 대해 물어보지 않음
             UserDefaults.standard.set(false, forKey: "onRegister")
             UserDefaults.standard.removeObject(forKey: "onRegister-Email")
             UserDefaults.standard.removeObject(forKey: "onRegister-Name")
@@ -65,11 +78,8 @@ class LoginViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
+    // MARK: - Button Action
     @IBAction func logInButtonDidTap(_ sender: Any) {
-//        KeychainWrapper.standard.set("33333333-1234-1234-123456789012", forKey: KeychainWrapper.Key.uuid.rawValue)
-//        self.coordinator?.showTabPage()
-//        
-        
         idField.resignFirstResponder()
         pwField.resignFirstResponder()
         guard let idInfo = idField.text, idInfo.isEmpty == false, let pwInfo = pwField.text, pwInfo.isEmpty == false else { return }
@@ -77,6 +87,8 @@ class LoginViewController: UIViewController {
         UserServiceAPI.shared.login(email: idInfo, password: pwInfo, timezone: TimeZone.current.identifier, fcmtoken: "token") { result in
             print("login result = \(result)")
             if result["success"] as? Int == 1, let uuid = result["uuid"] as? String, let token = result["accessToken"] as? String, let userInfo = result["data"] as? UserInfo {
+                // KeyChain - uuid와 accessToken 저장 (종료 후에도 유지됨)
+                // UserManager - 싱글톤으로 userInfo 저장
                 KeychainWrapper.standard.set(uuid, forKey: KeychainWrapper.Key.uuid.rawValue)
                 KeychainWrapper.standard.set(token, forKey: KeychainWrapper.Key.accessToken.rawValue)
                 UserManager.shared.userInfo = userInfo
@@ -84,18 +96,11 @@ class LoginViewController: UIViewController {
                     self.coordinator?.showTabPage()
                 }
             } else {
-                // 실패
                 DispatchQueue.main.async {
                     self.simpleAlert(message: "로그인에 실패했습니다")
                 }
             }
         }
-    }
-
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        self.idField.text = ""
-        self.pwField.text = ""
     }
     
     @IBAction func registerButtonDidTap(_ sender: Any) {

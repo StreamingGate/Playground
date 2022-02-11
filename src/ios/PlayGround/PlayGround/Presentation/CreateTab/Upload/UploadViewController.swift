@@ -12,6 +12,7 @@ import AVFoundation
 import Combine
 
 class UploadViewController: UIViewController {
+    // MARK: - Properties
     let imagePicker = UIImagePickerController()
     let videoPicker = UIImagePickerController()
     @IBOutlet weak var videoPickerButton: UIButton!
@@ -48,6 +49,7 @@ class UploadViewController: UIViewController {
     let categoryDic = ["ALL": "전체", "EDU": "교육", "SPORTS": "스포츠", "KPOP": "K-POP"]
     let toastLabel = UILabel()
     
+    // MARK: - View LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         guard let nav = self.navigationController as? CreateNavigationController else { return }
@@ -67,12 +69,6 @@ class UploadViewController: UIViewController {
         setupUI()
     }
     
-    @objc func playerDidFinishPlaying() {
-        self.didEndPlay = true
-        self.isPlay = false
-    }
-    
-    
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         if let observer = timeObserver {
@@ -81,6 +77,7 @@ class UploadViewController: UIViewController {
         self.playerView.player?.replaceCurrentItem(with: nil)
     }
     
+    // MARK: - UI Setting
     func setupUI() {
         videoPickerButton.setTitle("", for: .normal)
         
@@ -143,6 +140,7 @@ class UploadViewController: UIViewController {
         playPauseButton.setTitle("", for: .normal)
     }
     
+    // MARK: - Data Binding
     func bindData() {
         self.$isPlay.receive(on: DispatchQueue.main, options: nil)
             .sink { [weak self] tf in
@@ -198,6 +196,12 @@ class UploadViewController: UIViewController {
             }.store(in: &cancellable)
     }
     
+    // MARK: - Play Control
+    @objc func playerDidFinishPlaying() {
+        self.didEndPlay = true
+        self.isPlay = false
+    }
+    
     func setSeekBar(url: URL) {
         let avAsset = AVURLAsset(url: url)
         let item = AVPlayerItem(asset: avAsset)
@@ -251,6 +255,7 @@ class UploadViewController: UIViewController {
         playerView.player?.seek(to: currentTime)
     }
     
+    // MARK: - Button Action
     @IBAction func playPauseButtonDidTap(_ sender: Any) {
         isPlay = !isPlay
     }
@@ -265,11 +270,6 @@ class UploadViewController: UIViewController {
     
     @IBAction func closeButtonDidTap(_ sender: Any) {
         self.navVC?.coordinator?.dismiss()
-    }
-    
-    @IBAction func backgroundDidTap(_ sender: Any) {
-        titleTextView.resignFirstResponder()
-        explainTextView.resignFirstResponder()
     }
     
     @IBAction func categoryButtonDidTap(_ sender: Any) {
@@ -311,6 +311,12 @@ class UploadViewController: UIViewController {
              uploadButton.isEnabled = true
              print(error)
          }
+    }
+    
+    // MARK: - Gesture Action
+    @IBAction func backgroundDidTap(_ sender: Any) {
+        titleTextView.resignFirstResponder()
+        explainTextView.resignFirstResponder()
     }
 }
 

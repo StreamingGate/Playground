@@ -8,6 +8,9 @@
 import Foundation
 import UIKit
 
+/**
+ MyPageNavigationController 에서 발생하는 이동/전환을 위한 Coordinator
+ */
 class MyTabCoordinator: Coordinator {
     var parentCoordinator: Coordinator?
     var navigation: UINavigationController
@@ -24,17 +27,11 @@ class MyTabCoordinator: Coordinator {
             tabVC.myContainerView.isHidden = false
             tabVC.homeContainerView.isHidden = true
             if tabVC.selectedTabIndex == 2 {
+                // 이전에도 동일한 탭이었을 경우, 최상단으로 이동
                 self.navigation.popToRootViewController(animated: true)
             } else {
                 tabVC.selectedTabIndex = 2
             }
-            
-//            tabVC.selectedTabIndex = 2
-//            tabVC.removeChildViewController()
-//            tabVC.addChild(self.navigation)
-//            tabVC.containerView.addSubview((self.navigation.view)!)
-//            self.navigation.view.frame = tabVC.containerView.bounds
-//            self.navigation.didMove(toParent: tabVC)
         }
     }
     

@@ -11,14 +11,16 @@ import Combine
 
 class MyPageViewController: UIViewController {
     @IBOutlet weak var recentVideoTitleLabel: UILabel!
+    // MARK: - Properties
     @IBOutlet weak var viewedVideoLabel: UILabel!
     @IBOutlet weak var likedVideoLabel: UILabel!
     @IBOutlet weak var myVideoLabel: UILabel!
     @IBOutlet weak var profileImageView: UIImageView!
+    @IBOutlet weak var collectionViewHeight: NSLayoutConstraint!
     var navVC: MyPageNavigationController?
     private var cancellable: Set<AnyCancellable> = []
     
-    // MARK: - View Life Cycle
+    // MARK: - View LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         guard let nav = self.navigationController as? MyPageNavigationController else { return }
@@ -49,6 +51,7 @@ class MyPageViewController: UIViewController {
         profileImageView.layer.borderWidth = 1
     }
     
+    // MARK: - Data Binding
     func bindData() {
         UserManager.shared.$userInfo.receive(on: DispatchQueue.main, options: nil)
             .sink { [weak self] user in

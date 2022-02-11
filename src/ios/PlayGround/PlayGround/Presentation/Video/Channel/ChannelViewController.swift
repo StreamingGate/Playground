@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 
 class ChannelViewController: UIViewController {
+    // MARK: - Properties
     @IBOutlet weak var channelNameTitleLabel: UILabel!
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var channelTitleLabel: UILabel!
@@ -17,6 +18,7 @@ class ChannelViewController: UIViewController {
     @IBOutlet weak var videoTableView: UITableView!
     @IBOutlet weak var videoTableViewHeight: NSLayoutConstraint!
     
+    // MARK: - View LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         videoTableView.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
@@ -28,16 +30,8 @@ class ChannelViewController: UIViewController {
         videoTableView.removeObserver(self, forKeyPath: "contentSize")
     }
     
-
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        if(keyPath == "contentSize"){
-            if let newvalue = change?[.newKey] {
-                let newsize  = newvalue as! CGSize
-                videoTableViewHeight.constant = newsize.height
-            }
-        }
-    }
     
+    // MARK: - UI Setting
     func setupUI() {
         profileImageView.layer.cornerRadius = 25
         profileImageView.backgroundColor = UIColor.placeHolder
@@ -49,6 +43,16 @@ class ChannelViewController: UIViewController {
         explainLabel.textColor = UIColor.customDarkGray
     }
     
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if(keyPath == "contentSize"){
+            if let newvalue = change?[.newKey] {
+                let newsize  = newvalue as! CGSize
+                videoTableViewHeight.constant = newsize.height
+            }
+        }
+    }
+    
+    // MARK: - Gesture Action
     @IBAction func backButtonDidTap(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }

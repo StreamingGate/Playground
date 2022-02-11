@@ -8,6 +8,9 @@
 import Foundation
 import UIKit
 
+/**
+ 홈화면에 상단에 노출되는 수평 스크롤 카테고리 셀
+ */
 class CategoryCell: UICollectionViewCell {
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var categoryLabel: UILabel!

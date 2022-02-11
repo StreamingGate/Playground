@@ -14,15 +14,16 @@ import WebRTC
 import SwiftyJSON
 
 class PlayViewController: UIViewController {
+    // MARK: - Properties
     private var socket: EchoSocket?
     private var client: RoomClient?
-    @IBOutlet var remoteVideoView: RTCEAGLVideoView!
-    @IBOutlet weak var remoteVideoViewLeading: NSLayoutConstraint!
     var videoTrack: RTCVideoTrack?
+    var mediaStream: RTCMediaStream?
+    var audioSession: RTCAudioSession?
+    var peer: RTCPeerConnection?
     private var delegate: RoomListener?
     var roomId = ""
     
-    // MARK: - Properties
     // player
     @IBOutlet weak var playView: PlayerView!
     @IBOutlet weak var playViewWidth: NSLayoutConstraint!
@@ -38,17 +39,10 @@ class PlayViewController: UIViewController {
     let player = AVPlayer()
     @IBOutlet var playViewSingleTap: UITapGestureRecognizer!
     @IBOutlet var playControlViewSingleTap: UITapGestureRecognizer!
-    var timeObserver: Any?
     @IBOutlet weak var seekbarBackView: UIView!
+    var timeObserver: Any?
     var didEndPlay = false
-    
-    // button action
-    @IBOutlet weak var likeImageView: UIImageView!
-    @IBOutlet weak var likeLabel: UILabel!
-    @IBOutlet weak var likeButton: UIButton!
-    @IBOutlet weak var dislikeImageView: UIImageView!
-    @IBOutlet weak var dislikeButton: UIButton!
-    @IBOutlet weak var reportButton: UIButton!
+    @Published var isPlay = false
     
     // mini player
     @IBOutlet weak var miniBackView: UIView!
@@ -63,6 +57,18 @@ class PlayViewController: UIViewController {
     private var cancellable: Set<AnyCancellable> = []
     var isMaximizing: Bool = true
     var lastTranslation: CGFloat = 0
+    
+    // remoteVideo (스트리밍 영상)
+    @IBOutlet var remoteVideoView: RTCEAGLVideoView!
+    @IBOutlet weak var remoteVideoViewLeading: NSLayoutConstraint!
+    
+    // button action
+    @IBOutlet weak var likeImageView: UIImageView!
+    @IBOutlet weak var likeLabel: UILabel!
+    @IBOutlet weak var likeButton: UIButton!
+    @IBOutlet weak var dislikeImageView: UIImageView!
+    @IBOutlet weak var dislikeButton: UIButton!
+    @IBOutlet weak var reportButton: UIButton!
     
     // video information
     @IBOutlet weak var titleLabel: UILabel!
@@ -110,9 +116,7 @@ class PlayViewController: UIViewController {
 
     let viewModel = PlayViewModel()
     
-    @Published var isPlay = false
-    
-    // MARK: - View Life Cycle
+    // MARK: - View LifeCycle
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         safeBottom = self.parent?.view.safeAreaInsets.bottom ?? 0
@@ -159,7 +163,7 @@ class PlayViewController: UIViewController {
         titleBackView.isHidden = UIDevice.current.orientation.isLandscape
         stretchButton.isHidden = UIDevice.current.orientation.isLandscape
         if UIDevice.current.orientation.isLandscape {
-            // 가로 모드
+            // landscape 모드
             self.coordinator?.dismissExplain(vc: self)
             self.view.backgroundColor = UIColor.black
             NSLayoutConstraint.deactivate(portraitLayout)
@@ -171,7 +175,7 @@ class PlayViewController: UIViewController {
             ]
             NSLayoutConstraint.activate(landscapeLayout)
         } else {
-            // 세로 모드
+            // portrait 모드
             NSLayoutConstraint.deactivate(landscapeLayout)
             NSLayoutConstraint.deactivate(portraitLayout)
             NSLayoutConstraint.activate(portraitLayout)
@@ -545,20 +549,6 @@ class PlayViewController: UIViewController {
     @IBAction func friendRequestButtonDidTap(_ sender: Any) {
         guard let info = viewModel.currentInfo, let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else { return }
         // TODO: uuid 생기면 추가하기
-//        if let target = info.hostNickname {
-//            MainServiceAPI.shared.sendFriendRequest(uuid: uuid, target: target) { result in
-//                if result["result"] as? String == "success" {
-//                    print("성공: \(result)")
-//                }
-//            }
-//        } else if let target = info.uploaderNickname {
-//            MainServiceAPI.shared.sendFriendRequest(uuid: uuid, target: target) { result in
-//                if result["result"] as? String == "success" {
-//                    print("성공")
-//                    print("성공: \(result)")
-//                }
-//            }
-//        }
     }
     
     func setMiniPlayerAction() {
@@ -667,8 +657,6 @@ class PlayViewController: UIViewController {
                 self.playControllView.alpha = 0
             }
             self.playControllTimer.invalidate()
-//            let targetY = UIScreen.main.bounds.height - safeTop - safeBottom - 160
-//            let percentage = 1 - (pan.location(in: self.parent?.view).y / targetY)
             let height = UIScreen.main.bounds.width / 16 * 9
             let maxHeight = UIScreen.main.bounds.height - safeTop - safeBottom - 150
             
@@ -849,6 +837,7 @@ extension PlayViewController: UITextViewDelegate {
     func textViewDidEndEditing(_ textView: UITextView) {
         chatPlaceHolderLabel.isHidden = !(textView.text.count == 0)
     }
+    
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
             textView.resignFirstResponder()
@@ -949,6 +938,7 @@ extension PlayViewController : RoomListener {
 
 extension PlayViewController: RTCVideoViewDelegate {
     func videoView(_ videoView: RTCVideoRenderer, didChangeVideoSize size: CGSize) {
+        // 실시간 방송 시 remoteVideoView 비율 설정
         remoteVideoView.translatesAutoresizingMaskIntoConstraints = false
         let playerHeight = UIScreen.main.bounds.width / 16 * 9
         let remoteVideoWidth = playerHeight / size.height * size.width
@@ -958,5 +948,20 @@ extension PlayViewController: RTCVideoViewDelegate {
         ])
         self.view.layoutIfNeeded()
         self.remoteVideoView.layoutIfNeeded()
+    }
+}
+
+
+extension PlayViewController: RTCAudioSessionDelegate {
+    func audioSession(_ audioSession: RTCAudioSession, didSetActive active: Bool) {
+        print("?didSetActive")
+    }
+    
+    func audioSessionDidStartPlayOrRecord(_ session: RTCAudioSession) {
+        print("start")
+    }
+    
+    func audioSessionDidStopPlayOrRecord(_ session: RTCAudioSession) {
+        print("stop")
     }
 }

@@ -12,9 +12,17 @@ import SwiftKeychainWrapper
 struct RoomServiceAPI {
     
     static let shared = RoomServiceAPI()
-    
     let roomServiceUrl = "http://\(GatewayManager.shared.gatewayAddress)/room-service"
     
+    /**
+     실시간 스트리밍 시작 전 DB에 방 정보 추가
+     - Parameters:
+        - uuid: room identifier
+        - title: room title
+        - content: room explanation
+        - thumbnail: binary string of image data
+        - category: room category
+     */
     func createRoom(uuid: String, title: String, content: String, thumbnail: String, category: String, completion: @escaping ([String: Any])->Void) {
         guard let tokenInfo = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue), let hostUuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else {
             completion(["result": "Invalid Token"])
@@ -44,6 +52,7 @@ struct RoomServiceAPI {
             
             let responseJSON = try? JSONSerialization.jsonObject(with: resultData, options: [])
             if let result = responseJSON as? [String: Any] {
+                print("result: \(result)")
                 completion(["result": "success", "data": result])
             } else {
                 completion(["result": "failed"])
@@ -52,6 +61,11 @@ struct RoomServiceAPI {
         task.resume()
     }
     
+    /**
+     실시간 스트리밍 방 정보 한 개 가져오기
+     - Parameters:
+        - roomId: room uuid
+     */
     func loadRoom(roomId: Int, completion: @escaping ([String: Any])->Void) {
         guard let tokenInfo = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue), let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else {
             completion(["result": "Invalid Token"])

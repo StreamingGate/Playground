@@ -9,10 +9,20 @@ import Foundation
 import UIKit
 import Combine
 
+
+/**
+UITabBarController를 사용하지 않고 커스텀 탭바 제작
+ 
+제작 이유 : 자유로운 소형 플레이어 구현을 위해서
+ 
+       - 전체 화면 플레이어는 하단 탭바보다 위에(하단 탭바가 보이지 않게) 위치해야 함
+       - 제스처를 통해서 위 플레이어를 소형 플레이어로 전환할 경우, 하단 탭바가 보이고 그 위에 소형 플레이어가 위치해야 함
+       - 소형 플레이어는 탭을 전환하여도 플레이가 멈추지 않아야 함
+ */
 class CustomTabViewController: UIViewController {
+    // MARK: - Properties
     @IBOutlet weak var playViewTopMargin: NSLayoutConstraint!
     @IBOutlet weak var tabBarHeight: NSLayoutConstraint!
-    
     @IBOutlet weak var tabBarStackView: UIStackView!
     @IBOutlet weak var playViewHeight: NSLayoutConstraint!
     @IBOutlet weak var playContainerView: UIView!
@@ -34,12 +44,14 @@ class CustomTabViewController: UIViewController {
     
     var coordinator: MainCoordinator?
     
+    // MARK: - View LifeCycle
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         safeTop = self.view.safeAreaInsets.top
         safeBottom = self.view.safeAreaInsets.bottom
         playViewHeight.constant = UIScreen.main.bounds.height - safeTop - safeBottom
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -55,6 +67,7 @@ class CustomTabViewController: UIViewController {
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
+        // 플레이어는 최대화하였을 때, landscape 모드여야 함
         if UIDevice.current.orientation.isLandscape {
             playViewHeight.constant = UIScreen.main.bounds.width
         } else {
@@ -76,7 +89,7 @@ class CustomTabViewController: UIViewController {
                     self.homeTabImageView.image = UIImage(named: "homeIcon_empty")
                     self.myTabImageView.image = UIImage(named: "my_fill")
                 default:
-                    // 생성탭은 UI 딱히 안 바뀔 예정
+                    // 생성 버튼
                     break
                 }
             }.store(in: &cancellable)
@@ -99,6 +112,7 @@ class CustomTabViewController: UIViewController {
         coordinator?.changeTab(index: 2, tabVC: self)
     }
     
+    // 플레이어를 제외한 viewController 해제
     func removeChildViewController(){
         if self.children.count > 0{
             let viewControllers:[UIViewController] = self.children
@@ -112,6 +126,7 @@ class CustomTabViewController: UIViewController {
         }
     }
     
+    // 플레이어 해제
     func removePlayer() {
         if self.children.count > 0 {
             let viewControllers:[UIViewController] = self.children

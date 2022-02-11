@@ -27,14 +27,19 @@ final internal class RoomClient : NSObject {
     private let roomId: String
     private var producers: Producer
     private var consumers: Consumer
+    private var audioConsumers: Consumer
     private var consumersInfo: [JSON]
     private let device: Device
     
     private var joined: Bool
     private var recvTransport: RecvTransport?
+    private var audioRecvTransport: RecvTransport?
     
     private var recvTransportHandler: RecvTransportHandler?
+    private var audioRecvTransportHandler: AudioRecvTransportHandler?
     private var consumerHandler: ConsumerHandler?
+    
+    private var audioConsumerHandler: AudioConsumerHandler?
     
     private var roomListener: RoomListener?
     
@@ -49,6 +54,7 @@ final internal class RoomClient : NSObject {
         
         self.producers = Producer()
         self.consumers = Consumer()
+        self.audioConsumers = Consumer()
         self.consumersInfo = [JSON]()
         self.joined = false
         self.recvTransportHandler?.delegate = nil
@@ -57,7 +63,6 @@ final internal class RoomClient : NSObject {
     }
     
     func createRecvTransport() {
-        // Do nothing if recv transport is already created
         if (self.recvTransport != nil) {
             print("createRecvTransport() recv transport is already created...")
             return
@@ -69,13 +74,10 @@ final internal class RoomClient : NSObject {
     
     func consumeTrack(consumerInfo: JSON) {
         if (self.recvTransport == nil) {
-            // User has not yet created a transport for receiving so temporarily store it
-            // and play it when the recv transport is created
             self.consumersInfo.append(consumerInfo)
             return
         }
         let kind: String = consumerInfo["kind"].stringValue
-        
         let id: String = consumerInfo["id"].stringValue
         let producerId: String = consumerInfo["producerId"].stringValue
         if producerId == "" {
@@ -84,13 +86,11 @@ final internal class RoomClient : NSObject {
         }
         let rtpParameters: JSON = consumerInfo["rtpParameters"]
         print("consumeTrack() rtpParameters " + rtpParameters.description)
-        
         self.consumerHandler = ConsumerHandler.init()
         self.consumerHandler!.delegate = self.consumerHandler
-
         let kindConsumer: Consumer = self.recvTransport!.consume(self.consumerHandler!.delegate!, id: id, producerId: producerId, kind: kind, rtpParameters: rtpParameters.description)
         self.consumers = kindConsumer
-            
+        
         print("consumeTrack() consuming id =" + kindConsumer.getId())
             
         self.roomListener?.onNewConsumer(consumer: kindConsumer)
@@ -123,7 +123,6 @@ final internal class RoomClient : NSObject {
             let result = Request.shared.consume(socket: self.socket, rtp: device.getRtpCapabilities()!)
             guard let consumeData = result?["data"] else { return }
             self.consumeTrack(consumerInfo: consumeData)
-
             let _ = Request.shared.consumerResume(socket: self.socket)
             break
         default:
@@ -151,7 +150,6 @@ final internal class RoomClient : NSObject {
         throw RoomError.CONSUMER_NOT_FOUND
     }
     
-    // Class to handle recv transport listener events
     private class RecvTransportHandler : NSObject, RecvTransportListener {
         fileprivate weak var delegate: RecvTransportListener?
         private var parent: RoomClient
@@ -170,12 +168,33 @@ final internal class RoomClient : NSObject {
         }
     }
     
+    private class AudioRecvTransportHandler : NSObject, RecvTransportListener {
+        fileprivate weak var delegate: RecvTransportListener?
+        private var parent: RoomClient
         
+        init(parent: RoomClient) {
+            self.parent = parent
+        }
+        
+        func onConnect(_ transport: Transport!, dtlsParameters: String!) {
+            print("RecvTransport::onConnect")
+            self.parent.handleLocalTransportConnectEvent(transport: transport, dtlsParameters: dtlsParameters)
+        }
+        
+        func onConnectionStateChange(_ transport: Transport!, connectionState: String!) {
+            print("RecvTransport::onConnectionStateChange newState = " + connectionState)
         }
     }
     
-    // Class to handle consumer listener events
     private class ConsumerHandler : NSObject, ConsumerListener {
+        fileprivate weak var delegate: ConsumerListener?
+        
+        func onTransportClose(_ consumer: Consumer!) {
+            print("Consumer::onTransportClose")
+        }
+    }
+    
+    private class AudioConsumerHandler : NSObject, ConsumerListener {
         fileprivate weak var delegate: ConsumerListener?
         
         func onTransportClose(_ consumer: Consumer!) {

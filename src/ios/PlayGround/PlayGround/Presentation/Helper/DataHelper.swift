@@ -8,6 +8,9 @@
 import Foundation
 import UIKit
 
+/**
+ chatData 파싱을 위한 helper
+ */
 class DataHelper {
     static func dictionaryToObject<T:Decodable>(objectType:T.Type,dictionary:[String:Any]) -> T? {
         guard let dictionaries = try? JSONSerialization.data(withJSONObject: dictionary) else { return nil }

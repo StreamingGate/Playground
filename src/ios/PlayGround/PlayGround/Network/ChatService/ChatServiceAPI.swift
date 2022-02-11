@@ -12,8 +12,7 @@ import SwiftKeychainWrapper
 class ChatServiceAPI {
     static let shared = ChatServiceAPI()
     var socketClient = StompClientLib()
-    
-    let chatServiceUrl = "ws://3.34.152.141:8888/ws/websocket"
+    let chatServiceUrl = "ws://localhost:8888/ws/websocket"
     
     func connectToSocket(viewModel: ChatViewModel) {
         let url = NSURL(string: chatServiceUrl)!
@@ -29,6 +28,15 @@ class ChatServiceAPI {
         socketClient.disconnect()
     }
     
+    /**
+     채팅 전송
+     - Parameters:
+        - roomId: chatting room id
+        - nickname: user nickname
+        - role: user role
+        - type: message type (NORMAL/PINNED)
+        - message: message content
+     */
     func sendMessage(roomId: String, nickname: String, role: String, type: String, message: String) {
         guard let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else { return }
         socketClient.sendJSONForDict(dict: ["roomId": roomId, "uuid": uuid, "nickname": nickname, "senderRole" : role, "chatType" : type, "message" : message] as NSDictionary, toDestination: "/app/chat/message/\(roomId)")

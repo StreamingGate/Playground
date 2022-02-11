@@ -10,6 +10,7 @@ import UIKit
 import Combine
 
 class FriendListViewController: UIViewController {
+    // MARK: - Properties
     @IBOutlet weak var friendListView: UIView!
     @IBOutlet weak var listViewTopMargin: NSLayoutConstraint!
     @IBOutlet weak var listViewBottomMargin: NSLayoutConstraint!
@@ -18,6 +19,7 @@ class FriendListViewController: UIViewController {
     private var cancellable: Set<AnyCancellable> = []
     let viewModel = FriendViewModel()
     
+    // MARK: - View LifeCycle
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         listViewTopMargin.constant = -self.view.safeAreaInsets.top
@@ -31,6 +33,14 @@ class FriendListViewController: UIViewController {
         self.viewModel.loadFriend(vc: self, coordinator: nil)
     }
     
+    // MARK: - UI Setting
+    func setupUI() {
+        self.view.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+        listTItleLabel.font = UIFont.highlightCaption
+        listTItleLabel.textColor = UIColor.placeHolder
+    }
+    
+    // dismiss 될 시, 사이드바에 부합하는 애니메이션 추가
     func disappearAnimation(){
         UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 2, initialSpringVelocity: 2, options: .showHideTransitionViews, animations: {
             self.friendListView.transform = CGAffineTransform.init(translationX: 100, y: 0)
@@ -41,22 +51,13 @@ class FriendListViewController: UIViewController {
         })
     }
     
+    // MARK: - Data Binding
     func bindViewModel() {
         self.viewModel.$friendList.receive(on: DispatchQueue.main, options: nil)
             .sink { [weak self] _ in
                 guard let self = self else { return }
                 self.friendTableView.reloadData()
             }.store(in: &cancellable)
-    }
-    
-    func setupUI() {
-        self.view.backgroundColor = UIColor.black.withAlphaComponent(0.6)
-        listTItleLabel.font = UIFont.highlightCaption
-        listTItleLabel.textColor = UIColor.placeHolder
-    }
-    
-    @IBAction func backTapped(_ sender: Any) {
-        disappearAnimation()
     }
 }
 
@@ -87,9 +88,13 @@ extension FriendListViewController: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
-
-
 extension FriendListViewController: UIGestureRecognizerDelegate {
+    // MARK: - Gesture Action
+    @IBAction func backTapped(_ sender: Any) {
+        disappearAnimation()
+    }
+    
+    // 배경이 탭 되면 사라지도록 하되, 사이드바 자체를 탭하면 사라지지 않도록 처리
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         if touch.view?.isDescendant(of: self.friendListView) == true {
             return false

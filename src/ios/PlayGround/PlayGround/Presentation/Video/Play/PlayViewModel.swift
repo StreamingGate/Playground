@@ -16,18 +16,19 @@ class PlayViewModel {
     @Published var isDisliked: Bool?
     @Published var likeCount = 0
     
+    // 홈화면 등에서 general한 데이터(GeneralVideo)를 받아온 후,
+    // 자세한 개별 정보 (실시간 스트리밍(roomInfo) 혹은 동영상(VideoInfo))를 가져옴
     @Published var currentInfo: GeneralVideo?
     @Published var videoInfo: VideoInfo?
     @Published var roomInfo: RoomInfo?
+    
     var videoId: Int? {
         guard let info = self.currentInfo else { return nil }
         return info.id
     }
     
     var isLive: Bool {
-        guard let info = currentInfo else {
-            return false
-        }
+        guard let info = currentInfo else { return false }
         return (info.hostNickname != nil)
     }
     

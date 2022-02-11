@@ -8,6 +8,9 @@
 import Foundation
 import UIKit
 
+/**
+ HomeNavigationConroller에서 발생하는 이동/전환을 위한 Coordinator
+ */
 class HomeTabCoordinator: Coordinator {
     var parentCoordinator: Coordinator?
     var navigation: UINavigationController
@@ -24,15 +27,11 @@ class HomeTabCoordinator: Coordinator {
             tabVC.homeContainerView.isHidden = false
             tabVC.myContainerView.isHidden = true
             if tabVC.selectedTabIndex == 0 {
+                // 이전에도 동일한 탭이었을 경우, 최상단으로 이동
                 self.navigation.popToRootViewController(animated: true)
             } else {
                 tabVC.selectedTabIndex = 0
             }
-//            tabVC.removeChildViewController()
-//            tabVC.addChild(self.navigation)
-//            tabVC.homeContainerView.addSubview((self.navigation.view)!)
-//            self.navigation.view.frame = tabVC.homeContainerView.bounds
-//            self.navigation.didMove(toParent: tabVC)
         }
     }
     

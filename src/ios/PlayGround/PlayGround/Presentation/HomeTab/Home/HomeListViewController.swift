@@ -30,7 +30,7 @@ class HomeListViewController: UIViewController {
     let spinner = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.medium)
     let categoryDic = ["ALL": "전체", "EDU": "교육", "SPORTS": "스포츠", "KPOP": "K-POP"]
     
-    // MARK: - View Life Cycle
+    // MARK: - View LifeCycle
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         safeTop = self.view.safeAreaInsets.top
@@ -54,6 +54,7 @@ class HomeListViewController: UIViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+        // 해당 화면에서 벗어날 경우, 자동재생이 이뤄지는 플레이어가 멈춰야 함
         self.pausePlayer()
     }
 
@@ -81,21 +82,19 @@ class HomeListViewController: UIViewController {
         initRefresh()
     }
     
-    // 인피니트 스크롤을 위해서 푸터 스피너 추가
-    private func createSpinnerFooter() -> UIView {
-       let footerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 50))
-       spinner.center = footerView.center
-       footerView.addSubview(spinner)
-       spinner.startAnimating()
-       return footerView
-    }
-    
+    // MARK: - Refresh Control
+    /**
+     상단 pull-down 새로고침을 위한 UIRefreshControl
+     */
     func initRefresh() {
         let refresh = UIRefreshControl()
         refresh.addTarget(self, action: #selector(updateUI(refresh:)), for: .valueChanged)
         tableView.refreshControl = refresh
     }
     
+    /**
+     상단 pull-down 시 새로운 정보를 가져옴
+     */
     @objc func updateUI(refresh: UIRefreshControl) {
         refresh.endRefreshing()
         self.viewModel.lastLiveId = -1
@@ -103,7 +102,21 @@ class HomeListViewController: UIViewController {
         self.viewModel.loadAllList(vc: self, coordinator: self.navVC?.coordinator)
     }
     
+    /**
+     인피니트 스크롤을 위한 UIRefreshControl을 UITableView Footer에 추가
+     */
+    private func createSpinnerFooter() -> UIView {
+        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 50))
+        spinner.center = footerView.center
+        footerView.addSubview(spinner)
+        spinner.startAnimating()
+        return footerView
+    }
+    
     // MARK: - Player Control
+    /**
+     자동재생되는 플레이어 멈춤
+     */
     func pausePlayer() {
         self.playerView.player?.pause()
         self.playerView.player?.replaceCurrentItem(with: nil)
@@ -121,17 +134,6 @@ class HomeListViewController: UIViewController {
     
     @IBAction func friendButtonDidTap(_ sender: Any) {
         navVC?.coordinator?.showFriendList()
-    }
-    
-    func removeTopChildViewController(){
-        if self.children.count > 0 {
-            let viewControllers:[UIViewController] = self.children
-            for i in viewControllers {
-                i.willMove(toParent: nil)
-                i.removeFromParent()
-                i.view.removeFromSuperview()
-            }
-        }
     }
 }
 
@@ -223,6 +225,9 @@ extension HomeListViewController: UITableViewDataSource, UITableViewDelegate {
         }
     }
     
+    /**
+    스크롤이 멈추면 페이지 중앙의 동영상을 자동 재생
+     */
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         guard let parent = self.navigationController?.parent as? CustomTabViewController else { return }
         if parent.children.contains(where: { ($0 as? PlayViewController) != nil }) {
@@ -231,7 +236,7 @@ extension HomeListViewController: UITableViewDataSource, UITableViewDelegate {
         }
         if scrollView == tableView {
             guard let visibleRows = tableView.indexPathsForVisibleRows, let first = visibleRows.first, let last = visibleRows.last else { return }
-            let middleIndex = ((first.row) + (last.row))/2
+            let middleIndex = ((first.row) + (last.row)) / 2
             if middle == middleIndex { return }
             self.middle = middleIndex
             self.playerView.player = nil

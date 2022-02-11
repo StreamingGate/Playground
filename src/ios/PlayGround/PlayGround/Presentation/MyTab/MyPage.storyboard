@@ -262,6 +262,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="X27-LR-WF4"/>
                     <connections>
+                        <outlet property="collectionViewHeight" destination="Xa0-Ds-ixO" id="pN0-nu-ci7"/>
                         <outlet property="likedVideoLabel" destination="wVO-3a-cd0" id="RkH-fZ-bte"/>
                         <outlet property="myVideoLabel" destination="brS-q1-RGw" id="0Rk-US-0Zd"/>
                         <outlet property="profileImageView" destination="OGn-c6-kWN" id="q9H-WY-h94"/>

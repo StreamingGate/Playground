@@ -11,8 +11,8 @@ import UIKit
 struct UserInfo: Codable {
     let email: String
     let profileImage: String
-    let name: String
-    let nickName: String
+    let name: String?
+    let nickName: String?
     
     enum CodingKeys: String, CodingKey {
         case email

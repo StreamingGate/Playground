@@ -10,6 +10,7 @@ import UIKit
 import Combine
 
 class ChattingViewController: UIViewController {
+    // MARK: - Properties
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var viewerLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
@@ -20,13 +21,12 @@ class ChattingViewController: UIViewController {
     @IBOutlet weak var bottomScrollButton: UIButton!
     var roomId = ""
     
-    // MARK: - View Life Cycle
+    // MARK: - View LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        // 추후에 실제 roomId로 변경
         viewModel.roomId = self.roomId
         viewModel.connectToSocket()
-        bindViewModelData()
+        bindData()
         setupUI()
     }
     
@@ -43,7 +43,8 @@ class ChattingViewController: UIViewController {
         tableView.contentInset = UIEdgeInsets(top: 15, left: 0, bottom: 0, right: 0)
     }
     
-    func bindViewModelData() {
+    // MARK: - Data Binding
+    func bindData() {
         viewModel.$chatList.receive(on: RunLoop.main)
             .sink { [weak self] list in
                 guard let self = self else { return }
@@ -67,6 +68,7 @@ class ChattingViewController: UIViewController {
             }.store(in: &cancellable)
     }
     
+    // MARK: - Button Action
     @IBAction func bottomScrollButtonDidTap(_ sender: Any) {
         self.tableView.scrollToBottom()
         isBottomFocused = true
