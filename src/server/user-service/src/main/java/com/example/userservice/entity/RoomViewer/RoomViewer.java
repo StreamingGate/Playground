@@ -39,11 +39,13 @@ public class RoomViewer {
     private Room room;
 
     @Builder
-    public RoomViewer(Boolean liked,Long roomUuid,String userUuid) {
+    public RoomViewer(Boolean liked,Long roomUuid,String userUuid,User user,Room room) {
         this.liked = liked;
         this.disliked = liked? false : true;
         this.roomUuid = roomUuid;
         this.userUuid = userUuid;
+        this.user = user;
+        this.room = room;
     }
 
 }
