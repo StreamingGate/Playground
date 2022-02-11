@@ -28,6 +28,10 @@ function MainLayout({ children }) {
     setModalState({ ...modalInitState });
   };
 
+  /**
+   * 헤더 모달 중 하나라도 열려있으면 윈도우 이벤트 등록
+   */
+
   useEffect(() => {
     if (modalState.addVideo || modalState.profile || modalState.friend || modalState.alarm) {
       window.addEventListener('click', handleModalClose);
@@ -38,7 +42,7 @@ function MainLayout({ children }) {
   }, [modalState]);
 
   const setInitNavState = () => {
-    // wide laptop 사이즈 보다 작을때 backdrop true!!
+    // wide laptop 사이즈 보다 작을때 backdrop과 함께 사이드바 그려짐
     if (innerWidth > screenSize.wideLaptop) {
       setSideNavState({ open: true, backdrop: false });
     } else {
@@ -47,7 +51,7 @@ function MainLayout({ children }) {
   };
 
   const setInitFriendListState = () => {
-    // laptop 사이즈 보다 작을때 backdrop true!!
+    // laptop 사이즈 보다 작을때 backdrop과 함께 친구 사이드바 그려짐
     if (innerWidth > screenSize.laptop) {
       setSideFriendState({ open: true, backdrop: false });
     } else {
@@ -67,6 +71,10 @@ function MainLayout({ children }) {
   const handleToggleSideFriend = () => {
     setSideFriendState(prev => ({ ...prev, open: !prev.open }));
   };
+
+  /**
+   * 헤더 프로필 수정, 친구목록, 스트림 시작 모달 제어 함수
+   */
 
   const handleModalToggle = e => {
     const { currentTarget } = e;
