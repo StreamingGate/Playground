@@ -32,7 +32,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -52,9 +51,9 @@ public class UserService implements UserDetailsService {
     private final JavaMailSender javaMailSender;
     private final RedisTemplate<String,Object> redisTemplate;
     private final AmazonS3Service amazonS3Service;
-    private final HistoryService historyService;
     private final Jwt jwt;
 
+    /* 이메일 인증코드 보내는 기능 */
     public String sendEmail(String address) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(address);
@@ -101,22 +100,22 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public EmailDto checkEmail(EmailDto email) throws CustomUserException {
-        if(!userRepository.findByEmail(email.getEmail()).isPresent()) {
-            String randomCode = sendEmail(email.getEmail());
-            // 만약 n번의 요청할시, 인증코드를 overwrite
-            redisTemplate.opsForValue().set(randomCode,email.getEmail(),60*10L, TimeUnit.SECONDS);
+    public String checkEmail(String email) throws CustomUserException {
+        if(!userRepository.findByEmail(email).isPresent()) {
+            String randomCode = sendEmail(email);
+            /* 만약 n번의 요청할시, 인증코드를 overwrite */
+            redisTemplate.opsForValue().set(randomCode,email,60*10L, TimeUnit.SECONDS);
             return email;
         }
         throw new CustomUserException(ErrorCode.U001);
     }
 
     @Transactional
-    public PwdDto checkUser(PwdDto pwdDto) throws CustomUserException {
-        if(userRepository.findByNameAndEmail(pwdDto.getName(),pwdDto.getEmail()).isPresent()) {
-            String randomCode = sendEmail(pwdDto.getEmail());
-            redisTemplate.opsForValue().set(randomCode,pwdDto.getEmail(),60*10L, TimeUnit.SECONDS);
-            return pwdDto;
+    public Pwd checkUser(Pwd pwd) throws CustomUserException {
+        if(userRepository.findByNameAndEmail(pwd.getName(), pwd.getEmail()).isPresent()) {
+            String randomCode = sendEmail(pwd.getEmail());
+            redisTemplate.opsForValue().set(randomCode, pwd.getEmail(),60*10L, TimeUnit.SECONDS);
+            return pwd;
         }
         throw new CustomUserException(ErrorCode.U005);
     }
@@ -138,11 +137,11 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public PwdDto updatePwd(String uuid, PwdDto pwdDto) throws CustomUserException {
+    public Pwd updatePwd(String uuid, Pwd pwd) throws CustomUserException {
         User user = userRepository.findByUuid(uuid).orElseThrow(()-> new CustomUserException(ErrorCode.U002));
-        String bcryptPwd = bCryptPasswordEncoder.encode(pwdDto.getPassword());
+        String bcryptPwd = bCryptPasswordEncoder.encode(pwd.getPassword());
         user.updatePwd(bcryptPwd);
-        return pwdDto;
+        return pwd;
     }
 
     @Transactional
@@ -153,6 +152,7 @@ public class UserService implements UserDetailsService {
         return userDto;
     }
 
+    /* 실시간 스트리밍 리스트, 동영상 리스트 합쳐서 리턴 */
     @Transactional
     public ResponseHistory watchedHistory(String uuid, Long lastVideoId, Long lastLiveId,int size) throws CustomUserException {
         if (!userRepository.findByUuid(uuid).isPresent()) throw new CustomUserException(ErrorCode.U002);
