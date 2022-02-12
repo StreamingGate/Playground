@@ -51,6 +51,8 @@ export default function useMediaSoupConsume(isLive, videoPlayerRef, roomId) {
       }
     });
 
+    // let audioConsumerTransport = null;
+
     const audioRecvTransportParams = await peer.request('createAudioWebRtcTransport');
     const audioConsumerTransport =
       audioConsumerDevice.createRecvTransport(audioRecvTransportParams);
@@ -87,6 +89,8 @@ export default function useMediaSoupConsume(isLive, videoPlayerRef, roomId) {
       rtpParameters: params.rtpParameters,
     });
 
+    // let audioConsumer;
+
     const audioParams = await peer.request('audioConsume', {
       rtpCapabilities: audioConsumerDevice.rtpCapabilities,
     });
@@ -105,6 +109,8 @@ export default function useMediaSoupConsume(isLive, videoPlayerRef, roomId) {
     const { track } = consumer;
     const { track: audio } = audioConsumer;
 
+    console.log(track);
+    console.log(audio);
     videoPlayerRef.current.srcObject = new MediaStream([track, audio]);
     await peer.request('consumerResume');
   };

@@ -28,6 +28,7 @@ export default function useMediaSoupProduce(stream, roomId, userId) {
       routerRtpCapabilities: rtpCapabilities,
     });
 
+    // 주석
     await producerAudioDevice.load({
       routerRtpCapabilities: rtpCapabilities,
     });
@@ -39,6 +40,7 @@ export default function useMediaSoupProduce(stream, roomId, userId) {
     const producerTransportParams = await peer.request('createWebRtcTransport');
     const producerTransport = producerDevice.createSendTransport(producerTransportParams);
 
+    // 주석
     const producerAudioTransportParams = await peer.request('createAudioWebRtcTransport');
     const producerAudioTransport = producerAudioDevice.createSendTransport(
       producerAudioTransportParams
@@ -68,7 +70,11 @@ export default function useMediaSoupProduce(stream, roomId, userId) {
       }
     });
 
+    // let producerAudioTransport = null;
+
+    // 주석
     producerAudioTransport.on('connect', async ({ dtlsParameters }, callback, errback) => {
+      console.log('hello');
       try {
         await peer.request('produceAudioConnect', {
           dtlsParameters,
@@ -130,6 +136,7 @@ export default function useMediaSoupProduce(stream, roomId, userId) {
       console.log('transport ended');
     });
 
+    // 주석
     const audioProducer = await producerAudioTransport.produce({
       track: stream.audioTrack,
     });
