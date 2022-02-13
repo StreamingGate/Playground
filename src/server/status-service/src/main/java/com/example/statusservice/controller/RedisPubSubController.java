@@ -20,22 +20,6 @@ public class RedisPubSubController {
 
     private final RedisUserService redisUserService;
 
-//    /* 로그인 시 친구에게 publish */
-//    @MessageMapping("/status/login/{uuid}")
-//    public void loginMessage(@DestinationVariable String uuid) throws Exception{
-//        // create payload
-//        log.info("==MessageMapping: loginMessage from:"+uuid);
-//        redisUserService.statusPublish(uuid, Boolean.TRUE);
-//    }
-//
-//    /* 로그아웃 시 친구에게 publish */
-//    @MessageMapping("/status/logout/{uuid}")
-//    public void logoutMessage(@DestinationVariable String uuid) throws Exception{
-//        // create payload
-//        log.info("==MessageMapping: logoutMessage from:"+uuid);
-//        redisUserService.statusPublish(uuid, Boolean.FALSE);
-//    }
-
     /* 현재 시청하는 영상 또는 라이브 공유 */
     @MessageMapping("/watch/{uuid}")
     public void watchNowOrExitMessage(@DestinationVariable String uuid,

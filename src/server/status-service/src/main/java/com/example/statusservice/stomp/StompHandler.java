@@ -20,22 +20,15 @@ public class StompHandler implements ChannelInterceptor {
 
     private final RedisUserService redisUserService;
 
-    /**
-     * DISCONNET 메시지의 경우 preSend로 처리해야 헤더로 전송된 값을 처리할 수 있음
-     **/
+    /* DISCONNET 메시지의 경우 preSend로 처리해야 헤더로 전송된 값을 처리할 수 있음 */
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
         log.info("Channel Interceptor");
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
-        String destination;
         String uuid;
         switch (accessor.getCommand()) {
-            case CONNECT:
-                log.info("preSend connect....");
-                break;
             case DISCONNECT: /* 페이지 이동, 브라우저 닫기 포함 */
                 uuid = getUuidFromHeader(message);
-                log.info("preSend disconnect....: " + uuid);
                 if(uuid!= null) redisUserService.publishStatus(uuid, Boolean.FALSE);
                 break;
             default:
@@ -50,13 +43,9 @@ public class StompHandler implements ChannelInterceptor {
         String destination;
         String uuid;
         switch (accessor.getCommand()) {
-            case CONNECT:
-                log.info("postSend connect....");
-                break;
             case SUBSCRIBE:
                 destination = accessor.getDestination();
                 uuid = destination.substring(destination.lastIndexOf("/") + 1);
-                log.info("preSend subscribe.... uuid: "+uuid);
                 if(uuid!= null) redisUserService.publishStatus(uuid, Boolean.TRUE);
                 break;
             default:
@@ -71,7 +60,6 @@ public class StompHandler implements ChannelInterceptor {
         try {
             if (multiValueMap.containsKey("uuid")) {
                 uuid = multiValueMap.getFirst("uuid");
-                log.info("uuid: " + uuid);
             }
         } catch(NullPointerException e){
             log.info("[ErrorCode.S002] " + ErrorCode.S002.getMessage());

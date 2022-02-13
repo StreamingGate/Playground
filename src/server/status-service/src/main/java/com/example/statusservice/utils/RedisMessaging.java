@@ -10,9 +10,8 @@ import org.springframework.stereotype.Component;
 
 /**
  * <h1>RedisUtil</h1>
- * <pre>
  * Redis 메시징 기능을 분리한 유틸 클래스.
- *
+ * <pre>
  * 메시지 전송하는 클래스를 빈 자동주입하면서 순환참조 발생하는 것 방지
  * Ex.
  * SimpMessageSendingOperations.java

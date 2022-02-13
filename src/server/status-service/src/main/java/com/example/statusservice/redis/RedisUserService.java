@@ -68,7 +68,6 @@ public class RedisUserService {
         RedisMessaging.publish(channelTopic, userDto);
     }
 
-
     /* 로그인 또는 로그아웃 시 친구에게 내 상태 publish */
     public void publishStatus(String uuid, Boolean status) {
         UserDto userDto = findByUuid(uuid);

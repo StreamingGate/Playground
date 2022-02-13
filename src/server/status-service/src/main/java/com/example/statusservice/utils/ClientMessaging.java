@@ -7,9 +7,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * <h1>ClientMessaging</h1>
- * <pre>
  * Client 메시징 기능을 분리한 유틸 클래스.
- * </pre>
  */
 @Slf4j
 @Component

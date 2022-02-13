@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-/**<h1>RedisSubscriber</h1>
-* Redis에 메세지 발행이 되길 기다렸다가 발행되면 해당 메시지를 읽어 처리한다.
-*
+/**
+ * <h1>RedisSubscriber</h1>
+ * Redis에 메세지 발행이 되길 기다렸다가 발행되면 해당 메시지를 읽어 처리한다.
 */
 @Slf4j
 @RequiredArgsConstructor
@@ -22,9 +22,7 @@ public class RedisSubscriber implements MessageListener {
 
    private final ObjectMapper objectMapper;
 
-   /**
-    * Redis에서 메시지가 발행(publish)되면 대기하고 있던 onMessage가 해당 메시지를 받아 처리한다.
-    */
+   /* Redis에서 메시지가 발행(publish)되면 대기하고 있던 onMessage가 해당 메시지를 처리 */
    @Override
    public void onMessage(Message message, byte[] pattern) {
       try {
