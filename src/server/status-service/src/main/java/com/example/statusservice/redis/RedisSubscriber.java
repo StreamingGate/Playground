@@ -1,8 +1,7 @@
 package com.example.statusservice.redis;
 
-import com.example.chatservice.dto.chat.Chat;
-import com.example.chatservice.utils.ClientMessaging;
-import com.example.chatservice.utils.RedisMessaging;
+
+import com.example.statusservice.dto.UserDto;
 import com.example.statusservice.utils.ClientMessaging;
 import com.example.statusservice.utils.RedisMessaging;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,15 +27,20 @@ public class RedisSubscriber implements MessageListener {
     */
    @Override
    public void onMessage(Message message, byte[] pattern) {
-       try {
-           // redis에서 발행된 데이터를 받아 deserialize
-           String publishMessage = RedisMessaging.getPublishedMessage(message);
-           // ChatMessage 객채로 맵핑
-           Chat chat = objectMapper.readValue(publishMessage, Chat.class);
-           // Websocket 구독자에게 채팅 메시지 Send
-           ClientMessaging.publish("/topic/chat/room/" + chat.getRoomId(), chat);
-       } catch (Exception e) {
-           log.error(e.getMessage());
-       }
+      try {
+         log.info("==onMessage==");
+         String publishMessage = RedisMessaging.getPublishedMessage(message);
+         UserDto userDto = objectMapper.readValue(publishMessage, UserDto.class);
+         log.info("==Publish from: " + userDto.getUuid());
+
+         /* 친구 리스트에게 publish */
+         for (String friendUuid : userDto.getFriendUuids()) {
+            log.info("==Publish to: " + friendUuid);
+            /* Websocket 구독자에게 채팅 메시지 Send */
+            ClientMessaging.publish("/topic/friends/" + friendUuid, userDto);
+         }
+      } catch (Exception e) {
+         log.error(e.getMessage());
+      }
    }
 }

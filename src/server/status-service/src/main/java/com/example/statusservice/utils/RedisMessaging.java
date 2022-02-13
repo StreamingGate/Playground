@@ -1,7 +1,6 @@
 package com.example.statusservice.utils;
 
-import com.example.chatservice.dto.room.Room;
-import com.example.statusservice.entity.User.User;
+import com.example.statusservice.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.core.HashOperations;
@@ -41,8 +40,11 @@ public class RedisMessaging {
         return redisTemplate.getStringSerializer().deserialize(message.getBody());
     }
 
-    public static HashOperations<String, String, User> getOpsHashUser(){
+    public static HashOperations<String, String, UserDto> getOpsHashUser(){
         return redisTemplate.opsForHash();
     }
 
+//    public static void setExpirationMinute(String key, Long timeout){
+//        redisTemplate.expire(key, timeout, TimeUnit.MINUTES);
+//    }
 }

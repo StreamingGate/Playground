@@ -4,6 +4,7 @@ package com.example.statusservice.config;
 import com.example.statusservice.stomp.StompHandler;
 import com.example.statusservice.utils.RedisMessaging;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
@@ -15,6 +16,7 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
  * <h1>WebSocketConfig</h1>
  * Stomp를 사용하기 위해 Broker를 구현한다.
  */
+@Slf4j
 @RequiredArgsConstructor
 @Configuration
 @EnableWebSocketMessageBroker
@@ -25,15 +27,16 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/topic", "/queue");
+        config.enableSimpleBroker("/topic");
         config.setApplicationDestinationPrefixes("/app");
-        config.setUserDestinationPrefix("/user"); //특정 유저에게 보내는 사용자 path
+//        config.setUserDestinationPrefix("/user"); //특정 유저에게 보내는 사용자 path
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
+        log.info("StompEndpointRegistry:"+registry);
         // ws 엔드포인트 등록
-        registry.addEndpoint("/ws/status").setAllowedOriginPatterns("*")
+        registry.addEndpoint("/ws").setAllowedOriginPatterns("*")
                 // 특정 유저에게 publish하기위해 유저의 sessionId를 저장해둔다.
 //                .setHandshakeHandler(new CustomHandshakeHandler())
                 .withSockJS();
@@ -41,6 +44,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureClientInboundChannel(ChannelRegistration registration) {
+        log.info("ChannelRegistration:"+registration);
+        log.info("StompHandler:" + stompHandler);
         registration.interceptors(stompHandler);
     }
 }

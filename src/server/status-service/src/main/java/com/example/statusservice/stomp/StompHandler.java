@@ -1,14 +1,17 @@
 package com.example.statusservice.stomp;
 
 
+import com.example.statusservice.exception.ErrorCode;
 import com.example.statusservice.redis.RedisUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
+import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.stereotype.Component;
+import org.springframework.util.MultiValueMap;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -17,29 +20,75 @@ public class StompHandler implements ChannelInterceptor {
 
     private final RedisUserService redisUserService;
 
+    /**
+     * DISCONNET 메시지의 경우 preSend로 처리해야 헤더로 전송된 값을 처리할 수 있음
+     **/
     @Override
-    public void postSend(Message message, MessageChannel channel, boolean sent) {
+    public Message<?> preSend(Message<?> message, MessageChannel channel) {
+        log.info("Channel Interceptor");
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
-        String[] splited;
-        String roomId;
+        String destination;
+        String uuid;
         switch (accessor.getCommand()) {
-            case SUBSCRIBE:
-                splited = accessor.getDestination().split("/");
-                if (splited[2].equals("chat")) {
-                    roomId = splited[splited.length - 1];
-                    log.info("subscribe destination: " + roomId);
-                    redisUserService.login(roomId);
-                }
+            case CONNECT:
+                log.info("preSend connect....");
                 break;
-            case UNSUBSCRIBE:
-                log.info("unsubscribed....");
-            case DISCONNECT: //disconnect() or 세션이 끊어졌을 때(페이지 이동, 브라우저 닫기 등)
-                // `destination` is not appeared
-                log.info("disconnected....");
+            case SUBSCRIBE:
+                destination = accessor.getDestination();
+                uuid = destination.substring(destination.lastIndexOf("/") + 1);
+                log.info("preSend subscribe.... uuid: "+uuid);
+                if(uuid!= null) redisUserService.publishStatus(uuid, Boolean.TRUE);
+                break;
+//            case UNSUBSCRIBE:
+//                String id = String.valueOf(accessor.getId());
+//                log.info("preSend unsubscribe...");
+            case DISCONNECT: /* 페이지 이동, 브라우저 닫기 포함 */
+                uuid = getUuidFromHeader(message);
+                log.info("preSend disconnect....: " + uuid);
+                if(uuid!= null) redisUserService.publishStatus(uuid, Boolean.FALSE);
                 break;
             default:
                 break;
         }
+        return message;
+    }
 
+    @Override
+    public void postSend(Message message, MessageChannel channel, boolean sent) {
+        StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
+        String destination;
+        String uuid;
+        switch (accessor.getCommand()) {
+            case CONNECT:
+                log.info("postSend connect....");
+                break;
+            case SUBSCRIBE:
+                destination = accessor.getDestination();
+                uuid = destination.substring(destination.lastIndexOf("/") + 1);
+                log.info("preSend subscribe.... uuid: "+uuid);
+                if(uuid!= null) redisUserService.publishStatus(uuid, Boolean.TRUE);
+                break;
+//            case UNSUBSCRIBE:
+//                String id = String.valueOf(accessor.getId());
+//                log.info("proSend unsubscribe...");
+            default:
+                break;
+        }
+    }
+
+    private String getUuidFromHeader(Message<?> message) {
+        MessageHeaders headers = message.getHeaders();
+        MultiValueMap<String, String> multiValueMap = headers.get(StompHeaderAccessor.NATIVE_HEADERS, MultiValueMap.class);
+        String uuid = null;
+        try {
+            if (multiValueMap.containsKey("uuid")) {
+                uuid = multiValueMap.getFirst("uuid");
+                log.info("uuid: " + uuid);
+            }
+        } catch(NullPointerException e){
+            log.info("[ErrorCode.S002] " + ErrorCode.S002.getMessage());
+//            throw new CustomStatusException(ErrorCode.S002);
+        }
+        return uuid;
     }
 }

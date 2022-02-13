@@ -1,38 +1,207 @@
 {{>header}}
 <body>
-<div>
-    <h3>로그인 하기</h3>
-    <form>
-        <button type="button" onClick="login()">유저#1 로그인 하기</button>
-    </form>
-    <div id="login-result">
-    </div>
-</div>
+<h3>1. Redis 유저 데이터 setup (한 서버당 한 번씩만 누르세요)</h3>
+<button type="button" onclick="initRedis()">setup</button>
+<h3>2. 로그인 하기</h3>
+로그아웃 누른 후 재 로그인하려면 새로고침해줘야 정상 작동합니다 (버그 아님)
+<details>
+    <summary>새로고침하는 이유 설명</summary>
+    <p>WebSocket connection을 한 페이지당 한 개씩, 최초 한 번만 만들 수 있어서 한 번 disconnect하면
+    다시 connection할 수 없어서 새로고침을 해야해서 새로운 connection을 만들어야합니다</p>
+</details>
+로그인 한 uuid: <span id="login-uuid"></span>
+</br>
+</br>
+<button type="button" onClick="login(0)">유저#1 로그인 하기</button>
+<button type="button" onClick="login(1)">유저#2 로그인 하기</button>
+<button type="button" onClick="login(2)">유저#3 로그인 하기</button>
+<button type="button" onClick="login(3)">유저#4 로그인 하기</button>
+</br>
+<button type="button" onClick="logout(0)">유저#1 로그아웃 하기</button>
+<button type="button" onClick="logout(1)">유저#2 로그아웃 하기</button>
+<button type="button" onClick="logout(2)">유저#3 로그아웃 하기</button>
+<button type="button" onClick="logout(3)">유저#4 로그아웃 하기</button>
+</br>
+<h3>3. 영상 보기</h3>
+<button type="button" onClick="videoWatch(0)">일반영상#1 보기</button>
+<button type="button" onClick="videoExit(0)">일반영상#1 나가기</button>
+
+<ul id="friends-result">
+
+</ul>
+</body>
 {{>footer}}
 <!-- JavaScript -->
 <script>
-    userData=[
+    const userData = [
         {
-            //"name": "user1",
-            "id": "u1@email.com",
-            "password": "1234"
+            // "name": "user1",
+            "uuid": "11111111-1234-1234-123456789012",
+            "email": "u1@email.com",
+            "password": "1234",
+            "token":""
         },
         {
-            //"name": "user3",
-            "id": "u3@email.com",
-            "password": "1234"
+            // "name": "user2",
+            "uuid": "22222222-1234-1234-123456789012",
+            "email": "u2@email.com",
+            "password": "1234",
+            "token":""
+        },
+        {
+            // "name": "user3",
+            "uuid": "33333333-1234-1234-123456789012",
+            "email": "u3@email.com",
+            "password": "1234",
+            "token":""
+        },
+        {
+            // "name": "user4",
+            "uuid": "44444444-1234-1234-123456789012",
+            "email": "u4@email.com",
+            "password": "1234",
+            "token":""
         }
     ];
+    let globalIndex = 0;
 
-    login = () => {
-        // 로그인 요청 
-        axios.post('http://localhost:8000/user-service/login',
-        userData[0])
-        .then(resp => {
-            let loginResultDiv = document.querySelector("#login-result");
-            loginResultDiv.innerText = resp.data;
-        })
+    initRedis = () =>{
+        axios.get('/init-redis')
+        .then(()=>{
+            console.log("==Redis에 유저데이터 셋팅 완료.");
+        });
+    }
+    let sock = new SockJS("/ws");
+    let ws = Stomp.over(sock);
+    const loginUuidElem = document.querySelector("#login-uuid");
+    const friendsResultElem = document.querySelector("#friends-result");
+
+    // stomp connection
+    ws.connect({}, function (frame) {
+        // nothing...
+    }, function (error) {
+        alert("error " + JSON.stringify(error));
+    });
+
+    /* 실제 client에선 리스트에 있는 정보로 영상 하나에 입장하자마자 send 하면 type, id 선택가능 */
+    videoWatch = (i) => {
+        const userUuid = userData[globalIndex].uuid;
+        const token = userData[globalIndex].token;
+        console.log('token: '+token);
+        axios.get(`http://localhost:8000/video-service/video/${i+1}?uuid=${userUuid}`,{
+                headers:{
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            .then(resp => {
+                console.log(JSON.stringify(resp));
+                const videoUuid = resp.data.videoUuid;
+                console.log(`data:`+ videoUuid);
+                const data = {
+                    // uuid: userUuid,
+                    id: i+1,
+                    type: 0,
+                    videoRoomUuid : resp.data.videoUuid,
+                    title: resp.data.title
+                }
+                ws.send("/app/watch/" + userUuid, {}, JSON.stringify(data));
+            });
+    }
+
+    /* 그런데 여러개의 영상을 보는 중이라면? */
+    videoExit = () => {
+        const userUuid = userData[globalIndex].uuid;
+        ws.send("/app/watch/" + userUuid, {}, JSON.stringify({}));
+    }
+
+    updateFriendsStatus = (body) => {
+        console.log("loginUuid: "+ body.uuid);
+        const uuid = body.uuid;
+        const children = friendsResultElem.children;
+        console.log("children size:"+children);
+
+        for(let i = 0; i < children.length; i++){
+            console.log("children id:"+children[i].id);
+            if(children[i].id === uuid){
+                console.log("equal to loginUuid");
+                if(body.status === true)
+                    children[i].innerText = `${children[i].id} 로그인! (${body.title}시청 중)`;
+                else
+                    children[i].innerText = `${children[i].id} 로그아웃!`;
+            }
+        }
+    }
+
+    /* 친구 목록에 내 상태 publish */
+    publishLogin = (i) =>{
+        const uuid = userData[i].uuid;
+        ws.subscribe("/topic/friends/" + uuid, function (resp) {
+            updateFriendsStatus(JSON.parse(resp.body));
+        });
+        globalIndex = i; // 로그인 한 유저 기억하기 위함
+    }
+
+    createFriendList = (i) => {
+        console.log("==2.getFriends");
+        const uuid = userData[i].uuid;
+
+        axios.get('/list?uuid=' + uuid,{})
+            .then(resp => {
+                let ar = resp.data;
+                for (let i = 0; i < ar.length; i = i + 1) {
+                    let elem = document.createElement("li");
+                    elem.id = `${ar[i].uuid}`;
+                    if(ar[i].status === true)
+                        elem.innerText = `${ar[i].uuid} 로그인! (${ar[i].title}시청 중)`;
+                    else
+                        elem.innerText = `${ar[i].uuid} 로그아웃!`;
+                    friendsResultElem.append(elem);
+                }
+
+                publishLogin(i);
+            })
+            .catch(error => {
+                console.log("createFriendList 에러:" + JSON.stringify(error));
+            })
     };
 
+    /* user-service에 로그인 요청 */
+    login = (i) => {
+        console.log("==1.login");
+        const req = {
+            email: userData[i].email,
+            password: userData[i].password
+        };
+        axios.post('http://localhost:8000/user-service/login', req)
+                .then(resp => {
+                    userData[i].token = resp.headers.token;
+                    console.log("uuid:"+userData[i].uuid);
+                    console.log("token:"+userData[i].token);
+                    loginUuidElem.innerText = userData[i].uuid;
+                    createFriendList(i);
+                })
+                .catch(error => {
+                    console.log("로그인 에러:" + JSON.stringify(error));
+                });
+    };
 
+    /* stomp disconnection */
+    wsDisconnection = (i) => {
+        ws.disconnect(() => {}, {"uuid": userData[i].uuid});
+        loginUuidElem.innerText = "";
+
+        sock = new SockJS("/ws");
+
+        /* 레전드. 재 접속할 때 새 객체를 만들어주면 문제없이 재접속 가능함. */
+        ws = Stomp.over(sock);
+        ws.connect({}, function (frame) {
+            // nothing...
+        }, function (error) {
+            alert("error " + JSON.stringify(error));
+        });
+    }
+
+    logout = (i) => {
+        wsDisconnection(i);
+    }
 </script>

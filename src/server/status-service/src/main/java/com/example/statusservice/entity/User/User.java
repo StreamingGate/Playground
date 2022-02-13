@@ -1,11 +1,15 @@
 package com.example.statusservice.entity.User;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import javax.management.Notification;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.ColumnDefault;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,9 +19,11 @@ import org.springframework.data.redis.core.RedisHash;
 @Slf4j
 @NoArgsConstructor
 @Getter
-@RedisHash(value = "ConsentOTP", timeToLive = 300)
 @Entity(name = "users")
-public class User {
+public class User implements Serializable {
+
+    private static final long serialVersionUID = 4444478977089006638L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -56,9 +62,6 @@ public class User {
 
     @Column
     private String timeZone;
-
-    @Column
-    private LocalDate lastAt;
 
     /**
      * =============Friend=============

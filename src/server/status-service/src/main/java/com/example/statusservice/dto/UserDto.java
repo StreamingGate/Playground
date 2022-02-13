@@ -1,4 +1,4 @@
-package com.example.statusservice.dto.login;
+package com.example.statusservice.dto;
 
 import com.example.statusservice.entity.User.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -19,9 +19,10 @@ public class UserDto implements Serializable {
     private static final long serialVersionUID = 1444478977089006638L;
 
     private String uuid;            // user uuid
-    private Boolean status = false;         // login or logout
+    private Boolean status = false; // login or logout
     private List<String> friendUuids = new ArrayList<>();
 
+    // 시청중이 아닐 경우 id, type, videoRoomUuid, title은 null 값
     private String id;              // videoId or roomId
     private Integer type;           // 0: videoId, 1: roomId
     private String videoRoomUuid;   // videoUuid or roomUuid
@@ -39,10 +40,11 @@ public class UserDto implements Serializable {
     }
 
     /* 시청 정보 업데이트 */
-    public void updateVideoOrRoom(String id, Integer type, String videoRoomUuid, String title){
-        this.id = id;
-        this.type = type;
-        this.videoRoomUuid = videoRoomUuid;
-        this.title = title;
+    public void updateVideoOrRoom(UserDto reqUserDto){
+        this.uuid = reqUserDto.getUuid();
+        this.id = reqUserDto.getId();
+        this.type = reqUserDto.getType();
+        this.videoRoomUuid = reqUserDto.getVideoRoomUuid();
+        this.title = reqUserDto.getTitle();
     }
 }
