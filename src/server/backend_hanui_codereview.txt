@@ -1,0 +1,89 @@
+######## 코드 리뷰 가이드 문서 ########
+* 작성자: 김하늬
+* 작성일: 2022-02-13
+
+
+
+
+<메인 서비스>
+* 소스 코드 경로: https://github.com/StreamingGate/Playground/tree/develop-server/src/server/main-service
+* 서비스 설명:
+  일반 영상과 라이브에서 공통으로 사용되는 기능, 친구 기능에 대한 API를 모아둔 서비스입니다.
+* 사용 기술:
+  - Java11, Spring boot 2.6, Gradle 7.3
+  - Spring Data Jpa
+  - MariaDB
+  - Docker
+* API:
+  - 일반 영상과 라이브 카테고리별 조회 (무한 스크롤)
+  - 특정 유저에게 저장된 알림 리스트 조회
+  - 친구 리스트 조회
+  - 친구 요청, 삭제
+  - 친구 요청 대기 리스트 조회
+  - 친구 요청 수락, 거절
+  - 일반 영상 또는 라이브에 반응하기, 취소하기 (반응: 좋아요, 싫어요, 신고하기)
+
+
+<업로드 서비스>
+* 소스 코드 경로: https://github.com/StreamingGate/Playground/tree/develop-server/src/server/upload-service
+* 서비스 설명:
+  일반 영상 또는 라이브를 녹화한 영상을 업로드하는 서비스입니다.
+  업로드된 영상이 S3에 저장되면 mp4파일을 m3u8로 트랜스코딩하여 S3내 새로운 경로에 저장하고, 영상에 매칭되는 새로운 채팅방을 생성합니다.
+  이 과정이 끝나면 해당 경로를 클라이언트에서 접근하여 영상을 스트리밍(HLS 방식)할 수 있습니다.
+* 사용 기술:
+  - Java11, Spring boot 2.6, Gradle 7.3
+  - Spring Data Jpa
+  - MariaDB
+  - FFMPEG (트랜스코딩 OSS)
+  - AWS S3 (저장소)
+  - Docker
+* API:
+  - 일반 영상 업로드 (썸네일 미포함시 서버에서 자동 생성)
+  - 라이브 종료 후 영상 업로드 (썸네일 미포함시 서버에서 자동 생성)
+
+
+<비디오 서비스>
+* 소스 코드 경로: https://github.com/StreamingGate/Playground/tree/develop-server/src/server/video-service
+* 서비스 설명:
+  일반 영상 시청 페이지를 로드하기 위한 API 입니다.
+* 사용 기술:
+  - Java11, Spring boot 2.6, Gradle 7.3
+  - Spring Data Jpa
+  - MariaDB
+  - Docker
+* API:
+  - 일반 영상 정보 조회
+
+
+<실시간 채팅 서비스>
+* 소스 코드 경로: https://github.com/StreamingGate/Playground/tree/develop-server/src/server/chat-service
+* 서비스 설명:
+  실시간 채팅을 위한 서비스입니다.
+  웹소켓 테스트를 위한 클라이언트가 포함돼있으며, Redis를 사용해 여러 대의 채팅서버를 실행시켜도 채팅방 메시지를 동기화할 수 있도록 했습니다.
+* 사용 기술:
+  - Java11, Spring boot 2.6
+  - WebSocket, SockJS, Stomp
+  - Mustache
+  - Redis
+  - Docker
+* API
+  - [REST] 채팅방 하나 정보 조회
+  - [REST] 채팅방 생성
+  - [WebSocket] 방 입장
+  - [WebSocket] 채팅 전송
+
+
+<실시간 상태관리 서비스>  ## 추가 예정 ##
+* 소스 코드 경로: https://github.com/StreamingGate/Playground/tree/develop-server/src/server/chat-service
+* 서비스 설명:
+  내 친구에게 로그인 여부, 시청 중인 영상 정보를 실시간으로 공유할 수 있는 서비스입니다.
+  웹소켓 테스트를 위한 클라이언트가 포함돼있으며, Redis를 사용해 여러 대의 채팅서버를 실행시켜도 채팅방 메시지를 동기화할 수 있도록 했습니다.
+* 사용 기술:
+  - Java11, Spring boot 2.6
+  - WebSocket, SockJS, Stomp
+  - Mustache
+  - Redis
+  - Docker
+* API
+  - [REST] 내 친구 상태 목록 조회
+  - [WebSocket] 내 상태(로그인, 로그아웃, 시청 중인 영상 정보) 업데이트 후 친구 리스트에 전송
