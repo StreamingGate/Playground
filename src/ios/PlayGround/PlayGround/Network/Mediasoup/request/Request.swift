@@ -28,6 +28,10 @@ final internal class Request : NSObject {
         Request.shared.sendSocketWithoutReponse(socket: socket, message: ["request" : true, "id": 7713, "method": "consumerResume",  "data": []] as [String : Any])
     }
     
+    func audioConsumerResume(socket: EchoSocket) {
+        Request.shared.sendSocketWithoutReponse(socket: socket, message: ["request" : true, "id": 7713, "method": "audioConsumerResume",  "data": []] as [String : Any])
+    }
+    
     func sendCreateWebRtcTransportRequest(socket: EchoSocket) -> JSON? {
         print("REQ) createWebRtcTransport")
         let data: [String: Any] = ["request" : true, "id": 222, "method": "createWebRtcTransport", "data": []]

@@ -144,6 +144,8 @@ class PlayViewController: UIViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+        self.socket?.disconnect()
+        self.client = nil
         if let observer = timeObserver {
             self.playView.player?.removeTimeObserver(observer)
             self.timeObserver = nil
@@ -909,6 +911,7 @@ extension PlayViewController : RoomListener {
         print("RoomListener::onNewConsumer kind=" + consumer.getKind())
         
         if consumer.getKind() == "video" {
+            print("vide track loading!")
             if let track = consumer.getTrack() as? RTCVideoTrack {
                 self.videoTrack = track
                 self.videoTrack?.isEnabled = true
@@ -920,6 +923,11 @@ extension PlayViewController : RoomListener {
                 self.videoTrack?.isEnabled = false
                 self.videoTrack?.remove(self.remoteVideoView)
                 self.videoTrack = nil
+            }
+        } else {
+            if let track = consumer.getTrack() as? RTCAudioTrack {
+                print("audio track loading")
+                track.isEnabled = true
             }
         }
         

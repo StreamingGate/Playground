@@ -69,6 +69,7 @@ final internal class RoomClient : NSObject {
             return
         }
         let kind: String = consumerInfo["kind"].stringValue
+        print("--> media type: \(kind)")
         let id: String = consumerInfo["id"].stringValue
         let producerId: String = consumerInfo["producerId"].stringValue
         if producerId == "" {
@@ -81,18 +82,16 @@ final internal class RoomClient : NSObject {
         self.consumerHandler!.delegate = self.consumerHandler
         let kindConsumer: Consumer = self.recvTransport!.consume(self.consumerHandler!.delegate!, id: id, producerId: producerId, kind: kind, rtpParameters: rtpParameters.description)
         self.consumers = kindConsumer
-        
         print("consumeTrack() consuming id =" + kindConsumer.getId())
-            
         self.roomListener?.onNewConsumer(consumer: kindConsumer)
     }
     
     func resumeRemoteVideo() throws {
+        let _ = Request.shared.consumerResume(socket: self.socket)
     }
     
     func resumeRemoteAudio() throws {
-        let consumer: Consumer = try self.getConsumerByKind(kind: "audio")
-        Request.shared.sendResumeConsumerRequest(socket: self.socket, roomId: self.roomId, consumerId: consumer.getId())
+        let _ = Request.shared.audioConsumerResume(socket: self.socket)
     }
     
     private func createWebRtcTransport() {
