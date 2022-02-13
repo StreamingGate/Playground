@@ -34,9 +34,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         log.info("StompEndpointRegistry:"+registry);
-        // ws 엔드포인트 등록
         registry.addEndpoint("/ws").setAllowedOriginPatterns("*")
-                // 특정 유저에게 publish하기위해 유저의 sessionId를 저장해둔다.
                 .withSockJS();
     }
 
