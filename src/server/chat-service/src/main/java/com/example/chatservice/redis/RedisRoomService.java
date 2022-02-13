@@ -6,10 +6,10 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import com.example.chatservice.exception.CustomChatException;
 import com.example.chatservice.exception.ErrorCode;
-import com.example.chatservice.model.chat.ChatConsume;
-import com.example.chatservice.model.chat.ChatProduce;
-import com.example.chatservice.model.chat.SenderRole;
-import com.example.chatservice.model.room.Room;
+import com.example.chatservice.dto.chat.ChatConsume;
+import com.example.chatservice.dto.chat.ChatProduce;
+import com.example.chatservice.dto.chat.SenderRole;
+import com.example.chatservice.dto.room.Room;
 import com.example.chatservice.utils.RedisMessaging;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.listener.ChannelTopic;
@@ -43,20 +43,19 @@ public class RedisRoomService {
         return opsHashRoom.get(CHAT_ROOMS, roomId);
     }
 
-    public Room create(String uuid) {
-        Room room = new Room(uuid);
-        opsHashRoom.put(CHAT_ROOMS, room.getId(), room);
+    public Room create(String uuid, String hostUuid) {
+        Room room = new Room(uuid, hostUuid);
+        opsHashRoom.put(CHAT_ROOMS, room.getUuid(), room);
         return room;
     }
 
-    public int addPinnedChat(String roomId, ChatProduce pinnedChat) throws CustomChatException {
+    public void addPinnedChat(String roomId, ChatProduce pinnedChat) throws CustomChatException {
         if (!pinnedChat.getSenderRole().equals(SenderRole.STREAMER))
             throw new CustomChatException(ErrorCode.C001, roomId);
 
         Room room = opsHashRoom.get(CHAT_ROOMS, roomId);
-        room.getPinnedChats().add(new ChatConsume(pinnedChat));
-        opsHashRoom.put(CHAT_ROOMS, room.getId(), room); // update
-        return room.getPinnedChats().size();
+        room.updatePinnedChat(new ChatConsume(pinnedChat));
+        opsHashRoom.put(CHAT_ROOMS, room.getUuid(), room); // update
     }
 
     /**
@@ -64,16 +63,12 @@ public class RedisRoomService {
      * 추가한다.
      */
     public int enter(String roomId) {
-        ChannelTopic topic = topics.get(roomId);
-        if (topic == null) {
-            topic = new ChannelTopic(roomId);
-            redisMessageListener.addMessageListener(redisSubscriber, topic);
-            topics.put(roomId, topic);
-        }
+        getOrAddTopic(roomId);
         Room room = opsHashRoom.get(CHAT_ROOMS, roomId);
+
         int userCnt = room.addUser();
-        log.info("add user:" + room.getId() + " " + userCnt + "명");
-        opsHashRoom.put(CHAT_ROOMS, room.getId(), room); // update
+        log.info("add user:" + room.getUuid() + " " + userCnt + "명");
+        opsHashRoom.put(CHAT_ROOMS, room.getUuid(), room); // update
         return userCnt;
     }
 
@@ -82,8 +77,8 @@ public class RedisRoomService {
         if (room == null)
             throw new IllegalArgumentException("존재하지 않는 방입니다.");
         int userCnt = room.removeUser();
-        log.info("remove user:" + room.getId() + " " + userCnt + "명");
-        opsHashRoom.put(CHAT_ROOMS, room.getId(), room); // update
+        log.info("remove user:" + room.getUuid() + " " + userCnt + "명");
+        opsHashRoom.put(CHAT_ROOMS, room.getUuid(), room); // update
         return userCnt;
     }
 
@@ -94,10 +89,13 @@ public class RedisRoomService {
         return room.getUserCnt();
     }
 
-    public ChannelTopic getTopic(String roomId) {
-        ChannelTopic ct = topics.get(roomId);
-        if (ct != null)
-            log.info("ChannelTopic: " + ct.getTopic());
-        return ct;
+    public ChannelTopic getOrAddTopic(String roomId) {
+        ChannelTopic channelTopic = topics.get(roomId);
+        if (channelTopic == null) {
+            channelTopic = new ChannelTopic(roomId);
+            redisMessageListener.addMessageListener(redisSubscriber, channelTopic);
+            topics.put(roomId, channelTopic);
+        }
+        return channelTopic;
     }
 }
