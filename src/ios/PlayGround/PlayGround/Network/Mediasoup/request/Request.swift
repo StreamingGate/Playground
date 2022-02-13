@@ -47,13 +47,15 @@ final internal class Request : NSObject {
     
     func consume(socket: EchoSocket, rtp: String) -> JSON? {
         print("REQ) consume")
-        let data: [String: Any] = ["request" : true, "id": 666, "method": "consume", "data" : ["rtpCapabilities": rtp]]
+        let data: [String: Any] = ["request" : true, "id": 556, "method": "consume", "data" : ["rtpCapabilities": rtp]]
+//        return nil
+        
         return Request.shared.sendSocketAckRequest(socket: socket, data: data)
     }
 
     func audioConsume(socket: EchoSocket, rtp: String) -> JSON? {
         print("REQ) audio consume")
-        let data: [String: Any] = ["request" : true, "id": 666, "method": "audioConsume", "data" : ["rtpCapabilities": rtp]]
+        let data: [String: Any] = ["request" : true, "id": 556, "method": "audioConsume", "data" : ["rtpCapabilities": rtp]]
         return Request.shared.sendSocketAckRequest(socket: socket, data: data)
     }
     

@@ -890,9 +890,9 @@ extension PlayViewController : MessageObserver {
         case ActionEvent.NEW_USER:
             print("NEW_USER id =" + data!["userId"]["userId"].stringValue)
             break
-        case ActionEvent.NEW_CONSUMER:
+        case "556":
             print("NEW_CONSUMER data=" + data!.description)
-            self.handleNewConsumerEvent(consumerInfo: data!["consumerData"])
+            self.handleNewConsumerEvent(consumerInfo: data!["data"])
             break
         default:
             print("Unknown event " + event)
