@@ -5,12 +5,14 @@ import com.example.statusservice.dto.UserDto;
 import com.example.statusservice.redis.RedisUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -34,8 +36,9 @@ public class IndexController {
 
     @ResponseBody
     @GetMapping("/list")
-    public List<UserDto> getFriendsStatus(@RequestParam("uuid")String uuid){
+    public ResponseEntity<Map<String,List<UserDto>>> getFriendsStatus(@RequestParam("uuid")String uuid){
         log.info("list uuid:"+uuid);
-        return redisUserService.findAll(uuid);
+        List<UserDto> result = redisUserService.findAll(uuid);
+        return ResponseEntity.ok(Map.of("result", result));
     }
 }

@@ -142,7 +142,8 @@
 
         axios.get('/list?uuid=' + uuid,{})
             .then(resp => {
-                let ar = resp.data;
+                let ar = resp.data.result;
+                console.log(JSON.stringify(resp.data));
                 for (let i = 0; i < ar.length; i = i + 1) {
                     let elem = document.createElement("li");
                     elem.id = `${ar[i].uuid}`;
