@@ -1,9 +1,8 @@
-package com.example.chatservice.model.room;
+package com.example.chatservice.dto.room;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import com.example.chatservice.model.chat.ChatConsume;
+
+import com.example.chatservice.dto.chat.ChatConsume;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -13,15 +12,19 @@ public class Room implements Serializable {
 
     private static final long serialVersionUID = 6494678977089006639L;
 
-    private String id;
-    private String name;
+    private String uuid;
+    private String hostUuid;
     private int userCnt;
-    private List<ChatConsume> pinnedChats = new ArrayList<>();
+    private ChatConsume pinnedChat;
 
-    public Room(String uuid) {
-        this.id = uuid;
-        this.name = uuid;
+    public Room(String uuid, String hostUuid) {
+        this.uuid = uuid;
+        this.hostUuid = hostUuid;
         this.userCnt = 0;
+    }
+
+    public void updatePinnedChat(ChatConsume pinnedChats){
+        this.pinnedChat = pinnedChats;
     }
 
     public int addUser() {
