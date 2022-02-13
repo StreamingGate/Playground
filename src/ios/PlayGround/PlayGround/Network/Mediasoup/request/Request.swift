@@ -28,15 +28,10 @@ final internal class Request : NSObject {
         Request.shared.sendSocketWithoutReponse(socket: socket, message: ["request" : true, "id": 7713, "method": "consumerResume",  "data": []] as [String : Any])
     }
     
-    func sendCreateWebRtcTransportRequest(socket: EchoSocket, roomId: String, direction: String, device: Device) -> JSON? {
+    func sendCreateWebRtcTransportRequest(socket: EchoSocket) -> JSON? {
         print("REQ) createWebRtcTransport")
-        if direction == "audio" {
-            let data: [String: Any] = ["request" : true, "id": 223, "method": "createAudioWebRtcTransport", "data": []]
-            return Request.shared.sendSocketAckRequest(socket: socket, data: data)
-        } else {
-            let data: [String: Any] = ["request" : true, "id": 222, "method": "createWebRtcTransport", "data": []]
-            return Request.shared.sendSocketAckRequest(socket: socket, data: data)
-        }
+        let data: [String: Any] = ["request" : true, "id": 222, "method": "createWebRtcTransport", "data": []]
+        return Request.shared.sendSocketAckRequest(socket: socket, data: data)
     }
     
     func consume(socket: EchoSocket, rtp: String) -> JSON? {

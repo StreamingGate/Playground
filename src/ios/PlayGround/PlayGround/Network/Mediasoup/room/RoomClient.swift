@@ -59,7 +59,7 @@ final internal class RoomClient : NSObject {
             return
         }
         
-        self.createWebRtcTransport(direction: "recv")
+        self.createWebRtcTransport()
         print("createRecvTransport() recv transport created")
     }
     
@@ -95,28 +95,21 @@ final internal class RoomClient : NSObject {
         Request.shared.sendResumeConsumerRequest(socket: self.socket, roomId: self.roomId, consumerId: consumer.getId())
     }
     
-    private func createWebRtcTransport(direction: String) {
-        let response = Request.shared.sendCreateWebRtcTransportRequest(socket: self.socket, roomId: "test", direction: direction, device: device)
+    private func createWebRtcTransport() {
+        let response = Request.shared.sendCreateWebRtcTransportRequest(socket: self.socket)
         
         guard let webRtcTransportData: JSON = response?["data"] else { return }
         let id: String = webRtcTransportData["id"].stringValue
         let iceParameters: JSON = webRtcTransportData["iceParameters"]
         let iceCandidatesArray: JSON = webRtcTransportData["iceCandidates"]
         let dtlsParameters: JSON = webRtcTransportData["dtlsParameters"]
-        switch direction {
-        case "recv":
-            self.recvTransportHandler = RecvTransportHandler.init(parent: self)
-            self.recvTransportHandler!.delegate = self.recvTransportHandler!
-            self.recvTransport = self.device.createRecvTransport(self.recvTransportHandler!.delegate!, id: id, iceParameters: iceParameters.description, iceCandidates: iceCandidatesArray.description, dtlsParameters: dtlsParameters.description)
-
-            let result = Request.shared.consume(socket: self.socket, rtp: device.getRtpCapabilities()!)
-            guard let consumeData = result?["data"] else { return }
-            self.consumeTrack(consumerInfo: consumeData)
-            let _ = Request.shared.consumerResume(socket: self.socket)
-            break
-        default:
-            print("createWebRtcTransport() invalid direction " + direction)
-        }
+        
+        self.recvTransportHandler = RecvTransportHandler.init(parent: self)
+        self.recvTransportHandler!.delegate = self.recvTransportHandler!
+        self.recvTransport = self.device.createRecvTransport(self.recvTransportHandler!.delegate!, id: id, iceParameters: iceParameters.description, iceCandidates: iceCandidatesArray.description, dtlsParameters: dtlsParameters.description)
+        
+        let _ = Request.shared.audioConsume(socket: self.socket, rtp: device.getRtpCapabilities()!)
+        let _ = Request.shared.consume(socket: self.socket, rtp: device.getRtpCapabilities()!)
     }
     
     private func handleLocalTransportConnectEvent(transport: Transport, dtlsParameters: String) {
