@@ -1,6 +1,6 @@
 package com.example.chatservice.utils;
 
-import com.example.chatservice.model.room.Room;
+import com.example.chatservice.dto.room.Room;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.core.HashOperations;

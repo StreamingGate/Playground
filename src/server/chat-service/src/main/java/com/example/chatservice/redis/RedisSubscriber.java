@@ -1,7 +1,7 @@
 package com.example.chatservice.redis;
 
-import com.example.chatservice.model.chat.ChatConsume;
-import com.example.chatservice.model.chat.ChatProduce;
+import com.example.chatservice.dto.chat.ChatConsume;
+import com.example.chatservice.dto.chat.ChatProduce;
 import com.example.chatservice.utils.ClientMessaging;
 import com.example.chatservice.utils.RedisMessaging;
 import com.fasterxml.jackson.databind.ObjectMapper;

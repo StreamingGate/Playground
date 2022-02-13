@@ -2,8 +2,8 @@ package com.example.chatservice.controller;
 
 import com.example.chatservice.exception.CustomChatException;
 import com.example.chatservice.exception.ErrorResponse;
-import com.example.chatservice.model.chat.ChatProduce;
-import com.example.chatservice.model.chat.ChatType;
+import com.example.chatservice.dto.chat.ChatProduce;
+import com.example.chatservice.dto.chat.ChatType;
 import com.example.chatservice.redis.RedisRoomService;
 import com.example.chatservice.utils.ClientMessaging;
 import com.example.chatservice.utils.RedisMessaging;
@@ -30,15 +30,13 @@ public class RedisPubSubController {
     private static final String ERROR_DESTINATION="/queue/errors";
     private final RedisRoomService redisRoomService;
 
-    /* TODO: 일반 채팅, 채팅 고정 분리하기 */
     @MessageMapping("/chat/message/{roomId}")
     public void message(@DestinationVariable String roomId, ChatProduce chat) throws Exception{
         try {
             if (chat.getChatType().equals(ChatType.PINNED)) {
-                int pinnedCnt = redisRoomService.addPinnedChat(roomId, chat);
-                log.info("pinnedCnt: " + pinnedCnt);
+                redisRoomService.addPinnedChat(roomId, chat);
             }
-            RedisMessaging.publish(redisRoomService.getTopic(roomId), chat);
+            RedisMessaging.publish(redisRoomService.getOrAddTopic(roomId), chat);
         } catch (CustomChatException e) {
             e.printStackTrace();
             ClientMessaging.publish(CHAT_DESTINATION + roomId, new ErrorResponse(C001, C001.getMessage()));
