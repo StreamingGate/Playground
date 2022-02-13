@@ -18,9 +18,6 @@ class PlayViewController: UIViewController {
     private var socket: EchoSocket?
     private var client: RoomClient?
     var videoTrack: RTCVideoTrack?
-    var mediaStream: RTCMediaStream?
-    var audioSession: RTCAudioSession?
-    var peer: RTCPeerConnection?
     private var delegate: RoomListener?
     var roomId = ""
     
@@ -948,20 +945,5 @@ extension PlayViewController: RTCVideoViewDelegate {
         ])
         self.view.layoutIfNeeded()
         self.remoteVideoView.layoutIfNeeded()
-    }
-}
-
-
-extension PlayViewController: RTCAudioSessionDelegate {
-    func audioSession(_ audioSession: RTCAudioSession, didSetActive active: Bool) {
-        print("?didSetActive")
-    }
-    
-    func audioSessionDidStartPlayOrRecord(_ session: RTCAudioSession) {
-        print("start")
-    }
-    
-    func audioSessionDidStopPlayOrRecord(_ session: RTCAudioSession) {
-        print("stop")
     }
 }

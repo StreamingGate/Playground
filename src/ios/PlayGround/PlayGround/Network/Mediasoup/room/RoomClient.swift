@@ -27,38 +27,29 @@ final internal class RoomClient : NSObject {
     private let roomId: String
     private var producers: Producer
     private var consumers: Consumer
-    private var audioConsumers: Consumer
     private var consumersInfo: [JSON]
     private let device: Device
     
-    private var joined: Bool
     private var recvTransport: RecvTransport?
-    private var audioRecvTransport: RecvTransport?
-    
     private var recvTransportHandler: RecvTransportHandler?
-    private var audioRecvTransportHandler: AudioRecvTransportHandler?
     private var consumerHandler: ConsumerHandler?
     
-    private var audioConsumerHandler: AudioConsumerHandler?
-    
     private var roomListener: RoomListener?
-    
-    var dtls: String?
     
     public init(socket: EchoSocket, device: Device, roomId: String, roomListener: RoomListener) {
         self.socket = socket
         self.device = device
+        
         self.roomId = roomId
         self.roomListener = nil
         self.roomListener = roomListener
         
         self.producers = Producer()
         self.consumers = Consumer()
-        self.audioConsumers = Consumer()
         self.consumersInfo = [JSON]()
-        self.joined = false
         self.recvTransportHandler?.delegate = nil
         self.consumerHandler?.delegate = nil
+        
         super.init()
     }
     
@@ -112,8 +103,6 @@ final internal class RoomClient : NSObject {
         let iceParameters: JSON = webRtcTransportData["iceParameters"]
         let iceCandidatesArray: JSON = webRtcTransportData["iceCandidates"]
         let dtlsParameters: JSON = webRtcTransportData["dtlsParameters"]
-        self.dtls = dtlsParameters.description
-
         switch direction {
         case "recv":
             self.recvTransportHandler = RecvTransportHandler.init(parent: self)
