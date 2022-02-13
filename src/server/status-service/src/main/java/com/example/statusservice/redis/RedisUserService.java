@@ -43,9 +43,6 @@ public class RedisUserService {
         }
         List<UserDto> result = new LinkedList<>();
         for(String friendUuid: userDto.getFriendUuids()){
-//            Boolean status = opsHashUser.get(USER_LIST, friendUuid).getStatus();
-//            LoginDto loginDto = new LoginDto(friendUuid, status);
-//            result.add(loginDto);
             result.add(opsHashUser.get(USER_LIST, friendUuid));
         }
         return result;
@@ -63,31 +60,19 @@ public class RedisUserService {
 
     /* 영상 시청 시 친구에게 내 상태 publish */
     public void publishWatching(String uuid, UserDto reqUserDto){
-        /* ChannelTopic 조회 */
         UserDto userDto = findByUuid(uuid);
-        ChannelTopic channelTopic = getTopic(userDto.getUuid());
-        if (channelTopic == null) {
-            log.info("Topic is null.... uuid:" + userDto.getUuid());
-            addTopic(userDto.getUuid());
-            channelTopic = getTopic(userDto.getUuid());
-        }
+        ChannelTopic channelTopic = getOrAddTopic(uuid);
 
-        userDto.updateVideoOrRoom(reqUserDto);
-        opsHashUser.put(USER_LIST, userDto.getUuid(), userDto);
+        userDto.updateVideoOrRoom(uuid, reqUserDto);
+        opsHashUser.put(USER_LIST, uuid, userDto);
         RedisMessaging.publish(channelTopic, userDto);
     }
 
 
     /* 로그인 또는 로그아웃 시 친구에게 내 상태 publish */
     public void publishStatus(String uuid, Boolean status) {
-        /* ChannelTopic 조회 */
         UserDto userDto = findByUuid(uuid);
-        ChannelTopic channelTopic = getTopic(userDto.getUuid());
-        if (channelTopic == null) {
-            log.info("Topic is null.... uuid:" + uuid);
-            addTopic(uuid);
-            channelTopic = getTopic(userDto.getUuid());
-        }
+        ChannelTopic channelTopic = getOrAddTopic(uuid);
 
         userDto.updateStatus(status);
         opsHashUser.put(USER_LIST, userDto.getUuid(), userDto);
@@ -98,8 +83,8 @@ public class RedisUserService {
     @Transactional
     public UserDto findByUuid(String uuid) {
         UserDto userDto = opsHashUser.get(USER_LIST, uuid);
-//        userDto.updateStatus(status);
         if(userDto == null){
+            log.info("==Published uuid is null");
             User user = userRepository.findByUuid(uuid)
                     .orElseThrow(() -> new CustomStatusException(ErrorCode.S001, uuid, "해당 유저가 없습니다."));
             userDto = new UserDto(user);
@@ -126,33 +111,27 @@ public class RedisUserService {
     public void addTopics(){
         List<User> users  = userRepository.findAll();
         for(User user: users){
-            addTopic(user.getUuid());
+            getOrAddTopic(user.getUuid());
         }
     }
 
     /* 특정 유저 리스트에 대한 토픽 저장 */
     public void addTopics(List<User> users){
         for(User user: users){
-            addTopic(user.getUuid());
+            getOrAddTopic(user.getUuid());
         }
     }
 
     /* 여러 서버 간 통신을 위해 현재 리스너 등록 후 현 서버에 토픽 저장 */
-    public void addTopic(String uuid) {
+    public ChannelTopic getOrAddTopic(String uuid) {
         ChannelTopic topic = topics.get(uuid);
         if (topic == null) {
             topic = new ChannelTopic(uuid);
             redisMessageListener.addMessageListener(redisSubscriber, topic);
             log.info("==Add topic:"+topic);
             topics.put(uuid, topic);
+            topic = topics.get(uuid);
         }
-    }
-
-    /* 현재 서버에서 토픽 가져오기 */
-    public ChannelTopic getTopic(String uuid) {
-        ChannelTopic ct = topics.get(uuid);
-//        log.info("getTopic:"+ct);
-//        if (ct != null) log.info("ChannelTopic: " + ct.getTopic());
-        return ct;
+        return topic;
     }
 }

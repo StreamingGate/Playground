@@ -33,15 +33,6 @@ public class StompHandler implements ChannelInterceptor {
             case CONNECT:
                 log.info("preSend connect....");
                 break;
-            case SUBSCRIBE:
-                destination = accessor.getDestination();
-                uuid = destination.substring(destination.lastIndexOf("/") + 1);
-                log.info("preSend subscribe.... uuid: "+uuid);
-                if(uuid!= null) redisUserService.publishStatus(uuid, Boolean.TRUE);
-                break;
-//            case UNSUBSCRIBE:
-//                String id = String.valueOf(accessor.getId());
-//                log.info("preSend unsubscribe...");
             case DISCONNECT: /* 페이지 이동, 브라우저 닫기 포함 */
                 uuid = getUuidFromHeader(message);
                 log.info("preSend disconnect....: " + uuid);
@@ -68,9 +59,6 @@ public class StompHandler implements ChannelInterceptor {
                 log.info("preSend subscribe.... uuid: "+uuid);
                 if(uuid!= null) redisUserService.publishStatus(uuid, Boolean.TRUE);
                 break;
-//            case UNSUBSCRIBE:
-//                String id = String.valueOf(accessor.getId());
-//                log.info("proSend unsubscribe...");
             default:
                 break;
         }

@@ -35,16 +35,25 @@ public class UserDto implements Serializable {
                 .collect(Collectors.toList());
     }
 
+    /* 로그인 상태 업데이트 */
     public void updateStatus(Boolean status){
         this.status = status;
+        if(status == Boolean.FALSE) clearVideoOrRoom();
     }
 
     /* 시청 정보 업데이트 */
-    public void updateVideoOrRoom(UserDto reqUserDto){
-        this.uuid = reqUserDto.getUuid();
+    public void updateVideoOrRoom(String uuid, UserDto reqUserDto){
+        this.uuid = uuid; // uuid from reqUserDto might be null
         this.id = reqUserDto.getId();
         this.type = reqUserDto.getType();
         this.videoRoomUuid = reqUserDto.getVideoRoomUuid();
         this.title = reqUserDto.getTitle();
+    }
+
+    public void clearVideoOrRoom(){
+        this.id = null;
+        this.type = null;
+        this.videoRoomUuid = null;
+        this.title = null;
     }
 }
