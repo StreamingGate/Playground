@@ -22,16 +22,4 @@ public class ChatProduce implements Serializable {
     private String message;
     private LocalDateTime timeStamp = LocalDateTime.now();
 
-
-//    @Builder
-//    public ChatProduce(String nickname, String roomId, String uuid, SenderRole senderRole, ChatType chatType,
-//                       String message) {
-//        this.roomId = roomId;
-//        this.uuid = uuid;
-//        this.nickname = nickname;
-//        this.senderRole = senderRole;
-//        this.chatType = chatType;
-//        this.message = message;
-//        this.timeStamp = LocalDateTime.now();
-//    }
 }

@@ -17,6 +17,7 @@ import java.util.Base64;
 @Component
 @RequiredArgsConstructor
 public class AmazonS3Service {
+    /* CloudFront 사용 */
     private static final String CLOUD_FRONT_DOMAIN_NAME = "https://d8knntbqcc7jf.cloudfront.net/";
     private static final String dirName = "thumbnail/";
     private final AmazonS3 amazonS3;
@@ -24,6 +25,7 @@ public class AmazonS3Service {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
+    /* image file 받을때 BASE64 형식으로 받음 */
     public String upload(String data, String reName) throws CustomRoomException {
         byte[] bytes = Base64.getDecoder().decode(data);
         InputStream inputStream = new ByteArrayInputStream(bytes);

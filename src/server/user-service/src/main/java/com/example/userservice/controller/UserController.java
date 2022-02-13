@@ -1,6 +1,8 @@
 package com.example.userservice.controller;
 
-import com.example.userservice.dto.*;
+import com.example.userservice.dto.history.ResponseHistory;
+import com.example.userservice.dto.history.ResponseVideo;
+import com.example.userservice.dto.user.*;
 import com.example.userservice.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -9,8 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -39,17 +41,16 @@ public class UserController {
     public ResponseEntity<ResponseUser> update(@PathVariable("uuid") String uuid,
                                                @RequestBody RequestMyinfo requestMyinfo) throws Exception {
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        requestMyinfo = userService.update(uuid,requestMyinfo);
-        ResponseUser responseUser = mapper.map(requestMyinfo,ResponseUser.class);
+        ResponseUser responseUser = userService.update(uuid,requestMyinfo);
         return ResponseEntity.status(HttpStatus.OK).body(responseUser);
     }
 
     /* 비밀번호 수정 */
     @PutMapping("/password/{uuid}")
-    public ResponseEntity<PwdDto> updatePwd(@PathVariable("uuid") String uuid,
-                                                  @RequestBody PwdDto pwdDto) throws Exception {
+    public ResponseEntity<Pwd> updatePwd(@PathVariable("uuid") String uuid,
+                                         @RequestBody Pwd pwd) throws Exception {
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        PwdDto res = userService.updatePwd(uuid, pwdDto);
+        Pwd res = userService.updatePwd(uuid, pwd);
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
@@ -64,8 +65,8 @@ public class UserController {
 
     /* 이메일 인증코드 전송 */
     @PostMapping("/email")
-    public ResponseEntity<EmailDto> checkMail(@RequestBody EmailDto email) throws Exception {
-        EmailDto res = userService.checkEmail(email);
+    public ResponseEntity<String> checkMail(@RequestBody String email) throws Exception {
+        String res = userService.checkEmail(email);
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
     /* 인증코드 확인 */
@@ -79,8 +80,8 @@ public class UserController {
 
     /* 비밀번호 찾기 인증코드 전송 */
     @PostMapping("/password")
-    public ResponseEntity<Map<String,String>> findPassword(@RequestBody PwdDto pwdDto) {
-        PwdDto resultDto = userService.checkUser(pwdDto);
+    public ResponseEntity<Map<String,String>> findPassword(@RequestBody Pwd pwd) {
+        Pwd resultDto = userService.checkUser(pwd);
         Map<String,String> res = new HashMap<>();
         res.put("email",resultDto.getEmail());
         return ResponseEntity.status(HttpStatus.OK).body(res);
@@ -92,6 +93,44 @@ public class UserController {
         String resultNickname = userService.checkNickName(nickName);
         Map<String,String> res = new HashMap<>();
         res.put("nickName",resultNickname);
+        return ResponseEntity.status(HttpStatus.OK).body(res);
+    }
+
+    /* 시청한 동영상 목록 조회 */
+    @GetMapping("/watch/{uuid}")
+    public ResponseEntity<ResponseHistory> watchedHistory(@PathVariable("uuid") String uuid,
+                                                          @RequestParam("last-video") Long lastVideoId,
+                                                          @RequestParam("last-live") Long lastLiveId,
+                                                          @RequestParam("size") int size) throws Exception {
+
+        return ResponseEntity.status(HttpStatus.OK).body(userService.watchedHistory(uuid,lastVideoId,lastLiveId,size));
+    }
+
+    /* 좋아요 누른 동영상 조회 */
+    @GetMapping("/liked/{uuid}")
+    public ResponseEntity<ResponseHistory> likedHistory(@PathVariable("uuid") String uuid,
+                                          @RequestParam("last-video") Long lastVideoId,
+                                          @RequestParam("last-live") Long lastLiveId,
+                                          @RequestParam("size") int size) throws Exception {
+
+        return ResponseEntity.status(HttpStatus.OK).body(userService.likedHistory(uuid, lastVideoId, lastLiveId, size));
+    }
+
+    /* 내가 업로드한 영상 조회 */
+    @GetMapping("/upload/{uuid}")
+    public ResponseEntity<List<ResponseVideo>> uploadedHistory(@PathVariable("uuid") String uuid,
+                                                               @RequestParam("last-video") Long lastVideoId,
+                                                               @RequestParam("size") int size) throws Exception {
+
+        return ResponseEntity.status(HttpStatus.OK).body(userService.uploadedHistory(uuid, lastVideoId, size));
+    }
+
+    /* refresh Token 발행 */
+    @PostMapping("/refresh")
+    public ResponseEntity<Map<String,String>> refreshToken(@RequestHeader("token") String token,
+                                                      @RequestHeader("refreshToken") String refreshToken) throws Exception {
+        Map<String,String> res = new HashMap<>();
+        res.put("token",userService.refreshToken(token, refreshToken));
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 }

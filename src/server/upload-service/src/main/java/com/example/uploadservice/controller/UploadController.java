@@ -13,7 +13,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.Map;
 
 @Slf4j
@@ -22,7 +21,6 @@ import java.util.Map;
 @RestController
 public class UploadController {
 
-    private static final String DEFAULT_THUMBNAIL_NAME = "thumbnail";
     private final VideoService videoService;
     private final UploadService uploadService;
     private final TranscodeService transcodeService;
@@ -31,9 +29,9 @@ public class UploadController {
     public ResponseEntity<Map<String, String>> video(@RequestPart(value = "video") MultipartFile multipartFileVideo,
                                                      @RequestPart(value = "thumbnail", required = false) MultipartFile multipartFileThumbnail,
                                                      @RequestPart(value = "data") UploadRequestDto dto) throws CustomUploadException  {
-        VideoDto videoDto = new VideoDto(dto, getOutputThumbnailName(multipartFileThumbnail.getOriginalFilename()));
+        VideoDto videoDto = new VideoDto(dto);
         String videoUuid = uploadService.uploadRawFile(multipartFileVideo, multipartFileThumbnail, videoDto);
-        transcodeService.convertMp4ToTs(videoUuid, multipartFileThumbnail);
+        transcodeService.convertMp4ToTs(videoUuid, multipartFileThumbnail, videoDto);
         String s3OutputPath = uploadService.uploadTranscodedFile(videoUuid);
         videoDto.updateMetaData(s3OutputPath);
         videoService.add(videoDto);
@@ -47,9 +45,9 @@ public class UploadController {
                                                     @RequestPart(value = "data") UploadRequestDto dto,
                                                     @PathVariable(value = "roomId") Long roomId) throws CustomUploadException  {
 
-        VideoDto videoDto = new VideoDto(dto, getOutputThumbnailName(multipartFileThumbnail.getOriginalFilename()));
+        VideoDto videoDto = new VideoDto(dto);
         String videoUuid = uploadService.uploadRawFile(multipartFileVideo, multipartFileThumbnail, videoDto);
-        transcodeService.convertMp4ToTs(videoUuid, multipartFileThumbnail);
+        transcodeService.convertMp4ToTs(videoUuid, multipartFileThumbnail, videoDto);
         String s3OutputPath = uploadService.uploadTranscodedFile(videoUuid);
         videoDto.updateMetaData(s3OutputPath);
 
@@ -63,9 +61,5 @@ public class UploadController {
                                                      @RequestPart(value = "thumbnail", required = false) MultipartFile multipartFileThumbnail,
                                                      @RequestPart(value = "data") UploadRequestDto dto) throws CustomUploadException  {
         return ResponseEntity.ok(Map.of("result", "success"));
-    }
-
-    private String getOutputThumbnailName(String name){
-        return DEFAULT_THUMBNAIL_NAME + "." + name.split("\\.")[1];
     }
 }

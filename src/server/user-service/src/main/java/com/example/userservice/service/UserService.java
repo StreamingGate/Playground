@@ -1,8 +1,18 @@
 package com.example.userservice.service;
 
-import com.example.userservice.dto.*;
-import com.example.userservice.entity.User.UserEntity;
+import com.example.userservice.configure.security.Jwt;
+import com.example.userservice.dto.history.ResponseHistory;
+import com.example.userservice.dto.history.ResponseRoom;
+import com.example.userservice.dto.history.ResponseVideo;
+import com.example.userservice.dto.user.*;
+import com.example.userservice.entity.RoomViewer.RoomViewer;
+import com.example.userservice.entity.RoomViewer.RoomViewerRepository;
+import com.example.userservice.entity.User.User;
 import com.example.userservice.entity.User.UserRepository;
+import com.example.userservice.entity.Video.Video;
+import com.example.userservice.entity.Video.VideoRepository;
+import com.example.userservice.entity.ViewdHistory.ViewedHistory;
+import com.example.userservice.entity.ViewdHistory.ViewedRepository;
 import com.example.userservice.exceptionhandler.customexception.CustomUserException;
 import com.example.userservice.exceptionhandler.customexception.ErrorCode;
 import lombok.RequiredArgsConstructor;
@@ -10,31 +20,40 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
+    private final VideoRepository videoRepository;
+    private final ViewedRepository viewedRepository;
+    private final RoomViewerRepository roomViewerRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final ModelMapper mapper;
     private final JavaMailSender javaMailSender;
     private final RedisTemplate<String,Object> redisTemplate;
     private final AmazonS3Service amazonS3Service;
+    private final Jwt jwt;
+
+    /* 이메일 인증코드 보내는 기능 */
     public String sendEmail(String address) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(address);
@@ -49,55 +68,54 @@ public class UserService implements UserDetailsService {
     public RegisterUser register(RegisterUser userDto) throws CustomUserException {
         String uuid =  UUID.randomUUID().toString();
         String bcryptPwd = bCryptPasswordEncoder.encode(userDto.getPassword());
-        userRepository.save(UserEntity.create(userDto,uuid,bcryptPwd));
         userDto.setProfileImage(amazonS3Service.upload(userDto.getProfileImage(),uuid));
+        userRepository.save(User.create(userDto,uuid,bcryptPwd));
         return userDto;
     }
 
     @Transactional
-    public RequestMyinfo update(String uuid, RequestMyinfo requestDto) throws CustomUserException {
+    public ResponseUser update(String uuid, RequestMyinfo requestDto) throws CustomUserException {
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        UserEntity userEntity = userRepository.findByUuid(uuid).orElseThrow(()-> new CustomUserException(ErrorCode.U002));
-        Date date = new Date();
-        LocalDate localDate = new java.sql.Date(date.getTime()).toLocalDate();
-        NicknameDto nicknameDto = mapper.map(requestDto, NicknameDto.class);
-        if (requestDto.getProfileImage() != null) {
-            amazonS3Service.delete(uuid);
-            requestDto.setProfileImage(amazonS3Service.upload(requestDto.getProfileImage(),uuid));
+        User user = userRepository.findByUuid(uuid).orElseThrow(()-> new CustomUserException(ErrorCode.U002));
+        ResponseUser responseDto = mapper.map(user,ResponseUser.class);
+        try {
+            if (requestDto.getProfileImage() != null) {
+                amazonS3Service.delete(uuid);
+                responseDto.setProfileImage(amazonS3Service.upload(requestDto.getProfileImage(),uuid));
+                requestDto.setProfileImage(responseDto.getProfileImage());
+            }
+            if (checkNickName(requestDto.getNickName()) != null) user.update(requestDto);
+            responseDto.setNickName(requestDto.getNickName());
+        } catch (CustomUserException e){
+            throw new CustomUserException(ErrorCode.U004);
         }
-        if (checkNickName(nicknameDto.getNickName()) != null) {
-            userEntity.update(requestDto,localDate);
-            requestDto = mapper.map(userEntity,RequestMyinfo.class);
-            return requestDto;
-        }
-        throw new CustomUserException(ErrorCode.U004);
+        return responseDto;
     }
 
     @Transactional
     public void delete(String uuid) throws CustomUserException {
-        UserEntity userEntity = userRepository.findByUuid(uuid).orElseThrow(()-> new CustomUserException(ErrorCode.U002));
-        Date date = new Date();
-        LocalDate localDate = new java.sql.Date(date.getTime()).toLocalDate();
-        userEntity.delete(localDate);
+        User user = userRepository.findByUuid(uuid).orElseThrow(()-> new CustomUserException(ErrorCode.U002));
+        LocalDateTime localDateTime = LocalDateTime.now();
+        user.delete(localDateTime);
     }
 
-    @Transactional(readOnly = true)
-    public EmailDto checkEmail(EmailDto email) throws CustomUserException {
-        if(!userRepository.findByEmail(email.getEmail()).isPresent()) {
-            String randomCode = sendEmail(email.getEmail());
-            // 만약 n번의 요청할시, 인증코드를 overwrite
-            redisTemplate.opsForValue().set(randomCode,email.getEmail(),60*10L, TimeUnit.SECONDS);
+    @Transactional
+    public String checkEmail(String email) throws CustomUserException {
+        if(!userRepository.findByEmail(email).isPresent()) {
+            String randomCode = sendEmail(email);
+            /* 만약 n번의 요청할시, 인증코드를 overwrite */
+            redisTemplate.opsForValue().set(randomCode,email,60*10L, TimeUnit.SECONDS);
             return email;
         }
         throw new CustomUserException(ErrorCode.U001);
     }
 
-    @Transactional(readOnly = true)
-    public PwdDto checkUser(PwdDto pwdDto) throws CustomUserException {
-        if(userRepository.findByNameAndEmail(pwdDto.getName(),pwdDto.getEmail()).isPresent()) {
-            String randomCode = sendEmail(pwdDto.getEmail());
-            redisTemplate.opsForValue().set(randomCode,pwdDto.getEmail(),60*10L, TimeUnit.SECONDS);
-            return pwdDto;
+    @Transactional
+    public Pwd checkUser(Pwd pwd) throws CustomUserException {
+        if(userRepository.findByNameAndEmail(pwd.getName(), pwd.getEmail()).isPresent()) {
+            String randomCode = sendEmail(pwd.getEmail());
+            redisTemplate.opsForValue().set(randomCode, pwd.getEmail(),60*10L, TimeUnit.SECONDS);
+            return pwd;
         }
         throw new CustomUserException(ErrorCode.U005);
     }
@@ -112,38 +130,95 @@ public class UserService implements UserDetailsService {
         throw new CustomUserException(ErrorCode.U003);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public String checkNickName(String nickName) throws CustomUserException {
         if(!userRepository.findByNickName(nickName).isPresent()) return nickName;
         throw new CustomUserException(ErrorCode.U004);
     }
 
     @Transactional
-    public PwdDto updatePwd(String uuid, PwdDto pwdDto) throws CustomUserException {
-        UserEntity userEntity = userRepository.findByUuid(uuid).orElseThrow(()-> new CustomUserException(ErrorCode.U002));
-        Date date = new Date();
-        LocalDate localDate = new java.sql.Date(date.getTime()).toLocalDate();
-        String bcryptPwd = bCryptPasswordEncoder.encode(pwdDto.getPassword());
-        userEntity.updatePwd(bcryptPwd,localDate);
-        return pwdDto;
+    public Pwd updatePwd(String uuid, Pwd pwd) throws CustomUserException {
+        User user = userRepository.findByUuid(uuid).orElseThrow(()-> new CustomUserException(ErrorCode.U002));
+        String bcryptPwd = bCryptPasswordEncoder.encode(pwd.getPassword());
+        user.updatePwd(bcryptPwd);
+        return pwd;
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public UserDto getUserByEmail(String email) throws CustomUserException {
-        UserEntity userEntity = userRepository.findByEmail(email).orElseThrow(()-> new CustomUserException(ErrorCode.U002));
+        User user = userRepository.findByEmail(email).orElseThrow(()-> new CustomUserException(ErrorCode.U002));
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        UserDto userDto = mapper.map(userEntity,UserDto.class);
+        UserDto userDto = mapper.map(user,UserDto.class);
         return userDto;
+    }
+
+    /* 실시간 스트리밍 리스트, 동영상 리스트 합쳐서 리턴 */
+    @Transactional
+    public ResponseHistory watchedHistory(String uuid, Long lastVideoId, Long lastLiveId,int size) throws CustomUserException {
+        if (!userRepository.findByUuid(uuid).isPresent()) throw new CustomUserException(ErrorCode.U002);
+        Stream<ViewedHistory> videoStream;
+        Stream<RoomViewer> liveStream;
+        Pageable pageable = PageRequest.of(0, size);
+
+        if(lastVideoId == -1) videoStream = viewedRepository.findByAll(uuid,pageable).getContent().stream();
+        else videoStream = viewedRepository.findByAll(uuid,lastVideoId, pageable).getContent().stream();
+
+        if(lastLiveId == -1) liveStream = roomViewerRepository.findByAll(uuid, pageable).stream();
+        else liveStream = roomViewerRepository.findByAll(uuid, lastLiveId, pageable).stream();
+
+        List<ResponseVideo> videoList = videoStream.map(ResponseVideo::new)
+                .collect(Collectors.toList());
+        List<ResponseRoom> roomList = liveStream.map(ResponseRoom::new)
+                .collect(Collectors.toList());
+
+        return new ResponseHistory(videoList,roomList);
+    }
+    @Transactional
+    public ResponseHistory likedHistory(String uuid, Long lastVideoId, Long lastLiveId,int size) throws CustomUserException {
+        if (!userRepository.findByUuid(uuid).isPresent()) throw new CustomUserException(ErrorCode.U002);
+        Stream<ViewedHistory> videoStream;
+        Stream<RoomViewer> liveStream;
+        Pageable pageable = PageRequest.of(0, size);
+
+        if (lastVideoId == -1) videoStream = viewedRepository.findByLiked(uuid,pageable).getContent().stream();
+        else videoStream = viewedRepository.findByLiked(uuid,lastVideoId,pageable).getContent().stream();
+
+        if(lastLiveId == -1) liveStream = roomViewerRepository.findByLiked(uuid,pageable).getContent().stream();
+        else liveStream = roomViewerRepository.findByLiked(uuid,lastLiveId,pageable).getContent().stream();
+
+        List<ResponseVideo> videoList = videoStream.map(ResponseVideo::new)
+                .collect(Collectors.toList());
+        List<ResponseRoom> roomList = liveStream.map(ResponseRoom::new)
+                .collect(Collectors.toList());
+        return new ResponseHistory(videoList,roomList);
+    }
+
+    @Transactional
+    public List<ResponseVideo> uploadedHistory(String uuid, Long lastVideoId, int size) throws CustomUserException {
+        if (!userRepository.findByUuid(uuid).isPresent()) throw new CustomUserException(ErrorCode.U002);
+        Stream<Video> videoStream;
+        Pageable pageable = PageRequest.of(0, size);
+        if (lastVideoId == -1) videoStream = videoRepository.findAll(uuid,pageable).getContent().stream();
+        else videoStream = videoRepository.findAll(uuid,lastVideoId,pageable).getContent().stream();
+        return videoStream.map(ResponseVideo::new).collect(Collectors.toList());
+    }
+
+    public String refreshToken(String token, String refreshToken) throws CustomUserException {
+        if(!redisTemplate.hasKey(refreshToken)) throw new CustomUserException(ErrorCode.U007);
+        String userUuid = jwt.getUserUuid(token);
+        if(!userRepository.findByUuid(userUuid).isPresent()) throw new CustomUserException(ErrorCode.U007);
+        String newAccessToken = jwt.createToken(userUuid);
+        return newAccessToken;
     }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws CustomUserException {
-        UserEntity userEntity = userRepository.findByEmail(email).orElseThrow(()-> new CustomUserException(ErrorCode.U002));
+        User userEntity = userRepository.findByEmail(email).orElseThrow(()-> new CustomUserException(ErrorCode.U002));
 
         if (userEntity == null)
             throw new UsernameNotFoundException(email + ": not found");
         List<GrantedAuthority> authorities = new ArrayList<>();
-        User user = new User(userEntity.getEmail(), userEntity.getPwd(),
+        org.springframework.security.core.userdetails.User user = new org.springframework.security.core.userdetails.User(userEntity.getEmail(), userEntity.getPwd(),
                 true, true, true, true,authorities);
         return user;
     }

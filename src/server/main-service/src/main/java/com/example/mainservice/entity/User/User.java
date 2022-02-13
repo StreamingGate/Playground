@@ -12,14 +12,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.ColumnDefault;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-@Slf4j
 @NoArgsConstructor
 @Getter
 @Entity(name = "users")
@@ -43,7 +41,7 @@ public class User {
     @Column
     private String nickName;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "MEDIUMBLOB")
     private String profileImage;
 
     @Column
@@ -55,6 +53,7 @@ public class User {
     private LocalDate createdAt;
 
     @Column
+    @ColumnDefault(value = "CURRENT_TIMESTAMP")
     private LocalDate modifiedAt;
 
     @Column
@@ -62,9 +61,6 @@ public class User {
 
     @Column
     private String timeZone;
-
-    @Column
-    private LocalDate lastAt;
 
     @OneToMany(mappedBy = "user")
     private List<RoomViewer> roomViewers = new LinkedList<>();

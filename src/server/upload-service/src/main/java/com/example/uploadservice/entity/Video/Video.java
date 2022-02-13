@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.annotations.ColumnDefault;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -43,6 +44,7 @@ public class Video {
     @Column(length = 10)
     private Category category;
 
+    @ColumnDefault(value = "CURRENT_TIMESTAMP")
     private LocalDateTime createdAt;
 
     @ManyToOne
@@ -70,7 +72,7 @@ public class Video {
         this.likeCnt = 0;
         this.hits = 0;
         this.reportCnt = 0;
-        this.createdAt = ZonedDateTime.now(ZoneId.of("America/Los_Angeles")).toLocalDateTime();
+        this.createdAt = LocalDateTime.now();
     }
 
     public void setMetadata(Metadata metadata) {

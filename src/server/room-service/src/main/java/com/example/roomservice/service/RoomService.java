@@ -1,11 +1,15 @@
 package com.example.roomservice.service;
 
 import com.example.roomservice.dto.RequestDto;
+import com.example.roomservice.dto.RequestExitDto;
 import com.example.roomservice.dto.ResponseDto;
+import com.example.roomservice.dto.ResponseExitDto;
 import com.example.roomservice.entity.Room.Room;
 import com.example.roomservice.entity.Room.RoomRepository;
 import com.example.roomservice.entity.RoomViewer.RoomViewer;
 import com.example.roomservice.entity.RoomViewer.RoomViewerRepository;
+import com.example.roomservice.entity.User.User;
+import com.example.roomservice.entity.User.UserRepository;
 import com.example.roomservice.exceptionHandler.customexception.CustomRoomException;
 import com.example.roomservice.exceptionHandler.customexception.ErrorCode;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +24,7 @@ import java.util.Optional;
 @Service
 public class RoomService {
     private final RoomRepository roomRepository;
+    private final UserRepository userRepository;
     private final ModelMapper mapper;
     private final AmazonS3Service amazonS3Service;
     private final RoomViewerRepository roomViewerRepository;
@@ -27,14 +32,15 @@ public class RoomService {
     @Transactional
     public ResponseDto join(Long roomId, String uuid) throws CustomRoomException {
         Room room = roomRepository.getById(roomId);
-        RoomViewer roomViewer = roomViewerRepository.findByUserUuid(uuid);
+        RoomViewer roomViewer = roomViewerRepository.findByUserUuidAndRoomUuid(uuid,roomId);
         ResponseDto responseDto = mapper.map(room,ResponseDto.class);
         if (roomViewer == null) {
-            roomViewerRepository.save(roomViewer.join(roomId, uuid,false));
+            roomViewerRepository.save(roomViewer.join(roomId, uuid,false,false));
             responseDto.setLiked(false);
             responseDto.setDisliked(false);
         }
         else {
+            roomViewer.join(roomId,uuid,roomViewer.getLiked(),roomViewer.getDisliked());
             responseDto.setLiked(roomViewer.getLiked());
             responseDto.setDisliked(roomViewer.getDisliked());
         }
@@ -44,16 +50,34 @@ public class RoomService {
 
     @Transactional
     public ResponseDto create(RequestDto requestDto) throws CustomRoomException {
-        roomRepository.save(Room.create(requestDto));
+        User user = userRepository.findByUuid(requestDto.getHostUuid()).orElseThrow(() -> new CustomRoomException(ErrorCode.U002));
         ResponseDto responseDto = mapper.map(requestDto,ResponseDto.class);
-        requestDto.setThumbnail(amazonS3Service.upload(requestDto.getThumbnail(),requestDto.getUuid()));
-        RoomViewer roomViewer = roomViewerRepository.findByUserUuid(requestDto.getHostUuid());
+        String uploadThumbnail = amazonS3Service.upload(requestDto.getThumbnail(),requestDto.getUuid());
+        requestDto.setThumbnail(uploadThumbnail);
+        roomRepository.save(Room.create(requestDto,user));
         Long roomUuid = roomRepository.getRoomId(requestDto.getUuid());
-        if (roomViewer == null)
-            roomViewerRepository.save(roomViewer.join(roomUuid, requestDto.getHostUuid(),false));
+        roomViewerRepository.save(RoomViewer.join(roomUuid, requestDto.getHostUuid(),false,false));
         responseDto.setRoomId(roomRepository.getRoomId(requestDto.getUuid()));
-        responseDto.setCreatedAt(roomRepository.getCreatedAt(requestDto.getTitle()));
-
+        responseDto.setThumbnail(uploadThumbnail);
+        responseDto.setLiked(false);
+        responseDto.setDisliked(false);
         return Optional.of(responseDto).orElseThrow(()-> new CustomRoomException(ErrorCode.L002));
+    }
+
+    @Transactional
+    public String check(String uuid) throws CustomRoomException {
+        Room room = roomRepository.findByUuid(uuid);
+        if(room != null) return room.getUuid();
+        throw new CustomRoomException(ErrorCode.L002);
+    }
+
+    @Transactional
+    public ResponseExitDto delete(RequestExitDto requestExitDto) throws CustomRoomException {
+        Room room = roomRepository.findByIdAndHostUuid(requestExitDto.getRoomId(), requestExitDto.getHostUuid());
+        if (room != null) {
+            roomRepository.delete(room);
+            return mapper.map(room,ResponseExitDto.class);
+        }
+        throw new CustomRoomException(ErrorCode.L001);
     }
 }

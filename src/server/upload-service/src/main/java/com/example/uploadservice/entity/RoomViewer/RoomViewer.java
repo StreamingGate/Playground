@@ -1,11 +1,17 @@
 package com.example.uploadservice.entity.RoomViewer;
 
+import java.time.LocalDateTime;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import com.example.uploadservice.entity.Room.Room;
 import com.example.uploadservice.entity.User.User;
+import org.hibernate.annotations.ColumnDefault;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @Getter
@@ -21,6 +27,7 @@ public class RoomViewer {
 
     private LocalDateTime likedAt;
 
+    @ColumnDefault(value = "CURRENT_TIMESTAMP")
     private LocalDateTime lastViewedAt;
 
     @ManyToOne

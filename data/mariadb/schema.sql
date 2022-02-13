@@ -36,7 +36,7 @@ create table room
     id         bigint   not null auto_increment,
     category   varchar(10),
     content    varchar(5000),
-    created_at datetime,
+    created_at datetime default CURRENT_TIMESTAMP,
     host_uuid  varchar(36),
     like_cnt   integer  not null,
     report_cnt smallint not null,
@@ -50,7 +50,7 @@ create table room_viewer
 (
     id             bigint not null auto_increment,
     disliked       bit    not null,
-    last_viewed_at datetime,
+    last_viewed_at datetime default CURRENT_TIMESTAMP,
     liked          bit    not null,
     liked_at       datetime,
     room_id        bigint,
@@ -61,12 +61,11 @@ create table room_viewer
 ) engine=InnoDB;
 create table users
 (
-    id            bigint                         not null auto_increment,
-    created_at    date default CURRENT_TIMESTAMP not null,
-    deleted_at    date,
+    id            bigint not null auto_increment,
+    created_at    datetime default CURRENT_TIMESTAMP not null,
+    deleted_at    datetime,
     email         varchar(255),
-    last_at       date,
-    modified_at   date,
+    modified_at   datetime default CURRENT_TIMESTAMP,
     name          varchar(30),
     nick_name     varchar(255),
     profile_image TEXT,
@@ -81,7 +80,7 @@ create table video
     id          bigint   not null auto_increment,
     category    varchar(10),
     content     varchar(5000),
-    created_at  datetime,
+    created_at  datetime default CURRENT_TIMESTAMP,
     hits        integer  not null,
     like_cnt    integer  not null,
     report_cnt  smallint not null,
@@ -96,7 +95,7 @@ create table viewed_history
 (
     id              bigint not null auto_increment,
     disliked        bit    not null,
-    last_viewed_at  datetime,
+    last_viewed_at  datetime default CURRENT_TIMESTAMP,
     liked           bit    not null,
     liked_at        datetime,
     viewed_progress bigint,

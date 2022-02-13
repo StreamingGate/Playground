@@ -7,7 +7,7 @@ import com.example.mainservice.entity.ViewdHistory.ViewedHistory;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
+import org.hibernate.annotations.ColumnDefault;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -43,6 +43,7 @@ public class Video {
     @Column(length = 10)
     private Category category;
 
+    @ColumnDefault(value = "CURRENT_TIMESTAMP")
     private LocalDateTime createdAt;
 
     @ManyToOne
@@ -71,5 +72,4 @@ public class Video {
         this.likeCnt+=likeCnt;
         if(this.likeCnt<0) this.likeCnt = 0;
     }
-
 }

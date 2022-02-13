@@ -4,6 +4,7 @@ import com.example.videoservice.entity.User.User;
 import com.example.videoservice.entity.Video.Video;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -23,6 +24,7 @@ public class ViewedHistory {
 
     private LocalDateTime likedAt;
 
+    @ColumnDefault(value = "CURRENT_TIMESTAMP")
     private LocalDateTime lastViewedAt;
 
     @ManyToOne
@@ -38,12 +40,16 @@ public class ViewedHistory {
         this.video = video;
     }
 
-    public void setLiked(boolean liked) {
-        this.liked = liked;
-        this.likedAt = liked? LocalDateTime.now(): null;
-    }
+//    public void setLiked(boolean liked) {
+//        this.liked = liked;
+//        this.likedAt = liked? LocalDateTime.now(): null;
+//    }
+//
+//    public void setDisliked(boolean disliked) {
+//        this.disliked = disliked;
+//    }
 
-    public void setDisliked(boolean disliked) {
-        this.disliked = disliked;
+    public void updateLastViewedAt(){
+        this.lastViewedAt = LocalDateTime.now();
     }
 }
