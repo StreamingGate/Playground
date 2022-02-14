@@ -28,32 +28,25 @@ final internal class Request : NSObject {
         Request.shared.sendSocketWithoutReponse(socket: socket, message: ["request" : true, "id": 7713, "method": "consumerResume",  "data": []] as [String : Any])
     }
     
-//    func sendLoginRoomRequest(socket: EchoSocket, roomId: String, device: Device) -> JSON? {
-//        print("REQ) send login room request")
-//        let data: [String: Any] = ["request" : true, "id": 333, "method": "join", "data": ["displayName": "testUser", "device":  ["flag":"safari","name":"Safari","version":"14.1.2"], "roomId": roomId, "rtpCapabilities": device.getRtpCapabilities(), "sctpCapabilities": device.getSctpCapabilities()]]
-//        return Request.shared.sendSocketAckRequest(socket: socket, data: data)
-//    }
-//    
-    func sendCreateWebRtcTransportRequest(socket: EchoSocket, roomId: String, direction: String, device: Device) -> JSON? {
+    func audioConsumerResume(socket: EchoSocket) {
+        Request.shared.sendSocketWithoutReponse(socket: socket, message: ["request" : true, "id": 7713, "method": "audioConsumerResume",  "data": []] as [String : Any])
+    }
+    
+    func sendCreateWebRtcTransportRequest(socket: EchoSocket) -> JSON? {
         print("REQ) createWebRtcTransport")
-        if direction == "audio" {
-            let data: [String: Any] = ["request" : true, "id": 223, "method": "createAudioWebRtcTransport", "data": []]
-            return Request.shared.sendSocketAckRequest(socket: socket, data: data)
-        } else {
-            let data: [String: Any] = ["request" : true, "id": 222, "method": "createWebRtcTransport", "data": []]
-            return Request.shared.sendSocketAckRequest(socket: socket, data: data)
-        }
+        let data: [String: Any] = ["request" : true, "id": 222, "method": "createWebRtcTransport", "data": []]
+        return Request.shared.sendSocketAckRequest(socket: socket, data: data)
     }
     
     func consume(socket: EchoSocket, rtp: String) -> JSON? {
         print("REQ) consume")
-        let data: [String: Any] = ["request" : true, "id": 666, "method": "consume", "data" : ["rtpCapabilities": rtp]]
+        let data: [String: Any] = ["request" : true, "id": 556, "method": "consume", "data" : ["rtpCapabilities": rtp]]
         return Request.shared.sendSocketAckRequest(socket: socket, data: data)
     }
 
     func audioConsume(socket: EchoSocket, rtp: String) -> JSON? {
         print("REQ) audio consume")
-        let data: [String: Any] = ["request" : true, "id": 666, "method": "audioConsume", "data" : ["rtpCapabilities": rtp]]
+        let data: [String: Any] = ["request" : true, "id": 556, "method": "audioConsume", "data" : ["rtpCapabilities": rtp]]
         return Request.shared.sendSocketAckRequest(socket: socket, data: data)
     }
     
@@ -61,11 +54,6 @@ final internal class Request : NSObject {
         print("REQ) connectWebRtcTransport")
         let data: [String: Any] = ["request" : true, "id": 55, "method": "connectWebRtcTransport", "data": ["transportId": transportId, "dtlsParameters": dtlsParameters]]
         return Request.shared.sendSocketAckRequest(socket: socket, data: data)
-    }
-    
-    func sendResumeConsumerRequest(socket: EchoSocket, roomId: String, consumerId: String) {
-        let message = ["notification" : true, "method": "resumeConsumer",  "data": ["peerId": "aj4mu8bs"]] as [String : Any]
-        Request.shared.sendSocketAckRequest(socket: socket, data: message)
     }
     
     private func sendSocketAckRequest(socket: EchoSocket, data: [String: Any]) -> JSON? {

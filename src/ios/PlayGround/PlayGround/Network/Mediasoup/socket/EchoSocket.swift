@@ -74,7 +74,7 @@ final internal class EchoSocket : WebSocketDelegate, MessageSubscriber {
         print("websocketDisReceiveMessage " + text)
         let data: Data = text.data(using: .utf8)!
         let json: JSON = JSON.init(data)
-        let event: String = json["action"].stringValue
+        let event: String = json["id"].stringValue
         self.notifyObservers(event: event, data: json)
     }
     

@@ -18,9 +18,6 @@ class PlayViewController: UIViewController {
     private var socket: EchoSocket?
     private var client: RoomClient?
     var videoTrack: RTCVideoTrack?
-    var mediaStream: RTCMediaStream?
-    var audioSession: RTCAudioSession?
-    var peer: RTCPeerConnection?
     private var delegate: RoomListener?
     var roomId = ""
     
@@ -147,6 +144,8 @@ class PlayViewController: UIViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+        self.socket?.disconnect()
+        self.client = nil
         if let observer = timeObserver {
             self.playView.player?.removeTimeObserver(observer)
             self.timeObserver = nil
@@ -890,9 +889,9 @@ extension PlayViewController : MessageObserver {
         case ActionEvent.NEW_USER:
             print("NEW_USER id =" + data!["userId"]["userId"].stringValue)
             break
-        case ActionEvent.NEW_CONSUMER:
+        case "556":
             print("NEW_CONSUMER data=" + data!.description)
-            self.handleNewConsumerEvent(consumerInfo: data!["consumerData"])
+            self.handleNewConsumerEvent(consumerInfo: data!["data"])
             break
         default:
             print("Unknown event " + event)
@@ -912,6 +911,7 @@ extension PlayViewController : RoomListener {
         print("RoomListener::onNewConsumer kind=" + consumer.getKind())
         
         if consumer.getKind() == "video" {
+            print("vide track loading!")
             if let track = consumer.getTrack() as? RTCVideoTrack {
                 self.videoTrack = track
                 self.videoTrack?.isEnabled = true
@@ -923,6 +923,11 @@ extension PlayViewController : RoomListener {
                 self.videoTrack?.isEnabled = false
                 self.videoTrack?.remove(self.remoteVideoView)
                 self.videoTrack = nil
+            }
+        } else {
+            if let track = consumer.getTrack() as? RTCAudioTrack {
+                print("audio track loading")
+                track.isEnabled = true
             }
         }
         
@@ -948,20 +953,5 @@ extension PlayViewController: RTCVideoViewDelegate {
         ])
         self.view.layoutIfNeeded()
         self.remoteVideoView.layoutIfNeeded()
-    }
-}
-
-
-extension PlayViewController: RTCAudioSessionDelegate {
-    func audioSession(_ audioSession: RTCAudioSession, didSetActive active: Bool) {
-        print("?didSetActive")
-    }
-    
-    func audioSessionDidStartPlayOrRecord(_ session: RTCAudioSession) {
-        print("start")
-    }
-    
-    func audioSessionDidStopPlayOrRecord(_ session: RTCAudioSession) {
-        print("stop")
     }
 }

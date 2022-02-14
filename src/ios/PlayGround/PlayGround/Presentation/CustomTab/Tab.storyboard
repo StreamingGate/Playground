@@ -238,7 +238,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NHk-XK-DMe" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="990" y="820"/>
+            <point key="canvasLocation" x="130" y="871"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="mPY-nl-YUp">
@@ -247,6 +247,7 @@
                     <view key="view" contentMode="scaleToFill" id="50r-Xi-CC8">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="738"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="bWn-D1-yCl"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                 </viewController>

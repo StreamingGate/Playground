@@ -27,38 +27,29 @@ final internal class RoomClient : NSObject {
     private let roomId: String
     private var producers: Producer
     private var consumers: Consumer
-    private var audioConsumers: Consumer
     private var consumersInfo: [JSON]
     private let device: Device
     
-    private var joined: Bool
     private var recvTransport: RecvTransport?
-    private var audioRecvTransport: RecvTransport?
-    
     private var recvTransportHandler: RecvTransportHandler?
-    private var audioRecvTransportHandler: AudioRecvTransportHandler?
     private var consumerHandler: ConsumerHandler?
     
-    private var audioConsumerHandler: AudioConsumerHandler?
-    
     private var roomListener: RoomListener?
-    
-    var dtls: String?
     
     public init(socket: EchoSocket, device: Device, roomId: String, roomListener: RoomListener) {
         self.socket = socket
         self.device = device
+        
         self.roomId = roomId
         self.roomListener = nil
         self.roomListener = roomListener
         
         self.producers = Producer()
         self.consumers = Consumer()
-        self.audioConsumers = Consumer()
         self.consumersInfo = [JSON]()
-        self.joined = false
         self.recvTransportHandler?.delegate = nil
         self.consumerHandler?.delegate = nil
+        
         super.init()
     }
     
@@ -68,7 +59,7 @@ final internal class RoomClient : NSObject {
             return
         }
         
-        self.createWebRtcTransport(direction: "recv")
+        self.createWebRtcTransport()
         print("createRecvTransport() recv transport created")
     }
     
@@ -78,6 +69,7 @@ final internal class RoomClient : NSObject {
             return
         }
         let kind: String = consumerInfo["kind"].stringValue
+        print("--> media type: \(kind)")
         let id: String = consumerInfo["id"].stringValue
         let producerId: String = consumerInfo["producerId"].stringValue
         if producerId == "" {
@@ -90,44 +82,33 @@ final internal class RoomClient : NSObject {
         self.consumerHandler!.delegate = self.consumerHandler
         let kindConsumer: Consumer = self.recvTransport!.consume(self.consumerHandler!.delegate!, id: id, producerId: producerId, kind: kind, rtpParameters: rtpParameters.description)
         self.consumers = kindConsumer
-        
         print("consumeTrack() consuming id =" + kindConsumer.getId())
-            
         self.roomListener?.onNewConsumer(consumer: kindConsumer)
     }
     
     func resumeRemoteVideo() throws {
+        let _ = Request.shared.consumerResume(socket: self.socket)
     }
     
     func resumeRemoteAudio() throws {
-        let consumer: Consumer = try self.getConsumerByKind(kind: "audio")
-        Request.shared.sendResumeConsumerRequest(socket: self.socket, roomId: self.roomId, consumerId: consumer.getId())
+        let _ = Request.shared.audioConsumerResume(socket: self.socket)
     }
     
-    private func createWebRtcTransport(direction: String) {
-        let response = Request.shared.sendCreateWebRtcTransportRequest(socket: self.socket, roomId: "test", direction: direction, device: device)
+    private func createWebRtcTransport() {
+        let response = Request.shared.sendCreateWebRtcTransportRequest(socket: self.socket)
         
         guard let webRtcTransportData: JSON = response?["data"] else { return }
         let id: String = webRtcTransportData["id"].stringValue
         let iceParameters: JSON = webRtcTransportData["iceParameters"]
         let iceCandidatesArray: JSON = webRtcTransportData["iceCandidates"]
         let dtlsParameters: JSON = webRtcTransportData["dtlsParameters"]
-        self.dtls = dtlsParameters.description
-
-        switch direction {
-        case "recv":
-            self.recvTransportHandler = RecvTransportHandler.init(parent: self)
-            self.recvTransportHandler!.delegate = self.recvTransportHandler!
-            self.recvTransport = self.device.createRecvTransport(self.recvTransportHandler!.delegate!, id: id, iceParameters: iceParameters.description, iceCandidates: iceCandidatesArray.description, dtlsParameters: dtlsParameters.description)
-
-            let result = Request.shared.consume(socket: self.socket, rtp: device.getRtpCapabilities()!)
-            guard let consumeData = result?["data"] else { return }
-            self.consumeTrack(consumerInfo: consumeData)
-            let _ = Request.shared.consumerResume(socket: self.socket)
-            break
-        default:
-            print("createWebRtcTransport() invalid direction " + direction)
-        }
+        
+        self.recvTransportHandler = RecvTransportHandler.init(parent: self)
+        self.recvTransportHandler!.delegate = self.recvTransportHandler!
+        self.recvTransport = self.device.createRecvTransport(self.recvTransportHandler!.delegate!, id: id, iceParameters: iceParameters.description, iceCandidates: iceCandidatesArray.description, dtlsParameters: dtlsParameters.description)
+        
+        let _ = Request.shared.audioConsume(socket: self.socket, rtp: device.getRtpCapabilities()!)
+        let _ = Request.shared.consume(socket: self.socket, rtp: device.getRtpCapabilities()!)
     }
     
     private func handleLocalTransportConnectEvent(transport: Transport, dtlsParameters: String) {
