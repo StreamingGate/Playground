@@ -61,6 +61,7 @@ public class RedisUserService {
     /* 영상 시청 시 친구에게 내 상태 publish */
     public void publishWatching(String uuid, UserDto reqUserDto){
         UserDto userDto = findByUuid(uuid);
+        addTopics(userDto.getFriendUuids());
         ChannelTopic channelTopic = getOrAddTopic(uuid);
 
         userDto.updateVideoOrRoom(uuid, reqUserDto);
@@ -71,6 +72,7 @@ public class RedisUserService {
     /* 로그인 또는 로그아웃 시 친구에게 내 상태 publish */
     public void publishStatus(String uuid, Boolean status) {
         UserDto userDto = findByUuid(uuid);
+        addTopics(userDto.getFriendUuids());
         ChannelTopic channelTopic = getOrAddTopic(uuid);
 
         userDto.updateStatus(status);
@@ -89,7 +91,7 @@ public class RedisUserService {
             userDto = new UserDto(user);
 //            RedisMessaging.setExpirationMinute(uuid, 30l); // 로그인시 30분마다 Redis데이터 갱신(친구 리스트 변동 반영)
             addFriends(user.getBeFriend());
-            addTopics(user.getBeFriend());
+//            addTopics(user.getBeFriend());
         }
 
         return userDto;
@@ -115,11 +117,18 @@ public class RedisUserService {
     }
 
     /* 특정 유저 리스트에 대한 토픽 저장 */
-    public void addTopics(List<User> users){
-        for(User user: users){
-            getOrAddTopic(user.getUuid());
+    public void addTopics(List<String> friendUuids){
+        for(String friendUuid: friendUuids){
+            getOrAddTopic(friendUuid);
         }
     }
+
+    /* 특정 유저 리스트에 대한 토픽 저장 */
+//    public void addTopics(List<User> users){
+//        for(User user: users){
+//            getOrAddTopic(user.getUuid());
+//        }
+//    }
 
     /* 여러 서버 간 통신을 위해 현재 리스너 등록 후 현 서버에 토픽 저장 */
     public ChannelTopic getOrAddTopic(String uuid) {
