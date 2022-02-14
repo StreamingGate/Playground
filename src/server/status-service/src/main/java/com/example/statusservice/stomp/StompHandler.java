@@ -15,9 +15,6 @@ import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
 
-import java.util.List;
-import java.util.Map;
-
 @Slf4j
 @RequiredArgsConstructor
 @Component
@@ -28,7 +25,7 @@ public class StompHandler implements ChannelInterceptor {
 
     /* DISCONNET 메시지의 경우 preSend로 처리해야 헤더로 전송된 값을 처리할 수 있음 */
     @Override
-    public Message<?> preSend(Message<?> message, MessageChannel channel) throws CustomStatusException{
+    public Message<?> preSend(Message<?> message, MessageChannel channel) throws CustomStatusException {
         log.info("Channel Interceptor");
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
 
@@ -37,14 +34,15 @@ public class StompHandler implements ChannelInterceptor {
             case CONNECT:
                 String token = getValueFromHeader(message, "token");
                 log.info("[preSend connect] token=" + token);
-                if(jwtService.validation(token) == false) {
+                if (jwtService.validation(token) == false) {
                     log.info("token 인증 실패");
                     throw new CustomStatusException(ErrorCode.S003);
-                } log.info("token 인증 성공");
+                }
+                log.info("token 인증 성공");
                 break;
             case DISCONNECT: /* 페이지 이동, 브라우저 닫기 포함 */
                 uuid = getValueFromHeader(message, "uuid");
-                if(uuid!= null) redisUserService.publishStatus(uuid, Boolean.FALSE);
+                if (uuid != null) redisUserService.publishStatus(uuid, Boolean.FALSE);
                 break;
             default:
                 break;
@@ -59,7 +57,7 @@ public class StompHandler implements ChannelInterceptor {
         switch (accessor.getCommand()) {
             case SUBSCRIBE:
                 String uuid = destination.substring(destination.lastIndexOf("/") + 1);
-                if(uuid!= null) redisUserService.publishStatus(uuid, Boolean.TRUE);
+                if (uuid != null) redisUserService.publishStatus(uuid, Boolean.TRUE);
                 break;
             default:
                 break;
@@ -74,9 +72,8 @@ public class StompHandler implements ChannelInterceptor {
             if (multiValueMap.containsKey(key)) {
                 value = multiValueMap.getFirst(key);
             }
-        } catch(NullPointerException e){
-            log.info("[ErrorCode.S002] " + ErrorCode.S002.getMessage());
-//            throw new CustomStatusException(ErrorCode.S002);
+        } catch (NullPointerException e) {
+            log.info(key + "가 헤더에 없습니다." + ErrorCode.S002.getMessage());
         }
         return value;
     }

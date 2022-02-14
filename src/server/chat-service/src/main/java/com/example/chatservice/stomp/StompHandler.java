@@ -61,24 +61,9 @@ public class StompHandler implements ChannelInterceptor {
         return message;
     }
 
-    @Override
-    public void postSend(Message message, MessageChannel channel, boolean sent) {
-        StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
-        String destination = accessor.getDestination();
-        String roomUuid;
-        switch (accessor.getCommand()) {
-            case CONNECT: /* JWT 검증 */
-                log.info("postSend connection - token인증 완료");
-                break;
-            default:
-                break;
-        }
-    }
-
     private String getSplited(String destination, int index){
         String[] splited = destination.split("/");
         String result = splited[index];
-        log.info("getSplited: " + result);
         return result;
     }
 
@@ -92,7 +77,6 @@ public class StompHandler implements ChannelInterceptor {
             }
         } catch(NullPointerException e){
             log.info("[ErrorCode.S002] " + ErrorCode.C002.getMessage());
-//            throw new CustomStatusException(ErrorCode.S002);
         }
         return value;
     }

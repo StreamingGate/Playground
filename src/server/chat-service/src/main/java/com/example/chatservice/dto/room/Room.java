@@ -19,9 +19,8 @@ public class Room implements Serializable {
     private Set<String> users = new HashSet<>();
     private ChatConsume pinnedChat;
 
-    public Room(String uuid, String hostUuid) {
+    public Room(String uuid) {
         this.uuid = uuid;
-        this.hostUuid = hostUuid;
     }
 
     public void updatePinnedChat(ChatConsume pinnedChats){

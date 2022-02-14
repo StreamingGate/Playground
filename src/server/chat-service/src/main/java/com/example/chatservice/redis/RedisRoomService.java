@@ -43,8 +43,8 @@ public class RedisRoomService {
         return opsHashRoom.get(CHAT_ROOMS, roomUuid);
     }
 
-    public Room create(String roomUuid, String hostUuid) {
-        Room room = new Room(roomUuid, hostUuid);
+    public Room create(String roomUuid) {
+        Room room = new Room(roomUuid);
         opsHashRoom.put(CHAT_ROOMS, room.getUuid(), room);
         return room;
     }
