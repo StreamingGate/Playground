@@ -25,7 +25,6 @@ function HomePage() {
   const [selectedCateogory, setSelectedCategory] = useState('ALL');
 
   const { data, fetchNextPage } = useMainVideoList(selectedCateogory);
-
   // Intersection Observer를 이용한 무한스크롤 함수
   const observer = useInifinitScroll(fetchNextPage, {
     root: null,
