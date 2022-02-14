@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SafariServices
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -48,5 +49,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
 
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        if let url = URLContexts.first?.url {
+            if url.absoluteString.starts(with: "playground://producerClose") {
+                SFSafariViewController.shared.dismiss(animated: true, completion: nil)
+            }
+        }
+    }
 }
 

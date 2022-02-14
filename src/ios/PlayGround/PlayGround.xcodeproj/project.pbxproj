@@ -100,6 +100,7 @@
 		49EA82D527B1851800F75546 /* Progress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EA82D427B1851800F75546 /* Progress.swift */; };
 		49EB20A227BA169C00333A9D /* MyHistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EB20A127BA169C00333A9D /* MyHistoryViewModel.swift */; };
 		49EB20A427BA1FEC00333A9D /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EB20A327BA1FEC00333A9D /* MyPageViewModel.swift */; };
+		49EB20AC27BA346F00333A9D /* SFSafariViewController+shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EB20AB27BA346F00333A9D /* SFSafariViewController+shared.swift */; };
 		49EC99FD2782015A00DE4F79 /* RecentViewedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EC99FC2782015A00DE4F79 /* RecentViewedCell.swift */; };
 		49EC9A00278201C600DE4F79 /* Create.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49EC99FF278201C600DE4F79 /* Create.storyboard */; };
 		49EC9A022782033E00DE4F79 /* CreatePopOverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EC9A012782033E00DE4F79 /* CreatePopOverViewController.swift */; };
@@ -219,6 +220,8 @@
 		49EA82D427B1851800F75546 /* Progress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Progress.swift; sourceTree = "<group>"; };
 		49EB20A127BA169C00333A9D /* MyHistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyHistoryViewModel.swift; sourceTree = "<group>"; };
 		49EB20A327BA1FEC00333A9D /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
+		49EB20AB27BA346F00333A9D /* SFSafariViewController+shared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFSafariViewController+shared.swift"; sourceTree = "<group>"; };
+		
 		49EC99FC2782015A00DE4F79 /* RecentViewedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentViewedCell.swift; sourceTree = "<group>"; };
 		49EC99FF278201C600DE4F79 /* Create.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Create.storyboard; sourceTree = "<group>"; };
 		49EC9A012782033E00DE4F79 /* CreatePopOverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePopOverViewController.swift; sourceTree = "<group>"; };
@@ -305,6 +308,7 @@
 			children = (
 				49B9C9B9277ACE9C006AE134 /* AppDelegate.swift */,
 				49B9C9BB277ACE9C006AE134 /* SceneDelegate.swift */,
+				49EB20AB27BA346F00333A9D /* SFSafariViewController+shared.swift */,
 				492C62282795378D00AE546E /* Login */,
 				49EA4E0F2794738A00A038E3 /* CustomTab */,
 				4935FD2D277BD95200760675 /* HomeTab */,
@@ -844,6 +848,7 @@
 				49E6168327B23ECE0092AE21 /* RoomListener.swift in Sources */,
 				49D7A0B927840595001CAC60 /* RegisterNavigationController.swift in Sources */,
 				496279D627828BB3005A2BDC /* PlayExplainViewController.swift in Sources */,
+				49EB20AC27BA346F00333A9D /* SFSafariViewController+shared.swift in Sources */,
 				491EF26727A7C2CE00A7AF91 /* String+getDateString.swift in Sources */,
 				49E72FD127A166E300DFBCC3 /* GatewayManager.swift in Sources */,
 				49E6168A27B292DA0092AE21 /* VideoDataModel.swift in Sources */,

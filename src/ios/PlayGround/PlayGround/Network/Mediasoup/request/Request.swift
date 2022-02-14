@@ -50,6 +50,12 @@ final internal class Request : NSObject {
         return Request.shared.sendSocketAckRequest(socket: socket, data: data)
     }
     
+    func close(socket: EchoSocket) -> JSON? {
+        print("REQ) audio consume")
+        let data: [String: Any] = ["request" : true, "id": 12345, "method": "transportClose", "data" : []]
+        return Request.shared.sendSocketAckRequest(socket: socket, data: data)
+    }
+    
     func sendConnectWebRtcTransportRequest(socket: EchoSocket, transportId: String, dtlsParameters: String) -> JSON? {
         print("REQ) connectWebRtcTransport")
         let data: [String: Any] = ["request" : true, "id": 55, "method": "connectWebRtcTransport", "data": ["transportId": transportId, "dtlsParameters": dtlsParameters]]

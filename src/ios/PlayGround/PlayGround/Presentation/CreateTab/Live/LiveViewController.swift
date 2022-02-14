@@ -59,13 +59,13 @@ class LiveViewController: UIViewController {
         let config = SFSafariViewController.Configuration()
         config.entersReaderIfAvailable = true
         guard let url = URL(string: "https://streaminggate.shop/m/studio/\(nav.roomUuid)/\(uuid)") else { return }
-        let safariViewController = SFSafariViewController(url: url, configuration: config)
-        safariViewController.delegate = self
-        safariViewController.view.frame = self.view.bounds
-        self.view.addSubview(safariViewController.view)
-        self.addChild(safariViewController)
-        safariViewController.didMove(toParent: self)
-        self.view.sendSubviewToBack(safariViewController.view)
+        SFSafariViewController.shared = SFSafariViewController(url: url, configuration: config)
+        SFSafariViewController.shared.delegate = self
+        SFSafariViewController.shared.view.frame = self.view.bounds
+        self.view.addSubview(SFSafariViewController.shared.view)
+        self.addChild(SFSafariViewController.shared)
+        SFSafariViewController.shared.didMove(toParent: self)
+        self.view.sendSubviewToBack(SFSafariViewController.shared.view)
         setupUI()
         viewModel.roomId = nav.roomUuid
         viewModel.connectToSocket()
