@@ -35,10 +35,10 @@ class MyTabCoordinator: Coordinator {
         }
     }
     
-    func showPlayer() {
+    func showPlayer(info: GeneralVideo) {
         let childCoordinator = PlayerCoordinator(parent: self.parentCoordinator, navigation: self.navigation)
         self.childCoordinators.append(childCoordinator)
-        childCoordinator.start(info: nil)
+        childCoordinator.start(info: info)
     }
     
     func showVideoList(index: Int) {

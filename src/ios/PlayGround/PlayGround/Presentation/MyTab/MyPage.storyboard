@@ -262,6 +262,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="X27-LR-WF4"/>
                     <connections>
+                        <outlet property="collectionView" destination="ZbR-SP-Mck" id="P0A-ce-5JI"/>
                         <outlet property="collectionViewHeight" destination="Xa0-Ds-ixO" id="pN0-nu-ci7"/>
                         <outlet property="likedVideoLabel" destination="wVO-3a-cd0" id="RkH-fZ-bte"/>
                         <outlet property="myVideoLabel" destination="brS-q1-RGw" id="0Rk-US-0Zd"/>
@@ -405,6 +406,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="collectionView" destination="rer-Uu-Wp7" id="pd7-fw-1d2"/>
                         <outlet property="titleLabel" destination="zef-6Y-rzB" id="MfT-im-QEE"/>
                     </connections>
                 </viewController>

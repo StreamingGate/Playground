@@ -52,7 +52,7 @@ class PlayExplainViewController: UIViewController {
         explainContentLabel.textColor = UIColor.customDarkGray
         guard let info = viewModel.currentInfo else { return }
         videoTitleLabel.text = info.title
-        categoryLabel.text = "#\(viewModel.categoryDic[info.category] ?? "기타")"
+        categoryLabel.text = "#\(viewModel.categoryDic[info.category ?? ""] ?? "기타")"
         channelLabel.text = (info.uploaderNickname == nil) ? info.hostNickname : info.uploaderNickname
     }
     

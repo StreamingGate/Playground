@@ -98,6 +98,8 @@
 		49EA82D127B184E400F75546 /* UIViewController+toastMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EA82D027B184E400F75546 /* UIViewController+toastMessage.swift */; };
 		49EA82D327B1850A00F75546 /* UploadProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EA82D227B1850A00F75546 /* UploadProgress.swift */; };
 		49EA82D527B1851800F75546 /* Progress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EA82D427B1851800F75546 /* Progress.swift */; };
+		49EB20A227BA169C00333A9D /* MyHistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EB20A127BA169C00333A9D /* MyHistoryViewModel.swift */; };
+		49EB20A427BA1FEC00333A9D /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EB20A327BA1FEC00333A9D /* MyPageViewModel.swift */; };
 		49EC99FD2782015A00DE4F79 /* RecentViewedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EC99FC2782015A00DE4F79 /* RecentViewedCell.swift */; };
 		49EC9A00278201C600DE4F79 /* Create.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49EC99FF278201C600DE4F79 /* Create.storyboard */; };
 		49EC9A022782033E00DE4F79 /* CreatePopOverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EC9A012782033E00DE4F79 /* CreatePopOverViewController.swift */; };
@@ -215,6 +217,8 @@
 		49EA82D027B184E400F75546 /* UIViewController+toastMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+toastMessage.swift"; sourceTree = "<group>"; };
 		49EA82D227B1850A00F75546 /* UploadProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadProgress.swift; sourceTree = "<group>"; };
 		49EA82D427B1851800F75546 /* Progress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Progress.swift; sourceTree = "<group>"; };
+		49EB20A127BA169C00333A9D /* MyHistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyHistoryViewModel.swift; sourceTree = "<group>"; };
+		49EB20A327BA1FEC00333A9D /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
 		49EC99FC2782015A00DE4F79 /* RecentViewedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentViewedCell.swift; sourceTree = "<group>"; };
 		49EC99FF278201C600DE4F79 /* Create.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Create.storyboard; sourceTree = "<group>"; };
 		49EC9A012782033E00DE4F79 /* CreatePopOverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePopOverViewController.swift; sourceTree = "<group>"; };
@@ -393,6 +397,8 @@
 			isa = PBXGroup;
 			children = (
 				49818AC72780C66100C0C956 /* MyPage.storyboard */,
+				49EB20A127BA169C00333A9D /* MyHistoryViewModel.swift */,
+				49EB20A327BA1FEC00333A9D /* MyPageViewModel.swift */,
 				49E8E89A278BB500003AD1DF /* ViewControllers */,
 			);
 			path = MyTab;
@@ -825,6 +831,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				496279DE2782BB85005A2BDC /* AccountEditViewController.swift in Sources */,
+				49EB20A427BA1FEC00333A9D /* MyPageViewModel.swift in Sources */,
 				49F0213E2799505400684A25 /* UIViewController+SimpleAlert.swift in Sources */,
 				491EF26927A7C31000A7AF91 /* UIImageView+downloadImageFrom.swift in Sources */,
 				496279DA278297C2005A2BDC /* VideoListViewController.swift in Sources */,
@@ -847,6 +854,7 @@
 				49F18C2C278E5E0800EBDCF8 /* CreateNavigationController.swift in Sources */,
 				492C62252795326B00AE546E /* MainCoordinator.swift in Sources */,
 				49E8E8A0278BC264003AD1DF /* LiveViewController.swift in Sources */,
+				49EB20A227BA169C00333A9D /* MyHistoryViewModel.swift in Sources */,
 				49E6168827B28A8B0092AE21 /* VideoServiceAPI.swift in Sources */,
 				49F4E3CD27ACA9CC002869F4 /* FriendRequestCell.swift in Sources */,
 				496279E02782C1AA005A2BDC /* CreateInfoViewController.swift in Sources */,
@@ -1072,8 +1080,10 @@
 				ENABLE_BITCODE = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PlayGround/Info.plist;
-				INFOPLIST_KEY_NSCameraUsageDescription = "실시간 스트리밍을 하기 위해서는 PlayGround에 카메라 권한을 허용해주셔야 합니다";
+				INFOPLIST_KEY_NSCameraUsageDescription = "스트리밍을 시작하기 위해서는 PlayGround에 카메라 권한을 주셔야 합니다";
 				INFOPLIST_KEY_NSMainNibFile = Login;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "소리을 설정하려면 PlayGround에서 마이크 접근 권한을 주셔야 합니다";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "프로필 사진을 설정하려면 PlayGround에서 갤러리 접근 권한을 주셔야 합니다";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -1105,8 +1115,10 @@
 				ENABLE_BITCODE = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PlayGround/Info.plist;
-				INFOPLIST_KEY_NSCameraUsageDescription = "실시간 스트리밍을 하기 위해서는 PlayGround에 카메라 권한을 허용해주셔야 합니다";
+				INFOPLIST_KEY_NSCameraUsageDescription = "스트리밍을 시작하기 위해서는 PlayGround에 카메라 권한을 주셔야 합니다";
 				INFOPLIST_KEY_NSMainNibFile = Login;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "소리을 설정하려면 PlayGround에서 마이크 접근 권한을 주셔야 합니다";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "프로필 사진을 설정하려면 PlayGround에서 갤러리 접근 권한을 주셔야 합니다";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
