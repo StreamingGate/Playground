@@ -1,8 +1,8 @@
 {{>header}}
 <body>
 <div>
-    <h2 id="roomId"></h2>
-    <span id="userCnt">x 명 접속중</span>
+    <h2 id="roomUuid"></h2>
+    <span id="userCnt">x</span> 명 접속중
 </div>
 <div>
     <label>채팅 내용</label><br>
@@ -27,33 +27,31 @@
     let sock = new SockJS("/ws");
     let ws = Stomp.over(sock);
 
-    let roomTitle = document.querySelector("#roomId");
+    let roomTitle = document.querySelector("#roomUuid");
     let msgList = document.querySelector("#msglist");
     let userCntElem = document.querySelector("#userCnt");
     let data = {
-        roomId: localStorage.getItem('wschat.roomId'),
+        roomUuid: localStorage.getItem('wschat.roomUuid'),
         room: {},
         senderUuid: localStorage.getItem('wschat.senderUuid'),
         senderNickname: localStorage.getItem('wschat.senderNickname'),
         uuid: localStorage.getItem('wschat.uuid'), //room uuid
-        pinnedChats: []
+        pinnedChat: []
     }
 
     /* 방 정보 조회 */
     findRoom = function () {
-        axios.get('/chat/room/' + data.roomId).then(response => {
+        axios.get('/chat/room/' + data.roomUuid).then(response => {
             data.room = response.data;
-            data.pinnedChats = response.data.pinnedChats;
+            data.pinnedChat = response.data.pinnedChat;
             console.log("resp:", response.data);
 
-            document.querySelector("#roomId").innerText = data.room.uuid+ ` 방장: ${data.room.hostUuid}`;
+            document.querySelector("#roomUuid").innerText = data.room.uuid+ ` 방장: ${data.room.hostUuid}`;
 
-            if (data.pinnedChats !== undefined) {
-                for (let i = 0; i < data.pinnedChats.length; i++) {
-                    const liElem = document.createElement("li");
-                    liElem.innerText = "[PINNED]" + data.pinnedChats[i].nickname + "-" + data.pinnedChats[i].message;
-                    msgList.append(liElem);
-                }
+            if (data.pinnedChat !== null) {
+                const liElem = document.createElement("li");
+                liElem.innerText = "[PINNED] [" + data.pinnedChat.nickname + "] " + data.pinnedChat.message;
+                msgList.append(liElem);
             }
         });
     }
@@ -62,9 +60,9 @@
     sendMessage = () => {
         console.log("send btn");
         const inputMsg = document.querySelector("#inputMsg").value;
-        ws.send("/app/chat/message/" + data.roomId, {}, JSON.stringify(
+        ws.send("/app/chat/message/" + data.roomUuid, {}, JSON.stringify(
                 {
-                    roomId: data.roomId,
+                    roomUuid: data.roomUuid,
                     nickname: data.senderNickname,
                     uuid: data.senderUuid,  // 보내는 사람
                     senderRole: "VIEWER",   // VIEWER, STREAMER
@@ -80,9 +78,9 @@
         if (isFake === true) inputVal = document.querySelector("#inputPin").value;
         else inputVal = document.querySelector("#fakePin").value;
 
-        ws.send("/app/chat/message/" + data.roomId, {}, JSON.stringify(
+        ws.send("/app/chat/message/" + data.roomUuid, {}, JSON.stringify(
                 {
-                    roomId: data.roomId,
+                    roomUuid: data.roomUuid,
                     nickname: data.senderNickname,
                     uuid: data.senderUuid,
                     senderRole: senderRole,   // VIEWER, STREAMER
@@ -97,19 +95,29 @@
         liElem.innerText = "[" + chat.nickname + "] " + "("+chat.timeStamp+")    " +  chat.message;
         msgList.append(liElem);
     }
+    recvUserCnt = (data) => {
+        console.log("received userCnt...");
+        userCntElem.innerText = data.userCnt;
+    }
 
     findRoom();
 
     ws.connect({
             token: `${localStorage.getItem('wschat.token')}`
         }, function (frame) {
-            /* 채팅, 현재 접속자 수 subscribe */
-            ws.subscribe("/topic/chat/room/" + data.roomId, function (resp) {
-                console.log("received");
-                const chat = JSON.parse(resp.body);
-                recvMessage(chat);
+            /* 현재 접속자 수 subscribe */
+            ws.subscribe("/topic/chat/enter/" + data.roomUuid, function (resp) {
+                const data = JSON.parse(resp.body);
+                console.log("userCnt:" + userCnt);
+                recvUserCnt(data);
             }, {
                 uuid: `${data.senderUuid}`
+            });
+
+            /* 채팅 subscribe */
+            ws.subscribe("/topic/chat/room/" + data.roomUuid, function (resp) {
+                const chat = JSON.parse(resp.body);
+                recvMessage(chat);
             });
     }, function (error) {
         alert("error " + error);
@@ -119,7 +127,7 @@
     window.onbeforeunload = function(e){
         if(ws !== null) {
             ws.disconnect(function() {
-                // ws.send("/app/user-cnt/room/" + data.roomId + "/exit", {}, {});
+                // ws.send("/app/user-cnt/room/" + data.roomUuid + "/exit", {}, {});
                 console.log("disconnected..");
             })
         }

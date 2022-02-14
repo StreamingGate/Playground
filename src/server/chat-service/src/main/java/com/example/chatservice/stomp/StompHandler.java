@@ -29,7 +29,7 @@ public class StompHandler implements ChannelInterceptor {
         log.info("Channel Interceptor");
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
         String destination = accessor.getDestination();
-        String roomUuid;
+        String roomUuid, userUuid;
         switch (accessor.getCommand()) {
             case CONNECT: /* JWT 검증 */
                 String token = getValueFromHeader(message, "token");
@@ -40,10 +40,13 @@ public class StompHandler implements ChannelInterceptor {
                 } log.info("token 인증 성공");
                 break;
             case SUBSCRIBE: /* postSend에서 수행시 NATIVE_HEADERS를 가져오지 못한다. */
-                String userUuid = getValueFromHeader(message, "uuid");
-                roomUuid = destination.substring(destination.lastIndexOf("/") + 1);
-                log.info("subscribe destination: " + roomUuid+", uuid: " + userUuid);
-                if(roomUuid != null && userUuid !=null) redisRoomService.enter(roomUuid, userUuid);
+                String topic = getSplited(destination,3);
+                if(topic.equals("enter")) {
+                    roomUuid = destination.substring(destination.lastIndexOf("/") + 1);
+                    userUuid = getValueFromHeader(message, "uuid");
+                    log.info("subscribe destination: " + roomUuid + ", uuid: " + userUuid);
+                    if (roomUuid != null && userUuid != null) redisRoomService.enter(roomUuid, userUuid);
+                }
                 break;
             case DISCONNECT: /* 페이지 이동, 브라우저 닫기 포함 */
 //                String destination = accessor.getDestination();
@@ -63,6 +66,8 @@ public class StompHandler implements ChannelInterceptor {
     @Override
     public void postSend(Message message, MessageChannel channel, boolean sent) {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
+        String destination = accessor.getDestination();
+        String roomUuid;
         switch (accessor.getCommand()) {
             case CONNECT: /* JWT 검증 */
                 log.info("postSend connection - token인증 완료");
@@ -70,6 +75,13 @@ public class StompHandler implements ChannelInterceptor {
             default:
                 break;
         }
+    }
+
+    private String getSplited(String destination, int index){
+        String[] splited = destination.split("/");
+        String result = splited[index];
+        log.info("getSplited: " + result);
+        return result;
     }
 
     private String getValueFromHeader(Message<?> message, String key) {

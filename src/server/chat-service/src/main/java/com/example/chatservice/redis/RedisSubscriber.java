@@ -2,6 +2,7 @@ package com.example.chatservice.redis;
 
 import com.example.chatservice.dto.chat.ChatConsume;
 import com.example.chatservice.dto.chat.ChatProduce;
+import com.example.chatservice.dto.chat.EnterConsume;
 import com.example.chatservice.utils.ClientMessaging;
 import com.example.chatservice.utils.RedisMessaging;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,13 +27,17 @@ public class RedisSubscriber implements MessageListener {
    @Override
    public void onMessage(Message message, byte[] pattern) {
        try {
-           // redis에서 발행된 데이터를 받아 deserialize
            String publishMessage = RedisMessaging.getPublishedMessage(message);
-           // ChatMessage 객채로 맵핑
            ChatProduce chat = objectMapper.readValue(publishMessage, ChatProduce.class);
-           ChatConsume resp = new ChatConsume(chat);
-           // Websocket 구독자에게 채팅 메시지 Send
-           ClientMessaging.publish("/topic/chat/room/" + resp.getRoomId(), resp);
+           /* 토픽 /chat/enter에 publish */
+           if(chat.getUserCnt() == null) {
+               ChatConsume resp = new ChatConsume(chat);
+               ClientMessaging.publish("/topic/chat/room/" + resp.getRoomUuid(), resp);
+           }
+           else{
+               EnterConsume resp = new EnterConsume(chat);
+               ClientMessaging.publish("/topic/chat/enter/" + resp.getRoomUuid(), resp);
+           }
        } catch (Exception e) {
            log.error(e.getMessage());
        }

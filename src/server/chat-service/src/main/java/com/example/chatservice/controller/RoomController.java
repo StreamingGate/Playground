@@ -14,14 +14,17 @@ public class RoomController {
     private final RedisRoomService redisRoomRepository;
 
     @GetMapping("/room/{roomId}")
-    public Room roomInfo(@PathVariable("roomId") String id) {
-        Room res = redisRoomRepository.findById(id);
-        return res;
+    public Room roomInfo(@PathVariable("roomId") String uuid) {
+        return redisRoomRepository.findById(uuid);
     }
 
     @PostMapping("/room")
     public Room createRoom(@RequestBody RoomCreateDto roomCreateDto) {
-        Room res = redisRoomRepository.create(roomCreateDto.getUuid(), roomCreateDto.getHostUuid());
-        return res;
+        return redisRoomRepository.create(roomCreateDto.getUuid(), roomCreateDto.getHostUuid());
+    }
+
+    @DeleteMapping("/room")
+    public String deleteRoom(@RequestParam("uuid") String uuid){
+        return redisRoomRepository.removeRoom(uuid);
     }
 }

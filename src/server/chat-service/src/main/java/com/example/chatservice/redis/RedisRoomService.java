@@ -58,35 +58,40 @@ public class RedisRoomService {
         opsHashRoom.put(CHAT_ROOMS, room.getUuid(), room); // update
     }
 
-    /**
-     * 채팅방 입장 : "현재 서버"에 roomId에 해당하는 topic이 없으면 맵에 저장해놓고, pub/sub 통신을 하기 위해 리스너를
-     * 추가한다.
-     */
+    /* 채팅방 입장(접속자 수 증가) */
     public int enter(String roomUuid, String userUuid) {
-        getOrAddTopic(roomUuid);
+        ChannelTopic channelTopic = getOrAddTopic(roomUuid);
         Room room = opsHashRoom.get(CHAT_ROOMS, roomUuid);
 
         int userCnt = room.addUser(userUuid);
         log.info("add user:" + room.getUuid() + " " + userCnt + "명");
-        opsHashRoom.put(CHAT_ROOMS, room.getUuid(), room); // update
+        opsHashRoom.put(CHAT_ROOMS, room.getUuid(), room);
+
+        RedisMessaging.publish(channelTopic, new ChatProduce(roomUuid, userCnt));
         return userCnt;
     }
 
+    /* 채팅방 퇴장(접속자 수 감소) */
     public int exit(String roomUuid, String userUuid) throws IllegalArgumentException {
+        ChannelTopic channelTopic = getOrAddTopic(roomUuid);
         Room room = opsHashRoom.get(CHAT_ROOMS, roomUuid);
-        if (room == null)
-            throw new IllegalArgumentException("존재하지 않는 방입니다.");
+
         int userCnt = room.removeUser(userUuid);
-        log.info("remove user:" + room.getUuid() + " " + userCnt + "명");
-        opsHashRoom.put(CHAT_ROOMS, room.getUuid(), room); // update
+        log.info("add user:" + room.getUuid() + " " + userCnt + "명");
+        opsHashRoom.put(CHAT_ROOMS, room.getUuid(), room);
+
+        RedisMessaging.publish(channelTopic, new ChatProduce(roomUuid, userCnt));
         return userCnt;
     }
 
-    public int getUserCnt(String roomUuid) throws IllegalArgumentException {
-        Room room = opsHashRoom.get(CHAT_ROOMS, roomUuid);
-        if (room == null)
-            throw new IllegalArgumentException("존재하지 않는 방입니다.");
-        return room.getUsers().size();
+    /* 채팅방 삭제 */
+    public String removeRoom(String roomUuid){
+        ChannelTopic channelTopic = topics.get(roomUuid);
+        if (channelTopic != null) {
+            topics.remove(roomUuid);
+        }
+        opsHashRoom.delete(CHAT_ROOMS, roomUuid);
+        return roomUuid;
     }
 
     public ChannelTopic getOrAddTopic(String roomUuid) {
