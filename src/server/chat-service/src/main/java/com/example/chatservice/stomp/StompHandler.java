@@ -49,13 +49,11 @@ public class StompHandler implements ChannelInterceptor {
                 }
                 break;
             case DISCONNECT: /* 페이지 이동, 브라우저 닫기 포함 */
-//                String destination = accessor.getDestination();
-//                log.info("disconnect destination: " + destination);
-//                roomUuid = destination.substring(destination.lastIndexOf("/") + 1);
-//                log.info("disconnect roomUuid: " + roomUuid);
-//                String userUuid = getUuidFromHeader(message, "uuid");
-//                log.info("disconnect userUuid: " + userUuid);
-//                redisRoomService.exit(roomUuid, userUuid);
+                roomUuid = getValueFromHeader(message, "roomUuid");
+                log.info("disconnect roomUuid: " + roomUuid);
+                userUuid = getValueFromHeader(message, "uuid");
+                log.info("disconnect userUuid: " + userUuid);
+                redisRoomService.exit(roomUuid, userUuid);
                 break;
             default:
                 break;
