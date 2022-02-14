@@ -20,7 +20,6 @@ public class JwtService {
     public JwtService(UserRepository userRepository, @Value("${jwts.secret-key}") String SECRET_KEY){
         this.userRepository = userRepository;
         this.SECRET_KEY = SECRET_KEY;
-        log.info("SECRET_KEY:"+SECRET_KEY);
     }
 
     /**
@@ -31,22 +30,21 @@ public class JwtService {
     public boolean validation(String token) throws CustomChatException{
         if (token != null && isTokenValid(token)) {
             String uuid = getUuid(token);
-            userRepository.findByUuid(uuid).orElseThrow(() -> new CustomChatException(ErrorCode.C006));
+            userRepository.findByUuid(uuid).orElseThrow(() -> new CustomChatException(ErrorCode.C003, uuid));
             return true;
         }
         return false;
     }
 
-    private boolean isTokenValid(String token) throws RuntimeException {
-        log.info("JWTProvider validateToken: " +token);
+    private boolean isTokenValid(String token){
         try {
             Jwts.parser().setSigningKey(SECRET_KEY.getBytes()).parseClaimsJws(token);
         } catch (ExpiredJwtException e) {
-            throw new CustomChatException(ErrorCode.C003);
+            return false;
         } catch (UnsupportedJwtException | MalformedJwtException | IllegalArgumentException e) {
-            throw new CustomChatException(ErrorCode.C004);
+            return false;
         } catch (SignatureException e) {
-            throw new CustomChatException(ErrorCode.C005);
+            return false;
         }
         return true;
     }

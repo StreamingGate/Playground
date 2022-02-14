@@ -66,17 +66,11 @@
             console.log("==Redis에 유저데이터 셋팅 완료.");
         });
     }
-    let sock = new SockJS("/ws");
-    let ws = Stomp.over(sock);
+
+    let sock ;
+    let ws ;
     const loginUuidElem = document.querySelector("#login-uuid");
     const friendsResultElem = document.querySelector("#friends-result");
-
-    // stomp connection
-    ws.connect({}, function (frame) {
-        // nothing...
-    }, function (error) {
-        alert("error " + JSON.stringify(error));
-    });
 
     /* 실제 client에선 리스트에 있는 정보로 영상 하나에 입장하자마자 send 하면 type, id 선택가능 */
     videoWatch = (i) => {
@@ -130,9 +124,19 @@
     /* 친구 목록에 내 상태 publish */
     publishLogin = (i) =>{
         const uuid = userData[i].uuid;
-        ws.subscribe("/topic/friends/" + uuid, function (resp) {
-            updateFriendsStatus(JSON.parse(resp.body));
+        sock = new SockJS("/ws");
+        ws = Stomp.over(sock);
+
+        ws.connect({
+            token: `${userData[i].token}`
+        }, function (frame) {
+            ws.subscribe("/topic/friends/" + uuid, function (resp) {
+                updateFriendsStatus(JSON.parse(resp.body));
+            });
+        }, function (error) {
+            alert("error " + JSON.stringify(error));
         });
+
         globalIndex = i; // 로그인 한 유저 기억하기 위함
     }
 

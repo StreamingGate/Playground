@@ -35,7 +35,7 @@
         room: {},
         senderUuid: localStorage.getItem('wschat.senderUuid'),
         senderNickname: localStorage.getItem('wschat.senderNickname'),
-        uuid: localStorage.getItem('wschat.uuid'),
+        uuid: localStorage.getItem('wschat.uuid'), //room uuid
         pinnedChats: []
     }
 
@@ -66,7 +66,7 @@
                 {
                     roomId: data.roomId,
                     nickname: data.senderNickname,
-                    uuid: data.senderUuid,
+                    uuid: data.senderUuid,  // 보내는 사람
                     senderRole: "VIEWER",   // VIEWER, STREAMER
                     chatType: "NORMAL",     // NORMAL, PINNED
                     message: inputMsg,
@@ -101,8 +101,6 @@
     findRoom();
 
     ws.connect({
-            uuid: `${data.room.uuid}`,
-            senderUuid: `${data.senderUuid}`,
             token: `${localStorage.getItem('wschat.token')}`
         }, function (frame) {
             /* 채팅, 현재 접속자 수 subscribe */
@@ -113,19 +111,6 @@
             }, {
                 uuid: `${data.senderUuid}`
             });
-
-        // 현재 접속자 수
-        // ws.subscribe("/topic/user-cnt/room/" + data.roomId, function (message) {
-        //     console.log(message);
-        //     userCntElem.innerText=JSON.parse(message.body)+' 명 접속중';
-        // });
-
-        // 에러메시지 핸들링
-        // ws.subscribe('/user/'+data.uuid+'/queue/errors', function (message) {
-        //     console.log(message);
-        //     alert("[error] receive User : " + data.senderNickname + " " + message);
-        // });
-
     }, function (error) {
         alert("error " + error);
     });
@@ -134,7 +119,7 @@
     window.onbeforeunload = function(e){
         if(ws !== null) {
             ws.disconnect(function() {
-                ws.send("/app/user-cnt/room/" + data.roomId + "/exit", {}, {});
+                // ws.send("/app/user-cnt/room/" + data.roomId + "/exit", {}, {});
                 console.log("disconnected..");
             })
         }

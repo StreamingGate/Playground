@@ -28,21 +28,31 @@ public class StompHandler implements ChannelInterceptor {
     public Message<?> preSend(Message<?> message, MessageChannel channel) throws CustomChatException{
         log.info("Channel Interceptor");
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
+        String destination = accessor.getDestination();
         String roomUuid;
         switch (accessor.getCommand()) {
             case CONNECT: /* JWT 검증 */
-                String token = getUuidFromHeader(message, "token");
+                String token = getValueFromHeader(message, "token");
                 log.info("[preSend connect] token=" + token);
-                jwtService.validation(token);
+                if(jwtService.validation(token) == false) {
+                    log.info("token 인증 실패");
+                    throw new CustomChatException(ErrorCode.C003);
+                } log.info("token 인증 성공");
+                break;
+            case SUBSCRIBE: /* postSend에서 수행시 NATIVE_HEADERS를 가져오지 못한다. */
+                String userUuid = getValueFromHeader(message, "uuid");
+                roomUuid = destination.substring(destination.lastIndexOf("/") + 1);
+                log.info("subscribe destination: " + roomUuid+", uuid: " + userUuid);
+                if(roomUuid != null && userUuid !=null) redisRoomService.enter(roomUuid, userUuid);
                 break;
             case DISCONNECT: /* 페이지 이동, 브라우저 닫기 포함 */
-                String destination = accessor.getDestination();
-                log.info("disconnect destination: " + destination);
-                roomUuid = destination.substring(destination.lastIndexOf("/") + 1);
-                log.info("disconnect roomUuid: " + roomUuid);
-                String userUuid = getUuidFromHeader(message, "uuid");
-                log.info("disconnect userUuid: " + userUuid);
-                redisRoomService.exit(roomUuid, userUuid);
+//                String destination = accessor.getDestination();
+//                log.info("disconnect destination: " + destination);
+//                roomUuid = destination.substring(destination.lastIndexOf("/") + 1);
+//                log.info("disconnect roomUuid: " + roomUuid);
+//                String userUuid = getUuidFromHeader(message, "uuid");
+//                log.info("disconnect userUuid: " + userUuid);
+//                redisRoomService.exit(roomUuid, userUuid);
                 break;
             default:
                 break;
@@ -53,32 +63,27 @@ public class StompHandler implements ChannelInterceptor {
     @Override
     public void postSend(Message message, MessageChannel channel, boolean sent) {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
-        String roomUuid;
         switch (accessor.getCommand()) {
-            case SUBSCRIBE:
-                String destination = accessor.getDestination();
-                roomUuid = destination.substring(destination.lastIndexOf("/") + 1);
-                String userUuid = getUuidFromHeader(message, "uuid");
-                log.info("disconnect destination: " + roomUuid+", uuid:" + userUuid);
-                redisRoomService.enter(roomUuid, userUuid);
+            case CONNECT: /* JWT 검증 */
+                log.info("postSend connection - token인증 완료");
                 break;
             default:
                 break;
         }
     }
 
-    private String getUuidFromHeader(Message<?> message, String key) {
+    private String getValueFromHeader(Message<?> message, String key) {
         MessageHeaders headers = message.getHeaders();
         MultiValueMap<String, String> multiValueMap = headers.get(StompHeaderAccessor.NATIVE_HEADERS, MultiValueMap.class);
-        String uuid = null;
+        String value = null;
         try {
             if (multiValueMap.containsKey(key)) {
-                uuid = multiValueMap.getFirst(key);
+                value = multiValueMap.getFirst(key);
             }
-        } catch (NullPointerException e) {
+        } catch(NullPointerException e){
             log.info("[ErrorCode.S002] " + ErrorCode.C002.getMessage());
 //            throw new CustomStatusException(ErrorCode.S002);
         }
-        return uuid;
+        return value;
     }
 }

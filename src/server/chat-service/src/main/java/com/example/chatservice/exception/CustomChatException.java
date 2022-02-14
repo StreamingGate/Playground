@@ -12,6 +12,10 @@ public class CustomChatException extends RuntimeException {
         super();
     }
 
+    public CustomChatException(ErrorCode errorCode) {
+        this.errorCode = errorCode;
+    }
+
     public CustomChatException(ErrorCode errorCode, String uuid) {
         this.errorCode = errorCode;
         this.uuid = uuid;

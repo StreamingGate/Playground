@@ -15,6 +15,9 @@ import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
 
+import java.util.List;
+import java.util.Map;
+
 @Slf4j
 @RequiredArgsConstructor
 @Component
@@ -25,16 +28,22 @@ public class StompHandler implements ChannelInterceptor {
 
     /* DISCONNET 메시지의 경우 preSend로 처리해야 헤더로 전송된 값을 처리할 수 있음 */
     @Override
-    public Message<?> preSend(Message<?> message, MessageChannel channel) {
+    public Message<?> preSend(Message<?> message, MessageChannel channel) throws CustomStatusException{
         log.info("Channel Interceptor");
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
+
         String uuid;
         switch (accessor.getCommand()) {
             case CONNECT:
-                String token = getUuidFromHeader(message, "token");
-                if(jwtService.validation(token) == false) throw new CustomStatusException(ErrorCode.S001, "Jwt is not invalid");
+                String token = getValueFromHeader(message, "token");
+                log.info("[preSend connect] token=" + token);
+                if(jwtService.validation(token) == false) {
+                    log.info("token 인증 실패");
+                    throw new CustomStatusException(ErrorCode.S003);
+                } log.info("token 인증 성공");
+                break;
             case DISCONNECT: /* 페이지 이동, 브라우저 닫기 포함 */
-                uuid = getUuidFromHeader(message, "uuid");
+                uuid = getValueFromHeader(message, "uuid");
                 if(uuid!= null) redisUserService.publishStatus(uuid, Boolean.FALSE);
                 break;
             default:
@@ -46,12 +55,10 @@ public class StompHandler implements ChannelInterceptor {
     @Override
     public void postSend(Message message, MessageChannel channel, boolean sent) {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
-        String destination;
-        String uuid;
+        String destination = accessor.getDestination();
         switch (accessor.getCommand()) {
             case SUBSCRIBE:
-                destination = accessor.getDestination();
-                uuid = destination.substring(destination.lastIndexOf("/") + 1);
+                String uuid = destination.substring(destination.lastIndexOf("/") + 1);
                 if(uuid!= null) redisUserService.publishStatus(uuid, Boolean.TRUE);
                 break;
             default:
@@ -59,7 +66,7 @@ public class StompHandler implements ChannelInterceptor {
         }
     }
 
-    private String getUuidFromHeader(Message<?> message, String key) {
+    private String getValueFromHeader(Message<?> message, String key) {
         MessageHeaders headers = message.getHeaders();
         MultiValueMap<String, String> multiValueMap = headers.get(StompHeaderAccessor.NATIVE_HEADERS, MultiValueMap.class);
         String value = null;
