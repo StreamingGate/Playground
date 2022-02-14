@@ -20,6 +20,8 @@ public class UserDto implements Serializable {
 
     private String uuid;            // user uuid
     private Boolean status = false; // login or logout
+    private String nickname;
+    private String profileImage;
     private List<String> friendUuids = new ArrayList<>();
 
     // 시청중이 아닐 경우 id, type, videoRoomUuid, title은 null 값
@@ -30,6 +32,8 @@ public class UserDto implements Serializable {
 
     public UserDto(User user){
         this.uuid = user.getUuid();
+        this.nickname = user.getNickName();
+        this.profileImage = user.getProfileImage();
         this.friendUuids = user.getBeFriend().stream()
                 .map(User::getUuid)
                 .collect(Collectors.toList());

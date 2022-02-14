@@ -189,15 +189,6 @@
     wsDisconnection = (i) => {
         ws.disconnect(() => {}, {"uuid": userData[i].uuid});
         loginUuidElem.innerText = "";
-
-        /* 레전드... 재 접속할 때 새 객체를 만들어주면 문제없이 재접속 가능함. */
-        sock = new SockJS("/ws");
-        ws = Stomp.over(sock);
-        ws.connect({}, function (frame) {
-            // nothing...
-        }, function (error) {
-            alert("error " + JSON.stringify(error));
-        });
     }
 
     logout = (i) => {
