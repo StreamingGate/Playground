@@ -1,7 +1,9 @@
 package com.example.statusservice.stomp;
 
 
+import com.example.statusservice.exception.CustomStatusException;
 import com.example.statusservice.exception.ErrorCode;
+import com.example.statusservice.redis.JwtService;
 import com.example.statusservice.redis.RedisUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +21,7 @@ import org.springframework.util.MultiValueMap;
 public class StompHandler implements ChannelInterceptor {
 
     private final RedisUserService redisUserService;
+    private final JwtService jwtService;
 
     /* DISCONNET 메시지의 경우 preSend로 처리해야 헤더로 전송된 값을 처리할 수 있음 */
     @Override
@@ -27,8 +30,11 @@ public class StompHandler implements ChannelInterceptor {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
         String uuid;
         switch (accessor.getCommand()) {
+            case CONNECT:
+                String token = getUuidFromHeader(message, "token");
+                if(jwtService.validation(token) == false) throw new CustomStatusException(ErrorCode.S001, "Jwt is not invalid");
             case DISCONNECT: /* 페이지 이동, 브라우저 닫기 포함 */
-                uuid = getUuidFromHeader(message);
+                uuid = getUuidFromHeader(message, "uuid");
                 if(uuid!= null) redisUserService.publishStatus(uuid, Boolean.FALSE);
                 break;
             default:
@@ -53,18 +59,18 @@ public class StompHandler implements ChannelInterceptor {
         }
     }
 
-    private String getUuidFromHeader(Message<?> message) {
+    private String getUuidFromHeader(Message<?> message, String key) {
         MessageHeaders headers = message.getHeaders();
         MultiValueMap<String, String> multiValueMap = headers.get(StompHeaderAccessor.NATIVE_HEADERS, MultiValueMap.class);
-        String uuid = null;
+        String value = null;
         try {
-            if (multiValueMap.containsKey("uuid")) {
-                uuid = multiValueMap.getFirst("uuid");
+            if (multiValueMap.containsKey(key)) {
+                value = multiValueMap.getFirst(key);
             }
         } catch(NullPointerException e){
             log.info("[ErrorCode.S002] " + ErrorCode.S002.getMessage());
 //            throw new CustomStatusException(ErrorCode.S002);
         }
-        return uuid;
+        return value;
     }
 }

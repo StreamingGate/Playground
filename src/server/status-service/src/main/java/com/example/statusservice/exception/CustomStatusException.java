@@ -17,9 +17,9 @@ public class CustomStatusException extends RuntimeException {
         this.errorCode = errorCode;
     }
 
-    public CustomStatusException(ErrorCode errorCode, String message) {
+    public CustomStatusException(ErrorCode errorCode, String uuid) {
         this.errorCode = errorCode;
-        this.message = message;
+        this.uuid = uuid;
     }
 
     public CustomStatusException(ErrorCode errorCode, String uuid, String message) {
