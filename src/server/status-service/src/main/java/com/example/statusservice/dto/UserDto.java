@@ -25,7 +25,7 @@ public class UserDto implements Serializable {
     private List<String> friendUuids = new ArrayList<>();
 
     // 시청중이 아닐 경우 id, type, videoRoomUuid, title은 null 값
-    private String id;              // videoId or roomId
+    private Integer id;              // videoId or roomId
     private Integer type;           // 0: videoId, 1: roomId
     private String videoRoomUuid;   // videoUuid or roomUuid
     private String title;
@@ -54,6 +54,7 @@ public class UserDto implements Serializable {
         this.title = reqUserDto.getTitle();
     }
 
+    /* 그만 시청하기 */
     public void clearVideoOrRoom(){
         this.id = null;
         this.type = null;
