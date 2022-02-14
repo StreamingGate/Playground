@@ -111,7 +111,7 @@ VideoOverview.propTypes = {
     hostNickname: PropTypes.string,
     hits: PropTypes.number,
     content: PropTypes.string,
-    createdAt: PropTypes.instanceOf(Date).isRequired,
+    createdAt: PropTypes.instanceOf(Date),
   }).isRequired,
 };
 

@@ -8,9 +8,9 @@ import { BackDrop } from '@components/feedbacks';
 import NavigationItem from './NavigationItem';
 
 const myNavigationItems = [
-  { path: '/mypage/history', itemIcon: <History />, content: '시청한 동영상' },
-  { path: '/mypage/like', itemIcon: <ThumbUp />, content: '좋아요 표시한 동영상' },
-  { path: '/mypage/library', itemIcon: <MyVideo />, content: '내 동영상' },
+  { path: '/mypage/watch', itemIcon: <History />, content: '시청한 동영상' },
+  { path: '/mypage/liked', itemIcon: <ThumbUp />, content: '좋아요 표시한 동영상' },
+  { path: '/mypage/upload', itemIcon: <MyVideo />, content: '내 동영상' },
 ];
 
 function SideNavigation() {
