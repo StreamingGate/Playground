@@ -128,6 +128,7 @@ class PlayViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(adjustInputView), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(adjustInputView), name: UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(playerDidFinishPlaying), name: .AVPlayerItemDidPlayToEndTime, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(audioRouteChangeListener(_:)), name: AVAudioSession.routeChangeNotification, object: nil)
         setupUI()
         
         // setting for mini player
@@ -137,6 +138,11 @@ class PlayViewController: UIViewController {
         bindingData()
     }
     
+        
+    @objc func audioRouteChangeListener(_ notification:Notification) {
+        print("change audio listener")
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         AppUtility.lockOrientation(.all)
@@ -144,8 +150,9 @@ class PlayViewController: UIViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        self.socket?.disconnect()
-        self.client = nil
+//        self.socket?.disconnect()
+//        self.client = nil
+        self.client?.disconneectRecvTransport()
         if let observer = timeObserver {
             self.playView.player?.removeTimeObserver(observer)
             self.timeObserver = nil
@@ -179,6 +186,26 @@ class PlayViewController: UIViewController {
             NSLayoutConstraint.deactivate(portraitLayout)
             NSLayoutConstraint.activate(portraitLayout)
         }
+    }
+    
+    
+    func setSpeakerStates(enabled: Bool, isLive: Bool) {
+        let session = AVAudioSession.sharedInstance()
+        var _: Error?
+        if isLive {
+            try? session.setCategory(AVAudioSession.Category.playAndRecord)
+        } else {
+            try? session.setCategory(AVAudioSession.Category.playback)
+        }
+        try? session.setMode(AVAudioSession.Mode.voiceChat)
+        if enabled && (session.isHeadphonesConnected == false) {
+            print("speaker")
+            try? session.overrideOutputAudioPort(AVAudioSession.PortOverride.speaker)
+        } else {
+            print("headphone")
+            try? session.overrideOutputAudioPort(AVAudioSession.PortOverride.none)
+        }
+        try? session.setActive(true)
     }
     
     // MARK: - UI Setting
@@ -234,6 +261,8 @@ class PlayViewController: UIViewController {
         self.player.replaceCurrentItem(with: item)
         playView.player = self.player
         isPlay = true
+        
+        setSpeakerStates(enabled: true, isLive: false)
         
         // 10 secs forward || backward
         let doubleTap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(gestureRecognizer:)))
@@ -928,6 +957,8 @@ extension PlayViewController : RoomListener {
             if let track = consumer.getTrack() as? RTCAudioTrack {
                 print("audio track loading")
                 track.isEnabled = true
+                RTCAudioSession.sharedInstance().isAudioEnabled = true
+                setSpeakerStates(enabled: true, isLive: true)
             }
         }
         
@@ -953,5 +984,24 @@ extension PlayViewController: RTCVideoViewDelegate {
         ])
         self.view.layoutIfNeeded()
         self.remoteVideoView.layoutIfNeeded()
+    }
+}
+
+
+extension AVAudioSession {
+    
+    static var isHeadphonesConnected: Bool {
+        return sharedInstance().isHeadphonesConnected
+    }
+
+    var isHeadphonesConnected: Bool {
+        return !currentRoute.outputs.filter { $0.isHeadphones }.isEmpty
+    }
+
+}
+
+extension AVAudioSessionPortDescription {
+    var isHeadphones: Bool {
+        return portType == AVAudioSession.Port.headphones
     }
 }

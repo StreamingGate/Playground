@@ -63,6 +63,11 @@ final internal class RoomClient : NSObject {
         print("createRecvTransport() recv transport created")
     }
     
+    func disconneectRecvTransport() {
+        print("disconnect recvTransport")
+        self.recvTransport?.close()
+    }
+    
     func consumeTrack(consumerInfo: JSON) {
         if (self.recvTransport == nil) {
             self.consumersInfo.append(consumerInfo)
@@ -78,8 +83,10 @@ final internal class RoomClient : NSObject {
         }
         let rtpParameters: JSON = consumerInfo["rtpParameters"]
         print("consumeTrack() rtpParameters " + rtpParameters.description)
-        self.consumerHandler = ConsumerHandler.init()
-        self.consumerHandler!.delegate = self.consumerHandler
+        if consumerHandler == nil {
+            self.consumerHandler = ConsumerHandler.init()
+            self.consumerHandler!.delegate = self.consumerHandler
+        }
         let kindConsumer: Consumer = self.recvTransport!.consume(self.consumerHandler!.delegate!, id: id, producerId: producerId, kind: kind, rtpParameters: rtpParameters.description)
         self.consumers = kindConsumer
         print("consumeTrack() consuming id =" + kindConsumer.getId())
