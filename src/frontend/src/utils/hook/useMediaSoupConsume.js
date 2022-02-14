@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import protooClient from 'protoo-client';
+import { v4 as uuidv4 } from 'uuid';
 
 const mediasoupClient = require('mediasoup-client');
 
@@ -23,20 +24,15 @@ export default function useMediaSoupConsume(isLive, videoPlayerRef, roomId) {
 
   const createConsumeDevice = async rptCapabilities => {
     const consumerDevice = new mediasoupClient.Device();
-    const audioConsumerDevice = new mediasoupClient.Device();
 
     await consumerDevice.load({
       routerRtpCapabilities: rptCapabilities,
     });
 
-    await audioConsumerDevice.load({
-      routerRtpCapabilities: rptCapabilities,
-    });
-
-    return { consumerDevice, audioConsumerDevice };
+    return consumerDevice;
   };
 
-  const createConsumeTransport = async (peer, consumeDevice, audioConsumerDevice) => {
+  const createConsumeTransport = async (peer, consumeDevice) => {
     const recvTransportParams = await peer.request('createWebRtcTransport');
     const consumerTransport = consumeDevice.createRecvTransport(recvTransportParams);
 
@@ -50,34 +46,10 @@ export default function useMediaSoupConsume(isLive, videoPlayerRef, roomId) {
         errback(error);
       }
     });
-
-    // let audioConsumerTransport = null;
-
-    const audioRecvTransportParams = await peer.request('createAudioWebRtcTransport');
-    const audioConsumerTransport =
-      audioConsumerDevice.createRecvTransport(audioRecvTransportParams);
-
-    audioConsumerTransport.on('connect', async ({ dtlsParameters }, callback, errback) => {
-      try {
-        await peer.request('connectAudioConsume', {
-          dtlsParameters,
-        });
-        callback();
-      } catch (error) {
-        errback(error);
-      }
-    });
-
-    return { consumerTransport, audioConsumerTransport };
+    return consumerTransport;
   };
 
-  const connectWithConsumeRouter = async (
-    peer,
-    consumerDevice,
-    consumerTransport,
-    audioConsumerDevice,
-    audioConsumerTransport
-  ) => {
+  const connectWithConsumeRouter = async (peer, consumerDevice, consumerTransport) => {
     const params = await peer.request('consume', {
       rtpCapabilities: consumerDevice.rtpCapabilities,
     });
@@ -92,10 +64,10 @@ export default function useMediaSoupConsume(isLive, videoPlayerRef, roomId) {
     // let audioConsumer;
 
     const audioParams = await peer.request('audioConsume', {
-      rtpCapabilities: audioConsumerDevice.rtpCapabilities,
+      rtpCapabilities: consumerDevice.rtpCapabilities,
     });
 
-    const audioConsumer = await audioConsumerTransport.consume({
+    const audioConsumer = await consumerTransport.consume({
       id: audioParams.id,
       producerId: audioParams.producerId,
       kind: audioParams.kind,
@@ -110,9 +82,14 @@ export default function useMediaSoupConsume(isLive, videoPlayerRef, roomId) {
     const { track: audio } = audioConsumer;
 
     console.log(track);
-    console.log(audio);
-    videoPlayerRef.current.srcObject = new MediaStream([track, audio]);
+    // console.log(audio);
+    try {
+      videoPlayerRef.current.srcObject = new MediaStream([track, audio]);
+    } catch (error) {
+      console.log(error.message);
+    }
     await peer.request('consumerResume');
+    await peer.request('audioConsumerResume');
   };
 
   /**
@@ -124,18 +101,12 @@ export default function useMediaSoupConsume(isLive, videoPlayerRef, roomId) {
 
   const initConsume = async peer => {
     const rptCapabilities = await getRtpCapabilities(peer);
-    const { consumerDevice, audioConsumerDevice } = await createConsumeDevice(rptCapabilities);
-    const { consumerTransport, audioConsumerTransport } = await createConsumeTransport(
-      peer,
-      consumerDevice,
-      audioConsumerDevice
-    );
+    const consumerDevice = await createConsumeDevice(rptCapabilities);
+    const consumerTransport = await createConsumeTransport(peer, consumerDevice);
     const { consumer, audioConsumer } = await connectWithConsumeRouter(
       peer,
       consumerDevice,
-      consumerTransport,
-      audioConsumerDevice,
-      audioConsumerTransport
+      consumerTransport
     );
     await handleVideoLiveLoad(peer, consumer, audioConsumer);
 
@@ -147,7 +118,7 @@ export default function useMediaSoupConsume(isLive, videoPlayerRef, roomId) {
     let newPeer = null;
     if (isLive && roomId) {
       const transport = new protooClient.WebSocketTransport(
-        `${process.env.REACT_APP_LIVE_SOCKET}/?room=${roomId}&peer=peer3&role=consume`
+        `${process.env.REACT_APP_LIVE_SOCKET}/?room=${roomId}&peer=${uuidv4()}&role=consume`
       );
       newPeer = new protooClient.Peer(transport);
 

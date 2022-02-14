@@ -21,12 +21,12 @@ export default function useStreamMedia(streamPlayerRef, device = 'web') {
       // 접속하는 디바이스가 모바일일 경우 전면 카메라로 방송시작
       if (device === 'mobile') {
         constraints = {
-          audio: { echoCancellation: false },
+          audio: { echoCancellation: false, channelCount: 2 },
           video: { facingMode: `${facingMode}` },
         };
       } else {
         constraints = {
-          audio: { echoCancellation: false },
+          audio: { echoCancellation: false, channelCount: 2 },
           video: { width: 1280, height: 720 },
         };
       }

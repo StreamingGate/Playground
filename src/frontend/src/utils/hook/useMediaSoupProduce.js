@@ -22,29 +22,17 @@ export default function useMediaSoupProduce(stream, roomId, userId) {
 
   const createProducerDevice = async rtpCapabilities => {
     const producerDevice = new mediasoupClient.Device();
-    const producerAudioDevice = new mediasoupClient.Device();
 
     await producerDevice.load({
       routerRtpCapabilities: rtpCapabilities,
     });
 
-    // 주석
-    await producerAudioDevice.load({
-      routerRtpCapabilities: rtpCapabilities,
-    });
-
-    return { producerDevice, producerAudioDevice };
+    return producerDevice;
   };
 
-  const createProducerTransport = async (peer, producerDevice, producerAudioDevice) => {
+  const createProducerTransport = async (peer, producerDevice) => {
     const producerTransportParams = await peer.request('createWebRtcTransport');
     const producerTransport = producerDevice.createSendTransport(producerTransportParams);
-
-    // 주석
-    const producerAudioTransportParams = await peer.request('createAudioWebRtcTransport');
-    const producerAudioTransport = producerAudioDevice.createSendTransport(
-      producerAudioTransportParams
-    );
 
     producerTransport.on('connect', async ({ dtlsParameters }, callback, errback) => {
       try {
@@ -59,73 +47,54 @@ export default function useMediaSoupProduce(stream, roomId, userId) {
 
     producerTransport.on('produce', async (parameters, callback, errback) => {
       try {
-        const { id } = await peer.request('produceProduce', {
-          kind: parameters.kind,
-          rtpParameters: parameters.rtpParameters,
-          appData: parameters.appData,
-        });
-        callback(id);
+        if (parameters.kind === 'video') {
+          const { id } = await peer.request('produceProduce', {
+            kind: parameters.kind,
+            rtpParameters: parameters.rtpParameters,
+            appData: parameters.appData,
+          });
+          callback(id);
+        } else if (parameters.kind === 'audio') {
+          const { id } = await peer.request('produceAudioProduce', {
+            kind: parameters.kind,
+            rtpParameters: parameters.rtpParameters,
+            appData: parameters.appData,
+          });
+          callback(id);
+        }
       } catch (error) {
         errback(error);
       }
     });
 
-    // let producerAudioTransport = null;
-
-    // 주석
-    producerAudioTransport.on('connect', async ({ dtlsParameters }, callback, errback) => {
-      console.log('hello');
-      try {
-        await peer.request('produceAudioConnect', {
-          dtlsParameters,
-        });
-        callback();
-      } catch (error) {
-        errback(error);
-      }
-    });
-
-    producerAudioTransport.on('produce', async (parameters, callback, errback) => {
-      try {
-        const { id } = await peer.request('produceAudioProduce', {
-          kind: parameters.kind,
-          rtpParameters: parameters.rtpParameters,
-          appData: parameters.appData,
-        });
-        callback(id);
-      } catch (error) {
-        errback(error);
-      }
-    });
-
-    return { producerTransport, producerAudioTransport };
+    return producerTransport;
   };
 
-  const connectWithProduceRouter = async (producerTransport, producerAudioTransport) => {
+  const connectWithProduceRouter = async producerTransport => {
     const producer = await producerTransport.produce({
       track: stream.videoTrack,
       // mediasoup params
-      encodings: [
-        {
-          rid: 'r0',
-          maxBitrate: 100000,
-          scalabilityMode: 'S1T3',
-        },
-        {
-          rid: 'r1',
-          maxBitrate: 300000,
-          scalabilityMode: 'S1T3',
-        },
-        {
-          rid: 'r2',
-          maxBitrate: 900000,
-          scalabilityMode: 'S1T3',
-        },
-      ],
-      // https://mediasoup.org/documentation/v3/mediasoup-client/api/#ProducerCodecOptions
-      codecOptions: {
-        videoGoogleStartBitrate: 1000,
-      },
+      // encodings: [
+      //   {
+      //     rid: 'r0',
+      //     maxBitrate: 100000,
+      //     scalabilityMode: 'S1T3',
+      //   },
+      //   {
+      //     rid: 'r1',
+      //     maxBitrate: 300000,
+      //     scalabilityMode: 'S1T3',
+      //   },
+      //   {
+      //     rid: 'r2',
+      //     maxBitrate: 900000,
+      //     scalabilityMode: 'S1T3',
+      //   },
+      // ],
+      // // https://mediasoup.org/documentation/v3/mediasoup-client/api/#ProducerCodecOptions
+      // codecOptions: {
+      //   videoGoogleStartBitrate: 1000,
+      // },
     });
 
     producer.on('trackend', () => {
@@ -137,8 +106,10 @@ export default function useMediaSoupProduce(stream, roomId, userId) {
     });
 
     // 주석
-    const audioProducer = await producerAudioTransport.produce({
+    // console.log(stream.audioTrack.getConstraints());
+    const audioProducer = await producerTransport.produce({
       track: stream.audioTrack,
+      // encodings: [{ dtx: false }],
     });
 
     audioProducer.on('trackend', () => {
@@ -161,13 +132,9 @@ export default function useMediaSoupProduce(stream, roomId, userId) {
 
   const initProduce = async peer => {
     const rptCapabilities = await getRtpCapabilites(peer);
-    const { producerDevice, producerAudioDevice } = await createProducerDevice(rptCapabilities);
-    const { producerTransport, producerAudioTransport } = await createProducerTransport(
-      peer,
-      producerDevice,
-      producerAudioDevice
-    );
-    const producer = await connectWithProduceRouter(producerTransport, producerAudioTransport);
+    const producerDevice = await createProducerDevice(rptCapabilities);
+    const producerTransport = await createProducerTransport(peer, producerDevice);
+    const producer = await connectWithProduceRouter(producerTransport);
 
     setProducer(producer);
   };
