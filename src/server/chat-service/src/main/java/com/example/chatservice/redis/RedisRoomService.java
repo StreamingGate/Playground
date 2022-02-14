@@ -39,21 +39,21 @@ public class RedisRoomService {
         return opsHashRoom.values(CHAT_ROOMS);
     }
 
-    public Room findById(String roomId) {
-        return opsHashRoom.get(CHAT_ROOMS, roomId);
+    public Room findById(String roomUuid) {
+        return opsHashRoom.get(CHAT_ROOMS, roomUuid);
     }
 
-    public Room create(String uuid, String hostUuid) {
-        Room room = new Room(uuid, hostUuid);
+    public Room create(String roomUuid, String hostUuid) {
+        Room room = new Room(roomUuid, hostUuid);
         opsHashRoom.put(CHAT_ROOMS, room.getUuid(), room);
         return room;
     }
 
-    public void addPinnedChat(String roomId, ChatProduce pinnedChat) throws CustomChatException {
+    public void addPinnedChat(String roomUuid, ChatProduce pinnedChat) throws CustomChatException {
         if (!pinnedChat.getSenderRole().equals(SenderRole.STREAMER))
-            throw new CustomChatException(ErrorCode.C001, roomId);
+            throw new CustomChatException(ErrorCode.C001, roomUuid);
 
-        Room room = opsHashRoom.get(CHAT_ROOMS, roomId);
+        Room room = opsHashRoom.get(CHAT_ROOMS, roomUuid);
         room.updatePinnedChat(new ChatConsume(pinnedChat));
         opsHashRoom.put(CHAT_ROOMS, room.getUuid(), room); // update
     }
@@ -62,39 +62,39 @@ public class RedisRoomService {
      * 채팅방 입장 : "현재 서버"에 roomId에 해당하는 topic이 없으면 맵에 저장해놓고, pub/sub 통신을 하기 위해 리스너를
      * 추가한다.
      */
-    public int enter(String roomId) {
-        getOrAddTopic(roomId);
-        Room room = opsHashRoom.get(CHAT_ROOMS, roomId);
+    public int enter(String roomUuid, String userUuid) {
+        getOrAddTopic(roomUuid);
+        Room room = opsHashRoom.get(CHAT_ROOMS, roomUuid);
 
-        int userCnt = room.addUser();
+        int userCnt = room.addUser(userUuid);
         log.info("add user:" + room.getUuid() + " " + userCnt + "명");
         opsHashRoom.put(CHAT_ROOMS, room.getUuid(), room); // update
         return userCnt;
     }
 
-    public int exit(String roomId) throws IllegalArgumentException {
-        Room room = opsHashRoom.get(CHAT_ROOMS, roomId);
+    public int exit(String roomUuid, String userUuid) throws IllegalArgumentException {
+        Room room = opsHashRoom.get(CHAT_ROOMS, roomUuid);
         if (room == null)
             throw new IllegalArgumentException("존재하지 않는 방입니다.");
-        int userCnt = room.removeUser();
+        int userCnt = room.removeUser(userUuid);
         log.info("remove user:" + room.getUuid() + " " + userCnt + "명");
         opsHashRoom.put(CHAT_ROOMS, room.getUuid(), room); // update
         return userCnt;
     }
 
-    public int getUserCnt(String roomId) throws IllegalArgumentException {
-        Room room = opsHashRoom.get(CHAT_ROOMS, roomId);
+    public int getUserCnt(String roomUuid) throws IllegalArgumentException {
+        Room room = opsHashRoom.get(CHAT_ROOMS, roomUuid);
         if (room == null)
             throw new IllegalArgumentException("존재하지 않는 방입니다.");
-        return room.getUserCnt();
+        return room.getUsers().size();
     }
 
-    public ChannelTopic getOrAddTopic(String roomId) {
-        ChannelTopic channelTopic = topics.get(roomId);
+    public ChannelTopic getOrAddTopic(String roomUuid) {
+        ChannelTopic channelTopic = topics.get(roomUuid);
         if (channelTopic == null) {
-            channelTopic = new ChannelTopic(roomId);
+            channelTopic = new ChannelTopic(roomUuid);
             redisMessageListener.addMessageListener(redisSubscriber, channelTopic);
-            topics.put(roomId, channelTopic);
+            topics.put(roomUuid, channelTopic);
         }
         return channelTopic;
     }

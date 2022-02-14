@@ -1,6 +1,8 @@
 package com.example.chatservice.dto.room;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.example.chatservice.dto.chat.ChatConsume;
 import lombok.Getter;
@@ -14,26 +16,25 @@ public class Room implements Serializable {
 
     private String uuid;
     private String hostUuid;
-    private int userCnt;
+    private Set<String> users = new HashSet<>();
     private ChatConsume pinnedChat;
 
     public Room(String uuid, String hostUuid) {
         this.uuid = uuid;
         this.hostUuid = hostUuid;
-        this.userCnt = 0;
     }
 
     public void updatePinnedChat(ChatConsume pinnedChats){
         this.pinnedChat = pinnedChats;
     }
 
-    public int addUser() {
-        this.userCnt += 1;
-        return this.userCnt;
+    public int addUser(String uuid) {
+        this.users.add(uuid);
+        return users.size();
     }
 
-    public int removeUser() {
-        this.userCnt -= 1;
-        return this.userCnt;
+    public int removeUser(String uuid) {
+        this.users.remove(uuid);
+        return users.size();
     }
 }

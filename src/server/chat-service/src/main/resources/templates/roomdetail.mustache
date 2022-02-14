@@ -26,10 +26,10 @@
     // websocket & stomp initialize
     let sock = new SockJS("/ws");
     let ws = Stomp.over(sock);
+
     let roomTitle = document.querySelector("#roomId");
     let msgList = document.querySelector("#msglist");
     let userCntElem = document.querySelector("#userCnt");
-
     let data = {
         roomId: localStorage.getItem('wschat.roomId'),
         room: {},
@@ -39,13 +39,14 @@
         pinnedChats: []
     }
 
+    /* 방 정보 조회 */
     findRoom = function () {
         axios.get('/chat/room/' + data.roomId).then(response => {
-            data.room = response.data.name;
+            data.room = response.data;
             data.pinnedChats = response.data.pinnedChats;
             console.log("resp:", response.data);
 
-            document.querySelector("#roomId").innerText = data.room;
+            document.querySelector("#roomId").innerText = data.room.uuid+ ` 방장: ${data.room.hostUuid}`;
 
             if (data.pinnedChats !== undefined) {
                 for (let i = 0; i < data.pinnedChats.length; i++) {
@@ -56,6 +57,8 @@
             }
         });
     }
+
+    /* 채팅 메시지 전송 */
     sendMessage = () => {
         console.log("send btn");
         const inputMsg = document.querySelector("#inputMsg").value;
@@ -69,6 +72,8 @@
                     message: inputMsg,
                 }));
     }
+
+    /* 고정 메시지 전송 */
     pinMessage = (isFake, senderRole) => {
         console.log("pin btn");
         let inputVal = "";
@@ -95,19 +100,25 @@
 
     findRoom();
 
-    // pub/sub event
-    ws.connect({}, function (frame) {
-        ws.subscribe("/topic/chat/room/" + data.roomId, function (resp) {
-            console.log("received");
-            const chat = JSON.parse(resp.body);
-            recvMessage(chat);
-        });
+    ws.connect({
+            uuid: `${data.room.uuid}`,
+            senderUuid: `${data.senderUuid}`,
+            token: `${localStorage.getItem('wschat.token')}`
+        }, function (frame) {
+            /* 채팅, 현재 접속자 수 subscribe */
+            ws.subscribe("/topic/chat/room/" + data.roomId, function (resp) {
+                console.log("received");
+                const chat = JSON.parse(resp.body);
+                recvMessage(chat);
+            }, {
+                uuid: `${data.senderUuid}`
+            });
 
         // 현재 접속자 수
-        ws.subscribe("/topic/user-cnt/room/" + data.roomId, function (message) {
-            console.log(message);
-            userCntElem.innerText=JSON.parse(message.body)+' 명 접속중';
-        });
+        // ws.subscribe("/topic/user-cnt/room/" + data.roomId, function (message) {
+        //     console.log(message);
+        //     userCntElem.innerText=JSON.parse(message.body)+' 명 접속중';
+        // });
 
         // 에러메시지 핸들링
         // ws.subscribe('/user/'+data.uuid+'/queue/errors', function (message) {
@@ -119,7 +130,7 @@
         alert("error " + error);
     });
 
-
+    /* 창이 닫히기 직전 disconnect 전송 */
     window.onbeforeunload = function(e){
         if(ws !== null) {
             ws.disconnect(function() {

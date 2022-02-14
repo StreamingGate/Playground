@@ -26,8 +26,8 @@ import static com.example.chatservice.exception.ErrorCode.C001;
 public class RedisPubSubController {
 
     private static final String CHAT_DESTINATION="/topic/chat/room/";
-    private static final String USER_CNT_DESTINATION="/topic/user-cnt/room/";
-    private static final String ERROR_DESTINATION="/queue/errors";
+//    private static final String USER_CNT_DESTINATION="/topic/user-cnt/room/";
+//    private static final String ERROR_DESTINATION="/queue/errors";
     private final RedisRoomService redisRoomService;
 
     @MessageMapping("/chat/message/{roomId}")
@@ -44,9 +44,9 @@ public class RedisPubSubController {
     }
 
     /* client에서 채팅방 나가기 직전에 보낸다 */
-    @MessageMapping("/user-cnt/room/{roomId}/exit")
-    public void exit(@DestinationVariable String roomId) throws Exception{
-        int userCnt = redisRoomService.exit(roomId);
-        ClientMessaging.publish(USER_CNT_DESTINATION+roomId, userCnt);
-    }
+//    @MessageMapping("/user-cnt/room/{roomId}/exit")
+//    public void exit(@DestinationVariable String roomId) throws Exception{
+//        int userCnt = redisRoomService.exit(roomId);
+//        ClientMessaging.publish(USER_CNT_DESTINATION+roomId, userCnt);
+//    }
 }
