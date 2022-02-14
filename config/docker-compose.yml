@@ -122,6 +122,20 @@ services:
     networks:
       - sg-network
 
+  status-service:
+    image: rlagksml99/status-service:latest
+    depends_on:
+      - pg-mariadb
+      - redis
+    links:
+      - pg-mariadb
+      - redis
+    restart: always
+    ports:
+      - "9999:9999"
+    networks:
+      - sg-network
+
 networks:
   sg-network:
     name: sg-network
