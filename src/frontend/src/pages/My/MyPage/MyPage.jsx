@@ -37,6 +37,8 @@ function MyPage() {
     threshold: 0,
   });
 
+  console.log(data);
+
   useEffect(() => {
     if (!['watch', 'liked', 'upload'].includes(type)) {
       navigate('/mypage/watched');
@@ -50,32 +52,34 @@ function MyPage() {
   }, [type]);
 
   return (
-    <S.HistoryPageContainer>
-      <Typography>{myPageTitle}</Typography>
-      <S.MyVideoContainer>
-        {data?.pages.map((group, i) => (
-          <Fragment key={i}>
-            {group.rooms.map(liveInfo => (
-              <VideoOverview
-                key={`live_${liveInfo.id}`}
-                direction='horizontal'
-                videoInfo={liveInfo}
-                isLibrary={type === 'upload'}
-              />
-            ))}
-            {group.videos.map(videoInfo => (
-              <VideoOverview
-                key={`video_${videoInfo.id}`}
-                direction='horizontal'
-                videoInfo={videoInfo}
-                isLibrary={type === 'upload'}
-              />
-            ))}
-          </Fragment>
-        ))}
-      </S.MyVideoContainer>
+    <>
+      <S.HistoryPageContainer>
+        <Typography>{myPageTitle}</Typography>
+        <S.MyVideoContainer>
+          {data?.pages.map((group, i) => (
+            <Fragment key={i}>
+              {group.rooms.map(liveInfo => (
+                <VideoOverview
+                  key={`live_${liveInfo.id}`}
+                  direction='horizontal'
+                  videoInfo={liveInfo}
+                  isLibrary={type === 'upload'}
+                />
+              ))}
+              {group.videos.map(videoInfo => (
+                <VideoOverview
+                  key={`video_${videoInfo.id}`}
+                  direction='horizontal'
+                  videoInfo={videoInfo}
+                  isLibrary={type === 'upload'}
+                />
+              ))}
+            </Fragment>
+          ))}
+        </S.MyVideoContainer>
+      </S.HistoryPageContainer>
       <div ref={scrollFlag} />
-    </S.HistoryPageContainer>
+    </>
   );
 }
 
