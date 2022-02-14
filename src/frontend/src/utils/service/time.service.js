@@ -2,7 +2,11 @@ const processVideoUploadTime = time => {
   const now = new Date();
   const uploadTime = new Date(time);
 
-  const seconds = Math.floor((now - uploadTime) / 1000);
+  const convertedUploadTime = new Date(
+    uploadTime.getTime() - uploadTime.getTimezoneOffset() * 60 * 1000
+  );
+
+  const seconds = Math.floor((now - convertedUploadTime) / 1000);
   let difference = seconds / 31536000;
 
   if (difference > 1) {
