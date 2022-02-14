@@ -6,20 +6,14 @@ import lombok.Getter;
 public class CustomChatException extends RuntimeException {
 
     private ErrorCode errorCode;
-    private String roomId;
-    private String message;
+    private String uuid; //room or user uuid
 
     public CustomChatException() {
         super();
     }
 
-    public CustomChatException(ErrorCode errorCode) {
+    public CustomChatException(ErrorCode errorCode, String uuid) {
         this.errorCode = errorCode;
-        this.message = errorCode.getMessage();
-    }
-
-    public CustomChatException(ErrorCode errorCode, String roomId) {
-        this.errorCode = errorCode;
-        this.roomId = roomId;
+        this.uuid = uuid;
     }
 }
