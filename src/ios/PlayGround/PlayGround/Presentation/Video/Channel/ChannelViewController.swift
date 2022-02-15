@@ -93,6 +93,16 @@ class ChannelViewController: UIViewController {
         self.navigationController?.popViewController(animated: true)
     }
     
+    @IBAction func friendRequestButtonDidTap(_ sender: Any) {
+        guard let channelInfo = self.viewModel.currentChannel, let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else { return }
+        friendRequestButton.isEnabled = false
+        MainServiceAPI.shared.sendFriendRequest(uuid: uuid, target: channelInfo.uuid) { result in
+            DispatchQueue.main.async {
+                self.friendRequestButton.isEnabled = true
+                guard let _ = NetworkResultManager.shared.analyze(result: result, vc: self, coordinator: self.navVC?.coordinator) else { return }
+                self.friendRequestButton.isEnabled = true
+            }
+        }
     }
 }
 
