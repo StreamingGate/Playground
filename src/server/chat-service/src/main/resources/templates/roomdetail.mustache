@@ -140,15 +140,15 @@
     }
 
     /* 창이 닫히기 직전 disconnect 전송(정상 작동 확인함) */
-    window.onbeforeunload = function(e){
-        if(ws !== null) {
-            ws.disconnect(function() {
-                console.log("disconnected..");
-            }, {
-                uuid: localStorage.getItem('wschat.senderUuid'),
-                roomUuid: localStorage.getItem('wschat.roomUuid'),
-                senderRole: "VIEWER"
-            });
-        }
-    }
+    // window.onbeforeunload = function(e){
+    //     if(ws !== null) {
+    //         ws.disconnect(function() {
+    //             console.log("disconnected..");
+    //         }, {
+    //             uuid: localStorage.getItem('wschat.senderUuid'),
+    //             roomUuid: localStorage.getItem('wschat.roomUuid'),
+    //             senderRole: "VIEWER"
+    //         });
+    //     }
+    // }
 </script>
