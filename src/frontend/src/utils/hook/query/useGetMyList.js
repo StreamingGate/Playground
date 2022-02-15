@@ -55,7 +55,6 @@ export default function useGetMyList(type, uuid) {
   };
 
   const getMyUploadListNextPage = lastPage => {
-    console.log(lastPage);
     if (lastPage.length === 0) {
       return undefined;
     }

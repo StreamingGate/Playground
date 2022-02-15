@@ -45,6 +45,7 @@ export default function useStatusSocket() {
       const newClient = new Client();
 
       newClient.connectHeaders = { token };
+      newClient.disconnectHeaders = { uuid: userId };
       newClient.webSocketFactory = () => {
         return new SockJS(process.env.REACT_APP_USER_STATUS_SOCKET);
       };
