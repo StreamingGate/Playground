@@ -20,6 +20,7 @@ class PlayViewController: UIViewController {
     var videoTrack: RTCVideoTrack?
     private var delegate: RoomListener?
     var roomId = ""
+    @IBOutlet weak var profileButton: UIButton!
     
     // player
     @IBOutlet weak var playView: PlayerView!
@@ -213,6 +214,7 @@ class PlayViewController: UIViewController {
     func setupUI() {
         stretchButton.setTitle("", for: .normal)
         chatSendButton.setTitle("", for: .normal)
+        profileButton.setTitle("", for: .normal)
         self.view.backgroundColor = UIColor.black
         titleLabel.font = UIFont.Component
         viewLabel.font = UIFont.caption
@@ -648,6 +650,17 @@ class PlayViewController: UIViewController {
         } else {
             let value = UIInterfaceOrientation.landscapeRight.rawValue
             UIDevice.current.setValue(value, forKey: "orientation")
+        }
+    }
+    
+    @IBAction func profileDidTap(_ sender: Any) {
+        self.setPlayViewMinimizing()
+        if self.viewModel.isLive {
+            guard let liveInfo = self.viewModel.roomInfo else { return }
+            self.coordinator?.showChannel(uuid: liveInfo.hostUuid)
+        } else {
+            guard let videoInfo = self.viewModel.videoInfo else { return }
+            self.coordinator?.showChannel(uuid: videoInfo.uploaderUuid)
         }
     }
     

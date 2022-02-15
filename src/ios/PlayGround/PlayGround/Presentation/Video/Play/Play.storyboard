@@ -371,6 +371,14 @@
                                         <color key="textColor" name="PGOrange"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QEJ-ls-ayi">
+                                        <rect key="frame" x="10" y="3.5" width="67" height="43"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain"/>
+                                        <connections>
+                                            <action selector="profileDidTap:" destination="zL7-Q9-x2b" eventType="touchUpInside" id="99q-9X-Doe"/>
+                                        </connections>
+                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ud5-t4-aqi">
                                         <rect key="frame" x="320.5" y="4.5" width="83.5" height="40.5"/>
                                         <state key="normal" title="Button"/>
@@ -387,12 +395,16 @@
                                     <constraint firstItem="ud5-t4-aqi" firstAttribute="centerY" secondItem="XLe-Cl-OLS" secondAttribute="centerY" id="6IF-0L-Mlb"/>
                                     <constraint firstItem="XLe-Cl-OLS" firstAttribute="centerY" secondItem="u2M-AS-nkI" secondAttribute="centerY" id="8D2-SC-uwS"/>
                                     <constraint firstItem="9Ke-YZ-YXI" firstAttribute="leading" secondItem="v1h-me-VQ0" secondAttribute="trailing" constant="5" id="Cnh-6x-VKc"/>
+                                    <constraint firstItem="QEJ-ls-ayi" firstAttribute="centerY" secondItem="v1h-me-VQ0" secondAttribute="centerY" id="E0g-zl-eH3"/>
                                     <constraint firstAttribute="height" constant="50" id="FWm-HE-flz"/>
+                                    <constraint firstItem="QEJ-ls-ayi" firstAttribute="leading" secondItem="v1h-me-VQ0" secondAttribute="leading" constant="-10" id="IJC-1t-Gh7"/>
                                     <constraint firstItem="ud5-t4-aqi" firstAttribute="top" secondItem="XLe-Cl-OLS" secondAttribute="top" constant="-10" id="OFP-H5-3LV"/>
                                     <constraint firstItem="ud5-t4-aqi" firstAttribute="centerX" secondItem="XLe-Cl-OLS" secondAttribute="centerX" id="WsB-Zs-siu"/>
                                     <constraint firstItem="v1h-me-VQ0" firstAttribute="leading" secondItem="u2M-AS-nkI" secondAttribute="leading" constant="20" id="hB9-uH-omx"/>
                                     <constraint firstAttribute="trailing" secondItem="XLe-Cl-OLS" secondAttribute="trailing" constant="20" id="iQM-YJ-J55"/>
                                     <constraint firstItem="v1h-me-VQ0" firstAttribute="centerY" secondItem="u2M-AS-nkI" secondAttribute="centerY" id="mdl-68-wV6"/>
+                                    <constraint firstItem="QEJ-ls-ayi" firstAttribute="top" secondItem="v1h-me-VQ0" secondAttribute="top" constant="-5" id="okU-7J-wjm"/>
+                                    <constraint firstItem="QEJ-ls-ayi" firstAttribute="trailing" secondItem="9Ke-YZ-YXI" secondAttribute="trailing" constant="10" id="tPP-4m-XvD"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wpe-05-P7u">
@@ -607,6 +619,7 @@
                         <outlet property="playViewSingleTap" destination="QGS-uA-Xj7" id="xHD-m0-0KG"/>
                         <outlet property="playViewTop" destination="S62-GT-XAz" id="qIm-Mw-v25"/>
                         <outlet property="playViewWidth" destination="v2O-eg-KOu" id="vaK-bl-PQP"/>
+                        <outlet property="profileButton" destination="QEJ-ls-ayi" id="7un-Wa-7SV"/>
                         <outlet property="remoteVideoView" destination="Sil-jT-MW1" id="0nV-BE-M4t"/>
                         <outlet property="remoteVideoViewLeading" destination="qs9-wW-CVM" id="1vw-ue-2YF"/>
                         <outlet property="reportButton" destination="2SI-sW-WsO" id="UjP-4J-AFh"/>

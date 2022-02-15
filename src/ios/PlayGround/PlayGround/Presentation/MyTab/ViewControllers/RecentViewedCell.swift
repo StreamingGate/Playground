@@ -26,7 +26,6 @@ class RecentViewedCell: UICollectionViewCell {
      실시간 스트리밍 UI 세팅
      */
     func setupLive(info: GeneralVideo) {
-        thumbnailImageView.image = nil
         titleLabel.text = info.title
         channelNicknameLabel.text = "\(info.hostNickname ?? "익명")"
 //        liveSign.isHidden = false
@@ -38,7 +37,6 @@ class RecentViewedCell: UICollectionViewCell {
      업로드된 비디오 UI 세팅
      */
     func setupVideo(info: GeneralVideo) {
-        thumbnailImageView.image = nil
         titleLabel.text = info.title
 //        liveSign.isHidden = true
         thumbnailImageView.downloadImageFrom(link: info.thumbnail, contentMode: .scaleAspectFit)
