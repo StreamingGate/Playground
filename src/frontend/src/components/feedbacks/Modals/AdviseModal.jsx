@@ -8,12 +8,27 @@ import { Dialog } from '@components/feedbacks';
 import { Button } from '@components/buttons';
 import { Typography } from '@components/cores';
 
-function AdviseModal({ content, btnContent, btnPos, onClick }) {
+function AdviseModal({
+  content,
+  type,
+  btnContent,
+  cancelBtnContent,
+  btnPos,
+  onClick,
+  onCancelClick,
+}) {
   const modal = modalService.useModal();
 
   const handleHideBtnClick = () => {
     if (onClick) {
       onClick();
+    }
+    modal.hide();
+  };
+
+  const handleCancelBtnClick = () => {
+    if (onCancelClick) {
+      onCancelClick();
     }
     modal.hide();
   };
@@ -25,6 +40,11 @@ function AdviseModal({ content, btnContent, btnPos, onClick }) {
           <Typography type='component'>{content}</Typography>
         </S.AdviseModalContent>
         <S.AdviseModalAction position={btnPos}>
+          {type === 'cancel' && (
+            <S.CancelButton variant='text' onClick={handleCancelBtnClick}>
+              {cancelBtnContent}
+            </S.CancelButton>
+          )}
           <Button onClick={handleHideBtnClick}>{btnContent}</Button>
         </S.AdviseModalAction>
       </S.AdviseModalContainer>
