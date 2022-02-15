@@ -75,7 +75,7 @@ class StatusServiceAPI {
     
     func disconnectToSocket() {
         guard let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else { return }
-        socketClient.disconnectWithHeader(uuid: uuid)
+        socketClient.disconnectWithHeader(header: ["uuid": uuid])
         
     }
     
