@@ -17,7 +17,7 @@ function StudioPage() {
   const { roomId } = useParams();
   const userId = lStorageService.getItem('uuid');
 
-  const { producer } = useMediaSoupProduce(stream, roomId, userId);
+  const { producer, newPeer } = useMediaSoupProduce(stream, roomId, userId);
 
   const [isMuteToggle, setMuteToggle] = useState(false);
   const [isCounterStop, setIsCounterStop] = useState(false);
@@ -27,9 +27,10 @@ function StudioPage() {
     setMuteToggle(prev => !prev);
   };
 
-  const handleStopStreamBtnClick = () => {
+  const handleStopStreamBtnClick = async () => {
     stopStream();
     setIsCounterStop(true);
+    await newPeer.request('closeProducer', { producerId: producer.id });
   };
 
   return (
