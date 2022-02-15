@@ -20,6 +20,8 @@ function VideoOverview({ direction, isLibrary, videoInfo, isLive }) {
     uuid,
     hostProfileImage,
     uploaderProfileImage,
+    hostUuid,
+    uploaderUuid,
   } = videoInfo;
   const navigate = useNavigate();
 
@@ -75,6 +77,16 @@ function VideoOverview({ direction, isLibrary, videoInfo, isLive }) {
     navigate(path);
   };
 
+  const handleProfileClick = e => {
+    e.stopPropagation();
+    if (hostNickname) {
+      navigate(`/channel/${hostUuid}`);
+    }
+    if (uploaderNickname) {
+      navigate(`/channel/${uploaderUuid}`);
+    }
+  };
+
   return (
     <S.ViedeoOverviewContainer direction={direction} onClick={handleVideoClick}>
       <S.ThumbNailContainer>
@@ -87,7 +99,11 @@ function VideoOverview({ direction, isLibrary, videoInfo, isLive }) {
       <S.VideoInfoContainer>
         {direction === 'vertical' && (
           <div>
-            <Avatar size='xs' imgSrc={isLive ? hostProfileImage : uploaderProfileImage} />
+            <Avatar
+              size='xs'
+              imgSrc={isLive ? hostProfileImage : uploaderProfileImage}
+              onClick={handleProfileClick}
+            />
           </div>
         )}
         <S.VideoInfo>

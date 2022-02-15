@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import * as S from './VideoMetaData.style';
@@ -22,6 +22,7 @@ function ActionButton({ element, content, onClick }) {
 function VideoMetaData({ videoData, playType }) {
   const { id } = useParams();
   const userId = lStorageService.getItem('uuid');
+  const navigate = useNavigate();
 
   const [isOverviewExpand, setOverviewExpand] = useState(false);
   const [preferToggleState, setPreferToggleState] = useState({ liked: false, disliked: false });
@@ -119,6 +120,14 @@ function VideoMetaData({ videoData, playType }) {
     });
   };
 
+  const handleProfilClickBtn = () => {
+    if (playType.current === 'video') {
+      navigate(`/channel/${videoData.uploaderUuid}`);
+    } else if (playType.current === 'live') {
+      navigate(`/channel/${videoData.hostUuid}`);
+    }
+  };
+
   if (!videoData) {
     return null;
   }
@@ -145,10 +154,20 @@ function VideoMetaData({ videoData, playType }) {
         </S.ActionContainer>
       </S.VideoInfoContainer>
       <S.VideoSubInfoContainer>
-        <S.MyProfile size='md' imgSrc={videoData.uploaderProfileImage} />
+        <S.MyProfile
+          onClick={handleProfilClickBtn}
+          size='md'
+          imgSrc={
+            playType.current === 'video'
+              ? videoData.uploaderProfileImage
+              : `${process.env.REACT_APP_PROFILE_IMAGE}/${videoData.hostUuid}`
+          }
+        />
         <S.VideoSubInfo>
           <S.ChannelInfo>
-            <S.ChannelName>채널 이름</S.ChannelName>
+            <S.ChannelName>
+              {playType.current === 'video' ? videoData.uploaderNickname : videoData.hostNickname}
+            </S.ChannelName>
             <S.SubscribePeople type='bottomTab'>{videoData.subscriberCnt}명</S.SubscribePeople>
           </S.ChannelInfo>
           {videoData.content && (
