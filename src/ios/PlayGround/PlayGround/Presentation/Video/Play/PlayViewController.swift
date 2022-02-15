@@ -150,8 +150,9 @@ class PlayViewController: UIViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-//        self.socket?.disconnect()
+        self.socket?.disconnect()
 //        self.client = nil
+        StatusServiceAPI.shared.stopWatchingVideo()
         self.client?.disconneectRecvTransport()
         if let observer = timeObserver {
             self.playView.player?.removeTimeObserver(observer)
@@ -392,7 +393,9 @@ class PlayViewController: UIViewController {
             .sink { [weak self] currentInfo in
                 guard let self = self, let info = currentInfo else { return }
                 if self.viewModel.isLive == true { return }
+                StatusServiceAPI.shared.startWatchingVideo(id: self.viewModel.currentInfo?.id ?? 0, type: 0, videoRoomUuid: info.videoUuid ?? "", title: info.title)
                 self.titleLabel.text = info.title
+                self.channelNicknameLabel.text = info.uploaderNickname
                 self.categoryLabel.text = "#\(self.viewModel.categoryDic[info.category] ?? "기타")"
                 self.miniTitleLabel.text = info.title
                 self.channelProfileImageView.downloadImageFrom(link: info.uploaderProfileImage, contentMode: .scaleAspectFill)
@@ -406,7 +409,9 @@ class PlayViewController: UIViewController {
             .sink { [weak self] currentInfo in
                 guard let self = self, let info = currentInfo else { return }
                 if self.viewModel.isLive == false { return }
+                StatusServiceAPI.shared.startWatchingVideo(id: info.roomId, type: 1, videoRoomUuid: info.uuid ?? "", title: info.title)
                 self.titleLabel.text = info.title
+                self.channelNicknameLabel.text = info.hostNickname ?? "익명"
                 self.categoryLabel.text = "#\(self.viewModel.categoryDic[info.category] ?? "기타")"
                 self.miniTitleLabel.text = info.title
                 self.channelProfileImageView.downloadImageFrom(link: "https://d8knntbqcc7jf.cloudfront.net/profiles/\(info.hostUuid)", contentMode: .scaleAspectFill)

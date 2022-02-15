@@ -50,10 +50,11 @@ class HomeTabCoordinator: Coordinator {
         navigation.pushViewController(searchVC, animated: true)
     }
     
-    func showFriendList() {
+    func showFriendList(vc: HomeListViewController) {
         guard let popOverVC = UIStoryboard(name: "Friend", bundle: nil).instantiateViewController(withIdentifier: "FriendListViewController" ) as? FriendListViewController else { return }
         popOverVC.modalPresentationStyle = .overFullScreen
         popOverVC.modalTransitionStyle = .crossDissolve
+        popOverVC.transitionDelegate = vc
         parentCoordinator?.navigation.viewControllers.last?.present(popOverVC, animated: true, completion: nil)
     }
     

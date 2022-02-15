@@ -197,6 +197,9 @@
                                                 </fragment>
                                             </attributedString>
                                         </buttonConfiguration>
+                                        <connections>
+                                            <action selector="watchButtonDidTap:" destination="kDg-mE-o7a" eventType="touchUpInside" id="HPs-KQ-j0Q"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1YT-qE-dVL">
                                         <rect key="frame" x="20" y="120" width="224" height="30"/>

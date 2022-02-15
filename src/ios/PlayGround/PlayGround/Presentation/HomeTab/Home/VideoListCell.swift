@@ -37,8 +37,8 @@ class VideoListCell: UITableViewCell {
         titleLabel.text = info.title
         nicknameLabel.text = info.hostNickname
         liveSign.isHidden = false
-        guard let create = info.createdAt, let uuid = info.uuid else { return }
-        nicknameLabel.text = "\(info.hostNickname ?? "익명") • \(create.getDateString())"
+        guard let create = info.createdAt, let uuid = info.uuid, let nickname = info.hostNickname else { return }
+        nicknameLabel.text = "\(nickname) • \(create.getDateString())"
         thumbnailImageView.downloadImageFrom(link: "https://d8knntbqcc7jf.cloudfront.net/thumbnail/\(uuid)", contentMode: .scaleAspectFit)
     }
     
@@ -50,8 +50,8 @@ class VideoListCell: UITableViewCell {
         titleLabel.text = info.title
         liveSign.isHidden = true
         thumbnailImageView.downloadImageFrom(link: info.thumbnail, contentMode: .scaleAspectFit)
-        guard let create = info.createdAt else { return }
-        nicknameLabel.text = "\(info.uploaderNickname ?? "익명") • 조회수 \(info.hits ?? 0)회 • \(create.getDateString())"
+        guard let create = info.createdAt, let nickname = info.uploaderNickname else { return }
+        nicknameLabel.text = "\(nickname) • 조회수 \(info.hits ?? 0)회 • \(create.getDateString())"
     }
     
     @IBAction func channelProfileDidTap(_ sender: Any) {

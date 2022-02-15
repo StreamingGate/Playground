@@ -17,8 +17,10 @@ class MyPageViewController: UIViewController {
     @IBOutlet weak var myVideoLabel: UILabel!
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var collectionViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var collectionView: UICollectionView!
     var navVC: MyPageNavigationController?
     private var cancellable: Set<AnyCancellable> = []
+    let viewModel = MyPageViewModel()
     
     // MARK: - View LifeCycle
     override func viewDidLoad() {
@@ -31,6 +33,7 @@ class MyPageViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.viewModel.loadWachedList(vc: self, coordinator: navVC?.coordinator)
         AppUtility.lockOrientation(.portrait)
     }
     
@@ -58,6 +61,16 @@ class MyPageViewController: UIViewController {
                 guard let self = self, let userInfo = user else { return }
                 self.profileImageView.downloadImageFrom(link: userInfo.profileImage, contentMode: .scaleAspectFill)
             }.store(in: &cancellable)
+        self.viewModel.$myList.receive(on: DispatchQueue.main, options: nil)
+            .sink { [weak self] list in
+                guard let self = self else { return }
+                if list.count == 0 {
+                    self.collectionViewHeight.constant = 0
+                } else {
+                    self.collectionViewHeight.constant = 139
+                }
+                self.collectionView.reloadData()
+            }.store(in: &cancellable)
     }
     
     // MARK: - Button Action
@@ -81,17 +94,22 @@ class MyPageViewController: UIViewController {
 // MARK: - Recently Viewed Video List (CollectionView)
 extension MyPageViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        return self.viewModel.myList.count >= 10 ? 10 : self.viewModel.myList.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RecentViewedCell", for: indexPath) as? RecentViewedCell else { return UICollectionViewCell() }
         cell.setupUI()
+        if self.viewModel.myList[indexPath.item].uploaderNickname == nil {
+            cell.setupLive(info: self.viewModel.myList[indexPath.item])
+        } else {
+            cell.setupVideo(info: self.viewModel.myList[indexPath.item])
+        }
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.navVC?.coordinator?.showPlayer()
+        self.navVC?.coordinator?.showPlayer(info: self.viewModel.myList[indexPath.row])
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

@@ -22,7 +22,7 @@ DEPENDENCIES:
   - mediasoup_ios_client (~> 1.3.5)
   - PromiseKit (~> 6.8)
   - Starscream (~> 3.0.2)
-  - StompClientLib
+  - StompClientLib (from `https://github.com/Chaehui-Seo/StompClientLib`)
   - SwiftKeychainWrapper
   - SwiftyJSON (~> 4.0)
 
@@ -33,9 +33,17 @@ SPEC REPOS:
     - PromiseKit
     - SocketRocket
     - Starscream
-    - StompClientLib
     - SwiftKeychainWrapper
     - SwiftyJSON
+
+EXTERNAL SOURCES:
+  StompClientLib:
+    :git: https://github.com/Chaehui-Seo/StompClientLib
+
+CHECKOUT OPTIONS:
+  StompClientLib:
+    :commit: b9e461a1586386ff4a9b39e2a03f9872ee305d15
+    :git: https://github.com/Chaehui-Seo/StompClientLib
 
 SPEC CHECKSUMS:
   Alamofire: 1c4fb5369c3fe93d2857c780d8bbe09f06f97e7c
@@ -47,6 +55,6 @@ SPEC CHECKSUMS:
   SwiftKeychainWrapper: 807ba1d63c33a7d0613288512399cd1eda1e470c
   SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
 
-PODFILE CHECKSUM: 3942dae7c5994eb0cf84b1a6568b2663e2743d3b
+PODFILE CHECKSUM: c664e076a5337bd3568d78fad1ee66d1f67e553e
 
 COCOAPODS: 1.11.2

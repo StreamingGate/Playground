@@ -133,7 +133,7 @@ class HomeListViewController: UIViewController {
     }
     
     @IBAction func friendButtonDidTap(_ sender: Any) {
-        navVC?.coordinator?.showFriendList()
+        navVC?.coordinator?.showFriendList(vc : self)
     }
 }
 
@@ -253,5 +253,11 @@ extension HomeListViewController: UITableViewDataSource, UITableViewDelegate {
             self.playerView.player?.play()
             self.playerView.player?.isMuted = true
         }
+    }
+}
+
+extension HomeListViewController: TransitionDelegate {
+    func showPlayer(info: GeneralVideo) {
+        self.navVC?.coordinator?.showPlayer(info: info)
     }
 }
