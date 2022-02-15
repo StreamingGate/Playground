@@ -15,7 +15,6 @@ public class Room implements Serializable {
     private static final long serialVersionUID = 6494678977089006639L;
 
     private String uuid;
-    private String hostUuid;
     private Set<String> users = new HashSet<>();
     private ChatConsume pinnedChat;
 
