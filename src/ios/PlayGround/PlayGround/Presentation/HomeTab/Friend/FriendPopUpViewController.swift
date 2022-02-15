@@ -38,8 +38,16 @@ class FriendPopUpViewController: UIViewController {
         watchButton.layer.cornerRadius = 15
         cancelButton.layer.cornerRadius = 15
         guard let info = viewModel.currentFriend else { return }
+        onlineMarkView.isHidden = !info.status
         profileImageView.downloadImageFrom(link: info.profileImage, contentMode: .scaleAspectFill)
         nickNameLabel.text = info.nickname
+        if let roomName = info.title {
+            roomNameLabel.text = roomName
+        } else {
+            roomNameLabel.text = "영상 미시청"
+        }
+    }
+    
     @IBAction func watchButtonDidTap(_ sender: Any) {
         guard let info = self.viewModel.currentFriend, let idInfo = info.id, let titleInfo = info.title, let type = info.type else { return }
         guard let parent = self.parent as? FriendListViewController else { return }

@@ -92,6 +92,11 @@ class LoginViewController: UIViewController {
                 KeychainWrapper.standard.set(uuid, forKey: KeychainWrapper.Key.uuid.rawValue)
                 KeychainWrapper.standard.set(token, forKey: KeychainWrapper.Key.accessToken.rawValue)
                 UserManager.shared.userInfo = userInfo
+                StatusServiceAPI.shared.getFriendInfo { result in
+                    guard let friends = result["data"] as? FriendWatchList else { return }
+                    StatusViewModel.shared.friendWatchList = friends.result
+                    StatusViewModel.shared.connectToSocket()
+                }
                 DispatchQueue.main.async {
                     self.coordinator?.showTabPage()
                 }

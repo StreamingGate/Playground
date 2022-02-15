@@ -20,7 +20,7 @@ class FriendListCell: UITableViewCell {
     /**
      사이드바에서 친구 리스트 조회
      */
-    func setupUI_list(info: Friend) {
+    func setupUI_list(info: FriendWatch) {
         friendNameLabel.text = info.nickname
         profileImageView.downloadImageFrom(link: info.profileImage, contentMode: .scaleAspectFill)
         deleteButton.isHidden = true
@@ -28,6 +28,7 @@ class FriendListCell: UITableViewCell {
         profileImageView.layer.cornerRadius = 15
         profileImageView.backgroundColor = UIColor.placeHolder
         onlineMarkView.layer.cornerRadius = 4
+        onlineMarkView.isHidden = !info.status
     }
     
     /**
@@ -41,6 +42,7 @@ class FriendListCell: UITableViewCell {
         profileImageView.layer.cornerRadius = 15
         profileImageView.backgroundColor = UIColor.placeHolder
         onlineMarkView.layer.cornerRadius = 4
+        onlineMarkView.isHidden = false
     }
     
     @IBAction func deleteButtonDidTap(_ sender: Any) {

@@ -18,6 +18,7 @@ struct VideoInfo: Codable {
     let hits: Int
     let likeCnt: Int
     let uploaderProfileImage: String
+    let uploaderNickname: String
     let subscriberCnt: Int
     let liked: Bool
     let disliked: Bool
@@ -32,6 +33,7 @@ struct VideoInfo: Codable {
         case hits
         case likeCnt
         case uploaderProfileImage
+        case uploaderNickname
         case subscriberCnt
         case liked
         case disliked

@@ -101,6 +101,9 @@
 		49EB20A227BA169C00333A9D /* MyHistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EB20A127BA169C00333A9D /* MyHistoryViewModel.swift */; };
 		49EB20A427BA1FEC00333A9D /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EB20A327BA1FEC00333A9D /* MyPageViewModel.swift */; };
 		49EB20AC27BA346F00333A9D /* SFSafariViewController+shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EB20AB27BA346F00333A9D /* SFSafariViewController+shared.swift */; };
+		49EB20AE27BA4F4C00333A9D /* StatusServiceAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EB20AD27BA4F4C00333A9D /* StatusServiceAPI.swift */; };
+		49EB20B027BA4F5D00333A9D /* StatusDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EB20AF27BA4F5D00333A9D /* StatusDataModel.swift */; };
+		49EB20B327BA507700333A9D /* StatusViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EB20B227BA507700333A9D /* StatusViewModel.swift */; };
 		49EB20B827BA6A9600333A9D /* TransitionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EB20B727BA6A9600333A9D /* TransitionDelegate.swift */; };
 		49EC99FD2782015A00DE4F79 /* RecentViewedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EC99FC2782015A00DE4F79 /* RecentViewedCell.swift */; };
 		49EC9A00278201C600DE4F79 /* Create.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49EC99FF278201C600DE4F79 /* Create.storyboard */; };
@@ -222,7 +225,10 @@
 		49EB20A127BA169C00333A9D /* MyHistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyHistoryViewModel.swift; sourceTree = "<group>"; };
 		49EB20A327BA1FEC00333A9D /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
 		49EB20AB27BA346F00333A9D /* SFSafariViewController+shared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFSafariViewController+shared.swift"; sourceTree = "<group>"; };
-		
+		49EB20AD27BA4F4C00333A9D /* StatusServiceAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusServiceAPI.swift; sourceTree = "<group>"; };
+		49EB20AF27BA4F5D00333A9D /* StatusDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusDataModel.swift; sourceTree = "<group>"; };
+		49EB20B227BA507700333A9D /* StatusViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusViewModel.swift; sourceTree = "<group>"; };
+		49EB20B727BA6A9600333A9D /* TransitionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionDelegate.swift; sourceTree = "<group>"; };
 		49EC99FC2782015A00DE4F79 /* RecentViewedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentViewedCell.swift; sourceTree = "<group>"; };
 		49EC99FF278201C600DE4F79 /* Create.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Create.storyboard; sourceTree = "<group>"; };
 		49EC9A012782033E00DE4F79 /* CreatePopOverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePopOverViewController.swift; sourceTree = "<group>"; };
@@ -553,6 +559,7 @@
 			isa = PBXGroup;
 			children = (
 				4957CBBA27ACEA8B00554967 /* Friend.storyboard */,
+				49EB20B727BA6A9600333A9D /* TransitionDelegate.swift */,
 				49E6BE362791951D000E475C /* FriendListViewController.swift */,
 				49E6BE3827919C7A000E475C /* FriendPopUpViewController.swift */,
 				49F4E3D627ACE77B002869F4 /* FriendListCell.swift */,
@@ -595,6 +602,7 @@
 				49C6CFA027A3DABA007C2895 /* MainService */,
 				49EF543427AEC769002A2A53 /* UploadService */,
 				49E72FFB27A2570200DFBCC3 /* ChatService */,
+				49EB20B127BA4F6100333A9D /* StatusService */,
 				49EB97F627B34ACD0017A816 /* VideoService */,
 				49EDECD127B3E83D00B5EFA5 /* RoomServiceAPI */,
 				49E6168627B23ED50092AE21 /* Mediasoup */,
@@ -652,6 +660,16 @@
 				49EA82D427B1851800F75546 /* Progress.swift */,
 			);
 			path = Upload;
+			sourceTree = "<group>";
+		};
+		49EB20B127BA4F6100333A9D /* StatusService */ = {
+			isa = PBXGroup;
+			children = (
+				49EB20AD27BA4F4C00333A9D /* StatusServiceAPI.swift */,
+				49EB20B227BA507700333A9D /* StatusViewModel.swift */,
+				49EB20AF27BA4F5D00333A9D /* StatusDataModel.swift */,
+			);
+			path = StatusService;
 			sourceTree = "<group>";
 		};
 		49EB97F627B34ACD0017A816 /* VideoService */ = {
@@ -851,6 +869,7 @@
 				496279D627828BB3005A2BDC /* PlayExplainViewController.swift in Sources */,
 				49EB20AC27BA346F00333A9D /* SFSafariViewController+shared.swift in Sources */,
 				491EF26727A7C2CE00A7AF91 /* String+getDateString.swift in Sources */,
+				49EB20B327BA507700333A9D /* StatusViewModel.swift in Sources */,
 				49E72FD127A166E300DFBCC3 /* GatewayManager.swift in Sources */,
 				49E6168A27B292DA0092AE21 /* VideoDataModel.swift in Sources */,
 				49E6168027B23ECE0092AE21 /* EchoSocket.swift in Sources */,
@@ -860,6 +879,7 @@
 				49F18C2C278E5E0800EBDCF8 /* CreateNavigationController.swift in Sources */,
 				492C62252795326B00AE546E /* MainCoordinator.swift in Sources */,
 				49E8E8A0278BC264003AD1DF /* LiveViewController.swift in Sources */,
+				49EB20AE27BA4F4C00333A9D /* StatusServiceAPI.swift in Sources */,
 				49EB20A227BA169C00333A9D /* MyHistoryViewModel.swift in Sources */,
 				49E6168827B28A8B0092AE21 /* VideoServiceAPI.swift in Sources */,
 				49F4E3CD27ACA9CC002869F4 /* FriendRequestCell.swift in Sources */,
@@ -877,6 +897,7 @@
 				49F4E3D127ACC949002869F4 /* FriendViewModel.swift in Sources */,
 				492C62302795989F00AE546E /* CustomSlider.swift in Sources */,
 				496279D827829516005A2BDC /* MyPageNavigationController.swift in Sources */,
+				49EB20B027BA4F5D00333A9D /* StatusDataModel.swift in Sources */,
 				49E6BE3E2791A7C1000E475C /* SearchViewController.swift in Sources */,
 				49B9C9BA277ACE9C006AE134 /* AppDelegate.swift in Sources */,
 				49E6BE31279100BC000E475C /* HomeNavigationController.swift in Sources */,
@@ -931,6 +952,7 @@
 				49F4E3CF27ACAADC002869F4 /* NoticeViewModel.swift in Sources */,
 				4907709B27979A1D00ADD8E8 /* UserServiceAPI.swift in Sources */,
 				49AC952A2791AC080030DCC0 /* NoticeListViewController.swift in Sources */,
+				49EB20B827BA6A9600333A9D /* TransitionDelegate.swift in Sources */,
 				490770A12797E8D100ADD8E8 /* UserManager.swift in Sources */,
 				4935FD35277BDA5D00760675 /* CategoryCell.swift in Sources */,
 			);

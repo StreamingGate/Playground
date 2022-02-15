@@ -17,7 +17,8 @@ class FriendListViewController: UIViewController {
     @IBOutlet weak var listTItleLabel: UILabel!
     @IBOutlet weak var friendTableView: UITableView!
     private var cancellable: Set<AnyCancellable> = []
-    let viewModel = FriendViewModel()
+    var transitionDelegate: TransitionDelegate?
+//    let viewModel = FriendViewModel()
     
     // MARK: - View LifeCycle
     override func viewDidLayoutSubviews() {
@@ -29,8 +30,8 @@ class FriendListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         bindViewModel()
+        print("====> \(StatusViewModel.shared.friendWatchList)")
         setupUI()
-        self.viewModel.loadFriend(vc: self, coordinator: nil)
     }
     
     // MARK: - UI Setting
@@ -53,7 +54,12 @@ class FriendListViewController: UIViewController {
     
     // MARK: - Data Binding
     func bindViewModel() {
-        self.viewModel.$friendList.receive(on: DispatchQueue.main, options: nil)
+//        self.viewModel.$friendList.receive(on: DispatchQueue.main, options: nil)
+//            .sink { [weak self] _ in
+//                guard let self = self else { return }
+//                self.friendTableView.reloadData()
+//            }.store(in: &cancellable)
+        StatusViewModel.shared.$friendWatchList.receive(on: DispatchQueue.main, options: nil)
             .sink { [weak self] _ in
                 guard let self = self else { return }
                 self.friendTableView.reloadData()
@@ -63,20 +69,20 @@ class FriendListViewController: UIViewController {
 
 extension FriendListViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.viewModel.friendList.count
+        return StatusViewModel.shared.friendWatchList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "FriendListCell", for: indexPath) as? FriendListCell else {
             return UITableViewCell()
         }
-        cell.setupUI_list(info: self.viewModel.friendList[indexPath.row])
+        cell.setupUI_list(info: StatusViewModel.shared.friendWatchList[indexPath.row])
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let popUp = UIStoryboard(name: "Friend", bundle: nil).instantiateViewController(withIdentifier: "FriendPopUpViewController") as? FriendPopUpViewController else { return }
-        popUp.viewModel.currentFriend = self.viewModel.friendList[indexPath.row]
+        popUp.viewModel.currentFriend = StatusViewModel.shared.friendWatchList[indexPath.row]
         self.addChild(popUp)
         self.view.addSubview((popUp.view)!)
         popUp.view.frame = self.view.bounds
