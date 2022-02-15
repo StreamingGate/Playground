@@ -22,37 +22,12 @@ class StatusServiceAPI {
         self.socketClient.openSocketWithURLRequest(request: NSURLRequest(url: url as URL), delegate: viewModel, connectionHeaders: ["token": token])
     }
     
-    func initRedis(completion: @escaping (()->Void)) {
-        let original = "http://10.99.6.93:9999/init-redis"
-        
-        guard let token = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue) else { return }
-        guard let target = original.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
-            print("error encoding")
-            return
-        }
-        let session = URLSession(configuration: .ephemeral)
-        let urlComponents = URLComponents(string: target)!
-        let requestURL = urlComponents.url!
-        var request = URLRequest(url: requestURL)
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-
-        let task = session.dataTask(with: request) { data, response, error in
-            let successRange = 200 ..< 300
-            guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode) else {
-                print("\(error?.localizedDescription ?? "no error") \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
-                if let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode == 401 { return }
-                return
-            }
-            
-        }
-        task.resume()
-    }
-    
     func getFriendInfo(completion: @escaping ([String: Any])->Void) {
-        let original = "http://10.99.6.93:9999/init-redis"
-        
-        guard let token = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue) else { return }
+        guard let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue), let tokenInfo = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue) else {
+            completion(["result": "Invalid Token"])
+            return
+        }
+        let original = "http://10.99.6.93:9999/list?uuid=\(uuid)"
         guard let target = original.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
             print("error encoding")
             return
@@ -62,60 +37,35 @@ class StatusServiceAPI {
         let requestURL = urlComponents.url!
         var request = URLRequest(url: requestURL)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-
-        let task = session.dataTask(with: request) { data, response, error in
+        request.setValue("Bearer \(tokenInfo)", forHTTPHeaderField: "Authorization")
+        
+        let dataTask = session.dataTask(with: request) { data, response, error in
             let successRange = 200 ..< 300
-            guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode) else {
+            guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode), let resultData = data else {
                 print("\(error?.localizedDescription ?? "no error") \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
-                if let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode == 401 { return }
-                return
-            }
-            guard let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue), let tokenInfo = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue) else {
-                completion(["result": "Invalid Token"])
-                return
-            }
-            let original = "http://10.99.6.93:9999/list?uuid=\(uuid)"
-            guard let target = original.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
-                print("error encoding")
-                return
-            }
-            let session = URLSession(configuration: .ephemeral)
-            let urlComponents = URLComponents(string: target)!
-            let requestURL = urlComponents.url!
-            var request = URLRequest(url: requestURL)
-            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            request.setValue("Bearer \(tokenInfo)", forHTTPHeaderField: "Authorization")
-            
-            let dataTask = session.dataTask(with: request) { data, response, error in
-                let successRange = 200 ..< 300
-                guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode), let resultData = data else {
-                    print("\(error?.localizedDescription ?? "no error") \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
-                    if let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode == 401 {
-                        completion(["result": "Invalid Token"])
-                        return
-                    }
-                    completion(["result": "failed"])
+                if let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode == 401 {
+                    completion(["result": "Invalid Token"])
                     return
                 }
-                do {
-                    let decoder = JSONDecoder()
-                    decoder.dateDecodingStrategy = .millisecondsSince1970
-                    let response = try decoder.decode(FriendWatchList.self, from: resultData)
-                    completion(["result": "success", "data": response])
-                } catch let error {
-                    print("---> error while loading status list: \(error.localizedDescription)")
-                    let responseJSON = try? JSONSerialization.jsonObject(with: resultData, options: [])
-                    if let result = responseJSON as? [String: Any] {
-                        completion(result)
-                    } else {
-                        completion(["result": "failed"])
-                    }
+                completion(["result": "failed"])
+                return
+            }
+            do {
+                let decoder = JSONDecoder()
+                decoder.dateDecodingStrategy = .millisecondsSince1970
+                let response = try decoder.decode(FriendWatchList.self, from: resultData)
+                completion(["result": "success", "data": response])
+            } catch let error {
+                print("---> error while loading status list: \(error.localizedDescription)")
+                let responseJSON = try? JSONSerialization.jsonObject(with: resultData, options: [])
+                if let result = responseJSON as? [String: Any] {
+                    completion(result)
+                } else {
+                    completion(["result": "failed"])
                 }
             }
-            dataTask.resume()
         }
-        task.resume()
+        dataTask.resume()
     }
     
     func connectLogin(uuid: String) {
