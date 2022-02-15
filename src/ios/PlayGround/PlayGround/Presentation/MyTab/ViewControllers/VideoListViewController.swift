@@ -118,7 +118,7 @@ extension VideoListViewController: UICollectionViewDataSource, UICollectionViewD
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if indexPath.row == viewModel.myList.count - 10 && !self.viewModel.isLoading {
+        if indexPath.row == viewModel.myList.count - 1 && !self.viewModel.isLoading && !self.viewModel.isFinished {
             self.footerView.startAnimating()
             switch type {
             case 0:

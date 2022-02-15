@@ -23,7 +23,9 @@ struct GeneralVideo: Codable {
     let id: Int
     let title: String
     let hostNickname: String?
+    let hostUuid: String?
     let uploaderNickname: String?
+    let uploaderUuid: String?
     let fileLink: String?
     let thumbnail: String
     let hits: Int?
@@ -32,12 +34,16 @@ struct GeneralVideo: Codable {
     let streamingId: String?
     let chatRoomId: String?
     let uuid: String?
+    let likedAt: String?
+    let lastViewedAt: String?
     
     enum CodingKeys: String, CodingKey {
         case id
         case title
         case hostNickname
+        case hostUuid
         case uploaderNickname
+        case uploaderUuid
         case fileLink
         case hits
         case thumbnail
@@ -46,6 +52,8 @@ struct GeneralVideo: Codable {
         case streamingId
         case chatRoomId
         case uuid
+        case likedAt
+        case lastViewedAt
     }
 }
 
