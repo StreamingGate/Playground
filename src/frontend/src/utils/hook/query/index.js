@@ -11,3 +11,4 @@ export { default as useGetVideoInfo } from './useGetVideoInfo';
 export { default as useVideoAction } from './useVideoAction';
 export { default as useMakeLive } from './useMakeLive';
 export { default as useGetMyList } from './useGetMyList';
+export { default as useGetFriendStatus } from './useGetFriendStatus';
