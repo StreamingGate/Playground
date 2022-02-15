@@ -49,16 +49,6 @@ public class StompHandler implements ChannelInterceptor {
                     if (roomUuid != null && userUuid != null) redisRoomService.enter(roomUuid, userUuid);
                 }
                 break;
-            case UNSUBSCRIBE: /* iOS에서 disconnect시 헤더값을 넣을 수 없어 unsubscribe로 방 퇴장 처리 */
-                getValueFromHeader(message, "uuid");
-//                topic = getSplited(destination, 3);
-//                log.info("unsubscribe.... topic: "+topic);
-//                if (!topic.equals("enter")) break;
-//                if (topic.equals("enter")) {
-//                    roomUuid = destination.substring(destination.lastIndexOf("/") + 1);
-//                    userUuid = getValueFromHeader(message, "uuid");
-//                    senderRole = getValueFromHeader(message, "senderRole");
-//                }
             case DISCONNECT: /* 페이지 이동, 브라우저 닫기 포함 */
                 if (roomUuid == null) roomUuid = getValueFromHeader(message, "roomUuid");
                 if (userUuid == null) userUuid = getValueFromHeader(message, "uuid");
