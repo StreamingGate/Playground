@@ -19,9 +19,9 @@ function AdviseModal({
 }) {
   const modal = modalService.useModal();
 
-  const handleHideBtnClick = () => {
+  const handleHideBtnClick = async () => {
     if (onClick) {
-      onClick();
+      await onClick();
     }
     modal.hide();
   };
