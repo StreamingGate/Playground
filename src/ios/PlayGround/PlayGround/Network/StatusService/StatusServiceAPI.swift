@@ -75,19 +75,10 @@ class StatusServiceAPI {
     
     func disconnectToSocket() {
         guard let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else { return }
-        socketClient.unsubscribe(destination: "/topic/friends/\(uuid)")
-        socketClient.disconnect()
+        socketClient.disconnectWithHeader(uuid: uuid)
+        
     }
     
-    /**
-     채팅 전송
-     - Parameters:
-        - roomId: chatting room id
-        - nickname: user nickname
-        - role: user role
-        - type: message type (NORMAL/PINNED)
-        - message: message content
-     */
     func startWatchingVideo(id: Int, type: Int, videoRoomUuid: String, title: String) {
         guard let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else { return }
         socketClient.sendJSONForDict(dict: ["id": id, "type": type, "videoRoomUuid": videoRoomUuid, "title" : title] as NSDictionary, toDestination: "/app/watch/\(uuid)")

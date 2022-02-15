@@ -64,10 +64,10 @@ class AccountInfoViewController: UIViewController {
     }
     
     @IBAction func logOutButtonDidTap(_ sender: Any) {
+        StatusManager.shared.disconnectToSocket()
         KeychainWrapper.standard.removeObject(forKey: KeychainWrapper.Key.accessToken.rawValue)
         KeychainWrapper.standard.removeObject(forKey: KeychainWrapper.Key.uuid.rawValue)
         UserManager.shared.userInfo = nil
-        StatusManager.shared.disconnectToSocket()
         self.navVC?.coordinator?.dismissToRoot()
     }
     
