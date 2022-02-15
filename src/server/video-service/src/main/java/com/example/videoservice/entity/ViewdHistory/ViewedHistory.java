@@ -25,7 +25,7 @@ public class ViewedHistory {
     private LocalDateTime likedAt;
 
     @ColumnDefault(value = "CURRENT_TIMESTAMP")
-    private LocalDateTime lastViewedAt;
+    private LocalDateTime lastViewedAt = LocalDateTime.now();
 
     @ManyToOne
     @JoinColumn(name = "video_id")
