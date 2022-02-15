@@ -15,11 +15,11 @@ class StatusServiceAPI {
     var socketClient = StompClientLib()
     let chatServiceUrl = "ws://10.99.6.93:9999/ws/websocket"
     
-    func connectToSocket(viewModel: StatusViewModel) {
+    func connectToSocket(manager: StatusManager) {
         guard let token = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue) else { return }
         let url = NSURL(string: self.chatServiceUrl)!
         //        socketClient.certificateCheckEnabled = false
-        self.socketClient.openSocketWithURLRequest(request: NSURLRequest(url: url as URL), delegate: viewModel, connectionHeaders: ["token": token])
+        self.socketClient.openSocketWithURLRequest(request: NSURLRequest(url: url as URL), delegate: manager, connectionHeaders: ["token": token])
     }
     
     func getFriendInfo(completion: @escaping ([String: Any])->Void) {
@@ -74,7 +74,8 @@ class StatusServiceAPI {
     }
     
     func disconnectToSocket() {
-//        socketClient.unsubscribe(destination: "/topic/friends/{userUuid}/\(uuid)")
+        guard let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else { return }
+        socketClient.unsubscribe(destination: "/topic/friends/\(uuid)")
         socketClient.disconnect()
     }
     

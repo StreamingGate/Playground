@@ -11,13 +11,13 @@ import StompClientLib
 import SwiftKeychainWrapper
 import Combine
 
-class StatusViewModel{
-    static let shared = StatusViewModel()
+class StatusManager {
+    static let shared = StatusManager()
     
     @Published var friendWatchList: [FriendWatch] = []
     
     func connectToSocket() {
-        StatusServiceAPI.shared.connectToSocket(viewModel: self)
+        StatusServiceAPI.shared.connectToSocket(manager: self)
     }
     
     func disconnectToSocket() {
@@ -33,7 +33,7 @@ class StatusViewModel{
     }
 }
 
-extension StatusViewModel: StompClientLibDelegate {
+extension StatusManager: StompClientLibDelegate {
     func stompClient(client: StompClientLib!, didReceiveMessageWithJSONBody jsonBody: AnyObject?, akaStringBody stringBody: String?, withHeader header: [String : String]?, withDestination destination: String) {
         print("did receive \(jsonBody)")
         guard let data = jsonBody as? [String: Any], let friendWatchData = DataHelper.dictionaryToObject(objectType: FriendWatch.self, dictionary: data) else {

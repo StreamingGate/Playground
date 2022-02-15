@@ -103,7 +103,7 @@
 		49EB20AC27BA346F00333A9D /* SFSafariViewController+shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EB20AB27BA346F00333A9D /* SFSafariViewController+shared.swift */; };
 		49EB20AE27BA4F4C00333A9D /* StatusServiceAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EB20AD27BA4F4C00333A9D /* StatusServiceAPI.swift */; };
 		49EB20B027BA4F5D00333A9D /* StatusDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EB20AF27BA4F5D00333A9D /* StatusDataModel.swift */; };
-		49EB20B327BA507700333A9D /* StatusViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EB20B227BA507700333A9D /* StatusViewModel.swift */; };
+		49EB20B327BA507700333A9D /* StatusManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EB20B227BA507700333A9D /* StatusManager.swift */; };
 		49EB20B827BA6A9600333A9D /* TransitionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EB20B727BA6A9600333A9D /* TransitionDelegate.swift */; };
 		49EC99FD2782015A00DE4F79 /* RecentViewedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EC99FC2782015A00DE4F79 /* RecentViewedCell.swift */; };
 		49EC9A00278201C600DE4F79 /* Create.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49EC99FF278201C600DE4F79 /* Create.storyboard */; };
@@ -227,7 +227,7 @@
 		49EB20AB27BA346F00333A9D /* SFSafariViewController+shared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SFSafariViewController+shared.swift"; sourceTree = "<group>"; };
 		49EB20AD27BA4F4C00333A9D /* StatusServiceAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusServiceAPI.swift; sourceTree = "<group>"; };
 		49EB20AF27BA4F5D00333A9D /* StatusDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusDataModel.swift; sourceTree = "<group>"; };
-		49EB20B227BA507700333A9D /* StatusViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusViewModel.swift; sourceTree = "<group>"; };
+		49EB20B227BA507700333A9D /* StatusManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusManager.swift; sourceTree = "<group>"; };
 		49EB20B727BA6A9600333A9D /* TransitionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionDelegate.swift; sourceTree = "<group>"; };
 		49EC99FC2782015A00DE4F79 /* RecentViewedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentViewedCell.swift; sourceTree = "<group>"; };
 		49EC99FF278201C600DE4F79 /* Create.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Create.storyboard; sourceTree = "<group>"; };
@@ -304,6 +304,7 @@
 				4907709E2797AC8C00ADD8E8 /* RegisterHelper.swift */,
 				490770A02797E8D100ADD8E8 /* UserManager.swift */,
 				49D7A0AB2783ECAD001CAC60 /* AppUtility.swift */,
+				49EB20B227BA507700333A9D /* StatusManager.swift */,
 				49EA4E10279473AC00A038E3 /* Coordinator */,
 				49B9C9F3277AF0E5006AE134 /* Extensions */,
 			);
@@ -666,7 +667,6 @@
 			isa = PBXGroup;
 			children = (
 				49EB20AD27BA4F4C00333A9D /* StatusServiceAPI.swift */,
-				49EB20B227BA507700333A9D /* StatusViewModel.swift */,
 				49EB20AF27BA4F5D00333A9D /* StatusDataModel.swift */,
 			);
 			path = StatusService;
@@ -869,7 +869,7 @@
 				496279D627828BB3005A2BDC /* PlayExplainViewController.swift in Sources */,
 				49EB20AC27BA346F00333A9D /* SFSafariViewController+shared.swift in Sources */,
 				491EF26727A7C2CE00A7AF91 /* String+getDateString.swift in Sources */,
-				49EB20B327BA507700333A9D /* StatusViewModel.swift in Sources */,
+				49EB20B327BA507700333A9D /* StatusManager.swift in Sources */,
 				49E72FD127A166E300DFBCC3 /* GatewayManager.swift in Sources */,
 				49E6168A27B292DA0092AE21 /* VideoDataModel.swift in Sources */,
 				49E6168027B23ECE0092AE21 /* EchoSocket.swift in Sources */,

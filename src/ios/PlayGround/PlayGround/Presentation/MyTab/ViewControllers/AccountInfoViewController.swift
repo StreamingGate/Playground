@@ -67,7 +67,7 @@ class AccountInfoViewController: UIViewController {
         KeychainWrapper.standard.removeObject(forKey: KeychainWrapper.Key.accessToken.rawValue)
         KeychainWrapper.standard.removeObject(forKey: KeychainWrapper.Key.uuid.rawValue)
         UserManager.shared.userInfo = nil
-        StatusViewModel.shared.disconnectToSocket()
+        StatusManager.shared.disconnectToSocket()
         self.navVC?.coordinator?.dismissToRoot()
     }
     

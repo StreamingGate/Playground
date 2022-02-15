@@ -30,7 +30,7 @@ class FriendListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         bindViewModel()
-        print("====> \(StatusViewModel.shared.friendWatchList)")
+        print("====> \(StatusManager.shared.friendWatchList)")
         setupUI()
     }
     
@@ -59,7 +59,7 @@ class FriendListViewController: UIViewController {
 //                guard let self = self else { return }
 //                self.friendTableView.reloadData()
 //            }.store(in: &cancellable)
-        StatusViewModel.shared.$friendWatchList.receive(on: DispatchQueue.main, options: nil)
+        StatusManager.shared.$friendWatchList.receive(on: DispatchQueue.main, options: nil)
             .sink { [weak self] _ in
                 guard let self = self else { return }
                 self.friendTableView.reloadData()
@@ -69,20 +69,20 @@ class FriendListViewController: UIViewController {
 
 extension FriendListViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return StatusViewModel.shared.friendWatchList.count
+        return StatusManager.shared.friendWatchList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "FriendListCell", for: indexPath) as? FriendListCell else {
             return UITableViewCell()
         }
-        cell.setupUI_list(info: StatusViewModel.shared.friendWatchList[indexPath.row])
+        cell.setupUI_list(info: StatusManager.shared.friendWatchList[indexPath.row])
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let popUp = UIStoryboard(name: "Friend", bundle: nil).instantiateViewController(withIdentifier: "FriendPopUpViewController") as? FriendPopUpViewController else { return }
-        popUp.viewModel.currentFriend = StatusViewModel.shared.friendWatchList[indexPath.row]
+        popUp.viewModel.currentFriend = StatusManager.shared.friendWatchList[indexPath.row]
         self.addChild(popUp)
         self.view.addSubview((popUp.view)!)
         popUp.view.frame = self.view.bounds

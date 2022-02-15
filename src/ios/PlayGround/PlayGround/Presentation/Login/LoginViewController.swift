@@ -94,8 +94,9 @@ class LoginViewController: UIViewController {
                 UserManager.shared.userInfo = userInfo
                 StatusServiceAPI.shared.getFriendInfo { result in
                     guard let friends = result["data"] as? FriendWatchList else { return }
-                    StatusViewModel.shared.friendWatchList = friends.result
-                    StatusViewModel.shared.connectToSocket()
+                    print("--->\(friends)")
+                    StatusManager.shared.friendWatchList = friends.result
+                    StatusManager.shared.connectToSocket()
                 }
                 DispatchQueue.main.async {
                     self.coordinator?.showTabPage()
