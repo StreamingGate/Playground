@@ -1,8 +1,8 @@
 package com.example.uploadservice.service;
 
 import com.example.uploadservice.dto.VideoDto;
-import com.example.uploadservice.exceptionHandler.customexception.CustomUploadException;
-import com.example.uploadservice.exceptionHandler.customexception.ErrorCode;
+import com.example.uploadservice.exceptionhandler.customexception.CustomUploadException;
+import com.example.uploadservice.exceptionhandler.customexception.ErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import net.bramp.ffmpeg.FFmpeg;
 import net.bramp.ffmpeg.FFmpegExecutor;

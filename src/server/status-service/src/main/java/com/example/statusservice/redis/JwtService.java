@@ -1,8 +1,8 @@
 package com.example.statusservice.redis;
 
 import com.example.statusservice.entity.User.UserRepository;
-import com.example.statusservice.exception.CustomStatusException;
-import com.example.statusservice.exception.ErrorCode;
+import com.example.statusservice.exceptionhandler.customexception.CustomStatusException;
+import com.example.statusservice.exceptionhandler.customexception.ErrorCode;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
