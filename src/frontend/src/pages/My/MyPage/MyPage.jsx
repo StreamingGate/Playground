@@ -37,8 +37,6 @@ function MyPage() {
     threshold: 0,
   });
 
-  console.log(data);
-
   useEffect(() => {
     if (!['watch', 'liked', 'upload'].includes(type)) {
       navigate('/mypage/watched');
@@ -58,22 +56,35 @@ function MyPage() {
         <S.MyVideoContainer>
           {data?.pages.map((group, i) => (
             <Fragment key={i}>
-              {group.rooms.map(liveInfo => (
-                <VideoOverview
-                  key={`live_${liveInfo.id}`}
-                  direction='horizontal'
-                  videoInfo={liveInfo}
-                  isLibrary={type === 'upload'}
-                />
-              ))}
-              {group.videos.map(videoInfo => (
-                <VideoOverview
-                  key={`video_${videoInfo.id}`}
-                  direction='horizontal'
-                  videoInfo={videoInfo}
-                  isLibrary={type === 'upload'}
-                />
-              ))}
+              {type === 'upload' ? (
+                group.map(videoInfo => (
+                  <VideoOverview
+                    key={`video_${videoInfo.id}`}
+                    direction='horizontal'
+                    videoInfo={videoInfo}
+                    isLibrary={type === 'upload'}
+                  />
+                ))
+              ) : (
+                <>
+                  {group.rooms.map(liveInfo => (
+                    <VideoOverview
+                      key={`live_${liveInfo.id}`}
+                      direction='horizontal'
+                      videoInfo={liveInfo}
+                      isLibrary={type === 'upload'}
+                    />
+                  ))}
+                  {group.videos.map(videoInfo => (
+                    <VideoOverview
+                      key={`video_${videoInfo.id}`}
+                      direction='horizontal'
+                      videoInfo={videoInfo}
+                      isLibrary={type === 'upload'}
+                    />
+                  ))}
+                </>
+              )}
             </Fragment>
           ))}
         </S.MyVideoContainer>
