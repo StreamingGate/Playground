@@ -97,7 +97,7 @@ extension AccountInfoViewController: UITableViewDataSource, UITableViewDelegate 
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.navVC?.coordinator?.showChannel()
+        self.navVC?.coordinator?.showChannel(uuid: self.viewModel.friendList[indexPath.row].uuid)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

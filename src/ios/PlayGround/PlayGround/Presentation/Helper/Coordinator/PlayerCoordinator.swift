@@ -145,14 +145,17 @@ class PlayerCoordinator: Coordinator {
     func showExplain(vc: PlayViewController) {
         guard let explainVC = UIStoryboard(name: "Play", bundle: nil).instantiateViewController(withIdentifier: "PlayExplainViewController") as? PlayExplainViewController else { return }
         explainVC.viewModel.currentInfo = vc.viewModel.currentInfo
+        explainVC.viewModel.videoInfo = vc.viewModel.videoInfo
+        explainVC.viewModel.roomInfo = vc.viewModel.roomInfo
         vc.addChild(explainVC)
         vc.explainContainerView.addSubview((explainVC.view)!)
         explainVC.view.frame = vc.explainContainerView.bounds
         explainVC.didMove(toParent: vc)
     }
     
-    func showChannel() {
+    func showChannel(uuid: String) {
         guard let channelVC = UIStoryboard(name: "Channel", bundle: nil).instantiateViewController(withIdentifier: "ChannelViewController") as? ChannelViewController else { return }
+        channelVC.viewModel.loadChannelInfo(uuid: uuid)
         navigation.pushViewController(channelVC, animated: true)
     }
     

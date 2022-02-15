@@ -41,7 +41,7 @@ struct RoomServiceAPI {
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             let successRange = 200 ..< 300
             guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode), let resultData = data else {
-                print("\(error?.localizedDescription ?? "no error") \((response as? HTTPURLResponse)?.statusCode ?? 0)")
+                print("room service create: \(error?.localizedDescription ?? "no error") \((response as? HTTPURLResponse)?.statusCode ?? 0)")
                 if let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode == 401 {
                     completion(["result": "Invalid Token"])
                     return
@@ -72,6 +72,7 @@ struct RoomServiceAPI {
             return
         }
         let original = "\(roomServiceUrl)/room?roomId=\(roomId)&uuid=\(uuid)"
+        print("===> \(original)")
         guard let target = original.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
             print("error encoding")
             return
@@ -87,7 +88,7 @@ struct RoomServiceAPI {
         let task = session.dataTask(with: request) { data, response, error in
             let successRange = 200 ..< 300
             guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode), let resultData = data else {
-                print("\(error?.localizedDescription ?? "no error") \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
+                print("load room-service: \(error?.localizedDescription ?? "no error") \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
                 if let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode == 401 {
                     completion(["result": "Invalid Token"])
                     return
@@ -99,6 +100,7 @@ struct RoomServiceAPI {
                 let decoder = JSONDecoder()
                 decoder.dateDecodingStrategy = .millisecondsSince1970
                 let response = try decoder.decode(RoomInfo.self, from: resultData)
+                print("room servicee: \(response)")
                 completion(["result": "success", "data": response])
             } catch let error {
                 print("---> error while loading single video: \(error.localizedDescription)")

@@ -234,7 +234,7 @@ struct MainServiceAPI {
         let task = session.dataTask(with: request) { data, response, error in
             let successRange = 200 ..< 300
             guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode), let resultData = data else {
-                print("\(error?.localizedDescription ?? "no error") \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
+                print("--> error while loading friends: \(error?.localizedDescription ?? "no error") \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
                 if let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode == 401 {
                     completion(["result": "Invalid Token"])
                     return
@@ -283,7 +283,7 @@ struct MainServiceAPI {
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             let successRange = 200 ..< 300
             guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode), let resultData = data else {
-                print("\(error?.localizedDescription ?? "no error") \((response as? HTTPURLResponse)?.statusCode ?? 0)")
+                print("--> error while sending friend requeest: \(error?.localizedDescription ?? "no error") \((response as? HTTPURLResponse)?.statusCode ?? 0)")
                 if let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode == 401 {
                     completion(["result": "Invalid Token"])
                     return
@@ -294,6 +294,7 @@ struct MainServiceAPI {
             
             let responseJSON = try? JSONSerialization.jsonObject(with: resultData, options: [])
             if let result = responseJSON as? [String: Any] {
+                print("---> friend Request: \(result)")
                 completion(["result": "success", "data": result])
             } else {
                 completion(["result": "failed"])

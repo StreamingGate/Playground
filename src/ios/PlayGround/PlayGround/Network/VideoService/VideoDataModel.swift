@@ -12,6 +12,7 @@ struct VideoInfo: Codable {
     let title: String
     let content: String?
     let videoUuid: String?
+    let uploaderUuid: String
     let streamingUrl: String
     let shareUrl: String
     let category: String
@@ -28,6 +29,7 @@ struct VideoInfo: Codable {
         case content
         case videoUuid
         case streamingUrl
+        case uploaderUuid
         case shareUrl
         case category
         case hits

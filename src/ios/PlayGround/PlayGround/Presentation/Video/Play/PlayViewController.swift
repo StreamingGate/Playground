@@ -20,6 +20,7 @@ class PlayViewController: UIViewController {
     var videoTrack: RTCVideoTrack?
     private var delegate: RoomListener?
     var roomId = ""
+    @IBOutlet weak var profileButton: UIButton!
     
     // player
     @IBOutlet weak var playView: PlayerView!
@@ -213,6 +214,7 @@ class PlayViewController: UIViewController {
     func setupUI() {
         stretchButton.setTitle("", for: .normal)
         chatSendButton.setTitle("", for: .normal)
+        profileButton.setTitle("", for: .normal)
         self.view.backgroundColor = UIColor.black
         titleLabel.font = UIFont.Component
         viewLabel.font = UIFont.caption
@@ -580,7 +582,27 @@ class PlayViewController: UIViewController {
     }
     
     @IBAction func friendRequestButtonDidTap(_ sender: Any) {
-        guard let info = viewModel.currentInfo, let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else { return }
+        guard let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else { return }
+        self.friendRequestButton.isEnabled = false
+        if self.viewModel.isLive {
+            guard let liveInfo = self.viewModel.roomInfo else { return }
+            MainServiceAPI.shared.sendFriendRequest(uuid: uuid, target: liveInfo.hostUuid) { result in
+                DispatchQueue.main.async {
+                    self.friendRequestButton.isEnabled = true
+                    guard let _ = NetworkResultManager.shared.analyze(result: result, vc: self, coordinator: self.coordinator) else { return }
+                    self.friendRequestButton.isEnabled = true
+                }
+            }
+        } else {
+            guard let videoInfo = self.viewModel.videoInfo else { return }
+            MainServiceAPI.shared.sendFriendRequest(uuid: uuid, target: videoInfo.uploaderUuid) { result in
+                DispatchQueue.main.async {
+                    self.friendRequestButton.isEnabled = true
+                    guard let _ = NetworkResultManager.shared.analyze(result: result, vc: self, coordinator: self.coordinator) else { return }
+                    self.friendRequestButton.isEnabled = true
+                }
+            }
+        }
         // TODO: uuid 생기면 추가하기
     }
     
@@ -648,6 +670,17 @@ class PlayViewController: UIViewController {
         } else {
             let value = UIInterfaceOrientation.landscapeRight.rawValue
             UIDevice.current.setValue(value, forKey: "orientation")
+        }
+    }
+    
+    @IBAction func profileDidTap(_ sender: Any) {
+        self.setPlayViewMinimizing()
+        if self.viewModel.isLive {
+            guard let liveInfo = self.viewModel.roomInfo else { return }
+            self.coordinator?.showChannel(uuid: liveInfo.hostUuid)
+        } else {
+            guard let videoInfo = self.viewModel.videoInfo else { return }
+            self.coordinator?.showChannel(uuid: videoInfo.uploaderUuid)
         }
     }
     
@@ -838,7 +871,8 @@ extension PlayViewController {
         print("handleWebSocketConnected() device loaded: \(device)")
         self.delegate = self
         self.client = RoomClient.init(socket: self.socket!, device: device, roomId: self.roomId, roomListener: self.delegate!)
-        self.client!.createRecvTransport()
+        guard let client = self.client else { return }
+        client.createRecvTransport()
     }
     
     private func initializeMediasoup() {
@@ -927,6 +961,16 @@ extension PlayViewController : MessageObserver {
             print("NEW_CONSUMER data=" + data!.description)
             self.handleNewConsumerEvent(consumerInfo: data!["data"])
             break
+        case "closed":
+            print("room closed")
+            DispatchQueue.main.async {
+                let alert = UIAlertController(title: "", message: "방송이 종료되었습니다", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "나가기", style: .default, handler: { _ in
+                    self.coordinator?.setPlayMinimizing(vc: self)
+                    self.coordinator?.closeMiniPlayer(vc: self)
+                }))
+                self.present(alert, animated: true, completion: nil)
+            }
         default:
             print("Unknown event " + event)
         }

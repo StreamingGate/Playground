@@ -12,7 +12,7 @@ class MyPageViewModel {
     @Published var myList: [GeneralVideo] = []
     
     func loadWachedList(vc: UIViewController, coordinator: Coordinator?) {
-        UserServiceAPI.shared.getWatched(lastVideoId: -1, lastLiveId: -1, size: 10) { result in
+        UserServiceAPI.shared.getWatched(lastVideo: "null", lastLive: "null", size: 10) { result in
             guard let data = NetworkResultManager.shared.analyze(result: result, vc: vc, coordinator: coordinator) as? HomeList else { return }
             var addedList = data.liveRooms
             addedList.append(contentsOf: data.videos)

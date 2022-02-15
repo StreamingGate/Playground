@@ -28,7 +28,6 @@ class HorizontalVideoListCell: UICollectionViewCell {
      실시간 스트리밍 UI 세팅
      */
     func setupLive(info: GeneralVideo) {
-        thumbnailImageView.image = nil
         titleLabel.text = info.title
         explainLabel1.text = info.hostNickname
 //        liveSign.isHidden = false
@@ -42,7 +41,6 @@ class HorizontalVideoListCell: UICollectionViewCell {
      업로드된 비디오 UI 세팅
      */
     func setupVideo(info: GeneralVideo) {
-        thumbnailImageView.image = nil
         titleLabel.text = info.title
 //        liveSign.isHidden = true
         thumbnailImageView.downloadImageFrom(link: info.thumbnail, contentMode: .scaleAspectFit)
@@ -54,7 +52,6 @@ class HorizontalVideoListCell: UICollectionViewCell {
      내가 업로드한 비디오 UI 세팅
      */
     func setupUploadedVideo(info: GeneralVideo) {
-        thumbnailImageView.image = nil
         titleLabel.text = info.title
 //        liveSign.isHidden = true
         thumbnailImageView.downloadImageFrom(link: info.thumbnail, contentMode: .scaleAspectFit)

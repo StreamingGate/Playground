@@ -55,7 +55,7 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="친구 신청" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bdb-gT-yiU">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="친구 요청" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bdb-gT-yiU">
                                                 <rect key="frame" x="175.5" y="111" width="63.5" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
@@ -64,6 +64,9 @@
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oze-td-heq">
                                                 <rect key="frame" x="170.5" y="106" width="73.5" height="30.5"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <connections>
+                                                    <action selector="friendRequestButtonDidTap:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="yPN-i8-HpX"/>
+                                                </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nt1-GN-7tg">
                                                 <rect key="frame" x="186" y="136.5" width="42" height="21"/>
@@ -92,6 +95,9 @@
                                                                         <constraint firstAttribute="width" secondItem="nai-vP-y2a" secondAttribute="height" multiplier="16:9" id="FWR-es-gj6"/>
                                                                     </constraints>
                                                                 </view>
+                                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="i8f-2i-xaV">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="414" height="233"/>
+                                                                </imageView>
                                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="liveSign" translatesAutoresizingMaskIntoConstraints="NO" id="owa-eM-9VQ">
                                                                     <rect key="frame" x="350" y="205" width="54" height="18"/>
                                                                     <color key="backgroundColor" name="YoutubeRed"/>
@@ -122,40 +128,33 @@
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1명 시청 중" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pbg-l5-NqD">
-                                                                    <rect key="frame" x="102.5" y="272" width="75" height="14"/>
-                                                                    <constraints>
-                                                                        <constraint firstAttribute="height" constant="14" id="K0R-Ub-s3r"/>
-                                                                    </constraints>
-                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                                    <nil key="textColor"/>
-                                                                    <nil key="highlightedColor"/>
-                                                                </label>
                                                             </subviews>
                                                             <constraints>
+                                                                <constraint firstItem="i8f-2i-xaV" firstAttribute="top" secondItem="nai-vP-y2a" secondAttribute="top" id="59P-TO-Gvi"/>
                                                                 <constraint firstItem="sf4-nL-Mbo" firstAttribute="leading" secondItem="3at-Rd-Xgq" secondAttribute="trailing" constant="12" id="BJT-yC-MBO"/>
                                                                 <constraint firstItem="nDj-sU-1Ji" firstAttribute="top" secondItem="sf4-nL-Mbo" secondAttribute="bottom" constant="2" id="Eeb-Iv-eGv"/>
-                                                                <constraint firstItem="Pbg-l5-NqD" firstAttribute="leading" secondItem="nDj-sU-1Ji" secondAttribute="trailing" constant="3" id="FYd-qd-LuE"/>
+                                                                <constraint firstItem="i8f-2i-xaV" firstAttribute="centerY" secondItem="nai-vP-y2a" secondAttribute="centerY" id="HPN-4u-VuJ"/>
                                                                 <constraint firstItem="nai-vP-y2a" firstAttribute="leading" secondItem="zUx-rs-4Am" secondAttribute="leading" id="IbQ-92-bPp"/>
                                                                 <constraint firstItem="nai-vP-y2a" firstAttribute="top" secondItem="zUx-rs-4Am" secondAttribute="top" id="J3I-Kf-J9i"/>
                                                                 <constraint firstAttribute="trailing" secondItem="sf4-nL-Mbo" secondAttribute="trailing" constant="15" id="S4j-Xl-Nhu"/>
                                                                 <constraint firstItem="owa-eM-9VQ" firstAttribute="bottom" secondItem="nai-vP-y2a" secondAttribute="bottom" constant="-10" id="VtM-aH-mWC"/>
                                                                 <constraint firstItem="3at-Rd-Xgq" firstAttribute="top" secondItem="nai-vP-y2a" secondAttribute="bottom" constant="15" id="Z78-yT-E7M"/>
+                                                                <constraint firstItem="i8f-2i-xaV" firstAttribute="centerX" secondItem="nai-vP-y2a" secondAttribute="centerX" id="ay4-Yv-H4b"/>
                                                                 <constraint firstItem="sf4-nL-Mbo" firstAttribute="top" secondItem="3at-Rd-Xgq" secondAttribute="top" constant="-2" id="bNU-5v-Khs"/>
+                                                                <constraint firstAttribute="bottom" secondItem="nDj-sU-1Ji" secondAttribute="bottom" constant="23" id="dtW-Dt-c9D"/>
                                                                 <constraint firstItem="3at-Rd-Xgq" firstAttribute="leading" secondItem="zUx-rs-4Am" secondAttribute="leading" constant="10" id="hPO-Xc-cO1"/>
                                                                 <constraint firstItem="nai-vP-y2a" firstAttribute="centerX" secondItem="zUx-rs-4Am" secondAttribute="centerX" id="pHa-1v-U2p"/>
-                                                                <constraint firstAttribute="bottom" secondItem="Pbg-l5-NqD" secondAttribute="bottom" constant="23" id="uXo-aI-lch"/>
-                                                                <constraint firstItem="Pbg-l5-NqD" firstAttribute="centerY" secondItem="nDj-sU-1Ji" secondAttribute="centerY" id="v4O-as-f4p"/>
                                                                 <constraint firstItem="owa-eM-9VQ" firstAttribute="trailing" secondItem="nai-vP-y2a" secondAttribute="trailing" constant="-10" id="wr8-ed-1UC"/>
                                                                 <constraint firstItem="nDj-sU-1Ji" firstAttribute="leading" secondItem="sf4-nL-Mbo" secondAttribute="leading" id="yQF-KG-Ml7"/>
+                                                                <constraint firstItem="i8f-2i-xaV" firstAttribute="leading" secondItem="nai-vP-y2a" secondAttribute="leading" id="zxd-Si-7EN"/>
                                                             </constraints>
                                                         </tableViewCellContentView>
                                                         <connections>
                                                             <outlet property="liveSign" destination="owa-eM-9VQ" id="0hy-5I-lJb"/>
                                                             <outlet property="nicknameLabel" destination="nDj-sU-1Ji" id="hJl-8S-9uK"/>
                                                             <outlet property="profileImageView" destination="3at-Rd-Xgq" id="Nfn-N4-9zX"/>
+                                                            <outlet property="thumbnailImageView" destination="i8f-2i-xaV" id="bae-1X-Bce"/>
                                                             <outlet property="titleLabel" destination="sf4-nL-Mbo" id="eFf-He-2yA"/>
-                                                            <outlet property="viewLabel" destination="Pbg-l5-NqD" id="T91-LJ-hcF"/>
                                                         </connections>
                                                     </tableViewCell>
                                                 </prototypes>
@@ -215,6 +214,7 @@
                         <outlet property="channelNameTitleLabel" destination="9xH-0V-Ndh" id="qGq-TM-4Kh"/>
                         <outlet property="channelTitleLabel" destination="2Sp-ty-FP9" id="boK-35-6cS"/>
                         <outlet property="explainLabel" destination="Nt1-GN-7tg" id="4gn-hf-Esz"/>
+                        <outlet property="friendRequestButton" destination="oze-td-heq" id="fHV-h2-dTS"/>
                         <outlet property="friendRequestLabel" destination="bdb-gT-yiU" id="16e-Dl-Lcr"/>
                         <outlet property="profileImageView" destination="YCS-M8-2So" id="TTA-AI-mNY"/>
                         <outlet property="videoTableView" destination="Jq5-ep-vMp" id="rL5-qc-bVh"/>

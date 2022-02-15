@@ -188,10 +188,9 @@ extension HomeListViewController: UITableViewDataSource, UITableViewDelegate {
         } else {
             cell.setupVideo(info: viewModel.homeList[indexPath.row])
         }
-        
         cell.channelTapHandler = {
             self.pausePlayer()
-            self.navVC?.coordinator?.showChannel()
+            self.navVC?.coordinator?.showChannel(uuid: self.viewModel.homeList[indexPath.row].hostUuid == nil ? self.viewModel.homeList[indexPath.row].uploaderUuid ?? "" : self.viewModel.homeList[indexPath.row].hostUuid ?? "")
         }
         return cell
     }
