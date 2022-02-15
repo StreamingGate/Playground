@@ -1,22 +1,23 @@
 package com.example.chatservice.redis;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import javax.annotation.PostConstruct;
-import com.example.chatservice.exception.CustomChatException;
-import com.example.chatservice.exception.ErrorCode;
 import com.example.chatservice.dto.chat.ChatConsume;
 import com.example.chatservice.dto.chat.ChatProduce;
 import com.example.chatservice.dto.chat.SenderRole;
 import com.example.chatservice.dto.room.Room;
+import com.example.chatservice.exception.CustomChatException;
+import com.example.chatservice.exception.ErrorCode;
 import com.example.chatservice.utils.RedisMessaging;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.stereotype.Service;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+
+import javax.annotation.PostConstruct;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -59,33 +60,36 @@ public class RedisRoomService {
     }
 
     /* 채팅방 입장(접속자 수 증가) */
-    public int enter(String roomUuid, String userUuid) {
+    public void enter(String roomUuid, String userUuid) {
         ChannelTopic channelTopic = getOrAddTopic(roomUuid);
         Room room = opsHashRoom.get(CHAT_ROOMS, roomUuid);
 
         int userCnt = room.addUser(userUuid);
-        log.info("add user:" + room.getUuid() + " " + userCnt + "명");
+        log.info("room enter:" + room.getUuid() + " " + userCnt + "명");
         opsHashRoom.put(CHAT_ROOMS, room.getUuid(), room);
 
         RedisMessaging.publish(channelTopic, new ChatProduce(roomUuid, userCnt));
-        return userCnt;
     }
 
     /* 채팅방 퇴장(접속자 수 감소) */
-    public int exit(String roomUuid, String userUuid) throws IllegalArgumentException {
+    public void exit(String roomUuid, String userUuid, String senderRole) throws IllegalArgumentException {
         ChannelTopic channelTopic = getOrAddTopic(roomUuid);
         Room room = opsHashRoom.get(CHAT_ROOMS, roomUuid);
 
-        int userCnt = room.removeUser(userUuid);
-        log.info("add user:" + room.getUuid() + " " + userCnt + "명");
-        opsHashRoom.put(CHAT_ROOMS, room.getUuid(), room);
-
-        RedisMessaging.publish(channelTopic, new ChatProduce(roomUuid, userCnt));
-        return userCnt;
+        /* 스트리머 퇴장시 채팅방 삭제 */
+        if (senderRole.equals(SenderRole.STREAMER.toString())) {
+            removeRoom(room.getUuid());
+        }
+        else {
+            int userCnt = room.removeUser(userUuid);
+            log.info("room exit:" + room.getUuid() + " " + userCnt + "명");
+            opsHashRoom.put(CHAT_ROOMS, room.getUuid(), room);
+            RedisMessaging.publish(channelTopic, new ChatProduce(roomUuid, userCnt));
+        }
     }
 
     /* 채팅방 삭제 */
-    public String removeRoom(String roomUuid){
+    public String removeRoom(String roomUuid) {
         ChannelTopic channelTopic = topics.get(roomUuid);
         if (channelTopic != null) {
             topics.remove(roomUuid);

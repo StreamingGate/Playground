@@ -2,7 +2,10 @@
 <body>
 <div>
     <h2 id="roomUuid"></h2>
-    <span id="userCnt">x</span> 명 접속중
+    <span id="userCnt">0</span> 명 접속중
+    </br>
+    <button type="button" onclick="exitBySenderRole('STREAMER')">스트리머권한으로 disconnect</button>
+    <button type="button" onclick="exitBySenderRole('VIEWER')">시청자권한으로 disconnect</button>
 </div>
 <div>
     <label>채팅 내용</label><br>
@@ -26,6 +29,8 @@
     // websocket & stomp initialize
     let sock = new SockJS("/ws");
     let ws = Stomp.over(sock);
+    let subscribeEnter;
+    let subscribeRoom;
 
     let roomTitle = document.querySelector("#roomUuid");
     let msgList = document.querySelector("#msglist");
@@ -46,7 +51,7 @@
             data.pinnedChat = response.data.pinnedChat;
             console.log("resp:", response.data);
 
-            document.querySelector("#roomUuid").innerText = data.room.uuid+ ` 방장: ${data.room.hostUuid}`;
+            document.querySelector("#roomUuid").innerText = data.room.uuid;
 
             if (data.pinnedChat !== null) {
                 const liElem = document.createElement("li");
@@ -106,22 +111,33 @@
             token: `${localStorage.getItem('wschat.token')}`
         }, function (frame) {
             /* 현재 접속자 수 subscribe */
-            ws.subscribe("/topic/chat/enter/" + data.roomUuid, function (resp) {
+            subscribeEnter = ws.subscribe("/topic/chat/enter/" + data.roomUuid, function (resp) {
                 const data = JSON.parse(resp.body);
-                console.log("userCnt:" + userCnt);
+                console.log("userCnt:" + data.userCnt);
                 recvUserCnt(data);
             }, {
-                uuid: `${data.senderUuid}`
+                uuid: localStorage.getItem('wschat.senderUuid'),
             });
 
             /* 채팅 subscribe */
-            ws.subscribe("/topic/chat/room/" + data.roomUuid, function (resp) {
+            subscribeRoom = ws.subscribe("/topic/chat/room/" + data.roomUuid, function (resp) {
                 const chat = JSON.parse(resp.body);
                 recvMessage(chat);
             });
     }, function (error) {
         alert("error " + error);
     });
+
+    /* senderRole에 따라 disconnect(퇴장) 처리 */
+    exitBySenderRole = (senderRole) => {
+        ws.disconnect(function() {
+            console.log("disconnected by senderRole..");
+        }, {
+            uuid: localStorage.getItem('wschat.senderUuid'),
+            roomUuid: localStorage.getItem('wschat.roomUuid'),
+            senderRole: senderRole
+        });
+    }
 
     /* 창이 닫히기 직전 disconnect 전송(정상 작동 확인함) */
     window.onbeforeunload = function(e){
@@ -130,7 +146,8 @@
                 console.log("disconnected..");
             }, {
                 uuid: localStorage.getItem('wschat.senderUuid'),
-                roomUuid: localStorage.getItem('wschat.roomUuid')
+                roomUuid: localStorage.getItem('wschat.roomUuid'),
+                senderRole: "VIEWER"
             });
         }
     }
