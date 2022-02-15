@@ -53,7 +53,14 @@ class PlayExplainViewController: UIViewController {
         guard let info = viewModel.currentInfo else { return }
         videoTitleLabel.text = info.title
         categoryLabel.text = "#\(viewModel.categoryDic[info.category ?? ""] ?? "기타")"
-        channelLabel.text = (info.uploaderNickname == nil) ? info.hostNickname : info.uploaderNickname
+        thumbnailImageView.layer.cornerRadius = 33 / 2
+        if self.viewModel.isLive {
+            channelLabel.text = self.viewModel.roomInfo?.hostNickname
+            thumbnailImageView.downloadImageFrom(link: "https://d8knntbqcc7jf.cloudfront.net/thumbnail/\(String(describing: self.viewModel.roomInfo?.hostUuid))", contentMode: .scaleAspectFit)
+        } else {
+            channelLabel.text = self.viewModel.videoInfo?.uploaderNickname
+            thumbnailImageView.downloadImageFrom(link: self.viewModel.videoInfo?.uploaderProfileImage ?? "", contentMode: .scaleAspectFit)
+        }
     }
     
     // MARK: - Animation
@@ -163,7 +170,13 @@ class PlayExplainViewController: UIViewController {
     @IBAction func channelDidTap(_ sender: Any) {
         guard let parent = self.parent as? PlayViewController else { return }
         parent.setPlayViewMinimizing()
-        parent.coordinator?.showChannel()
+        if self.viewModel.isLive {
+            guard let liveInfo = self.viewModel.roomInfo else { return }
+            parent.coordinator?.showChannel(uuid: liveInfo.hostUuid)
+        } else {
+            guard let videoInfo = self.viewModel.videoInfo else { return }
+            parent.coordinator?.showChannel(uuid: videoInfo.uploaderUuid)
+        }
     }
     
     // close explain view

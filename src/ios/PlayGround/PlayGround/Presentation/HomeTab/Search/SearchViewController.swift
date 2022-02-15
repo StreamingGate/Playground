@@ -46,7 +46,7 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "VideoListCell", for: indexPath) as? VideoListCell else { return UITableViewCell() }
         cell.setupUI(indexPath.row)
         cell.channelTapHandler = {
-            self.navVC?.coordinator?.showChannel()
+//            self.navVC?.coordinator?.showChannel(uuid: <#T##String#>)
         }
         return cell
     }

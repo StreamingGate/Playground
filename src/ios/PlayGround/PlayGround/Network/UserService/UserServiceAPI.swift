@@ -32,7 +32,7 @@ struct UserServiceAPI {
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             let successRange = 200 ..< 300
             guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode), let resultData = data else {
-                print("\(error?.localizedDescription ?? "no error") \((response as? HTTPURLResponse)?.statusCode ?? 0)")
+                print("--> error while register: \(error?.localizedDescription ?? "no error") \((response as? HTTPURLResponse)?.statusCode ?? 0)")
                 completion(nil)
                 return
             }
@@ -69,7 +69,7 @@ struct UserServiceAPI {
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             let successRange = 200 ..< 300
             guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, let HeaderFields = (response as? HTTPURLResponse)?.allHeaderFields, let accessToken = HeaderFields["token"], let uuid = HeaderFields["uuid"], successRange.contains(statusCode), let resultData = data else {
-                print("\(error?.localizedDescription ?? "no error") \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
+                print("---> error while login: \(error?.localizedDescription ?? "no error") \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
                 completion(["success" : 0])
                 return
             }
@@ -106,7 +106,7 @@ struct UserServiceAPI {
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             let successRange = 200 ..< 300
             guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode), let resultData = data else {
-                print("\(error?.localizedDescription ?? "no error") \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
+                print("---> error while send email: \(error?.localizedDescription ?? "no error") \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
                 completion(["email" : "failed"])
                 return
             }
@@ -141,7 +141,7 @@ struct UserServiceAPI {
         let task = session.dataTask(with: requestURL) { data, response, error in
             let successRange = 200 ..< 300
             guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode), let resultData = data else {
-                print("\(error?.localizedDescription ?? "no error") \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
+                print("---> error while check verification: \(error?.localizedDescription ?? "no error") \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
                 completion(["email" : "failed"])
                 return
             }
@@ -176,7 +176,7 @@ struct UserServiceAPI {
         let task = session.dataTask(with: requestURL) { data, response, error in
             let successRange = 200 ..< 300
             guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode), let resultData = data else {
-                print("\(error?.localizedDescription ?? "no error") \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
+                print("---> error while nickname duplicate check: \(error?.localizedDescription ?? "no error") \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
                 completion(["nickName" : "failed"])
                 return
             }
@@ -220,7 +220,7 @@ struct UserServiceAPI {
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             let successRange = 200 ..< 300
             guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode), let resultData = data else {
-                print("\(error?.localizedDescription ?? "no error") \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
+                print("---> error while update userInfo: \(error?.localizedDescription ?? "no error") \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
                 if let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode == 401 {
                     completion(["result": "Invalid Token"])
                     return
@@ -248,8 +248,8 @@ struct UserServiceAPI {
         - lastLiveId: last id of live for infinite scroll
         - size: size to bring
      */
-    func getUploaded(lastVideoId: Int, size: Int, completion: @escaping ([String: Any])->Void) {
-        guard let tokenInfo = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue), let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else {
+    func getUploaded(lastVideoId: Int, size: Int, uuid: String, completion: @escaping ([String: Any])->Void) {
+        guard let tokenInfo = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue) else {
             completion(["result": "Invalid Token"])
             return
         }
@@ -269,7 +269,7 @@ struct UserServiceAPI {
         let task = session.dataTask(with: request) { data, response, error in
             let successRange = 200 ..< 300
             guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode), let resultData = data else {
-                print("\(error?.localizedDescription ?? "no error") \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
+                print("---> error while loading uploaded list: \(error?.localizedDescription ?? "no error") \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
                 if let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode == 401 {
                     completion(["result": "Invalid Token"])
                     return
@@ -295,13 +295,13 @@ struct UserServiceAPI {
         task.resume()
     }
     
-    func getWatched(lastVideoId: Int, lastLiveId: Int, size: Int, completion: @escaping ([String: Any])->Void) {
+    func getWatched(lastVideo: String, lastLive: String, size: Int, completion: @escaping ([String: Any])->Void) {
         guard let tokenInfo = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue), let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else {
             completion(["result": "Invalid Token"])
             return
         }
-        let original = "\(userServiceUrl)/watch/\(uuid)/?last-video=\(lastVideoId)&last-live=\(lastLiveId)&size=\(size)"
-        
+        let original = "\(userServiceUrl)/watch/\(uuid)/?last-video=\(lastVideo)&last-live=\(lastLive)&size=\(size)"
+        print("~~~~~~> \(original)")
         guard let target = original.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
             print("error encoding")
             return
@@ -316,7 +316,7 @@ struct UserServiceAPI {
         let task = session.dataTask(with: request) { data, response, error in
             let successRange = 200 ..< 300
             guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode), let resultData = data else {
-                print("\(error?.localizedDescription ?? "no error") \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
+                print("---> error while loading watched list: \(error?.localizedDescription ?? "no error") \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
                 if let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode == 401 {
                     completion(["result": "Invalid Token"])
                     return
@@ -330,7 +330,7 @@ struct UserServiceAPI {
                 let response = try decoder.decode(HomeList.self, from: resultData)
                 completion(["result": "success", "data": response])
             } catch let error {
-                print("---> error while loading uploaded list: \(error.localizedDescription)")
+                print("---> error while loading watched list: \(error.localizedDescription)")
                 let responseJSON = try? JSONSerialization.jsonObject(with: resultData, options: [])
                 if let result = responseJSON as? [String: Any] {
                     completion(result)
@@ -342,12 +342,12 @@ struct UserServiceAPI {
         task.resume()
     }
     
-    func getLiked(lastVideoId: Int, lastLiveId: Int, size: Int, completion: @escaping ([String: Any])->Void) {
+    func getLiked(lastVideo: String, lastLive: String, size: Int, completion: @escaping ([String: Any])->Void) {
         guard let tokenInfo = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue), let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else {
             completion(["result": "Invalid Token"])
             return
         }
-        let original = "\(userServiceUrl)/liked/\(uuid)/?last-video=\(lastVideoId)&last-live=\(lastLiveId)&size=\(size)"
+        let original = "\(userServiceUrl)/liked/\(uuid)/?last-video=\(lastVideo)&last-live=\(lastLive)&size=\(size)"
         
         guard let target = original.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
             print("error encoding")
@@ -363,7 +363,7 @@ struct UserServiceAPI {
         let task = session.dataTask(with: request) { data, response, error in
             let successRange = 200 ..< 300
             guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode), let resultData = data else {
-                print("\(error?.localizedDescription ?? "no error") \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
+                print("---> error while loading liked list: \(error?.localizedDescription ?? "no error") \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
                 if let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode == 401 {
                     completion(["result": "Invalid Token"])
                     return
@@ -377,7 +377,54 @@ struct UserServiceAPI {
                 let response = try decoder.decode(HomeList.self, from: resultData)
                 completion(["result": "success", "data": response])
             } catch let error {
-                print("---> error while loading uploaded list: \(error.localizedDescription)")
+                print("---> error while loading liked list: \(error.localizedDescription)")
+                let responseJSON = try? JSONSerialization.jsonObject(with: resultData, options: [])
+                if let result = responseJSON as? [String: Any] {
+                    completion(result)
+                } else {
+                    completion(["result": "failed"])
+                }
+            }
+        }
+        task.resume()
+    }
+    
+    func getChannelInfo(targetUuid: String, completion: @escaping ([String: Any])->Void) {
+        let original = "\(userServiceUrl)/\(targetUuid)"
+        
+        guard let target = original.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
+            print("error encoding")
+            return
+        }
+        guard let tokenInfo = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue) else {
+            completion(["result": "Invalid Token"])
+            return
+        }
+        let session = URLSession(configuration: .ephemeral)
+        let urlComponents = URLComponents(string: target)!
+        let requestURL = urlComponents.url!
+        var request = URLRequest(url: requestURL)
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(tokenInfo)", forHTTPHeaderField: "Authorization")
+
+        let task = session.dataTask(with: request) { data, response, error in
+            let successRange = 200 ..< 300
+            guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode), let resultData = data else {
+                print("---> error while loading channel info: \(error?.localizedDescription ?? "no error") \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
+                if let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode == 401 {
+                    completion(["result": "Invalid Token"])
+                    return
+                }
+                completion(["result": "failed"])
+                return
+            }
+            do {
+                let decoder = JSONDecoder()
+                decoder.dateDecodingStrategy = .millisecondsSince1970
+                let response = try decoder.decode(ChannelInfo.self, from: resultData)
+                completion(["result": "success", "data": response])
+            } catch let error {
+                print("---> error while loading channel info: \(error.localizedDescription)")
                 let responseJSON = try? JSONSerialization.jsonObject(with: resultData, options: [])
                 if let result = responseJSON as? [String: Any] {
                     completion(result)

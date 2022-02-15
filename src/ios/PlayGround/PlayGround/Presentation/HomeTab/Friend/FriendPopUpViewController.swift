@@ -51,7 +51,7 @@ class FriendPopUpViewController: UIViewController {
     @IBAction func watchButtonDidTap(_ sender: Any) {
         guard let info = self.viewModel.currentFriend, let idInfo = info.id, let titleInfo = info.title, let type = info.type else { return }
         guard let parent = self.parent as? FriendListViewController else { return }
-        let test = GeneralVideo(id: idInfo, title: titleInfo, hostNickname: type == 0 ? nil: "live", uploaderNickname: type == 0 ? "video": nil, fileLink: "", thumbnail: "", hits: 0, category: "", createdAt: "", streamingId: "", chatRoomId: "", uuid: "")
+        let test = GeneralVideo(id: idInfo, title: titleInfo, hostNickname: type == 0 ? nil: "live", hostUuid: "", uploaderNickname: type == 0 ? "video": nil, uploaderUuid: "", fileLink: "", thumbnail: "", hits: 0, category: "", createdAt: "", streamingId: "", chatRoomId: "", uuid: "", likedAt: "", lastViewedAt: "")
         parent.transitionDelegate?.showPlayer(info: test)
         self.parent?.dismiss(animated: true, completion: {
         })

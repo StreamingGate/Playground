@@ -63,8 +63,9 @@ class HomeTabCoordinator: Coordinator {
         navigation.pushViewController(noticeVC, animated: true)
     }
     
-    func showChannel() {
+    func showChannel(uuid: String) {
         guard let channelVC = UIStoryboard(name: "Channel", bundle: nil).instantiateViewController(withIdentifier: "ChannelViewController") as? ChannelViewController else { return }
+        channelVC.viewModel.loadChannelInfo(uuid: uuid)
         navigation.pushViewController(channelVC, animated: true)
     }
     

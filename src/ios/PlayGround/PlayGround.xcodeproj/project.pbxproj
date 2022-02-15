@@ -77,6 +77,7 @@
 		49E6168427B23ECE0092AE21 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E6167C27B23ECD0092AE21 /* Request.swift */; };
 		49E6168827B28A8B0092AE21 /* VideoServiceAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E6168727B28A8B0092AE21 /* VideoServiceAPI.swift */; };
 		49E6168A27B292DA0092AE21 /* VideoDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E6168927B292DA0092AE21 /* VideoDataModel.swift */; };
+		49E6734627BB504E0030C211 /* ChannelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E6734527BB504E0030C211 /* ChannelViewModel.swift */; };
 		49E6BE31279100BC000E475C /* HomeNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E6BE30279100BC000E475C /* HomeNavigationController.swift */; };
 		49E6BE372791951D000E475C /* FriendListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E6BE362791951D000E475C /* FriendListViewController.swift */; };
 		49E6BE3927919C7A000E475C /* FriendPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E6BE3827919C7A000E475C /* FriendPopUpViewController.swift */; };
@@ -201,6 +202,7 @@
 		49E6167C27B23ECD0092AE21 /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
 		49E6168727B28A8B0092AE21 /* VideoServiceAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoServiceAPI.swift; sourceTree = "<group>"; };
 		49E6168927B292DA0092AE21 /* VideoDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoDataModel.swift; sourceTree = "<group>"; };
+		49E6734527BB504E0030C211 /* ChannelViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelViewModel.swift; sourceTree = "<group>"; };
 		49E6BE30279100BC000E475C /* HomeNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNavigationController.swift; sourceTree = "<group>"; };
 		49E6BE362791951D000E475C /* FriendListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendListViewController.swift; sourceTree = "<group>"; };
 		49E6BE3827919C7A000E475C /* FriendPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendPopUpViewController.swift; sourceTree = "<group>"; };
@@ -486,6 +488,7 @@
 			children = (
 				49C52CDF278B4379009D6FBB /* Channel.storyboard */,
 				49C52CDE278B4379009D6FBB /* ChannelViewController.swift */,
+				49E6734527BB504E0030C211 /* ChannelViewModel.swift */,
 			);
 			path = Channel;
 			sourceTree = "<group>";
@@ -858,6 +861,7 @@
 				49F0213E2799505400684A25 /* UIViewController+SimpleAlert.swift in Sources */,
 				491EF26927A7C31000A7AF91 /* UIImageView+downloadImageFrom.swift in Sources */,
 				496279DA278297C2005A2BDC /* VideoListViewController.swift in Sources */,
+				49E6734627BB504E0030C211 /* ChannelViewModel.swift in Sources */,
 				4957CBC227AD5A8400554967 /* UploadViewController.swift in Sources */,
 				49F4E3D327ACCE81002869F4 /* AccountInfoViewModel.swift in Sources */,
 				49E6168227B23ECE0092AE21 /* RoomClient.swift in Sources */,
