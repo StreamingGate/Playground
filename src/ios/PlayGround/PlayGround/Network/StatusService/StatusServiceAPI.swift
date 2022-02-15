@@ -13,12 +13,12 @@ class StatusServiceAPI {
     static let shared = StatusServiceAPI()
     
     var socketClient = StompClientLib()
-    let chatServiceUrl = "ws://10.99.6.93:9999/ws/websocket"
+    let statusServiceUrl = "ws://10.99.6.93:9999/ws/websocket"
     
     func connectToSocket(manager: StatusManager) {
         guard let token = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue) else { return }
-        let url = NSURL(string: self.chatServiceUrl)!
-        //        socketClient.certificateCheckEnabled = false
+        let url = NSURL(string: self.statusServiceUrl)!
+//        socketClient.certificateCheckEnabled = false
         self.socketClient.openSocketWithURLRequest(request: NSURLRequest(url: url as URL), delegate: manager, connectionHeaders: ["token": token])
     }
     
