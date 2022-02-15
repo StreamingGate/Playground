@@ -69,7 +69,6 @@ class StatusServiceAPI {
     }
     
     func connectLogin(uuid: String) {
-        print("===>topic/friends/\(uuid)")
         socketClient.subscribe(destination: "/topic/friends/\(uuid)")
     }
     
@@ -79,11 +78,22 @@ class StatusServiceAPI {
         
     }
     
+    /**
+     현재 시청 중인 비디오 정보 전송
+     - Parameters:
+        - id: videoId or liveRoomId (pk value)
+        - type: video - 0, live - 1
+        - videoRoomUuid: video or liveRoom uuid
+        - title: video or liveRoom title
+     */
     func startWatchingVideo(id: Int, type: Int, videoRoomUuid: String, title: String) {
         guard let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else { return }
         socketClient.sendJSONForDict(dict: ["id": id, "type": type, "videoRoomUuid": videoRoomUuid, "title" : title] as NSDictionary, toDestination: "/app/watch/\(uuid)")
     }
     
+    /**
+     시청 중단
+     */
     func stopWatchingVideo() {
         guard let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else { return }
         socketClient.sendJSONForDict(dict: [:] as NSDictionary, toDestination: "/app/watch/\(uuid)")
