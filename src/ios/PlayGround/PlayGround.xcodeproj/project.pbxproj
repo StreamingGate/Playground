@@ -101,6 +101,7 @@
 		49EB20A227BA169C00333A9D /* MyHistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EB20A127BA169C00333A9D /* MyHistoryViewModel.swift */; };
 		49EB20A427BA1FEC00333A9D /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EB20A327BA1FEC00333A9D /* MyPageViewModel.swift */; };
 		49EB20AC27BA346F00333A9D /* SFSafariViewController+shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EB20AB27BA346F00333A9D /* SFSafariViewController+shared.swift */; };
+		49EB20B827BA6A9600333A9D /* TransitionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EB20B727BA6A9600333A9D /* TransitionDelegate.swift */; };
 		49EC99FD2782015A00DE4F79 /* RecentViewedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EC99FC2782015A00DE4F79 /* RecentViewedCell.swift */; };
 		49EC9A00278201C600DE4F79 /* Create.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49EC99FF278201C600DE4F79 /* Create.storyboard */; };
 		49EC9A022782033E00DE4F79 /* CreatePopOverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EC9A012782033E00DE4F79 /* CreatePopOverViewController.swift */; };
