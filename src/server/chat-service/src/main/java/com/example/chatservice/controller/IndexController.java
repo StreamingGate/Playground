@@ -1,7 +1,7 @@
 package com.example.chatservice.controller;
 
 import java.util.List;
-import com.example.chatservice.model.room.Room;
+import com.example.chatservice.dto.room.Room;
 import com.example.chatservice.redis.RedisRoomService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

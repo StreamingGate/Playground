@@ -1,4 +1,4 @@
-package com.example.chatservice.model.chat;
+package com.example.chatservice.dto.chat;
 
 public enum SenderRole {
     STREAMER, VIEWER;

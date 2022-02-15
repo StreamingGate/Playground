@@ -2,20 +2,39 @@ spring.profiles.active: local
 server:
   port: 8888
 spring:
+  profiles:
+    include:
+      - jwt
   devtools:
     livereload:
       enabled: true
     restart:
       enabled: false
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: root
+    password: test
+    jpa:
+      open-in-view: false
+      show-sql: true
+      database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+      defer-datasource-initialization: false
+      generate-ddl: false
+      hibernate:
+        ddl-auto: none
 ---
 spring.config.activate.on-profile: local
 spring:
+  datasource:
+    url: jdbc:mariadb://localhost:3306/playground?characterEncoding=utf8
   redis:
     host: localhost
     port: 6379
 ---
 spring.config.activate.on-profile: develop
 spring:
+  datasource:
+    url: jdbc:mariadb://pg-mariadb:3306/playground?characterEncoding=utf8
   redis:
     host: redis
     port: 6379

@@ -15,11 +15,12 @@ import com.example.uploadservice.entity.ViewdHistory.ViewedRepository;
 import com.example.uploadservice.exceptionHandler.customexception.CustomUploadException;
 import com.example.uploadservice.exceptionHandler.customexception.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.AsyncRestTemplate;
-
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -55,7 +56,7 @@ public class VideoService {
                 .user(user)
                 .build();
 
-        createChatRoom(video.getUuid());
+        createChatRoom(video.getUuid(), user.getUuid());
 
         metadataRepository.save(metadata);
         video.setMetadata(metadata);
@@ -77,9 +78,10 @@ public class VideoService {
         roomRepository.delete(room);
     }
 
-    private void createChatRoom(String uuid){
+    private void createChatRoom(String uuid, String hostUuid){
         AsyncRestTemplate asyncRestTemplate = new AsyncRestTemplate();
-        asyncRestTemplate.postForEntity("http://localhost:8888/chat/room?name="+uuid,
-                null, String.class);
+        HttpEntity<?> requestDto = new HttpEntity<>(Map.of("uuid", uuid, "hostUuid", hostUuid));
+        asyncRestTemplate.postForEntity("http://localhost:8888/chat/room",
+                requestDto, String.class);
     }
 }

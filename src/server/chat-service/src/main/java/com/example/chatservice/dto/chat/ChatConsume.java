@@ -1,4 +1,4 @@
-package com.example.chatservice.model.chat;
+package com.example.chatservice.dto.chat;
 
 
 import lombok.Builder;
@@ -14,7 +14,7 @@ public class ChatConsume implements Serializable {
     private static final long serialVersionUID = 1234678977089006638L;
     private static final String PROFILE_PREFIX = "https://d8knntbqcc7jf.cloudfront.net/profiles/";
 
-    private String roomId;  // RedisSubscriber.java onMessage에서 사용
+    private String roomUuid;  // RedisSubscriber.java onMessage에서 사용
     private String nickname;
     private SenderRole senderRole;
     private ChatType chatType;
@@ -25,7 +25,7 @@ public class ChatConsume implements Serializable {
 
     @Builder
     public ChatConsume(ChatProduce chatProduce) {
-        this.roomId = chatProduce.getRoomId();
+        this.roomUuid = chatProduce.getRoomUuid();
         this.nickname = chatProduce.getNickname();
         this.senderRole = chatProduce.getSenderRole();
         this.chatType = chatProduce.getChatType();
