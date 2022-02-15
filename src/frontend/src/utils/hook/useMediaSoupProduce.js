@@ -14,6 +14,7 @@ const mediasoupClient = require('mediasoup-client');
 
 export default function useMediaSoupProduce(stream, roomId, userId) {
   const [producer, setProducer] = useState(null);
+  const [newPeer, setNewPeer] = useState(null);
 
   const getRtpCapabilites = async peer => {
     const rtpCapabilities = await peer.request('getRouterRtpCapabilities');
@@ -106,10 +107,8 @@ export default function useMediaSoupProduce(stream, roomId, userId) {
     });
 
     // 주석
-    // console.log(stream.audioTrack.getConstraints());
     const audioProducer = await producerTransport.produce({
       track: stream.audioTrack,
-      // encodings: [{ dtx: false }],
     });
 
     audioProducer.on('trackend', () => {
@@ -148,6 +147,7 @@ export default function useMediaSoupProduce(stream, roomId, userId) {
       peer = new protooClient.Peer(transport);
       peer.on('open', () => {
         initProduce(peer);
+        setNewPeer(peer);
       });
     }
     return () => {
@@ -155,5 +155,5 @@ export default function useMediaSoupProduce(stream, roomId, userId) {
     };
   }, [stream]);
 
-  return { producer };
+  return { producer, newPeer };
 }
