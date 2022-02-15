@@ -1,8 +1,8 @@
 package com.example.statusservice.stomp;
 
 
-import com.example.statusservice.exception.CustomStatusException;
-import com.example.statusservice.exception.ErrorCode;
+import com.example.statusservice.exceptionhandler.customexception.CustomStatusException;
+import com.example.statusservice.exceptionhandler.customexception.ErrorCode;
 import com.example.statusservice.redis.JwtService;
 import com.example.statusservice.redis.RedisUserService;
 import lombok.RequiredArgsConstructor;

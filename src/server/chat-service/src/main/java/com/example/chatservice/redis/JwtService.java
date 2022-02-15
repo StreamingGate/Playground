@@ -1,8 +1,8 @@
 package com.example.chatservice.redis;
 
 import com.example.chatservice.entity.UserRepository;
-import com.example.chatservice.exception.CustomChatException;
-import com.example.chatservice.exception.ErrorCode;
+import com.example.chatservice.exceptionhandler.customexception.CustomChatException;
+import com.example.chatservice.exceptionhandler.customexception.ErrorCode;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

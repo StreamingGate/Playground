@@ -1,8 +1,8 @@
 package com.example.chatservice.stomp;
 
 
-import com.example.chatservice.exception.CustomChatException;
-import com.example.chatservice.exception.ErrorCode;
+import com.example.chatservice.exceptionhandler.customexception.CustomChatException;
+import com.example.chatservice.exceptionhandler.customexception.ErrorCode;
 import com.example.chatservice.redis.JwtService;
 import com.example.chatservice.redis.RedisRoomService;
 import lombok.RequiredArgsConstructor;

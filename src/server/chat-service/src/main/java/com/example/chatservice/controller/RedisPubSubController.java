@@ -1,7 +1,7 @@
 package com.example.chatservice.controller;
 
-import com.example.chatservice.exception.CustomChatException;
-import com.example.chatservice.exception.ErrorResponse;
+import com.example.chatservice.exceptionhandler.customexception.CustomChatException;
+import com.example.chatservice.exceptionhandler.ErrorResponse;
 import com.example.chatservice.dto.chat.ChatProduce;
 import com.example.chatservice.dto.chat.ChatType;
 import com.example.chatservice.redis.RedisRoomService;
@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
-import static com.example.chatservice.exception.ErrorCode.C001;
+import static com.example.chatservice.exceptionhandler.customexception.ErrorCode.C001;
 
 
 
