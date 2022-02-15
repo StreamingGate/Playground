@@ -2,7 +2,6 @@ import React, { Fragment } from 'react';
 import { useParams } from 'react-router-dom';
 
 import * as S from './ChannelPage.style';
-import { lStorageService } from '@utils/service';
 import { useGetMyList } from '@utils/hook/query';
 
 import ChannelMetaData from '../ChannelMetaData/ChannelMetaData';

@@ -2,11 +2,11 @@ import { useRef } from 'react';
 import { useInfiniteQuery } from 'react-query';
 import axios from '@utils/axios';
 
-const getMyList = async ({ pageParam = { lastVideo: -1, lastLive: -1 }, queryKey }) => {
+const getMyList = async ({ pageParam = { lastVideo: 'null', lastLive: 'null' }, queryKey }) => {
   const { lastVideo, lastLive } = pageParam;
   const [_, type, userId] = queryKey;
   let size = 5;
-  if (lastVideo === -1 && lastLive === -1) {
+  if (lastVideo === 'null' && lastLive === 'null') {
     size = 15;
   }
 
@@ -30,8 +30,8 @@ const getMyUploadList = async ({ pageParam = -1, queryKey }) => {
 };
 
 export default function useGetMyList(type, uuid) {
-  const lastVideo = useRef(-1);
-  const lastLive = useRef(-1);
+  const lastVideo = useRef('null');
+  const lastLive = useRef('null');
 
   const getMyListNextPage = lastPage => {
     const { rooms, videos } = lastPage;
@@ -40,12 +40,22 @@ export default function useGetMyList(type, uuid) {
       return undefined;
     }
 
-    if (videos[videos.length - 1]?.id) {
-      lastVideo.current = videos[videos.length - 1].id;
-    }
+    if (type === 'liked') {
+      if (videos[videos.length - 1]?.likedAt) {
+        lastVideo.current = videos[videos.length - 1].likedAt;
+      }
 
-    if (rooms[rooms.length - 1]?.id) {
-      lastLive.current = rooms[rooms.length - 1].id;
+      if (rooms[rooms.length - 1]?.likedAt) {
+        lastLive.current = rooms[rooms.length - 1].likedAt;
+      }
+    } else if (type === 'watch') {
+      if (videos[videos.length - 1]?.lastViewedAt) {
+        lastVideo.current = videos[videos.length - 1].lastViewedAt;
+      }
+
+      if (rooms[rooms.length - 1]?.lastViewedAt) {
+        lastLive.current = rooms[rooms.length - 1].lastViewedAt;
+      }
     }
 
     return {
@@ -68,6 +78,7 @@ export default function useGetMyList(type, uuid) {
 
   return useInfiniteQuery(['my', type, uuid], type === 'upload' ? getMyUploadList : getMyList, {
     refetchOnWindowFocus: false,
+    refetchOnMount: true,
     getNextPageParam: type === 'upload' ? getMyUploadListNextPage : getMyListNextPage,
   });
 }
