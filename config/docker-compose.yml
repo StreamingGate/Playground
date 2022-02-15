@@ -123,6 +123,7 @@ services:
       - sg-network
 
   status-service:
+    container_name: status-service
     image: rlagksml99/status-service:latest
     depends_on:
       - pg-mariadb
