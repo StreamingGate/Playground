@@ -40,7 +40,8 @@ public class VideoService {
             User user = userRepository.findByUuid(uuid).orElseThrow(() -> new CustomVideoException(ErrorCode.U002));
             Video video = videoRepository.findById(videoId).orElseThrow(() -> new CustomVideoException(ErrorCode.V001));
             video.addHits();
-            ViewedHistory newViewedHistory  = new ViewedHistory(user, video);
+            ViewedHistory newViewedHistory = new ViewedHistory(user, video);
+            newViewedHistory.updateLastViewedAt();
             viewedRepository.save(newViewedHistory);
             result = new VideoResponseDto(video, video.getMetadata().getFileLink(), newViewedHistory);
         }
