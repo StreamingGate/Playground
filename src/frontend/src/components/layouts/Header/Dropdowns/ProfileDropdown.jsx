@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import * as S from './Dropdown.style';
 import { modalService, lStorageService } from '@utils/service';
 import { MainLayoutContext } from '@utils/context';
+import { useStatusSocket } from '@utils/hook';
 import { useFriendList } from '@utils/hook/query';
 
 import { Typography } from '@components/cores';
@@ -18,6 +19,8 @@ function ProfileDropdown() {
   const { data: friendList } = useFriendList(userId);
 
   const navigate = useNavigate();
+
+  const { stompClient } = useStatusSocket();
 
   const handleProfileModalClick = e => {
     e.stopPropagation();
@@ -40,6 +43,7 @@ function ProfileDropdown() {
       lStorageService.removeItem('profileImage');
       lStorageService.removeItem('uuid');
       lStorageService.removeItem('token');
+      stompClient.deactivate();
       navigate('/login');
     }
   };

@@ -1,10 +1,10 @@
-import React, { memo, useRef } from 'react';
+import React, { memo, useRef, useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import Hls from 'hls.js';
 
 import * as S from './VideoPlayPage.style';
 import { lStorageService } from '@utils/service';
-import { useMediaSoupConsume } from '@utils/hook';
+import { useMediaSoupConsume, useStatusSocket } from '@utils/hook';
 import { useGetVideoInfo } from '@utils/hook/query';
 
 import VideoMetaData from '@pages/VideoPlay/VideoMetaData/VideoMetaData';
@@ -40,6 +40,36 @@ function VideoPlayPage() {
 
   // 실시간 방송일 경우(playType.current === 'live') 실시간 시청 커스텀 훅 실행
   const { consumer } = useMediaSoupConsume(playType.current === 'live', videoPlayerRef, data?.uuid);
+
+  const { stompClient } = useStatusSocket();
+
+  // socket notify when play vidoe
+  useEffect(() => {
+    if (data && stompClient) {
+      const { videoUuid, title } = data;
+      stompClient.publish({
+        destination: `/app/watch/${userId}`,
+        body: JSON.stringify({
+          id,
+          type: playType === 'video' ? 0 : 1,
+          videoRoomUuid: videoUuid,
+          title,
+        }),
+      });
+    }
+  }, [data, stompClient]);
+
+  // socket notify when exit play page
+  useEffect(() => {
+    return () => {
+      if (stompClient) {
+        stompClient.publish({
+          destination: `/app/watch/${userId}`,
+          body: JSON.stringify({}),
+        });
+      }
+    };
+  }, [stompClient]);
 
   return (
     <S.VideoPlayPageContainer>

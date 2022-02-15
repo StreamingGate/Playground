@@ -1,35 +1,12 @@
 import React, { useEffect, useContext, useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import * as S from './SideFriendList.style';
+import { useStatusSocket } from '@utils/hook';
 import { MainLayoutContext } from '@utils/context';
 
 import FriendItem from './FriendItem';
 import { BackDrop } from '@components/feedbacks';
-
-const dummyFriends = [
-  { isOnline: false, profileImgSrc: '', name: '김하늬' },
-  { isOnline: false, profileImgSrc: '', name: '서채희' },
-  { isOnline: false, profileImgSrc: '', name: '이우재' },
-  { isOnline: false, profileImgSrc: '', name: 'Daniel Radcliffe' },
-  { isOnline: false, profileImgSrc: '', name: 'Emma Watson' },
-  { isOnline: false, profileImgSrc: '', name: 'Tom Holland' },
-  { isOnline: false, profileImgSrc: '', name: 'Rupert Grint' },
-  { isOnline: false, profileImgSrc: '', name: '황예지' },
-  { isOnline: false, profileImgSrc: '', name: '강슬기' },
-  { isOnline: false, profileImgSrc: '', name: '차정원' },
-  { isOnline: false, profileImgSrc: '', name: '신류진' },
-  { isOnline: false, profileImgSrc: '', name: '이이경' },
-  { isOnline: false, profileImgSrc: '', name: 'A' },
-  { isOnline: false, profileImgSrc: '', name: 'B' },
-  { isOnline: false, profileImgSrc: '', name: 'C' },
-  { isOnline: false, profileImgSrc: '', name: 'D' },
-  { isOnline: false, profileImgSrc: '', name: 'E' },
-  { isOnline: false, profileImgSrc: '', name: 'F' },
-  { isOnline: false, profileImgSrc: '', name: 'G' },
-  { isOnline: false, profileImgSrc: '', name: 'H' },
-  { isOnline: false, profileImgSrc: '', name: 'I' },
-  { isOnline: false, profileImgSrc: '', name: 'J' },
-];
 
 function SideFriendList() {
   const friendModalRef = useRef(null);
@@ -39,6 +16,9 @@ function SideFriendList() {
   const [selectedFriendIdx, setSelectedFriendIdx] = useState(-1);
   const [friendBottomPos, setFriendBottomPos] = useState(0);
   const [isFriendModalToggle, setFriendModalToggle] = useState(false);
+
+  const { friendStatus } = useStatusSocket();
+  const navigate = useNavigate();
 
   const handleFriendModalClose = () => {
     setFriendModalToggle(false);
@@ -62,7 +42,7 @@ function SideFriendList() {
       setSelectedFriendIdx(idx);
       onToggleModal(e);
     } else {
-      if (idx === dummyFriends.length - 1) {
+      if (idx === friendStatus.length - 1) {
         setFriendBottomPos(currentTargetPos.bottom - friendModalHeight);
       } else {
         setFriendBottomPos(
@@ -76,6 +56,12 @@ function SideFriendList() {
 
   const handleViewWithFriendBtnClick = e => {
     e.stopPropagation();
+    const { id, type } = friendStatus[selectedFriendIdx];
+    if (type === 0) {
+      navigate(`/video-play/${id}`);
+    } else if (type === 1) {
+      navigate(`/live-play/${id}`);
+    }
   };
 
   return (
@@ -88,14 +74,13 @@ function SideFriendList() {
       <S.SideFriendListContainer state={sideFriendState}>
         <S.SideFriendListHeader type='highlightCaption'>친구 목록</S.SideFriendListHeader>
         <S.FriendList>
-          {dummyFriends.map(({ isOnline, profileImgSrc, name }, idx) => (
-            // 추후 profileImgSrc로 변경
+          {friendStatus.map(({ profileImage, nickname, status }, idx) => (
             <FriendItem
-              key={name}
+              key={`${profileImage}_${nickname}`}
               dataSet='friend'
-              isOnline={isOnline}
-              profileImgSrc={profileImgSrc}
-              name={name}
+              isOnline={status}
+              profileImgSrc={profileImage}
+              name={nickname}
               onClick={handleFriendItemClick(idx)}
             />
           ))}
@@ -108,9 +93,18 @@ function SideFriendList() {
         >
           <S.FriendAvatar size='lg' />
           <S.FriendModalRightDiv>
-            <S.FriendModalName type='highlightCaption'>친구이름</S.FriendModalName>
-            <S.FriendVideoName type='caption'>시청 중인 영상제목</S.FriendVideoName>
-            <S.PlayWithFriendBtn>영상 같이 시청하기</S.PlayWithFriendBtn>
+            <S.FriendModalName type='highlightCaption'>
+              {friendStatus[selectedFriendIdx]?.nickname}
+            </S.FriendModalName>
+            <S.FriendVideoName type='caption'>
+              {friendStatus[selectedFriendIdx]?.title}
+            </S.FriendVideoName>
+            <S.PlayWithFriendBtn
+              disabled={!friendStatus[selectedFriendIdx]?.id}
+              onClick={handleViewWithFriendBtnClick}
+            >
+              영상 같이 시청하기
+            </S.PlayWithFriendBtn>
           </S.FriendModalRightDiv>
         </S.FriendModalContainer>
       </S.SideFriendListContainer>

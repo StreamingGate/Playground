@@ -9,7 +9,9 @@ function FriendItem({ isOnline, profileImgSrc, onClick, name, dataSet }) {
   return (
     <S.FriendItem onClick={onClick} data-name={dataSet}>
       <Avatar size='xs' imgSrc={!profileImgSrc ? undefined : profileImgSrc} />
-      <S.FriendName type='caption'>{name}</S.FriendName>
+      <S.FriendName type='caption'>
+        {name} {isOnline === true ? '온라인' : '오프라인'}
+      </S.FriendName>
     </S.FriendItem>
   );
 }
