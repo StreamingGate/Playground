@@ -13,3 +13,4 @@ export { default as useMakeLive } from './useMakeLive';
 export { default as useGetMyList } from './useGetMyList';
 export { default as useGetFriendStatus } from './useGetFriendStatus';
 export { default as useGetChannelInfo } from './useGetChanneInfo';
+export { default as useReqFriend } from './useReqFriend';
