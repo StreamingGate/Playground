@@ -15,6 +15,7 @@ import com.example.uploadservice.entity.ViewdHistory.ViewedRepository;
 import com.example.uploadservice.exceptionHandler.customexception.CustomUploadException;
 import com.example.uploadservice.exceptionHandler.customexception.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class VideoService {
@@ -56,7 +58,7 @@ public class VideoService {
                 .user(user)
                 .build();
 
-        createChatRoom(video.getUuid(), user.getUuid());
+        createChatRoom(video.getUuid());
 
         metadataRepository.save(metadata);
         video.setMetadata(metadata);
@@ -78,10 +80,11 @@ public class VideoService {
         roomRepository.delete(room);
     }
 
-    private void createChatRoom(String uuid, String hostUuid){
+    private void createChatRoom(String uuid){
         AsyncRestTemplate asyncRestTemplate = new AsyncRestTemplate();
-        HttpEntity<?> requestDto = new HttpEntity<>(Map.of("uuid", uuid, "hostUuid", hostUuid));
+        HttpEntity<?> requestDto = new HttpEntity<>(Map.of("uuid", uuid));
         asyncRestTemplate.postForEntity("http://localhost:8888/chat/room",
                 requestDto, String.class);
+        log.info("create chat room 요청 완료");
     }
 }
