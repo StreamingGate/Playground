@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import * as S from './MobileStudioPage.style';
 import { modalService } from '@utils/service';
@@ -14,9 +14,8 @@ import { IconButton } from '@components/buttons';
  * @returns {React.Component} 실시간 방송 진행 페이지 모바일 웹뷰
  */
 function MobileStudioPage() {
-  const navigate = useNavigate();
-
   const streamPlayerRef = useRef(null);
+  const urlShemeRef = useRef(null);
 
   const { roomId, hostId } = useParams();
   // 모바일로 미디어 스트림 생성
@@ -30,7 +29,8 @@ function MobileStudioPage() {
   };
 
   // 로컬 미디어 스트림 종료 함수
-  const handleStopStreamBtnClick = () => {
+  const handleStopStreamBtnClick = e => {
+    e.preventDefault();
     modalService.show(AdviseModal, {
       content: '방송을 종료하시겠습니까?',
       type: 'cancel',
@@ -39,7 +39,7 @@ function MobileStudioPage() {
       onClick: async () => {
         stopStream();
         await newPeer.request('closeProducer', { producerId: producer.id });
-        navigate('playground://producerClose');
+        window.location.href = urlShemeRef.current.href;
       },
     });
   };
@@ -47,7 +47,14 @@ function MobileStudioPage() {
   return (
     <S.MobileStudioPageContainer>
       <S.MobileActionContainer>
-        <S.MobileStreamStopBtn variant='text' onClick={handleStopStreamBtnClick}>
+        {/* <S.MobileStreamStopBtn variant='text' onClick={handleStopStreamBtnClick}>
+          종료
+        </S.MobileStreamStopBtn> */}
+        <S.MobileStreamStopBtn
+          href='playground://producerClose'
+          ref={urlShemeRef}
+          onClick={handleStopStreamBtnClick}
+        >
           종료
         </S.MobileStreamStopBtn>
         <IconButton onClick={handleCameraSwitchBtnClick}>

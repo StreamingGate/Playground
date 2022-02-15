@@ -18,7 +18,9 @@ export const MobileActionContainer = styled.div`
   background-color: transparent;
 `;
 
-export const MobileStreamStopBtn = styled(Button)`
+export const MobileStreamStopBtn = styled.a`
+  padding: 8px;
+  text-decoration: none;
   font-size: ${({ theme }) => theme.fontSizes.title};
   color: #ffffff;
 `;
