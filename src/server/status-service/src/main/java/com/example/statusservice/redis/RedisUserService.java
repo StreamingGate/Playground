@@ -1,5 +1,6 @@
 package com.example.statusservice.redis;
 
+import com.example.statusservice.dto.FriendDto;
 import com.example.statusservice.dto.UserDto;
 import com.example.statusservice.entity.User.User;
 import com.example.statusservice.entity.User.UserRepository;
@@ -91,10 +92,45 @@ public class RedisUserService {
             userDto = new UserDto(user);
 //            RedisMessaging.setExpirationMinute(uuid, 30l); // 로그인시 30분마다 Redis데이터 갱신(친구 리스트 변동 반영)
             addFriends(user.getBeFriend());
-//            addTopics(user.getBeFriend());
         }
 
         return userDto;
+    }
+
+    /* 친구 추가 */
+    public void addFriend(FriendDto requestDto, FriendDto senderDto) {
+        UserDto userDto = opsHashUser.get(USER_LIST, requestDto.getUuid());
+        if(userDto == null) { /* 없는 유저라면 유저 추가 */
+            userDto = new UserDto(requestDto);
+            getOrAddTopic(requestDto.getUuid());
+        }
+        userDto.getFriendUuids().add(senderDto.getUuid());
+        opsHashUser.put(USER_LIST,requestDto.getUuid(), userDto);
+    }
+
+    /* 친구 삭제 */
+    public void deleteFriend(FriendDto requestDto, FriendDto targetDto) {
+        UserDto userDto = opsHashUser.get(USER_LIST, requestDto.getUuid());
+        if(userDto == null) { /* 없는 유저라면 유저 추가 */
+            userDto = new UserDto(requestDto);
+            getOrAddTopic(requestDto.getUuid());
+        }
+        userDto.getFriendUuids().remove(targetDto.getUuid());
+        opsHashUser.put(USER_LIST,requestDto.getUuid(), userDto);
+    }
+
+    /* 유저 삭제 */
+    public void deleteUser(String uuid){
+        UserDto userDto = opsHashUser.get(USER_LIST, uuid);
+        if(userDto != null){
+            // collection에서 remove하면 줄어든 size에 의해 동시성 예외가 발생하므로 iterator로 처리
+            Iterator<String> iter = userDto.getFriendUuids().iterator();
+            while (iter.hasNext()) {
+                iter.next();
+                iter.remove();
+            }
+            opsHashUser.delete(USER_LIST, uuid);
+        }
     }
 
     /* Redis에 유저 리스트 추가(친구의 uuid도 topic으로 존재해야 publish가능하므로) */
@@ -117,18 +153,12 @@ public class RedisUserService {
     }
 
     /* 특정 유저 리스트에 대한 토픽 저장 */
-    public void addTopics(List<String> friendUuids){
+    public void addTopics(Set<String> friendUuids){
         for(String friendUuid: friendUuids){
             getOrAddTopic(friendUuid);
         }
     }
 
-    /* 특정 유저 리스트에 대한 토픽 저장 */
-//    public void addTopics(List<User> users){
-//        for(User user: users){
-//            getOrAddTopic(user.getUuid());
-//        }
-//    }
 
     /* 여러 서버 간 통신을 위해 현재 리스너 등록 후 현 서버에 토픽 저장 */
     public ChannelTopic getOrAddTopic(String uuid) {
