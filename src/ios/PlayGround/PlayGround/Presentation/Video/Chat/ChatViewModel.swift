@@ -17,6 +17,12 @@ class ChatViewModel {
     
     func connectToSocket() {
         ChatServiceAPI.shared.connectToSocket(viewModel: self)
+        ChatServiceAPI.shared.loadInitialChat(uuid: self.roomId) { result in
+            guard let initialInfo = result["data"] as? ChatInitialData else { return }
+            self.userCount = initialInfo.userCnt
+            self.pinned = initialInfo.pinnedChat
+        }
+        
     }
     
     func disconnectToSocket() {

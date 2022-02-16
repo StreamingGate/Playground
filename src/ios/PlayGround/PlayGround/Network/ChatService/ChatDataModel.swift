@@ -16,3 +16,15 @@ struct ChatData: Codable {
     let profileImage: String
     let timeStamp: String
 }
+
+struct ChatInitialData: Codable {
+    let uuid: String
+    let userCnt: Int
+    let pinnedChat: ChatData?
+    
+    enum CodingKeys: String, CodingKey {
+        case uuid
+        case userCnt
+        case pinnedChat
+    }
+}
