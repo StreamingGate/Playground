@@ -1,8 +1,9 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
 import * as S from './ChatRoom.style';
+import { ChatInfoContext } from '@utils/context';
 import { useSocket, useForm } from '@utils/hook';
 
 import { Typography } from '@components/cores';
@@ -13,6 +14,8 @@ import { ChatDialog } from '@components/dataDisplays';
 const MAX_LENGTH = 200;
 
 function ChatRoom({ senderRole, videoUuid }) {
+  const { setCurUserCount } = useContext(ChatInfoContext);
+
   const { roomId } = useParams();
   const chatListContainerRef = useRef(null);
 
@@ -47,6 +50,11 @@ function ChatRoom({ senderRole, videoUuid }) {
       chatListContainerRef.current.removeEventListener('scroll', handleChatListScroll);
     };
   }, []);
+
+  // 스튜디오 페이지 및 라이브 재생 메타 데이터 업데이트를 위한 컨텍스트
+  useEffect(() => {
+    setCurUserCount(curUserCount);
+  }, [curUserCount]);
 
   useEffect(() => {
     const currentHeight = chatListContainerRef.current.scrollHeight;

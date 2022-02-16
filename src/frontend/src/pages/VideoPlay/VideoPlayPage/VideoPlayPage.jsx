@@ -1,8 +1,9 @@
-import React, { memo, useRef, useEffect } from 'react';
+import React, { memo, useRef, useEffect, useState, useMemo } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import Hls from 'hls.js';
 
 import * as S from './VideoPlayPage.style';
+import { ChatInfoContext } from '@utils/context';
 import { lStorageService } from '@utils/service';
 import { useMediaSoupConsume, useStatusSocket } from '@utils/hook';
 import { useGetVideoInfo } from '@utils/hook/query';
@@ -23,6 +24,8 @@ function VideoPlayPage() {
 
   const videoPlayerRef = useRef(null);
   const playType = useRef(pathname.includes('/video-play') ? 'video' : 'live');
+
+  const [curUserCount, setCurUserCount] = useState(0);
 
   const handleVideoUrlLoad = data => {
     const { streamingUrl } = data;
@@ -71,21 +74,31 @@ function VideoPlayPage() {
     };
   }, [stompClient]);
 
+  const chatInfoContext = useMemo(
+    () => ({
+      curUserCount,
+      setCurUserCount,
+    }),
+    [curUserCount]
+  );
+
   return (
-    <S.VideoPlayPageContainer>
-      <S.PlayerContainer>
-        <S.VideoPlayer controls ref={videoPlayerRef} autoPlay>
-          Video Load Fail
-        </S.VideoPlayer>
-      </S.PlayerContainer>
-      <S.ChatRoomContainer>
-        <ChatRoom
-          senderRole='VIEWER'
-          videoUuid={playType.current === 'live' ? data?.uuid : data?.videoUuid}
-        />
-      </S.ChatRoomContainer>
-      <VideoMetaData videoData={data} playType={playType} />
-    </S.VideoPlayPageContainer>
+    <ChatInfoContext.Provider value={chatInfoContext}>
+      <S.VideoPlayPageContainer>
+        <S.PlayerContainer>
+          <S.VideoPlayer controls ref={videoPlayerRef} autoPlay>
+            Video Load Fail
+          </S.VideoPlayer>
+        </S.PlayerContainer>
+        <S.ChatRoomContainer>
+          <ChatRoom
+            senderRole='VIEWER'
+            videoUuid={playType.current === 'live' ? data?.uuid : data?.videoUuid}
+          />
+        </S.ChatRoomContainer>
+        <VideoMetaData videoData={data} playType={playType} />
+      </S.VideoPlayPageContainer>
+    </ChatInfoContext.Provider>
   );
 }
 
