@@ -15,13 +15,19 @@ class ChatServiceAPI {
     let chatServiceUrl = "ws://localhost:8888/ws/websocket"
     
     func connectToSocket(viewModel: ChatViewModel) {
-        let url = NSURL(string: chatServiceUrl)!
+        guard let tokenInfo = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue), let url = NSURL(string: chatServiceUrl) else { return }
 //        socketClient.certificateCheckEnabled = false
-        socketClient.openSocketWithURLRequest(request: NSURLRequest(url: url as URL) , delegate: viewModel, connectionHeaders: ["hear-beat": "10000,10000", "accept-version":"1.1,1.0"])
+        socketClient.openSocketWithURLRequest(request: NSURLRequest(url: url as URL) , delegate: viewModel, connectionHeaders: ["hear-beat": "10000,10000", "accept-version":"1.1,1.0", "token": tokenInfo])
     }
     
     func enterRoom(roomId: String) {
+        guard let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else { return }
+        socketClient.subscribeWithHeader(destination: "/topic/chat/enter/\(roomId)", header: ["uuid": uuid])
         socketClient.subscribe(destination: "/topic/chat/room/\(roomId)")
+    }
+    
+    func disconnectToSocketWithHeader(header: [String: String]) {
+        socketClient.disconnectWithHeader(header: header)
     }
     
     func disconnectToSocket() {
