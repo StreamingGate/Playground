@@ -64,13 +64,17 @@ class ChannelViewController: UIViewController {
     }
     
     func bindViewModel() {
+        guard let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else { return }
         self.viewModel.$currentChannel.receive(on: DispatchQueue.main, options: nil)
             .sink { [weak self] channel in
                 guard let self = self, let info = channel else { return }
                 self.profileImageView.downloadImageFrom(link: info.profileImage, contentMode: .scaleAspectFill)
                 self.channelTitleLabel.text = info.nickName
+                self.channelNameTitleLabel.text = info.nickName
                 self.explainLabel.text = "친구 \(info.friendCnt)명 • 동영상 \(info.uploadCnt)개"
                 self.viewModel.loadVideo(vc: self, coordinator: self.navVC?.coordinator)
+                self.friendRequestLabel.isHidden = (info.uuid == uuid)
+                self.friendRequestButton.isEnabled = !(info.uuid == uuid)
             }.store(in: &cancellable)
         self.viewModel.$videoList.receive(on: DispatchQueue.main, options: nil)
             .sink { [weak self] list in
@@ -100,7 +104,7 @@ class ChannelViewController: UIViewController {
             DispatchQueue.main.async {
                 self.friendRequestButton.isEnabled = true
                 guard let _ = NetworkResultManager.shared.analyze(result: result, vc: self, coordinator: self.navVC?.coordinator) else { return }
-                self.friendRequestButton.isEnabled = true
+                self.friendRequestLabel.text = "요청 완료"
             }
         }
     }

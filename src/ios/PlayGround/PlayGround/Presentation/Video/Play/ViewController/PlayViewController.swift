@@ -379,6 +379,7 @@ class PlayViewController: UIViewController {
     
     // MARK: - Data Binding
     func bindingData() {
+        guard let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else { return }
         $isMinimized.receive(on: RunLoop.main)
             .sink { [weak self] tf in
                 guard let self = self  else { return }
@@ -405,6 +406,8 @@ class PlayViewController: UIViewController {
                 self.viewLabel.text = "조회수 \(info.hits)회"
                 self.playControllView.isHidden = self.viewModel.isLive
                 self.miniPlayPauseButton.alpha = self.viewModel.isLive ? 0 : 1
+                self.friendRequestLabel.isHidden = (info.uploaderUuid == uuid)
+                self.friendRequestButton.isEnabled = !(info.uploaderUuid == uuid)
                 self.setPlayer(urlInfo: info.streamingUrl)
 //                self.connectChatView(roomId: info.videoUuid)
             }.store(in: &cancellable)
@@ -421,6 +424,8 @@ class PlayViewController: UIViewController {
 //                self.viewLabel.text = "조회수 \(info.hits)회"
                 self.playControllView.isHidden = self.viewModel.isLive
                 self.miniPlayPauseButton.alpha = self.viewModel.isLive ? 0 : 1
+                self.friendRequestLabel.isHidden = (info.hostUuid == uuid)
+                self.friendRequestButton.isEnabled = !(info.hostUuid == uuid)
                 self.connectWebSocket(roomUUID: info.uuid ?? "test1")
             }.store(in: &cancellable)
         self.viewModel.$currentInfo.receive(on: DispatchQueue.main, options: nil)
@@ -598,7 +603,7 @@ class PlayViewController: UIViewController {
                 DispatchQueue.main.async {
                     self.friendRequestButton.isEnabled = true
                     guard let _ = NetworkResultManager.shared.analyze(result: result, vc: self, coordinator: self.coordinator) else { return }
-                    self.friendRequestButton.isEnabled = true
+                    self.friendRequestLabel.text = "요청 완료"
                 }
             }
         } else {
