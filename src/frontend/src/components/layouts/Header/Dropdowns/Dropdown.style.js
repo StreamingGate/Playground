@@ -53,10 +53,23 @@ export const AcceptFriendBtnContainer = styled.div`
 `;
 
 export const AcceptFriendBtn = styled(Button)`
+  display: flex;
+  justify-content: center;
+  gap: 10px;
   width: 100%;
   background-color: ${({ theme }) => theme.colors.pgBlue};
   font-size: ${({ theme }) => theme.fontSizes.content};
   border-radius: 15px;
+`;
+
+export const AlarmCountBadge = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background-color: ${({ theme }) => theme.colors.pgOrange};
 `;
 
 export const AlarmList = styled.ul`
