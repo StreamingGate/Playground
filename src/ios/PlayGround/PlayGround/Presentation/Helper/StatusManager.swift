@@ -40,8 +40,20 @@ extension StatusManager: StompClientLibDelegate {
             print("cannot unwrap")
             return
         }
-        if let firstIndex = self.friendWatchList.firstIndex(where: { $0.uuid == friendWatchData.uuid }) {
-            self.friendWatchList[firstIndex] = friendWatchData
+        guard let isAdd = friendWatchData.addOrDelete else {
+            if let firstIndex = self.friendWatchList.firstIndex(where: { $0.uuid == friendWatchData.uuid }) {
+                self.friendWatchList[firstIndex] = friendWatchData
+            }
+            return
+        }
+        if isAdd {
+            // 친구 추가
+            self.friendWatchList.append(friendWatchData)
+        } else {
+            // 친구 삭제
+            if let firstIndex = self.friendWatchList.firstIndex(where: { $0.uuid == friendWatchData.uuid }) {
+                self.friendWatchList.remove(at: firstIndex)
+            }
         }
     }
     

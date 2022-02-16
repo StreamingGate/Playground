@@ -70,6 +70,7 @@ class StatusServiceAPI {
     
     func connectLogin(uuid: String) {
         socketClient.subscribe(destination: "/topic/friends/\(uuid)")
+        socketClient.subscribe(destination: "/topic/friends/update/\(uuid)")
     }
     
     func disconnectToSocket() {
