@@ -13,8 +13,16 @@ class ChatCell: UITableViewCell {
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var nicknameLabel: UILabel!
     @IBOutlet weak var contentLabel: UILabel!
+    @IBOutlet weak var streamerBorderView: UIView!
     
     func setupUI(info: ChatData) {
+        if info.senderRole == "STREAMER" {
+            streamerBorderView.layer.cornerRadius = 15
+            streamerBorderView.layer.borderWidth = 2
+            streamerBorderView.layer.borderColor = UIColor.PGOrange.cgColor
+        } else {
+            streamerBorderView.layer.borderWidth = 0
+        }
         profileImageView.image = nil
         profileImageView.backgroundColor = UIColor.placeHolder
         profileImageView.layer.cornerRadius = 15
