@@ -10,9 +10,9 @@ import { ChatDialog } from '@components/dataDisplays';
 
 const MAX_LENGTH = 200;
 
-function ChatRoom() {
+function ChatRoom({ senderRole }) {
   const chatListContainerRef = useRef(null);
-  const { chatData, sendChatMessage } = useSocket('2ba8e2fc-c55c-4316-8212-ce197924141a');
+  const { chatData, curUserCount, pinnedChat, sendChatMessage } = useSocket('room3', senderRole);
   const { values, handleInputChange, changeValue } = useForm({ initialValues: { message: '' } });
 
   const [isShowScrollBtm, setShowScrollBtm] = useState(false);
@@ -77,10 +77,15 @@ function ChatRoom() {
         <S.ChatRoomTitle type='component'>실시간 채팅</S.ChatRoomTitle>
         <S.ChatMetaContainer>
           <S.PersonIcon />
-          <S.ChatRoomPeople>6.7천명</S.ChatRoomPeople>
+          <S.ChatRoomPeople>{curUserCount} 명</S.ChatRoomPeople>
         </S.ChatMetaContainer>
       </S.ChatRoomHeader>
       <S.ChaListContainer ref={chatListContainerRef}>
+        {pinnedChat && (
+          <S.pinnedChatContainer>
+            <ChatDialog chatInfo={pinnedChat} isPinned />
+          </S.pinnedChatContainer>
+        )}
         {chatData.map(chatInfo => (
           <ChatDialog key={uuidv4()} chatInfo={chatInfo} />
         ))}

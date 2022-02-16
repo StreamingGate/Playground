@@ -45,9 +45,19 @@ export const ChaListContainer = styled.ul`
   position: relative;
   height: calc(100% - var(--chat-room-header-height) - var(--chat-input-controller-height));
   overflow: auto;
-  padding: 20px 20px 0px 20px;
+  padding: 20px 20px 15px 20px;
   border-top: 1px solid ${({ theme }) => theme.colors.separator};
   border-bottom: 1px solid ${({ theme }) => theme.colors.separator};
+`;
+
+export const pinnedChatContainer = styled.ul`
+  position: sticky;
+  top: 0px;
+  left: 20px;
+  right: 20px;
+  padding: 10px;
+  border-radius: 3px;
+  background-color: #ffffff;
 `;
 
 export const ScrollDownBtnContainer = styled.div`
