@@ -95,6 +95,17 @@ export const ChatInputContainer = styled.div`
   text-align: right;
 `;
 
+export const ChatInputUnderContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const CheckBoxLabel = styled.label`
+  display: flex;
+  align-items: center;
+  gap: 5px;
+`;
+
 export const InputCharCount = styled(Typography)`
   color: ${({ theme, isLimit }) => (isLimit ? 'red' : theme.colors.placeHolder)};
 `;

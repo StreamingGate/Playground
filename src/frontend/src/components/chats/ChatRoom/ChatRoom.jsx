@@ -1,21 +1,31 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
 import * as S from './ChatRoom.style';
 import { useSocket, useForm } from '@utils/hook';
 
+import { Typography } from '@components/cores';
 import { Input } from '@components/forms';
 import { IconButton } from '@components/buttons';
 import { ChatDialog } from '@components/dataDisplays';
 
 const MAX_LENGTH = 200;
 
-function ChatRoom({ senderRole }) {
+function ChatRoom({ senderRole, videoUuid }) {
+  const { roomId } = useParams();
   const chatListContainerRef = useRef(null);
-  const { chatData, curUserCount, pinnedChat, sendChatMessage } = useSocket('room3', senderRole);
+
+  // 스트리머일 경우 url 주소로 만들어진 방 번호로 소켓 연결
+  // 시청자일 경우 상위 컴포넌트에서 전달받은 방 번호로 소켓 연결
+  const { chatData, curUserCount, pinnedChat, sendChatMessage } = useSocket(
+    senderRole === 'STREAMER' ? roomId : videoUuid,
+    senderRole
+  );
   const { values, handleInputChange, changeValue } = useForm({ initialValues: { message: '' } });
 
   const [isShowScrollBtm, setShowScrollBtm] = useState(false);
+  const [isPinnedCheck, setPinnedCheck] = useState(false);
 
   const handleChatListScroll = () => {
     const chatListContainerDom = chatListContainerRef.current;
@@ -52,7 +62,7 @@ function ChatRoom({ senderRole }) {
       return;
     }
     if (e.key === 'Enter' || e.type === 'click') {
-      sendChatMessage(message);
+      sendChatMessage(message, isPinnedCheck);
       changeValue(['message', '']);
     }
   };
@@ -69,6 +79,10 @@ function ChatRoom({ senderRole }) {
       top: currentHeight,
       behavior: 'smooth',
     });
+  };
+
+  const handlePinnedCheckChange = () => {
+    setPinnedCheck(prev => !prev);
   };
 
   return (
@@ -109,9 +123,17 @@ function ChatRoom({ senderRole }) {
             value={values.message}
             onChange={handleInputChange}
           />
-          <S.InputCharCount isLimit={values.message.length > MAX_LENGTH}>
-            {values.message.length}/{MAX_LENGTH}
-          </S.InputCharCount>
+          <S.ChatInputUnderContainer>
+            {senderRole === 'STREAMER' && (
+              <S.CheckBoxLabel>
+                <input type='checkbox' value={isPinnedCheck} onChange={handlePinnedCheckChange} />
+                <Typography type='bottomTab'>채팅방 상단 고정</Typography>
+              </S.CheckBoxLabel>
+            )}
+            <S.InputCharCount isLimit={values.message.length > MAX_LENGTH}>
+              {values.message.length}/{MAX_LENGTH}
+            </S.InputCharCount>
+          </S.ChatInputUnderContainer>
         </S.ChatInputContainer>
         <IconButton onClick={handleSendBtn} disabled={!values.message}>
           <S.SendIcon />
