@@ -19,6 +19,8 @@ function ChannelMetaData() {
     if (errorCode) {
       modalService.show(AdviseModal, { content: message });
       setDisabled(true);
+    } else {
+      modalService.show(AdviseModal, { content: '친구신청이 완료 되었습니다' });
     }
   };
 
