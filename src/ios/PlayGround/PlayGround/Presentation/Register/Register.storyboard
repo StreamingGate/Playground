@@ -61,7 +61,7 @@
                                     <constraint firstAttribute="height" constant="44" id="syJ-Tf-gCn"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="numberPad" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                 <connections>
                                     <action selector="verifyNumTextFieldEditingChanged:" destination="Y6W-OH-hqX" eventType="editingChanged" id="kmg-DS-V37"/>
                                 </connections>
