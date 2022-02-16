@@ -10,10 +10,13 @@ export default function useStatusSocket() {
   const [stompClient, setStompClient] = useState(null);
   const [friendStatus, setFriendStatus] = useState([]);
   const [newStatus, setNewStatus] = useState(null);
+  const [crudStatus, setCrudStatus] = useState(null);
 
   const userId = lStorageService.getItem('uuid');
   const token = lStorageService.getItem('token');
 
+  // 클로저로 인해 friendStatus의 초기값을 기억하고 있어 useEffect로 업데이트 처리
+  // 친구 유저 상태 변화
   useEffect(() => {
     if (newStatus) {
       const newFriendStatus = [...friendStatus];
@@ -31,11 +34,35 @@ export default function useStatusSocket() {
     }
   }, [newStatus]);
 
+  useEffect(() => {
+    if (crudStatus) {
+      const { addOrDelete } = crudStatus;
+      if (!addOrDelete) {
+        const newFriendStatus = [...friendStatus];
+        const findIdx = newFriendStatus.findIndex(({ uuid }) => uuid === crudStatus.uuid);
+
+        setFriendStatus([
+          ...newFriendStatus.slice(0, findIdx),
+          ...newFriendStatus.slice(findIdx + 1, newFriendStatus.length),
+        ]);
+      } else if (addOrDelete) {
+        setFriendStatus(prev => [...prev, crudStatus]);
+      }
+    }
+  }, [crudStatus]);
+
   const recvUpdateStatusMessage = message => {
     const { body } = message;
 
     const parsedMessage = JSON.parse(body);
     setNewStatus(parsedMessage);
+  };
+
+  const recvUpdateFriendMessage = message => {
+    const { body } = message;
+
+    const parsedMessage = JSON.parse(body);
+    setCrudStatus(parsedMessage);
   };
 
   const { data } = useGetFriendStatus(userId, () => {});
@@ -55,6 +82,7 @@ export default function useStatusSocket() {
       newClient.onConnect = () => {
         temp.current = newClient;
         newClient.subscribe(`/topic/friends/${userId}`, recvUpdateStatusMessage);
+        newClient.subscribe(`/topic/friends/update/${userId}`, recvUpdateFriendMessage);
 
         setStompClient(newClient);
       };
