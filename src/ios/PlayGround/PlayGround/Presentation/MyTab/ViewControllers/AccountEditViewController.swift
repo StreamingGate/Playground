@@ -161,7 +161,7 @@ class AccountEditViewController: UIViewController {
             UserServiceAPI.shared.updateUserInfo(nickName: (nicknameInfo == UserManager.shared.userInfo?.nickName ? nil : nicknameInfo), profileImage: binaryImage) { result in
                 print("==> \(result)")
                 guard let userInfo = NetworkResultManager.shared.analyze(result: result, vc: self, coordinator: self.coordinator) as? UserInfo else { return }
-                UserManager.shared.userInfo = userInfo
+                UserManager.shared.userInfo = UserInfo(email: userInfo.email, profileImage: userInfo.profileImage, name: userInfo.name, nickName: userInfo.nickName ?? UserManager.shared.userInfo?.nickName)
                 DispatchQueue.main.async {
                     self.updateButton.isEnabled = true
                     self.coordinator?.dismiss()
