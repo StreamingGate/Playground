@@ -25,6 +25,7 @@ class NickNameInputViewController: UIViewController {
     let imagePicker = UIImagePickerController()
     let profileImageView = UIImageView()
     var nameInfo: String = ""
+    let backgroundColor = [UIColor(red: 1, green: 0.797, blue: 0.275, alpha: 1), UIColor(red: 0.335, green: 0.563, blue: 0.904, alpha: 1), UIColor(red: 0.838, green: 0.59, blue: 0.925, alpha: 1), UIColor(red: 0.929, green: 0.391, blue: 0.391, alpha: 1), UIColor(red: 0.567, green: 0.567, blue: 0.567, alpha: 1), UIColor(red: 0.578, green: 0.867, blue: 0.693, alpha: 1), UIColor(red: 0.332, green: 0.812, blue: 0.784, alpha: 1), UIColor(red: 0.946, green: 0.43, blue: 0.615, alpha: 1)]
     
     // MARK: - View LifeCycle
     override func viewDidLoad() {
@@ -56,7 +57,7 @@ class NickNameInputViewController: UIViewController {
         step1View.layer.cornerRadius = 10
         step2View.layer.cornerRadius = 10
         step3View.layer.cornerRadius = 10
-        profileView.backgroundColor = UIColor.placeHolder
+        profileView.backgroundColor = backgroundColor.randomElement() ?? UIColor.placeHolder
         profileView.layer.cornerRadius = 50
         nextButton.layer.cornerRadius = 5
         selectButton.layer.cornerRadius = 5
