@@ -1,34 +1,33 @@
 package com.example.chatservice.controller;
 
-import com.example.chatservice.model.room.Room;
+import com.example.chatservice.dto.room.Room;
 import com.example.chatservice.redis.RedisRoomService;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+import java.util.Map;
 
 @RequiredArgsConstructor
-@Controller
+@RestController
 @RequestMapping("/chat")
 public class RoomController {
 
+    private final static String UUID_KEY = "uuid";
     private final RedisRoomService redisRoomRepository;
 
-    @GetMapping("/room/{roomId}")
-    @ResponseBody
-    public Room roomInfo(@PathVariable("roomId") String id) {
-        Room res = redisRoomRepository.findById(id);
-        return res;
+    @GetMapping("/room/{roomUuid}")
+    public Room roomInfo(@PathVariable("roomUuid") String uuid) {
+        return redisRoomRepository.findById(uuid);
     }
 
     @PostMapping("/room")
-    @ResponseBody
-    public Room createRoom(@RequestParam String name) {
-        Room res = redisRoomRepository.create(name);
-        return res;
+    public Room createRoom(@RequestBody Map<String, String> roomCreateDto) {
+        String uuid = roomCreateDto.get(UUID_KEY);
+        return redisRoomRepository.create(uuid);
+    }
+
+    @DeleteMapping("/room")
+    public String deleteRoom(@RequestBody Map<String, String> roomCreateDto){
+        String uuid = roomCreateDto.get(UUID_KEY);
+        return redisRoomRepository.removeRoom(uuid);
     }
 }

@@ -1,5 +1,6 @@
 package com.example.chatservice.config;
 
+import com.example.chatservice.dto.room.Room;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
@@ -36,10 +37,12 @@ public class RedisConfig {
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(connectionFactory);
-        redisTemplate.setKeySerializer(new StringRedisSerializer());
-        Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(String.class);
+        Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(Room.class);
         jackson2JsonRedisSerializer.setObjectMapper(objectMapper());
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);
+        redisTemplate.setHashKeySerializer(new StringRedisSerializer());
+        redisTemplate.setHashValueSerializer(jackson2JsonRedisSerializer);
         return redisTemplate;
     }
 }
