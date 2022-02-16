@@ -31,11 +31,16 @@ public class RedisSubscriber implements MessageListener {
          UserDto userDto = objectMapper.readValue(publishMessage, UserDto.class);
          log.info("==Publish from: " + userDto.getUuid());
 
-         /* 친구 리스트에게 publish */
-         for (String friendUuid : userDto.getFriendUuids()) {
-            log.info("==Publish to: " + friendUuid);
-            /* Websocket 구독자에게 채팅 메시지 Send */
-            ClientMessaging.publish("/topic/friends/" + friendUuid, userDto);
+         if(userDto.getAddOrDelete() == null) {
+            /* 친구 리스트에게 publish */
+            for (String friendUuid : userDto.getFriendUuids()) {
+               log.info("==Publish to: " + friendUuid);
+               /* Websocket 구독자에게 채팅 메시지 Send */
+               ClientMessaging.publish("/topic/friends/" + friendUuid, userDto);
+            }
+         } else{
+            log.info("==Publish to: " + userDto.getUpdateTargetUuid());
+            ClientMessaging.publish("/topic/friends/update/" + userDto.getUpdateTargetUuid(), userDto);
          }
       } catch (Exception e) {
          log.error(e.getMessage());
