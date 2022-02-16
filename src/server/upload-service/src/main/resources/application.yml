@@ -17,7 +17,6 @@ spring:
       enabled: true
       max-file-size: 1024MB
       max-request-size: 1024MB
-
 ---
 spring.config.activate.on-profile: local
 server:
@@ -25,6 +24,9 @@ server:
 spring:
   datasource:
     url: jdbc:mariadb://localhost:3306/playground?characterEncoding=utf8
+service:
+  ip:
+    chat-service: http://localhost:8888
 bin:
   path: C:\Projects\Playground\bin
 ffmpeg:
@@ -40,6 +42,9 @@ spring:
     name: upload-service
   datasource:
     url: jdbc:mariadb://pg-mariadb:3306/playground?characterEncoding=utf8
+service:
+  ip:
+    chat-service: http://chat-service:8888
 eureka:
   instance:
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
