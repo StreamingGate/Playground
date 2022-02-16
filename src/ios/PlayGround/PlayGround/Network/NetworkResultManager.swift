@@ -16,6 +16,21 @@ class NetworkResultManager {
             if let data = result["data"] as? [String: Any], let errorCode = data["errorCode"] as? String {
                 DispatchQueue.main.async {
                     vc.simpleAlert(message: ErrorCodeConverter().check(errorCode).rawValue)
+                    if let playVC = vc as? PlayViewController {
+                        playVC.friendRequestButton.isEnabled = false
+                        if errorCode == "F002" {
+                            playVC.friendRequestLabel.text = "요청 완료"
+                        } else if errorCode == "F003" {
+                            playVC.friendRequestLabel.text = "친구"
+                        }
+                    } else if let channelVC = vc as? ChannelViewController {
+                        channelVC.friendRequestButton.isEnabled = false
+                        if errorCode == "F002" {
+                            channelVC.friendRequestLabel.text = "요청 완료"
+                        } else if errorCode == "F003" {
+                            channelVC.friendRequestLabel.text = "친구"
+                        }
+                    }
                 }
                 return nil
             } else {
