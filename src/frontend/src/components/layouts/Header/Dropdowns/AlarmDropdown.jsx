@@ -64,7 +64,10 @@ function AlarmDropdown() {
           </S.AlarmTitle>
           <S.AlarmBody>
             <S.AcceptFriendBtnContainer>
-              <S.AcceptFriendBtn>친구 요청{friendReqList?.result.length}</S.AcceptFriendBtn>
+              <S.AcceptFriendBtn>
+                친구 요청
+                <S.AlarmCountBadge>{friendReqList?.result.length}</S.AlarmCountBadge>
+              </S.AcceptFriendBtn>
             </S.AcceptFriendBtnContainer>
             <S.AlarmList>
               {notiList?.result.map(alarm => {
