@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import * as S from './VideoMetaData.style';
+import { ChatInfoContext } from '@utils/context';
 import { lStorageService, modalService } from '@utils/service';
 import { useVideoAction } from '@utils/hook/query';
 
@@ -20,6 +21,8 @@ function ActionButton({ element, content, onClick }) {
 }
 
 function VideoMetaData({ videoData, playType }) {
+  const { curUserCount } = useContext(ChatInfoContext);
+
   const { id } = useParams();
   const userId = lStorageService.getItem('uuid');
   const navigate = useNavigate();
@@ -137,7 +140,9 @@ function VideoMetaData({ videoData, playType }) {
       <S.VideoCategory type='caption'>#{videoData.category}</S.VideoCategory>
       <S.VideoTitle type='component'>{videoData.title}</S.VideoTitle>
       <S.VideoInfoContainer>
-        <S.WatchPeople type='caption'>6702명 시청 중</S.WatchPeople>
+        <S.WatchPeople type='caption'>
+          {playType.current === 'video' ? `조회수 ${videoData.hits}회` : `${curUserCount}명`}
+        </S.WatchPeople>
         <S.ActionContainer>
           <ActionButton
             onClick={handleLikeBtnClick}

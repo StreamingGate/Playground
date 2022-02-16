@@ -1,6 +1,11 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import protooClient from 'protoo-client';
 import { v4 as uuidv4 } from 'uuid';
+
+import { modalService } from '@utils/service';
+
+import { AdviseModal } from '@components/feedbacks/Modals';
 
 const mediasoupClient = require('mediasoup-client');
 
@@ -16,6 +21,9 @@ const mediasoupClient = require('mediasoup-client');
 
 export default function useMediaSoupConsume(isLive, videoPlayerRef, roomId) {
   const [consumer, setConsumer] = useState(null);
+  const [peer, setPeer] = useState(null);
+
+  const navigate = useNavigate();
 
   const getRtpCapabilities = async peer => {
     const rptCapabilities = await peer.request('getRouterRtpCapabilities');
@@ -81,7 +89,6 @@ export default function useMediaSoupConsume(isLive, videoPlayerRef, roomId) {
     const { track } = consumer;
     const { track: audio } = audioConsumer;
 
-    console.log(track);
     // console.log(audio);
     try {
       videoPlayerRef.current.srcObject = new MediaStream([track, audio]);
@@ -124,6 +131,22 @@ export default function useMediaSoupConsume(isLive, videoPlayerRef, roomId) {
 
       newPeer.on('open', () => {
         initConsume(newPeer);
+
+        newPeer.on('notification', notification => {
+          switch (notification.method) {
+            case 'producerClose': {
+              const { message } = notification.data;
+              modalService.show(AdviseModal, {
+                content: message,
+                bntContent: '메인 페이지로 이동',
+                onClick: () => navigate('/home'),
+              });
+              break;
+            }
+            default:
+              break;
+          }
+        });
       });
     }
     return () => {
@@ -131,5 +154,5 @@ export default function useMediaSoupConsume(isLive, videoPlayerRef, roomId) {
     };
   }, [roomId]);
 
-  return { consumer };
+  return { consumer, peer };
 }

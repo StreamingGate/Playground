@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
 
 import * as S from './MakeStreamModal.style';
+import axios from '@utils/axios';
 import { useForm } from '@utils/hook';
 import { useUploadVideo, useMakeLive } from '@utils/hook/query';
 import { modalService, mediaService, lStorageService } from '@utils/service';
@@ -99,8 +100,9 @@ function MakeStreamModal({ type }) {
     mutate(formData);
   };
 
-  const handleMakeLiveSuccess = data => {
+  const handleMakeLiveSuccess = async data => {
     const { uuid, _ } = data;
+    await axios.post(`${process.env.REACT_APP_CHAT_API}/chat/room`, { uuid });
     modal.hide();
     navigate(`/studio/${uuid}`);
   };

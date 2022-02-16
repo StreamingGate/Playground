@@ -1,11 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import PropTypes from 'prop-types';
 
 import * as S from './StreamStatusBar.style';
+import { ChatInfoContext } from '@utils/context';
 
 import { Viewers, Like } from '@components/cores';
 
 function StreamStatusBar({ isStop }) {
+  const { curUserCount } = useContext(ChatInfoContext);
+
   const timer = useRef(null);
 
   const [count, setCount] = useState(0);
@@ -33,7 +36,7 @@ function StreamStatusBar({ isStop }) {
       </S.TimerContainer>
       <S.ViewerCountContainer>
         <Viewers />
-        <S.ViewerCount type='caption'>3</S.ViewerCount>
+        <S.ViewerCount type='caption'>{curUserCount}</S.ViewerCount>
       </S.ViewerCountContainer>
       <S.LikeCountContaienr>
         <Like />
