@@ -43,6 +43,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func sceneDidEnterBackground(_ scene: UIScene) {
+        print("background")
+        guard let root = window?.rootViewController as? LoginNavigationController, let tabBar = root.viewControllers.last as? CustomTabViewController else { return }
+        if let player = tabBar.children.last as? PlayViewController, let chatting = player.children.last(where: { ($0 as? ChattingViewController) != nil }) as? ChattingViewController {
+            print("Viewer chat disconnected")
+            chatting.viewModel.disconnectToSocket()
+        } else if let createNav = tabBar.presentedViewController as? CreateNavigationController, let liveVC = createNav.viewControllers.last as? LiveViewController {
+            print("Streamer chat disconnected")
+            liveVC.viewModel.disconnectToSocket()
+        }
         // Called as the scene transitions from the foreground to the background.
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
@@ -52,7 +61,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
         if let url = URLContexts.first?.url {
             if url.absoluteString.starts(with: "playground://producerClose") {
-                SFSafariViewController.shared.dismiss(animated: true, completion: nil)
+                print("access")
+                SFSafariViewController.shared.view.removeFromSuperview()
+                guard let root = window?.rootViewController as? LoginNavigationController, let tabBar = root.viewControllers.last as? CustomTabViewController, let createNav = tabBar.presentedViewController as? CreateNavigationController, let liveVC = createNav.viewControllers.last as? LiveViewController else { return }
+                liveVC.setupUIforClose()
             }
         }
     }
