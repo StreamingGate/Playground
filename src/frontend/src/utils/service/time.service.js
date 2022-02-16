@@ -31,4 +31,16 @@ const processVideoUploadTime = time => {
   return `${Math.floor(difference)}분 전`;
 };
 
-export default { processVideoUploadTime };
+const processChatTime = time => {
+  const now = new Date(time);
+
+  const curHour = now.getHours() + 9;
+  const curMinute = String(now.getMinutes());
+
+  const timeDivision = curHour >= 12 ? '오후' : '오전';
+  const parseHour = String(curHour > 12 ? curHour - 12 : curHour);
+
+  return `${timeDivision} ${parseHour.padStart(2, 0)}:${curMinute.padStart(2, 0)}`;
+};
+
+export default { processVideoUploadTime, processChatTime };
