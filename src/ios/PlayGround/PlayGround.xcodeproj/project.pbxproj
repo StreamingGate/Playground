@@ -281,10 +281,8 @@
 		49177C0427B6396000549C07 /* Create */ = {
 			isa = PBXGroup;
 			children = (
-				49EC99FF278201C600DE4F79 /* Create.storyboard */,
-				49F18C2B278E5E0800EBDCF8 /* CreateNavigationController.swift */,
-				49EC9A012782033E00DE4F79 /* CreatePopOverViewController.swift */,
-				496279DF2782C1AA005A2BDC /* CreateInfoViewController.swift */,
+				49E6734A27BD073D0030C211 /* View */,
+				49E6734927BD07320030C211 /* ViewController */,
 			);
 			path = Create;
 			sourceTree = "<group>";
@@ -292,9 +290,8 @@
 		49177C0527B6398C00549C07 /* Live */ = {
 			isa = PBXGroup;
 			children = (
-				49E8E89B278BB528003AD1DF /* Live.storyboard */,
-				49E8E89F278BC264003AD1DF /* LiveViewController.swift */,
-				49AB6FE8278C545100D4D1E9 /* LiveChatCell.swift */,
+				49E6735827BD083F0030C211 /* View */,
+				49E6735927BD08460030C211 /* ViewController */,
 			);
 			path = Live;
 			sourceTree = "<group>";
@@ -318,7 +315,6 @@
 			children = (
 				49B9C9B9277ACE9C006AE134 /* AppDelegate.swift */,
 				49B9C9BB277ACE9C006AE134 /* SceneDelegate.swift */,
-				49EB20AB27BA346F00333A9D /* SFSafariViewController+shared.swift */,
 				492C62282795378D00AE546E /* Login */,
 				49EA4E0F2794738A00A038E3 /* CustomTab */,
 				4935FD2D277BD95200760675 /* HomeTab */,
@@ -334,9 +330,8 @@
 		492C62282795378D00AE546E /* Login */ = {
 			isa = PBXGroup;
 			children = (
-				49B9C9BF277ACE9C006AE134 /* Login.storyboard */,
-				492C62182794F90500AE546E /* LoginNavigationController.swift */,
-				49D7A0A92783DBB9001CAC60 /* LoginViewController.swift */,
+				49E6734E27BD07790030C211 /* View */,
+				49E6734D27BD076F0030C211 /* ViewController */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -344,11 +339,8 @@
 		492C6229279538B800AE546E /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				4935FD3C277BDC6600760675 /* Home.storyboard */,
-				49E6BE30279100BC000E475C /* HomeNavigationController.swift */,
-				4935FD2E277BD95200760675 /* HomeListViewController.swift */,
-				4935FD30277BD97400760675 /* CategoryCell.swift */,
-				4935FD31277BD97400760675 /* VideoListCell.swift */,
+				49E6734727BD06460030C211 /* View */,
+				49E6734827BD070B0030C211 /* ViewController */,
 				4957CBBC27ACED9200554967 /* ViewModel */,
 			);
 			path = Home;
@@ -378,11 +370,9 @@
 		4935FD32277BD97F00760675 /* Play */ = {
 			isa = PBXGroup;
 			children = (
-				4935FD34277BD97F00760675 /* Play.storyboard */,
-				49E8F63F27A962B900E030F6 /* PlayViewModel.swift */,
-				49F18C53278F2EED00EBDCF8 /* PlayViewController.swift */,
-				496279D527828BB3005A2BDC /* PlayExplainViewController.swift */,
-				492C622D27955F6C00AE546E /* Player.swift */,
+				49E6735C27BD08B60030C211 /* View */,
+				49E6735D27BD08BE0030C211 /* ViewController */,
+				49E6735E27BD08C70030C211 /* ViewModel */,
 			);
 			path = Play;
 			sourceTree = "<group>";
@@ -390,10 +380,9 @@
 		4935FD40277BDF6300760675 /* Chat */ = {
 			isa = PBXGroup;
 			children = (
-				4935FD3E277BDF5F00760675 /* Chat.storyboard */,
-				4935FD41277C0E4D00760675 /* ChattingViewController.swift */,
-				4935FD43277C0ED100760675 /* ChatCell.swift */,
-				49E72FF427A23F8C00DFBCC3 /* ChatViewModel.swift */,
+				49E6736227BD08EB0030C211 /* View */,
+				49E6736327BD08F10030C211 /* ViewController */,
+				49E6736427BD08F90030C211 /* ViewModel */,
 				49ECFDB527A292C000BA6DF6 /* ChatSendDelegate.swift */,
 			);
 			path = Chat;
@@ -410,10 +399,9 @@
 		49818AC62780C64300C0C956 /* MyTab */ = {
 			isa = PBXGroup;
 			children = (
-				49818AC72780C66100C0C956 /* MyPage.storyboard */,
-				49EB20A127BA169C00333A9D /* MyHistoryViewModel.swift */,
-				49EB20A327BA1FEC00333A9D /* MyPageViewModel.swift */,
+				49E6735A27BD08690030C211 /* View */,
 				49E8E89A278BB500003AD1DF /* ViewControllers */,
+				49E6735B27BD08870030C211 /* ViewModel */,
 			);
 			path = MyTab;
 			sourceTree = "<group>";
@@ -421,12 +409,9 @@
 		49AC952B2791AD2D0030DCC0 /* Notice */ = {
 			isa = PBXGroup;
 			children = (
-				49A308A12791AD72005D6109 /* Notice.storyboard */,
-				49AC95292791AC080030DCC0 /* NoticeListViewController.swift */,
-				49F4E3CA27ACA886002869F4 /* NoticeCell.swift */,
-				49F777D827AA58B800AD2D78 /* FriendRequestViewController.swift */,
-				49F4E3CC27ACA9CC002869F4 /* FriendRequestCell.swift */,
-				49F4E3CE27ACAADC002869F4 /* NoticeViewModel.swift */,
+				49E6735527BD07D70030C211 /* View */,
+				49E6735627BD08260030C211 /* ViewController */,
+				49E6735727BD08330030C211 /* ViewModel */,
 			);
 			path = Notice;
 			sourceTree = "<group>";
@@ -468,6 +453,7 @@
 				49EA82D027B184E400F75546 /* UIViewController+toastMessage.swift */,
 				491EF26827A7C31000A7AF91 /* UIImageView+downloadImageFrom.swift */,
 				491EF26627A7C2CD00A7AF91 /* String+getDateString.swift */,
+				49EB20AB27BA346F00333A9D /* SFSafariViewController+shared.swift */,
 				49E72FFD27A265D200DFBCC3 /* UITablewView+ScrollToBottom.swift */,
 				492C622F2795989F00AE546E /* CustomSlider.swift */,
 				490770A22797EA7A00ADD8E8 /* KeyChainWrapper+Key.swift */,
@@ -486,9 +472,9 @@
 		49C52CDD278B4379009D6FBB /* Channel */ = {
 			isa = PBXGroup;
 			children = (
-				49C52CDF278B4379009D6FBB /* Channel.storyboard */,
-				49C52CDE278B4379009D6FBB /* ChannelViewController.swift */,
-				49E6734527BB504E0030C211 /* ChannelViewModel.swift */,
+				49E6735F27BD08D50030C211 /* View */,
+				49E6736027BD08DA0030C211 /* ViewController */,
+				49E6736127BD08E10030C211 /* ViewModel */,
 			);
 			path = Channel;
 			sourceTree = "<group>";
@@ -505,7 +491,7 @@
 		49D7A0A62783D730001CAC60 /* Register */ = {
 			isa = PBXGroup;
 			children = (
-				49D7A0AD27840595001CAC60 /* Register.storyboard */,
+				49E6736527BD09040030C211 /* View */,
 				49D7A0AE27840595001CAC60 /* ViewControllers */,
 			);
 			path = Register;
@@ -559,15 +545,281 @@
 			path = Mediasoup;
 			sourceTree = "<group>";
 		};
-		49E6BE3A2791A066000E475C /* Friend */ = {
+		49E6734727BD06460030C211 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				4935FD3C277BDC6600760675 /* Home.storyboard */,
+				4935FD30277BD97400760675 /* CategoryCell.swift */,
+				4935FD31277BD97400760675 /* VideoListCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		49E6734827BD070B0030C211 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				49E6BE30279100BC000E475C /* HomeNavigationController.swift */,
+				4935FD2E277BD95200760675 /* HomeListViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		49E6734927BD07320030C211 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				49F18C2B278E5E0800EBDCF8 /* CreateNavigationController.swift */,
+				49EC9A012782033E00DE4F79 /* CreatePopOverViewController.swift */,
+				496279DF2782C1AA005A2BDC /* CreateInfoViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		49E6734A27BD073D0030C211 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				49EC99FF278201C600DE4F79 /* Create.storyboard */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		49E6734B27BD07470030C211 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				4957CBBF27AD58AC00554967 /* Upload.storyboard */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		49E6734C27BD07560030C211 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				4957CBC127AD5A8400554967 /* UploadViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		49E6734D27BD076F0030C211 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				492C62182794F90500AE546E /* LoginNavigationController.swift */,
+				49D7A0A92783DBB9001CAC60 /* LoginViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		49E6734E27BD07790030C211 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				49B9C9BF277ACE9C006AE134 /* Login.storyboard */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		49E6734F27BD077F0030C211 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				49E7374827906330000BC3FF /* Tab.storyboard */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		49E6735027BD07850030C211 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				49E7374A2790644C000BC3FF /* CustomTabViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		49E6735127BD07AA0030C211 /* View */ = {
 			isa = PBXGroup;
 			children = (
 				4957CBBA27ACEA8B00554967 /* Friend.storyboard */,
-				49EB20B727BA6A9600333A9D /* TransitionDelegate.swift */,
+				49F4E3D627ACE77B002869F4 /* FriendListCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		49E6735227BD07B10030C211 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
 				49E6BE362791951D000E475C /* FriendListViewController.swift */,
 				49E6BE3827919C7A000E475C /* FriendPopUpViewController.swift */,
-				49F4E3D627ACE77B002869F4 /* FriendListCell.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		49E6735327BD07C20030C211 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				49AC95252791AA970030DCC0 /* Search.storyboard */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		49E6735427BD07C90030C211 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				49E6BE3D2791A7C1000E475C /* SearchViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		49E6735527BD07D70030C211 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				49A308A12791AD72005D6109 /* Notice.storyboard */,
+				49F4E3CA27ACA886002869F4 /* NoticeCell.swift */,
+				49F4E3CC27ACA9CC002869F4 /* FriendRequestCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		49E6735627BD08260030C211 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				49AC95292791AC080030DCC0 /* NoticeListViewController.swift */,
+				49F777D827AA58B800AD2D78 /* FriendRequestViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		49E6735727BD08330030C211 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				49F4E3CE27ACAADC002869F4 /* NoticeViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		49E6735827BD083F0030C211 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				49E8E89B278BB528003AD1DF /* Live.storyboard */,
+				49E8E89D278BB5B0003AD1DF /* CameraView.swift */,
+				49AB6FE8278C545100D4D1E9 /* LiveChatCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		49E6735927BD08460030C211 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				49E8E89F278BC264003AD1DF /* LiveViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		49E6735A27BD08690030C211 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				49818AC72780C66100C0C956 /* MyPage.storyboard */,
+				49EC99FC2782015A00DE4F79 /* RecentViewedCell.swift */,
+				49E8E898278BB4C2003AD1DF /* HorizontalVideoListCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		49E6735B27BD08870030C211 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				49EB20A127BA169C00333A9D /* MyHistoryViewModel.swift */,
+				49EB20A327BA1FEC00333A9D /* MyPageViewModel.swift */,
+				49F4E3D227ACCE81002869F4 /* AccountInfoViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		49E6735C27BD08B60030C211 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				4935FD34277BD97F00760675 /* Play.storyboard */,
+				492C622D27955F6C00AE546E /* Player.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		49E6735D27BD08BE0030C211 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				49F18C53278F2EED00EBDCF8 /* PlayViewController.swift */,
+				496279D527828BB3005A2BDC /* PlayExplainViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		49E6735E27BD08C70030C211 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				49E8F63F27A962B900E030F6 /* PlayViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		49E6735F27BD08D50030C211 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				49C52CDF278B4379009D6FBB /* Channel.storyboard */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		49E6736027BD08DA0030C211 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				49C52CDE278B4379009D6FBB /* ChannelViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		49E6736127BD08E10030C211 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				49E6734527BB504E0030C211 /* ChannelViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		49E6736227BD08EB0030C211 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				4935FD3E277BDF5F00760675 /* Chat.storyboard */,
+				4935FD43277C0ED100760675 /* ChatCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		49E6736327BD08F10030C211 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				4935FD41277C0E4D00760675 /* ChattingViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		49E6736427BD08F90030C211 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				49E72FF427A23F8C00DFBCC3 /* ChatViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		49E6736527BD09040030C211 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				49D7A0AD27840595001CAC60 /* Register.storyboard */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		49E6BE3A2791A066000E475C /* Friend */ = {
+			isa = PBXGroup;
+			children = (
+				49E6735127BD07AA0030C211 /* View */,
+				49E6735227BD07B10030C211 /* ViewController */,
 				49F4E3D827ACE9ED002869F4 /* ViewModel */,
+				49EB20B727BA6A9600333A9D /* TransitionDelegate.swift */,
 			);
 			path = Friend;
 			sourceTree = "<group>";
@@ -575,8 +827,8 @@
 		49E6BE3F2791A9EC000E475C /* Search */ = {
 			isa = PBXGroup;
 			children = (
-				49AC95252791AA970030DCC0 /* Search.storyboard */,
-				49E6BE3D2791A7C1000E475C /* SearchViewController.swift */,
+				49E6735327BD07C20030C211 /* View */,
+				49E6735427BD07C90030C211 /* ViewController */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -623,10 +875,7 @@
 				496279D727829516005A2BDC /* MyPageNavigationController.swift */,
 				49818AC42780C63F00C0C956 /* MyPageViewController.swift */,
 				496279D9278297C2005A2BDC /* VideoListViewController.swift */,
-				49EC99FC2782015A00DE4F79 /* RecentViewedCell.swift */,
-				49E8E898278BB4C2003AD1DF /* HorizontalVideoListCell.swift */,
 				496279DB27829CA5005A2BDC /* AccountInfoViewController.swift */,
-				49F4E3D227ACCE81002869F4 /* AccountInfoViewModel.swift */,
 				496279DD2782BB85005A2BDC /* AccountEditViewController.swift */,
 			);
 			path = ViewControllers;
@@ -635,8 +884,8 @@
 		49EA4E0F2794738A00A038E3 /* CustomTab */ = {
 			isa = PBXGroup;
 			children = (
-				49E7374827906330000BC3FF /* Tab.storyboard */,
-				49E7374A2790644C000BC3FF /* CustomTabViewController.swift */,
+				49E6734F27BD077F0030C211 /* View */,
+				49E6735027BD07850030C211 /* ViewController */,
 			);
 			path = CustomTab;
 			sourceTree = "<group>";
@@ -658,8 +907,8 @@
 		49EA82D627B1852200F75546 /* Upload */ = {
 			isa = PBXGroup;
 			children = (
-				4957CBBF27AD58AC00554967 /* Upload.storyboard */,
-				4957CBC127AD5A8400554967 /* UploadViewController.swift */,
+				49E6734B27BD07470030C211 /* View */,
+				49E6734C27BD07560030C211 /* ViewController */,
 				49EA82D227B1850A00F75546 /* UploadProgress.swift */,
 				49EA82D427B1851800F75546 /* Progress.swift */,
 			);
@@ -690,7 +939,6 @@
 				49177C0427B6396000549C07 /* Create */,
 				49EA82D627B1852200F75546 /* Upload */,
 				49177C0527B6398C00549C07 /* Live */,
-				49E8E89D278BB5B0003AD1DF /* CameraView.swift */,
 			);
 			path = CreateTab;
 			sourceTree = "<group>";

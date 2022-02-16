@@ -467,6 +467,7 @@
                         <outlet property="chatProfileImageView" destination="n0g-Vx-JMK" id="Ae2-V6-PjW"/>
                         <outlet property="chatTextView" destination="RLl-KU-s17" id="2dW-TN-TAc"/>
                         <outlet property="chatViewBottom" destination="stA-Hy-HlT" id="CHJ-vj-9zG"/>
+                        <outlet property="infoStackView" destination="tNz-Q2-Dtv" id="Ple-Xg-kwN"/>
                         <outlet property="likeNumLabel" destination="eUi-0O-d5r" id="5Sr-yL-oTZ"/>
                         <outlet property="liveEndView" destination="w0H-ew-vNs" id="5fO-zv-IvU"/>
                         <outlet property="liveSignLabel" destination="v1C-kq-OIg" id="Vcx-Oh-ba3"/>
