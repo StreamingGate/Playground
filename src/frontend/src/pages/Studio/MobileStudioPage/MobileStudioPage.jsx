@@ -51,9 +51,6 @@ function MobileStudioPage() {
   return (
     <S.MobileStudioPageContainer>
       <S.MobileActionContainer>
-        {/* <S.MobileStreamStopBtn variant='text' onClick={handleStopStreamBtnClick}>
-          종료
-        </S.MobileStreamStopBtn> */}
         <S.MobileStreamStopBtn
           href='playground://producerClose'
           ref={urlShemeRef}
