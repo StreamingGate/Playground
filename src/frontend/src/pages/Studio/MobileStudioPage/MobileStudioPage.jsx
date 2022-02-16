@@ -38,7 +38,11 @@ function MobileStudioPage() {
       btnContent: '종료',
       onClick: async () => {
         stopStream();
-        // await newPeer.request('closeProducer', { producerId: producer.id });
+        try {
+          await newPeer.request('closeProducer', { producerId: producer.id });
+        } catch (error) {
+          console.log(error);
+        }
         window.location.href = urlShemeRef.current.href;
       },
     });
@@ -47,9 +51,6 @@ function MobileStudioPage() {
   return (
     <S.MobileStudioPageContainer>
       <S.MobileActionContainer>
-        {/* <S.MobileStreamStopBtn variant='text' onClick={handleStopStreamBtnClick}>
-          종료
-        </S.MobileStreamStopBtn> */}
         <S.MobileStreamStopBtn
           href='playground://producerClose'
           ref={urlShemeRef}
