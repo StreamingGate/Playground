@@ -8,10 +8,21 @@
 import Foundation
 import UIKit
 import StompClientLib
+import SwiftKeychainWrapper
 import Combine
 
 class ChatViewModel {
+    var senderRole: String
+    
+    init(senderRole: String) {
+        self.senderRole = senderRole
+    }
+    
     @Published var chatList: [ChatData] = []
+    @Published var userCount = 0
+    @Published var pinned: ChatData?
+    
+    var isLive = false
     var roomId = ""
     var isMaximum = false
     

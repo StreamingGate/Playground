@@ -14,12 +14,20 @@ class ChattingViewController: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var viewerLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
-    let viewModel = ChatViewModel()
+    let viewModel = ChatViewModel(senderRole: "VIEWER")
     private var cancellable: Set<AnyCancellable> = []
     @Published var isBottomFocused = true
     @IBOutlet weak var bottomScrollImageView: UIImageView!
     @IBOutlet weak var bottomScrollButton: UIButton!
+    @IBOutlet weak var tableViewBottom: NSLayoutConstraint!
+    @IBOutlet weak var pinnedView: UIView!
+    @IBOutlet weak var pinnedImageView: UIImageView!
+    @IBOutlet weak var pinnedTimeLabel: UILabel!
+    @IBOutlet weak var pinnedBorderView: UIView!
     var roomId = ""
+    var isLive = false
+    @IBOutlet weak var pinnedNickname: UILabel!
+    @IBOutlet weak var pinnedContent: UILabel!
     
     // MARK: - View LifeCycle
     override func viewDidLoad() {
@@ -41,6 +49,20 @@ class ChattingViewController: UIViewController {
         viewerLabel.font = UIFont.caption
         viewerLabel.textColor = UIColor.customDarkGray
         tableView.contentInset = UIEdgeInsets(top: 15, left: 0, bottom: 0, right: 0)
+        pinnedImageView.image = nil
+        pinnedImageView.backgroundColor = UIColor.placeHolder
+        pinnedImageView.layer.cornerRadius = 15
+        pinnedTimeLabel.font = UIFont.highlightCaption
+        pinnedTimeLabel.textColor = UIColor.PGBlue
+        pinnedNickname.font = UIFont.highlightCaption
+        pinnedNickname.textColor = UIColor.placeHolder
+        pinnedContent.font = UIFont.Content
+        pinnedView.layer.borderColor = UIColor.separator.cgColor
+        pinnedView.layer.borderWidth = 1
+        pinnedView.layer.cornerRadius = 5
+        pinnedBorderView.layer.cornerRadius = 15
+        pinnedBorderView.layer.borderColor = UIColor.PGOrange.cgColor
+        pinnedBorderView.layer.borderWidth = 2
     }
     
     // MARK: - Data Binding
@@ -65,6 +87,30 @@ class ChattingViewController: UIViewController {
                         self.bottomScrollImageView.alpha = 1
                     }
                 }, completion: nil)
+            }.store(in: &cancellable)
+        viewModel.$userCount.receive(on: DispatchQueue.main, options: nil)
+            .sink { [weak self] countNum in
+                guard let self = self, let parent = self.parent as? PlayViewController else { return }
+                parent.viewModel.userCount = countNum
+                self.viewerLabel.text = "\(countNum)명"
+            }.store(in: &cancellable)
+        viewModel.$pinned.receive(on: DispatchQueue.main, options: nil)
+            .sink { [weak self] pinnedChat in
+                guard let self = self else { return }
+                if let info = pinnedChat {
+                    print("pinned")
+                    self.pinnedView.isHidden = false
+                    self.pinnedImageView.downloadImageFrom(link: info.profileImage, contentMode: .scaleAspectFill)
+                    self.pinnedContent.text = info.message
+                    self.pinnedNickname.text = info.nickname
+                    self.pinnedView.layoutIfNeeded()
+                    print("height: \(self.pinnedView.bounds.height)")
+                    self.tableView.contentInset = UIEdgeInsets(top: self.pinnedView.bounds.height + 25, left: 0, bottom: 0, right: 0)
+                } else {
+                    print("normal")
+                    self.pinnedView.isHidden = true
+                    self.tableView.contentInset = UIEdgeInsets(top: 15, left: 0, bottom: 0, right: 0)
+                }
             }.store(in: &cancellable)
     }
     
@@ -112,6 +158,6 @@ extension ChattingViewController: UITableViewDataSource, UITableViewDelegate {
 
 extension ChattingViewController: ChatSendDelegate {
     func sendChatMessage(nickname: String, message: String, senderRole: String, chatType: String) {
-        viewModel.sendMessage(message: message, nickname: nickname, type: chatType, role: senderRole)
+        viewModel.sendMessage(message: message, nickname: nickname, type: chatType)
     }
 }
