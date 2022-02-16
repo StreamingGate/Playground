@@ -53,7 +53,13 @@ struct RoomServiceAPI {
             let responseJSON = try? JSONSerialization.jsonObject(with: resultData, options: [])
             if let result = responseJSON as? [String: Any] {
                 print("result: \(result)")
-                completion(["result": "success", "data": result])
+                ChatServiceAPI.shared.createRoomUuid(roomUuid: uuid) { resultData2 in
+                    guard resultData2["result"] as? String == "success" else {
+                        completion(["result": "failed"])
+                        return
+                    }
+                    completion(["result": "success"])
+                }
             } else {
                 completion(["result": "failed"])
             }

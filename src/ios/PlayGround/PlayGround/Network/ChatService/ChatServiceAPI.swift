@@ -95,5 +95,39 @@ class ChatServiceAPI {
         socketClient.sendJSONForDict(dict: ["roomUuid": roomId, "uuid": uuid, "nickname": nickname, "senderRole" : role, "chatType" : type, "message" : message] as NSDictionary, toDestination: "/app/chat/message/\(roomId)")
     }
     
+    func createRoomUuid(roomUuid: String, completion: @escaping ([String: Any])->Void) {
+        guard let tokenInfo = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue) else {
+            completion(["result": "Invalid Token"])
+            return
+        }
+        let url = URL(string: "http://10.99.6.93:8888/chat/room")!
+        var request = URLRequest(url: url)
+        let postData : [String: Any] = ["uuid": roomUuid]
+        let jsonData = try? JSONSerialization.data(withJSONObject: postData)
+        request.httpMethod = "POST"
+        request.httpBody = jsonData
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(tokenInfo)", forHTTPHeaderField: "Authorization")
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            let successRange = 200 ..< 300
+            guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode), let resultData = data else {
+                print("\(error?.localizedDescription ?? "no error") \((response as? HTTPURLResponse)?.statusCode ?? 0)")
+                if let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode == 401 {
+                    completion(["result": "Invalid Token"])
+                    return
+                }
+                completion(["result": "failed"])
+                return
+            }
+            
+            let responseJSON = try? JSONSerialization.jsonObject(with: resultData, options: [])
+            if let result = responseJSON as? [String: Any] {
+                print("==> \(result)")
+                completion(["result": "success", "data": result])
+            } else {
+                completion(["result": "failed"])
+            }
+        }
+        task.resume()
     }
 }
