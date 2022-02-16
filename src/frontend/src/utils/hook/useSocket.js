@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import SockJS from 'sockjs-client';
 import { Client } from '@stomp/stompjs';
 
+import { useGetChatRoomInfo } from '@utils/hook/query';
 import { lStorageService } from '@utils/service';
 
 /**
@@ -15,6 +16,7 @@ import { lStorageService } from '@utils/service';
 
 export default function useSocket(roomId, senderRole) {
   const [stompClient, setStompClient] = useState(null);
+  const [pinnedChat, setPinnedChat] = useState(null);
   const [chatData, setChatData] = useState([]);
   const [curUserCount, setCurUserCount] = useState(0);
 
@@ -25,7 +27,13 @@ export default function useSocket(roomId, senderRole) {
   const recvChatMessage = message => {
     const { body } = message;
 
-    setChatData(prev => [...prev, JSON.parse(body)]);
+    const parsedMessage = JSON.parse(body);
+    const { chatType } = parsedMessage;
+
+    if (chatType === 'PINNED') {
+      setPinnedChat(parsedMessage);
+    }
+    setChatData(prev => [...prev, parsedMessage]);
   };
 
   const recvChatRoomInfo = message => {
@@ -34,6 +42,15 @@ export default function useSocket(roomId, senderRole) {
     const { userCnt } = JSON.parse(body);
     setCurUserCount(userCnt);
   };
+
+  const handleGetChatInfoSuccess = data => {
+    const { pinnedChat: newPinnedChat } = data;
+    if (newPinnedChat) {
+      setPinnedChat(newPinnedChat);
+    }
+  };
+
+  const { data } = useGetChatRoomInfo(roomId, handleGetChatInfoSuccess);
 
   useEffect(() => {
     const newClient = new Client();
@@ -77,5 +94,5 @@ export default function useSocket(roomId, senderRole) {
     });
   };
 
-  return { chatData, curUserCount, sendChatMessage };
+  return { chatData, curUserCount, pinnedChat, sendChatMessage };
 }
