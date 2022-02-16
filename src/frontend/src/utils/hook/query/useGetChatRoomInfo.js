@@ -2,6 +2,9 @@ import { useQuery } from 'react-query';
 import axios from '@utils/axios';
 
 const getChatInfo = async roomId => {
+  if (!roomId) {
+    return null;
+  }
   const data = await axios.get(`${process.env.REACT_APP_CHAT_API}/chat/room/${roomId}`);
   return data;
 };
