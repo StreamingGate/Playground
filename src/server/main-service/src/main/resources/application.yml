@@ -14,15 +14,15 @@ server:
   port: 8080
 spring:
   jpa:
-    defer-datasource-initialization: false
-    generate-ddl: false
+    defer-datasource-initialization: true
+    generate-ddl: true
     hibernate:
-      ddl-auto: none
+      ddl-auto: create
   datasource:
     url: jdbc:mariadb://localhost:3306/playground?characterEncoding=utf8
-#  sql:
-#    init:
-#      mode: always
+  sql:
+    init:
+      mode: always
 service:
   ip:
     status-service: http://localhost:9999
