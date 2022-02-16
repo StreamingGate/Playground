@@ -52,7 +52,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
         if let url = URLContexts.first?.url {
             if url.absoluteString.starts(with: "playground://producerClose") {
-                SFSafariViewController.shared.dismiss(animated: true, completion: nil)
+                print("access")
+                SFSafariViewController.shared.view.removeFromSuperview()
+                guard let root = window?.rootViewController as? LoginNavigationController, let tabBar = root.viewControllers.last as? CustomTabViewController, let createNav = tabBar.presentedViewController as? CreateNavigationController, let liveVC = createNav.viewControllers.last as? LiveViewController else { return }
+                liveVC.setupUIforClose()
             }
         }
     }

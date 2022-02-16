@@ -63,7 +63,7 @@ final internal class EchoSocket : WebSocketDelegate, MessageSubscriber {
     }
     
     func websocketDidReceiveData(socket: WebSocketClient, data: Data) {
-        print("websocketDidReceiveData")
+        print("websocketDidReceiveData: \(data)")
     }
     
     func websocketDidDisconnect(socket: WebSocketClient, error: Error?) {
@@ -74,6 +74,10 @@ final internal class EchoSocket : WebSocketDelegate, MessageSubscriber {
         print("websocketDisReceiveMessage " + text)
         let data: Data = text.data(using: .utf8)!
         let json: JSON = JSON.init(data)
+        if json["method"].stringValue == "producerClose" {
+            self.notifyObservers(event: "closed", data: json)
+            return
+        }
         let event: String = json["id"].stringValue
         self.notifyObservers(event: event, data: json)
     }
