@@ -4,8 +4,9 @@ import com.example.chatservice.dto.chat.ChatConsume;
 import com.example.chatservice.dto.chat.ChatProduce;
 import com.example.chatservice.dto.chat.SenderRole;
 import com.example.chatservice.dto.room.Room;
-import com.example.chatservice.exceptionhandler.customexception.CustomChatException;
-import com.example.chatservice.exceptionhandler.customexception.ErrorCode;
+import com.example.chatservice.dto.room.RoomResponseDto;
+import com.example.chatservice.exception.CustomChatException;
+import com.example.chatservice.exception.ErrorCode;
 import com.example.chatservice.utils.RedisMessaging;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,14 +41,15 @@ public class RedisRoomService {
         return opsHashRoom.values(CHAT_ROOMS);
     }
 
-    public Room findById(String roomUuid) {
-        return opsHashRoom.get(CHAT_ROOMS, roomUuid);
+    public RoomResponseDto findById(String roomUuid) {
+        Room room = opsHashRoom.get(CHAT_ROOMS, roomUuid);
+        return new RoomResponseDto(room);
     }
 
-    public Room create(String roomUuid) {
+    public RoomResponseDto create(String roomUuid) {
         Room room = new Room(roomUuid);
         opsHashRoom.put(CHAT_ROOMS, room.getUuid(), room);
-        return room;
+        return new RoomResponseDto(room);
     }
 
     public void addPinnedChat(String roomUuid, ChatProduce pinnedChat) throws CustomChatException {

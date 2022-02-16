@@ -1,14 +1,13 @@
 package com.example.statusservice.dto;
 
 import com.example.statusservice.entity.User.User;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -22,7 +21,7 @@ public class UserDto implements Serializable {
     private Boolean status = false; // login or logout
     private String nickname;
     private String profileImage;
-    private List<String> friendUuids = new ArrayList<>();
+    private Set<String> friendUuids = new HashSet<>();
 
     // 시청중이 아닐 경우 id, type, videoRoomUuid, title은 null 값
     private Integer id;              // videoId or roomId
@@ -36,7 +35,13 @@ public class UserDto implements Serializable {
         this.profileImage = user.getProfileImage();
         this.friendUuids = user.getBeFriend().stream()
                 .map(User::getUuid)
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
+    }
+
+    public UserDto(FriendDto dto){
+        this.uuid = dto.getUuid();
+        this.profileImage = dto.getProfileImage();
+        this.nickname = dto.getNickname();
     }
 
     /* 로그인 상태 업데이트 */
