@@ -1,19 +1,13 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import ProfileDefaultImg from '@assets/image/ProfileDefault.png';
 import S from './Avatar.styles';
 
 function Avatar({ className, name, onClick, imgSrc, size }) {
-  const imgRef = useRef(null);
-
-  const handleImageLoadError = () => {
-    imgRef.current.src = ProfileDefaultImg;
-  };
-
   return (
     <S.AvartarContainer className={className} data-name={name} size={size} onClick={onClick}>
-      <img src={imgSrc} ref={imgRef} alt='profile' onError={handleImageLoadError} />
+      <img src={imgSrc} alt='profile' />
     </S.AvartarContainer>
   );
 }
