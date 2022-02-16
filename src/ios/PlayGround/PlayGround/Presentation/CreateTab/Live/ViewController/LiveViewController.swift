@@ -46,6 +46,7 @@ class LiveViewController: UIViewController {
     @IBOutlet weak var chatPlaceHolderLabel: UILabel!
     @IBOutlet weak var chatCountLabel: UILabel!
     @IBOutlet weak var liveEndView: UIView!
+    @IBOutlet weak var infoStackView: UIStackView!
     var safeBottom: CGFloat = 0
     var coordinator: PlayerCoordinator?
 
@@ -88,6 +89,11 @@ class LiveViewController: UIViewController {
         bindViewModelData()
     }
     
+    func setupUIforClose() {
+        infoStackView.isHidden = true
+        tableView.isHidden = true
+        sendButton.isEnabled = false
+    }
     
     @objc func timerAction() {
         currentTime += 1
