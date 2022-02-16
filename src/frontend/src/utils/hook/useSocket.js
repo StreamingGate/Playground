@@ -55,32 +55,34 @@ export default function useSocket(roomId, senderRole) {
   useEffect(() => {
     const newClient = new Client();
 
-    newClient.connectHeaders = { token };
-    newClient.disconnectHeaders = { uuid: userId, roomUuid: roomId, senderRole };
-    newClient.webSocketFactory = () => {
-      return new SockJS(process.env.REACT_APP_CHAT_SOCKET);
-    };
+    if (roomId) {
+      newClient.connectHeaders = { token };
+      newClient.disconnectHeaders = { uuid: userId, roomUuid: roomId, senderRole };
+      newClient.webSocketFactory = () => {
+        return new SockJS(process.env.REACT_APP_CHAT_SOCKET);
+      };
 
-    newClient.onConnect = () => {
-      newClient.subscribe(`/topic/chat/room/${roomId}`, recvChatMessage);
-      newClient.subscribe(`/topic/chat/enter/${roomId}`, recvChatRoomInfo, { uuid: userId });
-    };
+      newClient.onConnect = () => {
+        newClient.subscribe(`/topic/chat/room/${roomId}`, recvChatMessage);
+        newClient.subscribe(`/topic/chat/enter/${roomId}`, recvChatRoomInfo, { uuid: userId });
+      };
 
-    setStompClient(newClient);
+      setStompClient(newClient);
 
-    newClient.activate();
+      newClient.activate();
 
-    window.addEventListener('beforeunload', () => {
-      newClient.deactivate();
-    });
+      window.addEventListener('beforeunload', () => {
+        newClient.deactivate();
+      });
+    }
 
     // 소켓 연결 페이지에서 벗어날시 소켓 연결 해제
     return () => {
       newClient.deactivate();
     };
-  }, []);
+  }, [roomId]);
 
-  const sendChatMessage = message => {
+  const sendChatMessage = (message, isPinned = false) => {
     stompClient.publish({
       destination: `/app/chat/message/${roomId}`,
       body: JSON.stringify({
@@ -88,7 +90,7 @@ export default function useSocket(roomId, senderRole) {
         uuid: userId,
         nickname: nickName,
         senderRole,
-        chatType: 'NORMAL',
+        chatType: isPinned ? 'PINNED' : 'NORMAL',
         message,
       }),
     });
