@@ -43,6 +43,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func sceneDidEnterBackground(_ scene: UIScene) {
+        print("background")
+        guard let root = window?.rootViewController as? LoginNavigationController, let tabBar = root.viewControllers.last as? CustomTabViewController else { return }
+        if let player = tabBar.children.last as? PlayViewController, let chatting = player.children.last(where: { ($0 as? ChattingViewController) != nil }) as? ChattingViewController {
+            print("Viewer chat disconnected")
+            chatting.viewModel.disconnectToSocket()
+        } else if let createNav = tabBar.presentedViewController as? CreateNavigationController, let liveVC = createNav.viewControllers.last as? LiveViewController {
+            print("Streamer chat disconnected")
+            liveVC.viewModel.disconnectToSocket()
+        }
         // Called as the scene transitions from the foreground to the background.
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
