@@ -369,6 +369,7 @@ class PlayViewController: UIViewController {
     func connectChatView(roomId: String?) {
         guard let chattingVC = UIStoryboard(name: "Chat", bundle: nil).instantiateViewController(withIdentifier: "ChattingViewController") as? ChattingViewController else { return }
         chattingVC.roomId = roomId ?? ""
+        chattingVC.isLive = self.viewModel.isLive
         self.addChild(chattingVC)
         self.chatDelegate = chattingVC
         self.chatContainerView.addSubview((chattingVC.view)!)
@@ -492,6 +493,13 @@ class PlayViewController: UIViewController {
             .sink { [weak self] num in
                 guard let self = self else { return }
                 self.likeLabel.text = "\(num)회"
+            }.store(in: &cancellable)
+        self.viewModel.$userCount.receive(on: DispatchQueue.main, options: nil)
+            .sink { [weak self] num in
+                guard let self = self else { return }
+                if self.viewModel.isLive {
+                    self.viewLabel.text = "\(num)명 시청 중"
+                }
             }.store(in: &cancellable)
     }
     

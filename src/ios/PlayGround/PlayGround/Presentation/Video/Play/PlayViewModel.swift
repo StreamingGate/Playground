@@ -21,6 +21,7 @@ class PlayViewModel {
     @Published var currentInfo: GeneralVideo?
     @Published var videoInfo: VideoInfo?
     @Published var roomInfo: RoomInfo?
+    @Published var userCount: Int = 0
     
     var videoId: Int? {
         guard let info = self.currentInfo else { return nil }
