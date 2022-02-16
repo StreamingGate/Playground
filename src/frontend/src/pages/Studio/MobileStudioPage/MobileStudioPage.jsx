@@ -38,7 +38,11 @@ function MobileStudioPage() {
       btnContent: '종료',
       onClick: async () => {
         stopStream();
-        // await newPeer.request('closeProducer', { producerId: producer.id });
+        try {
+          await newPeer.request('closeProducer', { producerId: producer.id });
+        } catch (error) {
+          alert(error.message);
+        }
         window.location.href = urlShemeRef.current.href;
       },
     });

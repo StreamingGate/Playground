@@ -173,7 +173,9 @@ function VideoMetaData({ videoData, playType }) {
             <S.ChannelName>
               {playType.current === 'video' ? videoData.uploaderNickname : videoData.hostNickname}
             </S.ChannelName>
-            <S.SubscribePeople type='bottomTab'>{videoData.subscriberCnt}명</S.SubscribePeople>
+            {playType.current === 'video' && (
+              <S.SubscribePeople type='bottomTab'>{videoData.subscriberCnt}명</S.SubscribePeople>
+            )}
           </S.ChannelInfo>
           {videoData.content && (
             <div>
