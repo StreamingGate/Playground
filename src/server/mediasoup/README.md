@@ -31,13 +31,13 @@ ORTC란
   RTP는 데이터 전송 프로토콜로 두 엔드포인트가 현재 상태에서 효율적으로 통신할수 있도록 도와줍니다. 
 - `load Device` : 스트리머가 RTP Capabilities를 조회하고 mediasoup-client 라이브러리에서 제공하는 디바이스를 생성하고 디바이스에 RTP Capabilities를 넣어줍니다.
 - `Worker` : mediasoup은 worker 라는 개념이 있습니다. worker라는 공간안에 라우터를 생성하고 이 라우터를 통해 데이터를 주고받는 것입니다.\
-  mediasoup 공식 docs는 아니지만 개발자에 QnA에 의하면, CPU 코어갯수만큼 worker를 생성하는것이 좋다고 써있으며 이 프로젝트도 CPU의 코어 갯수에 맞춰\
+  mediasoup 공식 docs는 아니지만 개발자에 QnA에 의하면, CPU 코어갯수만큼 worker를 생성하는것이 좋다고 써있으며 이 프로젝트도 CPU의 코어 갯수에 맞춰 
   worker를 생성하고 있습니다. 하나의 worker안에 적당한 라우터 갯수는 공식 docs에는 나와 있지 않습니다. 
 - `Router` : 라우터는 보통 우리가 생각하는 '방'이라는 개념으로 생각할수 있습니다. 하나의 라우터에 하나의 방을 생성할 수 있고 통신할수 있습니다.\
-  공식 docs에서는 하나의 라우터로 약 400~600 consumers가 가능하다고 나와있습니다. 이는 즉, one2many에서 약 `200~300명`이 시청 가능하다는 이야기가 됩니다.\
+  공식 docs에서는 하나의 라우터로 약 400 ~ 600 consumers가 가능하다고 나와있습니다. 이는 즉, one2many에서 약 `200~300명`이 시청 가능하다는 이야기가 됩니다.\
   1인당 오디오와 비디오 2개의 데이터를 consume하기에 400~600/2로 대략적으로 계산할수 있습니다.
-- `Protoo` : Mediasoup 공식 사이트에서는 Protoo라는 라이브러리도 같이 제공하고 있습니다. Protoo내부를 살펴보면 WebSocket으로 구성되어 있습니다.\
-  Mediasoup + WebSocket으로도 구현할수 있지만 Protoo 라이브러리를 사용하면 좀 더 편하게 Mediasoup을 이용하여 구현할수 있습니다.  
+- `Protoo` : Mediasoup 공식 사이트에서는 Protoo라는 라이브러리도 같이 제공하고 있습니다.\
+   Protoo내부를 살펴보면 WebSocket으로 구성되어 있습니다. Mediasoup + WebSocket으로도 구현할수 있지만 Protoo 라이브러리를 사용하면 좀 더 편하게 Mediasoup을 이용하여 구현할수 있습니다.  
 - `Room` : Protoo 라이브러리에서 제공하는 기능입니다. 실제로 데이터를 보내고 각 방으로 격리시키는것은 라우터이지만 `방`이라는 개념을 쉽게 사용할수 있도록 제공 해줍니다.  
 ---
 
@@ -45,8 +45,8 @@ ORTC란
 - `Worker` : worker를 생성하기 위해 우선 server를 올리는 인스턴스의 cpu core 갯수를 가져왔습니다. 그리고 core 갯수만큼 for문을 돌며  
 worker를 생성했습니다.
 - `Router` : 라우터를 생성하기 위해서는 하나의 worker를 가져와야 하는데 worker를 사용할때마다 인덱스를 증가시키면서 단순하게 가져온다면\
-  하나의 worker에만 라우터가 쏠리는 현상이 발생할 수 있습니다. 때문에 `load Balancing`을 생각하여 Map 함수와 배열을 이용하여 worker에게 고유 id를 부여하고\
-  이를 worker가 사용될때마다 갯수를 카운트하고 카운트 갯수 기준으로 배열을 정렬하여 최소로 사용된 worker를 가져오는 로직으로 구성해 놨습니다.  
+  하나의 worker에만 라우터가 쏠리는 현상이 발생할 수 있습니다.\
+  때문에 `load Balancing`을 생각하여 Map 함수와 배열을 이용하여 worker에게 고유 id를 부여하고 이를 worker가 사용될때마다 갯수를 카운트하고 카운트 갯수 기준으로 배열을 정렬하여 최소로 사용된 worker를 가져오는 로직으로 구성해 놨습니다.  
 - `PipeToRouter (추후 업데이트 예정)` : 위에서 언급했다시피, one2many 상황에서는 하나의 라우터로 약 200~300명이 한계이지만 Mediasoup에서\
   PipeToRouter라는 메소드를 제공하고 있습니다. 이는 하나의 라우터를 또 다른 라우터에 연결하여 인원수를 늘리는 방법입니다. 
   
