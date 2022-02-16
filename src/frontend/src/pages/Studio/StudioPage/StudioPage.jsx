@@ -51,7 +51,7 @@ function StudioPage() {
         </S.StreamControlContainer>
       </S.PlayerConatiner>
       <S.ChatRoomContainer>
-        <ChatRoom />
+        <ChatRoom senderRole='STREAMER' />
       </S.ChatRoomContainer>
     </S.StudioPageContainer>
   );

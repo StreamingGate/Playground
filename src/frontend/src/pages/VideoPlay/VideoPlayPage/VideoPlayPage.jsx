@@ -79,7 +79,10 @@ function VideoPlayPage() {
         </S.VideoPlayer>
       </S.PlayerContainer>
       <S.ChatRoomContainer>
-        <ChatRoom />
+        <ChatRoom
+          senderRole='VIEWER'
+          videoUuid={playType.current === 'live' ? data?.uuid : data?.videoUuid}
+        />
       </S.ChatRoomContainer>
       <VideoMetaData videoData={data} playType={playType} />
     </S.VideoPlayPageContainer>
