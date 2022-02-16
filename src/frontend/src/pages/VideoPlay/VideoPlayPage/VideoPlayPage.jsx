@@ -46,7 +46,7 @@ function VideoPlayPage() {
 
   const { stompClient } = useStatusSocket();
 
-  // socket notify when play vidoe
+  // socket notify when play video
   useEffect(() => {
     if (data && stompClient) {
       const { videoUuid, title } = data;
@@ -54,7 +54,7 @@ function VideoPlayPage() {
         destination: `/app/watch/${userId}`,
         body: JSON.stringify({
           id,
-          type: playType === 'video' ? 0 : 1,
+          type: playType.current === 'video' ? 0 : 1,
           videoRoomUuid: videoUuid,
           title,
         }),
