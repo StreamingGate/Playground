@@ -41,7 +41,7 @@ function MobileStudioPage() {
         try {
           await newPeer.request('closeProducer', { producerId: producer.id });
         } catch (error) {
-          alert(error.message);
+          console.log(error);
         }
         window.location.href = urlShemeRef.current.href;
       },
