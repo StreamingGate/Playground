@@ -31,6 +31,7 @@ class HomeListViewController: UIViewController {
     let viewModel = HomeViewModel()
     let spinner = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.medium)
     let categoryDic = ["ALL": "전체", "EDU": "교육", "SPORTS": "스포츠", "KPOP": "K-POP"]
+    var isChangingCategory = false
     
     // MARK: - View LifeCycle
     override func viewDidLayoutSubviews() {
@@ -65,7 +66,8 @@ class HomeListViewController: UIViewController {
         self.viewModel.$homeList.receive(on: DispatchQueue.main, options: nil)
             .sink { [weak self] list in
                 guard let self = self else { return }
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                let second = self.isChangingCategory ? 0.2 : 1
+                DispatchQueue.main.asyncAfter(deadline: .now() + second) {
                     self.tableView.hideSkeleton(reloadDataAfter: false, transition: .crossDissolve(0.25))
                 }
                 self.tableView.reloadData()
@@ -74,7 +76,8 @@ class HomeListViewController: UIViewController {
         self.viewModel.$selectedCategory.receive(on: DispatchQueue.main, options: nil)
             .sink { [weak self] selected in
                 guard let self = self else { return }
-//                self.animationView.setLoading(vc: self, backView: self.loadingBackView)
+                let animation = SkeletonAnimationBuilder().makeSlidingAnimation(withDirection: .leftRight)
+                self.tableView.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .systemGray4, secondaryColor: .systemGray5), animation: animation, transition: .none)
                 self.viewModel.loadAllList(vc: self, coordinator: self.navVC?.coordinator)
             }.store(in: &cancellable)
     }
@@ -121,6 +124,7 @@ class HomeListViewController: UIViewController {
         let footerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 50))
         spinner.center = footerView.center
         footerView.addSubview(spinner)
+        
         spinner.startAnimating()
         return footerView
     }
@@ -180,6 +184,7 @@ extension HomeListViewController: UICollectionViewDataSource, UICollectionViewDe
         // 카테고리 변경 시, 가장 최신 동영상부터 다시 로드
         self.viewModel.lastLiveId = -1
         self.viewModel.lastVideoId = -1
+        self.isChangingCategory = true
         
         self.collectionView.reloadData()
     }
