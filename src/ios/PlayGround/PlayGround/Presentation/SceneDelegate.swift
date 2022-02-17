@@ -25,6 +25,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This occurs shortly after the scene enters the background, or when its session is discarded.
         // Release any resources associated with this scene that can be re-created the next time the scene connects.
         // The scene may re-connect later, as its session was not necessarily discarded (see `application:didDiscardSceneSessions` instead).
+        print("disconnected")
+        guard let root = window?.rootViewController as? LoginNavigationController, let tabBar = root.viewControllers.last as? CustomTabViewController else { return }
+        if let player = tabBar.children.last as? PlayViewController, let chatting = player.children.last(where: { ($0 as? ChattingViewController) != nil }) as? ChattingViewController {
+            print("Viewer chat disconnected")
+            chatting.viewModel.disconnectToSocket()
+        } else if let createNav = tabBar.presentedViewController as? CreateNavigationController, let liveVC = createNav.viewControllers.last as? LiveViewController {
+            print("Streamer chat disconnected")
+            liveVC.viewModel.disconnectToSocket()
+        }
     }
 
     func sceneDidBecomeActive(_ scene: UIScene) {
@@ -44,14 +53,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func sceneDidEnterBackground(_ scene: UIScene) {
         print("background")
-        guard let root = window?.rootViewController as? LoginNavigationController, let tabBar = root.viewControllers.last as? CustomTabViewController else { return }
-        if let player = tabBar.children.last as? PlayViewController, let chatting = player.children.last(where: { ($0 as? ChattingViewController) != nil }) as? ChattingViewController {
-            print("Viewer chat disconnected")
-            chatting.viewModel.disconnectToSocket()
-        } else if let createNav = tabBar.presentedViewController as? CreateNavigationController, let liveVC = createNav.viewControllers.last as? LiveViewController {
-            print("Streamer chat disconnected")
-            liveVC.viewModel.disconnectToSocket()
-        }
         // Called as the scene transitions from the foreground to the background.
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
