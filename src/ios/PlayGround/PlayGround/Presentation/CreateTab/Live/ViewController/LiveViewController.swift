@@ -305,19 +305,3 @@ extension LiveViewController {
         }
     }
 }
-
-extension LiveViewController: SFSafariViewControllerDelegate {
-    
-    // TODO: 방송 종료 시 웹뷰와 통신
-    func safariViewController(_ controller: SFSafariViewController, didCompleteInitialLoad didLoadSuccessfully: Bool) {
-        print("did load: \(didLoadSuccessfully)")
-    }
-    
-    func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
-        print("Did finish")
-    }
-    
-    func safariViewController(_ controller: SFSafariViewController, initialLoadDidRedirectTo URL: URL) {
-        print("redirect to :\(URL)")
-    }
-}
