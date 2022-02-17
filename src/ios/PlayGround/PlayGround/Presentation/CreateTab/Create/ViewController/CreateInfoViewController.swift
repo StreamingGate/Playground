@@ -235,11 +235,6 @@ class createInfoViewController: UIViewController {
         self.present(imagePicker, animated: true, completion: nil)
     }
     
-    // TODO: live 연결 완료 후 temp 버튼 삭제
-    @IBAction func tempButtonDidTap(_ sender: Any) {
-        self.navVC?.coordinator?.startBroadcasting()
-    }
-    
     // MARK: - Gesture Action
     @IBAction func backgroundDidTap(_ sender: Any) {
         titleTextView.resignFirstResponder()
