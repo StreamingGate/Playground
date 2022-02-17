@@ -51,6 +51,7 @@
     "axios": "^0.24.0",
     "history": "^5.2.0",
     "hls.js": "^1.1.3",
+    "lottie-web": "^5.8.1",
     "mediasoup-client": "^3.6.50",
     "prop-types": "^15.8.0",
     "protoo-client": "^4.0.6",
