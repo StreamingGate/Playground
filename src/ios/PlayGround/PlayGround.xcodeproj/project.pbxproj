@@ -106,6 +106,8 @@
 		49EB20B027BA4F5D00333A9D /* StatusDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EB20AF27BA4F5D00333A9D /* StatusDataModel.swift */; };
 		49EB20B327BA507700333A9D /* StatusManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EB20B227BA507700333A9D /* StatusManager.swift */; };
 		49EB20B827BA6A9600333A9D /* TransitionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EB20B727BA6A9600333A9D /* TransitionDelegate.swift */; };
+		49EB5B6227BE2E9A00E87EBF /* PgLoading.json in Resources */ = {isa = PBXBuildFile; fileRef = 49EB5B6127BE2E9A00E87EBF /* PgLoading.json */; };
+		49EB5B6427BE3B6D00E87EBF /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EB5B6327BE3B6D00E87EBF /* LoadingView.swift */; };
 		49EC99FD2782015A00DE4F79 /* RecentViewedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EC99FC2782015A00DE4F79 /* RecentViewedCell.swift */; };
 		49EC9A00278201C600DE4F79 /* Create.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49EC99FF278201C600DE4F79 /* Create.storyboard */; };
 		49EC9A022782033E00DE4F79 /* CreatePopOverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EC9A012782033E00DE4F79 /* CreatePopOverViewController.swift */; };
@@ -231,6 +233,8 @@
 		49EB20AF27BA4F5D00333A9D /* StatusDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusDataModel.swift; sourceTree = "<group>"; };
 		49EB20B227BA507700333A9D /* StatusManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusManager.swift; sourceTree = "<group>"; };
 		49EB20B727BA6A9600333A9D /* TransitionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionDelegate.swift; sourceTree = "<group>"; };
+		49EB5B6127BE2E9A00E87EBF /* PgLoading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PgLoading.json; sourceTree = "<group>"; };
+		49EB5B6327BE3B6D00E87EBF /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		49EC99FC2782015A00DE4F79 /* RecentViewedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentViewedCell.swift; sourceTree = "<group>"; };
 		49EC99FF278201C600DE4F79 /* Create.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Create.storyboard; sourceTree = "<group>"; };
 		49EC9A012782033E00DE4F79 /* CreatePopOverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePopOverViewController.swift; sourceTree = "<group>"; };
@@ -299,6 +303,7 @@
 		492C62262795372B00AE546E /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				49EB5B6127BE2E9A00E87EBF /* PgLoading.json */,
 				49E72FF627A253DA00DFBCC3 /* DataHelper.swift */,
 				4907709E2797AC8C00ADD8E8 /* RegisterHelper.swift */,
 				490770A02797E8D100ADD8E8 /* UserManager.swift */,
@@ -484,6 +489,7 @@
 			children = (
 				49C6CF9E27A3DAAD007C2895 /* MainServiceAPI.swift */,
 				49245C4627A3D5C50059DF55 /* MainDataModel.swift */,
+				49EB5B6327BE3B6D00E87EBF /* LoadingView.swift */,
 			);
 			path = MainService;
 			sourceTree = "<group>";
@@ -1048,6 +1054,7 @@
 				49818AC82780C66100C0C956 /* MyPage.storyboard in Resources */,
 				49E8E89C278BB528003AD1DF /* Live.storyboard in Resources */,
 				49B9C9C3277ACE9F006AE134 /* Assets.xcassets in Resources */,
+				49EB5B6227BE2E9A00E87EBF /* PgLoading.json in Resources */,
 				4957CBBB27ACEA8C00554967 /* Friend.storyboard in Resources */,
 				4957CBC027AD58AC00554967 /* Upload.storyboard in Resources */,
 				49C52CE1278B4379009D6FBB /* Channel.storyboard in Resources */,
@@ -1141,6 +1148,7 @@
 				4935FD37277BDA5D00760675 /* VideoListCell.swift in Sources */,
 				49F4E3D527ACE436002869F4 /* NetworkResultManager.swift in Sources */,
 				49B9C9F2277AF018006AE134 /* UIFont+CustomFont.swift in Sources */,
+				49EB5B6427BE3B6D00E87EBF /* LoadingView.swift in Sources */,
 				4935FD36277BDA5D00760675 /* HomeListViewController.swift in Sources */,
 				49E8E899278BB4C2003AD1DF /* HorizontalVideoListCell.swift in Sources */,
 				492C6232279598CF00AE546E /* AVPlayer+isPlayer.swift in Sources */,
