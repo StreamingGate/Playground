@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import protooClient from 'protoo-client';
 import { v4 as uuidv4 } from 'uuid';
+import axios from '@utils/axios';
 
-import { modalService } from '@utils/service';
+import { modalService, lStorageService } from '@utils/service';
 
 import { AdviseModal } from '@components/feedbacks/Modals';
 
@@ -20,6 +21,8 @@ const mediasoupClient = require('mediasoup-client');
  */
 
 export default function useMediaSoupConsume(isLive, videoPlayerRef, roomId) {
+  const userId = lStorageService.getItem('uuid');
+
   const [consumer, setConsumer] = useState(null);
   const [peer, setPeer] = useState(null);
 
@@ -120,6 +123,17 @@ export default function useMediaSoupConsume(isLive, videoPlayerRef, roomId) {
     setConsumer(consumer);
   };
 
+  const isValidRoom = async () => {
+    const { data } = axios.get(`/room-service/room?roomId=${roomId}&uuid=${userId}`);
+    console.log(data);
+
+    console.log(data);
+  };
+
+  useEffect(() => {
+    // isValidRoom();
+  }, []);
+
   // 실시간 방송일 경우에만 시그널링 서버에 접속
   useEffect(() => {
     let newPeer = null;
@@ -138,6 +152,14 @@ export default function useMediaSoupConsume(isLive, videoPlayerRef, roomId) {
               const { message } = notification.data;
               modalService.show(AdviseModal, {
                 content: message,
+                bntContent: '메인 페이지로 이동',
+                onClick: () => navigate('/home'),
+              });
+              break;
+            }
+            case 'streamUnavailable': {
+              modalService.show(AdviseModal, {
+                content: '방송이 종료되었습니다.',
                 bntContent: '메인 페이지로 이동',
                 onClick: () => navigate('/home'),
               });
