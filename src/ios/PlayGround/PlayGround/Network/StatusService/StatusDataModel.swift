@@ -26,4 +26,6 @@ struct FriendWatch: Codable {
     var title: String?
     let nickname: String
     let profileImage: String
+    let addOrDelete: Bool?
+    let updateTargetUuid: String?
 }
