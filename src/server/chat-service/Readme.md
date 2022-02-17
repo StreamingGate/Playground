@@ -14,3 +14,10 @@ Redis를 사용해 여러개의 채팅서버를 실행시켜도 채팅방 메시
 * [WebSocket] 방 입장
 * [WebSocket] 채팅 전송
 
+# 서버 실행시 필요한 yml
+추가 위치: `resources/`  
+application-jwt.yml
+```
+jwts:
+    secret-key: token_secret
+```

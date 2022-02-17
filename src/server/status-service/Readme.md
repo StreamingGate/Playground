@@ -11,3 +11,11 @@
 * [WebSocket] 로그인 상태 전송
 * [WebSocket] 로그아웃 상태 전송
 * [WebSocket] 현재 시청 중인 영상 정보 전송
+
+# 서버 실행시 필요한 yml
+추가 위치: `resources/`  
+application-jwt.yml
+```
+jwts:
+    secret-key: token_secret
+```
