@@ -39,7 +39,6 @@ class LiveViewController: UIViewController, SFSafariViewControllerDelegate {
     @IBOutlet weak var timeBlackView: UIView!
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var participantsNumLabel: UILabel!
-    @IBOutlet weak var likeNumLabel: UILabel!
     @IBOutlet weak var sendButton: UIButton!
     @IBOutlet weak var chatTextView: UITextView!
     @IBOutlet weak var chatProfileImageView: UIImageView!
@@ -119,7 +118,6 @@ class LiveViewController: UIViewController, SFSafariViewControllerDelegate {
         liveSignLabel.font = UIFont.caption
         timeLabel.font = UIFont.caption
         participantsNumLabel.font = UIFont.caption
-        likeNumLabel.font = UIFont.caption
         pinnedImageView.image = nil
         pinnedImageView.backgroundColor = UIColor.placeHolder
         pinnedImageView.layer.cornerRadius = 15
