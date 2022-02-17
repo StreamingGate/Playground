@@ -5,7 +5,7 @@
 마이크로서비스 개발, 배포, 운영에 필요한 기술을 지원하는 Spring boot기반 프레임워크 입니다.\
 service discovery인 eureka와 gateway는 Spring cloud Gateway를 사용하였습니다.
 
-###코드 링크
+### 코드 링크
 - [Spring Cloud code link](https://github.com/StreamingGate/Playground/tree/develop-server/src/infra)
 
 ## User-service
