@@ -14,6 +14,7 @@ const mediasoupClient = require('mediasoup-client');
 
 export default function useMediaSoupProduce(stream, roomId, userId) {
   const [producer, setProducer] = useState(null);
+  const [audioProducer, setAudioProducer] = useState(null);
   const [newPeer, setNewPeer] = useState(null);
 
   const getRtpCapabilites = async peer => {
@@ -119,7 +120,7 @@ export default function useMediaSoupProduce(stream, roomId, userId) {
       console.log('transport ended');
     });
 
-    return producer;
+    return { producer, audioProducer };
   };
 
   /**
@@ -133,14 +134,15 @@ export default function useMediaSoupProduce(stream, roomId, userId) {
     const rptCapabilities = await getRtpCapabilites(peer);
     const producerDevice = await createProducerDevice(rptCapabilities);
     const producerTransport = await createProducerTransport(peer, producerDevice);
-    const producer = await connectWithProduceRouter(producerTransport);
+    const { producer, audioProducer } = await connectWithProduceRouter(producerTransport);
 
     setProducer(producer);
+    setAudioProducer(audioProducer);
   };
 
   useEffect(() => {
     let peer = null;
-    if (stream.videoTrack) {
+    if (!newPeer && stream.videoTrack) {
       const transport = new protooClient.WebSocketTransport(
         `${process.env.REACT_APP_LIVE_SOCKET}/?room=${roomId}&peer=${userId}&role=produce`
       );
@@ -153,6 +155,19 @@ export default function useMediaSoupProduce(stream, roomId, userId) {
     return () => {
       peer?.close();
     };
+  }, [stream]);
+
+  const replaceTrack = async () => {
+    if (producer && stream.videoTrack) {
+      await producer.replaceTrack({ track: stream.videoTrack });
+    }
+    if (audioProducer && stream.audioTrack) {
+      await audioProducer.replaceTrack({ track: stream.audioTrack });
+    }
+  };
+
+  useEffect(() => {
+    replaceTrack();
   }, [stream]);
 
   return { producer, newPeer };

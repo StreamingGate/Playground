@@ -14,7 +14,7 @@ import { Mike, Mute, WhiteShare } from '@components/cores';
 function StudioPage() {
   const streamPlayerRef = useRef(null);
 
-  const { stream, toggleMuteAudio, stopStream } = useStreamMedia(streamPlayerRef);
+  const { stream, toggleMuteAudio, stopStream, switchPCMedia } = useStreamMedia(streamPlayerRef);
   const { roomId } = useParams();
   const userId = lStorageService.getItem('uuid');
 
@@ -56,6 +56,7 @@ function StudioPage() {
             <IconButton>
               <WhiteShare />
             </IconButton>
+            <Button onClick={switchPCMedia}>토글</Button>
             <Button size='sm' onClick={handleStopStreamBtnClick}>
               스트림 종료
             </Button>
