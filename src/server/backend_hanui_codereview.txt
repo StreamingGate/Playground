@@ -10,7 +10,7 @@
 * 소스 코드 경로: https://github.com/StreamingGate/Playground/tree/develop-server/src/server/main-service
 * 서비스 설명:
   일반 영상과 라이브에서 공통으로 사용되는 기능, 친구 기능에 대한 API를 모아둔 서비스입니다.
-  친구 요청 수락/삭제시 Redis의 친구 관계 데이터에도 동기화하기 위해 <실시간 상태관리 서비스>에 추가 요청을 보냅니다.
+  친구 요청 수락/친구 삭제시 Redis에도 친구 관계 데이터에를 동기화하기 위해 <실시간 상태관리 서비스>에 친구 추가/삭제 요청을 보냅니다.
 * 사용 기술:
   - Java11, Spring boot 2.6, Gradle 7.3
   - Spring Data Jpa
@@ -30,7 +30,7 @@
 * 소스 코드 경로: https://github.com/StreamingGate/Playground/tree/develop-server/src/server/upload-service
 * 서비스 설명:
   일반 영상 또는 라이브를 녹화한 영상을 업로드하는 서비스입니다.
-  업로드시 Redis에 새로운 채팅방을 생성하기 위해 <실시간 채팅 서비스>에 추가 요청을 보냅니다.
+  업로드 후 서버에서 <실시간 채팅 서비스>에 채팅방 생성 요청을 보냅니다.
   업로드된 영상이 S3에 저장되면 mp4파일을 m3u8로 트랜스코딩하여 S3내 새로운 경로에 저장하고, 영상에 매칭되는 새로운 채팅방을 생성합니다.
   이 과정이 끝나면 해당 경로를 클라이언트에서 접근하여 영상을 스트리밍(HLS 방식)할 수 있습니다.
 
