@@ -1,6 +1,14 @@
 # 이우재 코드 리뷰 가이드
 
-## user-service
+## Spring Cloud
+### 서비스 소개
+마이크로서비스 개발, 배포, 운영에 필요한 기술을 지원하는 Spring boot기반 프레임워크 입니다.\
+service discovery인 eureka와 gateway는 Spring cloud Gateway를 사용하였습니다.
+
+###코드 링크
+- [Spring Cloud code link](https://github.com/StreamingGate/Playground/tree/develop-server/src/infra)
+
+## User-service
 ### 서비스 소개
 - 유저 정보에 대한 전반적인 기능과 인증 서비스 기능 역할을 하고 있습니다. 
 회원가입,수정,탈퇴와 프로필사진 삽입,수정,삭제 \
@@ -12,7 +20,7 @@ CloudFront(CDN)를 사용하여 이미지를 가져올때 캐시를 사용하여
   
 
 ### 코드 링크
-- https://github.com/StreamingGate/Playground/tree/develop-server/src/server/user-service
+- [User service code link](https://github.com/StreamingGate/Playground/tree/develop-server/src/server/user-service)
 ### 기술스택
 * JAVA 11
 * Gradle
@@ -72,7 +80,7 @@ jwts:
 또한 방생성시 스트리머도 그 방을 시청한것이기에 시청기록 리스트에 동시에 저장하도록 로직을 구성하였습니다.
 - user-service와 마찬가지로 썸네일 이미지도 S3에 저장하고 이를 CloudFront에서 가져오도록 구현 하였습니다.
 ### 코드 링크
-- https://github.com/StreamingGate/Playground/tree/develop-server/src/server/room-service
+- [Room service code link](https://github.com/StreamingGate/Playground/tree/develop-server/src/server/room-service)
 ### 기술스택
 * JAVA 11
 * Gradle
@@ -115,4 +123,4 @@ cloud:
 사용 하였습니다. 
 
 ### 코드 링크
-- https://github.com/StreamingGate/Playground/tree/develop-server/src/server/mediasoup
+- [Mediasoup server code link](https://github.com/StreamingGate/Playground/tree/develop-server/src/server/mediasoup)
