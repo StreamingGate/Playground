@@ -73,8 +73,9 @@
 * API
   - [REST] 채팅방 하나 정보 조회
   - [REST] 채팅방 생성
-  - [WebSocket] 방 입장
+  - [WebSocket] 방 입장 (Connection시 JWT 인증)
   - [WebSocket] 채팅 전송
+  - [WebSocket] 방 퇴장 (스트리머가 퇴장 시 방 삭제)
 
 
 <실시간 상태관리 서비스>
@@ -91,5 +92,7 @@
 * API
   - [REST] 내 친구 상태 목록 조회
   - [REST] 친구 추가, 삭제
-  - [WebSocket] 내 상태(로그인, 로그아웃, 시청 중인 영상 정보) 업데이트 후 친구 리스트에 전송
+  - [WebSocket] 로그인 (Connection시 JWT 인증)
+  - [WebSocket] 로그아웃
+  - [WebSocket] 시청 중인 영상 정보 친구 리스트에 전송
   - [WebSocket] 친구 목록 업데이트 후 업데이트되는 상대 두명에게 전송
