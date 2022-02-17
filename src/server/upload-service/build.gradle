@@ -20,7 +20,6 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:3.1.0'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     implementation 'net.bramp.ffmpeg:ffmpeg:0.6.2'

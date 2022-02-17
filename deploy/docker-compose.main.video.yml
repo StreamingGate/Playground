@@ -1,0 +1,28 @@
+version: "3"
+services:
+  main-service:
+    container_name: main-service
+    image: rlagksml99/main-service:latest
+    environment:
+      spring.datasource.url: jdbc:mariadb://3.19.12.178:3306/playground
+      service.ip.status-service: http://13.209.19.25:9999 # status-service
+    ports:
+      - "50004:50004"
+    restart: always
+    networks:
+      - sg-network
+
+  video-service:
+    container_name: video-service
+    image: rlagksml99/video-service:latest
+    environment:
+      spring.datasource.url: jdbc:mariadb://3.19.12.178:3306/playground
+    ports:
+      - "50005:50005"
+    restart: always
+    networks:
+      - sg-network
+
+networks:
+  sg-network:
+    external: true

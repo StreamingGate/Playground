@@ -1,0 +1,11 @@
+version: "3"
+services:
+  upload-service:
+    container_name: upload-service
+    image: rlagksml99/upload-service:latest
+    environment:
+      spring.datasource.url: jdbc:mariadb://3.19.12.178:3306/playground
+      service.ip.chat-service: http://3.35.16.32:8888 # chat-service
+    ports:
+      - "50006:50006"
+    restart: always
