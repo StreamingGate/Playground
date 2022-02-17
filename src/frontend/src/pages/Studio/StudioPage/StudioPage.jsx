@@ -56,7 +56,7 @@ function StudioPage() {
             <IconButton>
               <WhiteShare />
             </IconButton>
-            <Button onClick={switchPCMedia}>토글</Button>
+            <Button onClick={switchPCMedia}>화면공유</Button>
             <Button size='sm' onClick={handleStopStreamBtnClick}>
               스트림 종료
             </Button>
