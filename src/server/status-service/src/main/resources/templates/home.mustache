@@ -106,7 +106,7 @@
     addFriend = (body) => {
         let elem = document.createElement("li");
         elem.id = `${body.uuid}`;
-        if (body.addOrDelete === true)
+        if (body.status === true)
             elem.innerText = `${body.uuid} 로그인! (${body.title}시청 중)`;
         else
             elem.innerText = `${body.uuid} 로그아웃!`;
