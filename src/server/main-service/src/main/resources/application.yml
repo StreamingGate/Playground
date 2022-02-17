@@ -23,6 +23,9 @@ spring:
   sql:
     init:
       mode: always
+service:
+  ip:
+    status-service: http://localhost:9999
 ---
 spring.config.activate.on-profile: develop
 server:
@@ -36,6 +39,9 @@ spring:
       ddl-auto: none
   datasource:
     url: jdbc:mariadb://pg-mariadb:3306/playground?characterEncoding=utf8
+service:
+  ip:
+    status-service: http://status-service:9999
 eureka:
   instance:
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}

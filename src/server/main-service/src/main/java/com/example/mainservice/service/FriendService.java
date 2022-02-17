@@ -10,6 +10,7 @@ import com.example.mainservice.entity.User.User;
 import com.example.mainservice.entity.User.UserRepository;
 import com.example.mainservice.exceptionhandler.customexception.CustomMainException;
 import com.example.mainservice.exceptionhandler.customexception.ErrorCode;
+import com.example.mainservice.utils.HttpRequest;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -71,6 +72,7 @@ public class FriendService {
         User user = userRepository.findByUuid(uuid).orElseThrow(() -> new CustomMainException(ErrorCode.U002));
         User target = userRepository.findByUuid(targetUuid).orElseThrow(() -> new CustomMainException(ErrorCode.U002));
         user.deleteFriend(target);
+        HttpRequest.sendDeleteFriend(FriendDto.from(user), FriendDto.from(target));
         return target.getUuid();
     }
 
@@ -99,6 +101,7 @@ public class FriendService {
 
         // User friends 에 추가
         sender.addFriend(user);
+        HttpRequest.sendAddFriend(FriendDto.from(user), FriendDto.from(sender));
         return sender.getUuid();
     }
 
