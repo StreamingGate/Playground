@@ -1,6 +1,7 @@
 package com.example.statusservice.dto;
 
 import com.example.statusservice.entity.User.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,10 +25,14 @@ public class UserDto implements Serializable {
     private Set<String> friendUuids = new HashSet<>();
 
     // 시청중이 아닐 경우 id, type, videoRoomUuid, title은 null 값
-    private Integer id;              // videoId or roomId
+    private Integer id;             // videoId or roomId
     private Integer type;           // 0: videoId, 1: roomId
     private String videoRoomUuid;   // videoUuid or roomUuid
     private String title;
+
+    // 친구 추가/삭제시
+    private Boolean addOrDelete;    // true: add, false: delete (null: 친구 추가/삭제 이벤트가 아닐 때)
+    private String updateTargetUuid;// uuid를 친구 추가/삭제하는 대상의 uuid (null: 친구 추가/삭제 이벤트가 아닐 때)
 
     public UserDto(User user){
         this.uuid = user.getUuid();
@@ -65,5 +70,11 @@ public class UserDto implements Serializable {
         this.type = null;
         this.videoRoomUuid = null;
         this.title = null;
+    }
+
+    /* 친구 추가/삭제 */
+    public void updateAddOrDelete(Boolean addOrDelete, String updateTargetUuid){
+        this.addOrDelete = addOrDelete;
+        this.updateTargetUuid = updateTargetUuid;
     }
 }

@@ -28,17 +28,21 @@ public class UserController {
 
     @PostMapping("/friend")
     public ResponseEntity<Map<String,String>> addFriend(@RequestBody PartnerDto dto) throws Exception {
-        log.info("addFriend api....");
+        log.info("addFriend api...."+dto.getRequestDto().getUuid()+ ","+dto.getSenderOrTargetDto().getUuid());
         redisUserService.addFriend(dto.getRequestDto(), dto.getSenderOrTargetDto());
         redisUserService.addFriend(dto.getSenderOrTargetDto(), dto.getRequestDto());
+
+        redisUserService.publishAddOrDeleteFriend(true, dto.getRequestDto().getUuid(), dto.getSenderOrTargetDto().getUuid());
         return ResponseEntity.ok(Map.of(RESPONSE_MAP_KEY, RESPONSE_SUCCESS));
     }
 
     @DeleteMapping("/friend")
     public ResponseEntity<Map<String,String>> deleteFriend(@RequestBody PartnerDto dto) throws Exception {
-        log.info("deleteFriend api....");
+        log.info("deleteFriend api...."+dto.getRequestDto().getUuid()+ ","+dto.getSenderOrTargetDto().getUuid());
         redisUserService.deleteFriend(dto.getRequestDto(), dto.getSenderOrTargetDto());
         redisUserService.deleteFriend(dto.getSenderOrTargetDto(), dto.getRequestDto());
+
+        redisUserService.publishAddOrDeleteFriend(false, dto.getRequestDto().getUuid(), dto.getSenderOrTargetDto().getUuid());
         return ResponseEntity.ok(Map.of(RESPONSE_MAP_KEY, RESPONSE_SUCCESS));
     }
 

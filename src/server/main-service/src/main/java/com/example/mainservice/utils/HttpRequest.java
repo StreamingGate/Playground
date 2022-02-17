@@ -27,25 +27,29 @@ public class HttpRequest {
 
     /* 친구 추가 chat-service에 반영 */
     public static void sendAddFriend(FriendDto requestDto, FriendDto senderDto) {
+        String targetURL = URL + "/friend";
         PartnerDto partnerDto = new PartnerDto(requestDto, senderDto);
         try{
             HttpEntity<?> body = new HttpEntity<>(partnerDto);
-            restTemplate.exchange(URL+"/friend", HttpMethod.POST, body, Map.class);
-            log.info("request add friend 완료");
+            log.info("request url:" + targetURL);
+            restTemplate.exchange(targetURL, HttpMethod.POST, body, Map.class);
+            log.info("add friend 완료");
         } catch(RestClientException e){
-            log.warn(e.getMessage());
+            log.warn("add friend 실패:" +e.getMessage());
         }
     }
 
     /* 친구 삭제 chat-service에 반영 */
     public static  void sendDeleteFriend(FriendDto requestDto, FriendDto senderDto) {
+        String targetURL = URL + "/friend";
         PartnerDto partnerDto = new PartnerDto(requestDto, senderDto);
         try{
             HttpEntity<?> body = new HttpEntity<>(partnerDto);
-            restTemplate.exchange(URL+"/friend", HttpMethod.DELETE, body, Map.class);
-            log.info("request delete friend 완료");
+            log.info("request url:" + targetURL);
+            restTemplate.exchange(targetURL, HttpMethod.DELETE, body, Map.class);
+            log.info("delete friend 완료");
         } catch(RestClientException e){
-            log.warn(e.getMessage());
+            log.warn("delete friend 실패:" +e.getMessage());
         }
     }
 }
