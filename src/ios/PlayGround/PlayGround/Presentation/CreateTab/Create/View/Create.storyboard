@@ -397,23 +397,9 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8qP-Kc-P5l">
-                                        <rect key="frame" x="172" y="538.5" width="70" height="40"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="70" id="3Fz-0A-9HA"/>
-                                            <constraint firstAttribute="height" constant="40" id="zaE-uw-RFQ"/>
-                                        </constraints>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" title="취소"/>
-                                        <connections>
-                                            <action selector="loadingCancleButtonDidTap:" destination="RWS-wc-lxH" eventType="touchUpInside" id="vLz-xS-1QO"/>
-                                        </connections>
-                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.26666666666666666" green="0.26666666666666666" blue="0.26666666666666666" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstItem="8qP-Kc-P5l" firstAttribute="centerX" secondItem="E4h-dW-MN3" secondAttribute="centerX" id="ScE-E4-l0t"/>
-                                    <constraint firstItem="8qP-Kc-P5l" firstAttribute="top" secondItem="VxM-Vf-Cyd" secondAttribute="bottom" constant="119" id="Vms-dO-jqS"/>
                                     <constraint firstItem="VxM-Vf-Cyd" firstAttribute="centerY" secondItem="E4h-dW-MN3" secondAttribute="centerY" id="XdK-WZ-UTO"/>
                                     <constraint firstItem="VxM-Vf-Cyd" firstAttribute="centerX" secondItem="E4h-dW-MN3" secondAttribute="centerX" id="XwH-4A-Hdb"/>
                                 </constraints>
@@ -466,7 +452,6 @@
                         <outlet property="explainCountLabel" destination="yN0-x7-tZK" id="g4M-eH-gfg"/>
                         <outlet property="explainPlaceHolderLabel" destination="PI1-FI-6bO" id="59F-rv-oXy"/>
                         <outlet property="explainTextView" destination="eBF-Ml-mqe" id="37H-kn-HNq"/>
-                        <outlet property="loadingCancelButton" destination="8qP-Kc-P5l" id="XLG-HS-Jju"/>
                         <outlet property="loadingLabel" destination="VxM-Vf-Cyd" id="b76-h8-ZaA"/>
                         <outlet property="loadingView" destination="E4h-dW-MN3" id="YZ6-J4-Nig"/>
                         <outlet property="loadingViewBottomMargin" destination="Ofd-gn-0vr" id="Ukd-zc-Xe9"/>
