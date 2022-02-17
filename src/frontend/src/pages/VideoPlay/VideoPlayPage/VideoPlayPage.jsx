@@ -10,6 +10,7 @@ import { useGetVideoInfo } from '@utils/hook/query';
 
 import VideoMetaData from '@pages/VideoPlay/VideoMetaData/VideoMetaData';
 import { ChatRoom } from '@components/chats';
+import { Loading } from '@components/feedbacks';
 
 /**
  * 실시간 방송인지, 업로드된 비디오 인지 확인후
@@ -39,7 +40,7 @@ function VideoPlayPage() {
     }
   };
 
-  const { data } = useGetVideoInfo(playType.current, id, userId, handleVideoUrlLoad);
+  const { data, isLoading } = useGetVideoInfo(playType.current, id, userId, handleVideoUrlLoad);
 
   // 실시간 방송일 경우(playType.current === 'live') 실시간 시청 커스텀 훅 실행
   const { consumer } = useMediaSoupConsume(playType.current === 'live', videoPlayerRef, data?.uuid);
@@ -84,6 +85,7 @@ function VideoPlayPage() {
 
   return (
     <ChatInfoContext.Provider value={chatInfoContext}>
+      {isLoading && <Loading />}
       <S.VideoPlayPageContainer>
         <S.PlayerContainer>
           <S.VideoPlayer controls ref={videoPlayerRef} autoPlay>

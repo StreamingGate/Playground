@@ -6,6 +6,7 @@ import { useMainVideoList } from '@utils/hook/query';
 
 import CategorySlider from '../CategorySlider/CategorySlider';
 import { VideoOverview } from '@components/videos';
+import { Loading } from '@components/feedbacks';
 
 /**
  *
@@ -24,7 +25,7 @@ function HomePage() {
   const [categoryToggleState, setCategoryToggleStates] = useState([]);
   const [selectedCateogory, setSelectedCategory] = useState('ALL');
 
-  const { data, fetchNextPage } = useMainVideoList(selectedCateogory);
+  const { data, isLoading, fetchNextPage } = useMainVideoList(selectedCateogory);
   // Intersection Observer를 이용한 무한스크롤 함수
   const observer = useInifinitScroll(fetchNextPage, {
     root: null,
@@ -68,6 +69,7 @@ function HomePage() {
 
   return (
     <>
+      {isLoading && <Loading />}
       <CategorySlider
         categories={categories}
         onToggleCategory={handleCategoryChipClick}
