@@ -26,6 +26,7 @@
   - 일반 영상 또는 라이브에 반응하기, 취소하기 (반응: 좋아요, 싫어요, 신고하기)
 * 서버 실행시 필요한 yml: 없음
 
+
 <업로드 서비스>
 * 소스 코드 경로: https://github.com/StreamingGate/Playground/tree/develop-server/src/server/upload-service
 * 서비스 설명:
@@ -45,7 +46,8 @@
   - 일반 영상 업로드 (썸네일 미포함시 서버에서 자동 생성)
   - 라이브 종료 후 영상 업로드 (썸네일 미포함시 서버에서 자동 생성)
 
-* 서버 실행시 필요한 yml: https://github.com/StreamingGate/Playground/tree/develop-server/src/server/upload-service/Readme.md
+* 서버 실행시 필요한 yml: https://github.com/StreamingGate/Playground/tree/develop-server/src/server/upload-service/Readme.md#서버-실행시-필요한-yml
+
 
 <비디오 서비스>
 * 소스 코드 경로: https://github.com/StreamingGate/Playground/tree/develop-server/src/server/video-service
@@ -78,7 +80,8 @@
   - [WebSocket] 방 입장 (Connection시 JWT 인증)
   - [WebSocket] 채팅 전송
   - [WebSocket] 방 퇴장 (스트리머가 퇴장 시 방 삭제)
-* 서버 실행시 필요한 yml: https://github.com/StreamingGate/Playground/tree/develop-server/src/server/chat-service/Readme.md
+* 서버 실행시 필요한 yml: https://github.com/StreamingGate/Playground/tree/develop-server/src/server/chat-service/Readme.md#서버-실행시-필요한-yml
+
 
 <실시간 상태관리 서비스>
 * 소스 코드 경로: https://github.com/StreamingGate/Playground/tree/develop-server/src/server/status-service
@@ -98,4 +101,4 @@
   - [WebSocket] 로그아웃
   - [WebSocket] 시청 중인 영상 정보 친구 리스트에 전송
   - [WebSocket] 친구 목록 업데이트 후 업데이트되는 상대 두명에게 전송
-* 서버 실행시 필요한 yml: https://github.com/StreamingGate/Playground/tree/develop-server/src/server/status-service/Readme.md
+* 서버 실행시 필요한 yml: https://github.com/StreamingGate/Playground/tree/develop-server/src/server/status-service/Readme.md#서버-실행시-필요한-yml
