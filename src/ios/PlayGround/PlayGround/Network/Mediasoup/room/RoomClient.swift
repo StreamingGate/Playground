@@ -110,6 +110,11 @@ final internal class RoomClient : NSObject {
         let iceCandidatesArray: JSON = webRtcTransportData["iceCandidates"]
         let dtlsParameters: JSON = webRtcTransportData["dtlsParameters"]
         
+        if let data = response, data["errorCode"] == 500 {
+            print("500 error occured")
+            return
+        }
+        
         self.recvTransportHandler = RecvTransportHandler.init(parent: self)
         self.recvTransportHandler!.delegate = self.recvTransportHandler!
         self.recvTransport = self.device.createRecvTransport(self.recvTransportHandler!.delegate!, id: id, iceParameters: iceParameters.description, iceCandidates: iceCandidatesArray.description, dtlsParameters: dtlsParameters.description)
