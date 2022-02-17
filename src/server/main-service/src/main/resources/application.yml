@@ -31,8 +31,6 @@ spring.config.activate.on-profile: develop
 server:
   port: 0
 spring:
-  application:
-    name: main-service
   jpa:
     generate-ddl: false
     hibernate:
@@ -42,11 +40,3 @@ spring:
 service:
   ip:
     status-service: http://status-service:9999
-eureka:
-  instance:
-    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
-  client:
-    fetch-registry: true
-    register-with-eureka: true
-    service-url:
-      defaultZone: http://localhost:8761/eureka
