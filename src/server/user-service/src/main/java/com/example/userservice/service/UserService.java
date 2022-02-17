@@ -154,17 +154,21 @@ public class UserService implements UserDetailsService {
 
     /* 실시간 스트리밍 리스트, 동영상 리스트 합쳐서 리턴 */
     @Transactional
-    public ResponseHistory watchedHistory(String uuid, Long lastVideoId, Long lastLiveId,int size) throws CustomUserException {
+    public ResponseHistory watchedHistory(String uuid, String lastVideoViewedAt, String lastLiveViewedAt, int size) throws CustomUserException {
         if (!userRepository.findByUuid(uuid).isPresent()) throw new CustomUserException(ErrorCode.U002);
         Stream<ViewedHistory> videoStream;
         Stream<RoomViewer> liveStream;
         Pageable pageable = PageRequest.of(0, size);
+        LocalDateTime parseLastVideoViewedAt;
+        LocalDateTime parseLastLiveViewedAt;
+        if (lastVideoViewedAt.equals("null"))  parseLastVideoViewedAt = LocalDateTime.now();
+        else parseLastVideoViewedAt = LocalDateTime.parse(lastVideoViewedAt);
+        if (lastLiveViewedAt.equals("null")) parseLastLiveViewedAt = LocalDateTime.now();
+        else parseLastLiveViewedAt = LocalDateTime.parse(lastLiveViewedAt);
 
-        if(lastVideoId == -1) videoStream = viewedRepository.findByAll(uuid,pageable).getContent().stream();
-        else videoStream = viewedRepository.findByAll(uuid,lastVideoId, pageable).getContent().stream();
+        videoStream = viewedRepository.findByUuidAll(uuid,parseLastVideoViewedAt, pageable).getContent().stream();
 
-        if(lastLiveId == -1) liveStream = roomViewerRepository.findByAll(uuid, pageable).stream();
-        else liveStream = roomViewerRepository.findByAll(uuid, lastLiveId, pageable).stream();
+        liveStream = roomViewerRepository.findByUuidAll(uuid, parseLastLiveViewedAt, pageable).stream();
 
         List<ResponseVideo> videoList = videoStream.map(ResponseVideo::new)
                 .collect(Collectors.toList());
@@ -174,17 +178,21 @@ public class UserService implements UserDetailsService {
         return new ResponseHistory(videoList,roomList);
     }
     @Transactional
-    public ResponseHistory likedHistory(String uuid, Long lastVideoId, Long lastLiveId,int size) throws CustomUserException {
+    public ResponseHistory likedHistory(String uuid, String lastVideoViewedAt, String lastLiveViewedAt,int size) throws CustomUserException {
         if (!userRepository.findByUuid(uuid).isPresent()) throw new CustomUserException(ErrorCode.U002);
         Stream<ViewedHistory> videoStream;
         Stream<RoomViewer> liveStream;
         Pageable pageable = PageRequest.of(0, size);
+        LocalDateTime parseLastVideoViewedAt;
+        LocalDateTime parseLastLiveViewedAt;
+        if (lastVideoViewedAt.equals("null"))  parseLastVideoViewedAt = LocalDateTime.now();
+        else parseLastVideoViewedAt = LocalDateTime.parse(lastVideoViewedAt);
+        if (lastLiveViewedAt.equals("null")) parseLastLiveViewedAt = LocalDateTime.now();
+        else parseLastLiveViewedAt = LocalDateTime.parse(lastLiveViewedAt);
 
-        if (lastVideoId == -1) videoStream = viewedRepository.findByLiked(uuid,pageable).getContent().stream();
-        else videoStream = viewedRepository.findByLiked(uuid,lastVideoId,pageable).getContent().stream();
+        videoStream = viewedRepository.findByLiked(uuid,parseLastVideoViewedAt,pageable).getContent().stream();
 
-        if(lastLiveId == -1) liveStream = roomViewerRepository.findByLiked(uuid,pageable).getContent().stream();
-        else liveStream = roomViewerRepository.findByLiked(uuid,lastLiveId,pageable).getContent().stream();
+        liveStream = roomViewerRepository.findByLiked(uuid,parseLastLiveViewedAt,pageable).getContent().stream();
 
         List<ResponseVideo> videoList = videoStream.map(ResponseVideo::new)
                 .collect(Collectors.toList());
@@ -200,15 +208,39 @@ public class UserService implements UserDetailsService {
         Pageable pageable = PageRequest.of(0, size);
         if (lastVideoId == -1) videoStream = videoRepository.findAll(uuid,pageable).getContent().stream();
         else videoStream = videoRepository.findAll(uuid,lastVideoId,pageable).getContent().stream();
-        return videoStream.map(ResponseVideo::new).collect(Collectors.toList());
+        List<ResponseVideo> videoList = videoStream.map(ResponseVideo::new)
+                .collect(Collectors.toList());
+        return videoList;
     }
-
+    @Transactional
     public String refreshToken(String token, String refreshToken) throws CustomUserException {
         if(!redisTemplate.hasKey(refreshToken)) throw new CustomUserException(ErrorCode.U007);
         String userUuid = jwt.getUserUuid(token);
         if(!userRepository.findByUuid(userUuid).isPresent()) throw new CustomUserException(ErrorCode.U007);
         String newAccessToken = jwt.createToken(userUuid);
         return newAccessToken;
+    }
+
+    @Transactional
+    public ResponseUser info(String uuid) throws CustomUserException {
+        User user = userRepository.findByUuid(uuid).orElseThrow(() -> new CustomUserException(ErrorCode.U002));
+        Stream<Video> videoStream;
+        videoStream = videoRepository.findAll(uuid).stream();
+        List<ResponseVideo> videoList = videoStream.map(ResponseVideo::new)
+                .collect(Collectors.toList());
+        ResponseUser responseUser = mapper.map(user,ResponseUser.class);
+        responseUser.setUploadCnt(videoList.size());
+        responseUser.setFriendCnt(user.getFriends().size());
+        return responseUser;
+    }
+
+    @Transactional
+    public ResponseAuto autologin(RequestAuto requestAuto) throws CustomUserException {
+        User user = userRepository.findByUuid(requestAuto.getUuid()).orElseThrow(() -> new CustomUserException(ErrorCode.U002));
+        String token = jwt.createRefreshToken(user.getUuid());
+        ResponseAuto responseAuto = mapper.map(user,ResponseAuto.class);
+        responseAuto.setRefreshToken(token);
+        return responseAuto;
     }
 
     @Override

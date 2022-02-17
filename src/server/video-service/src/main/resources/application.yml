@@ -14,7 +14,7 @@ spring:
 ---
 spring.config.activate.on-profile: local
 server:
-  port: 8081
+  port: 8082
 spring:
   datasource:
     url: jdbc:mariadb://localhost:3306/playground?characterEncoding=utf8

@@ -32,8 +32,8 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
             ServerHttpRequest request = exchange.getRequest();
             if(!request.getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
                 return onError(exchange,"You don't have authorization header", HttpStatus.UNAUTHORIZED);
-            }
-            String authorizationHeader =  request.getHeaders().get(org.apache.http.HttpHeaders.AUTHORIZATION).get(0);
+            } //Authorization
+            String authorizationHeader =  request.getHeaders().get("Authorization").get(0);
             String jwt = authorizationHeader.replace("Bearer ","");
             if (!isJwtValid(jwt)) {
                 return onError(exchange,"JWT is not valid", HttpStatus.UNAUTHORIZED);

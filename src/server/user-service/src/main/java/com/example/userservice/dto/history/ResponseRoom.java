@@ -13,6 +13,7 @@ public class ResponseRoom {
     private String hostProfileImage;
     private String uuid; // 라이브, 실시간채팅 uuid
     private String title;
+    private String content;
     private String thumbnail;
     private Category category;
     private LocalDateTime likedAt;
@@ -25,6 +26,7 @@ public class ResponseRoom {
         this.hostProfileImage = room.getUser().getProfileImage();
         this.uuid = room.getRoom().getUuid();
         this.title = room.getRoom().getTitle();
+        this.content = room.getRoom().getContent();
         this.category = room.getRoom().getCategory();
         this.thumbnail = room.getRoom().getThumbnail();
         this.likedAt = room.getLikedAt();
