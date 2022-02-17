@@ -20,6 +20,11 @@ class VideoListCell: UITableViewCell {
     @IBOutlet weak var thumbnailImageView: UIImageView!
     var channelTapHandler: (()->Void)?
     
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        self.profileImageView.layer.cornerRadius = 33 / 2
+    }
+    
     func setupUI(_ index: Int) {
         titleLabel.font = UIFont.Component
         nicknameLabel.font = UIFont.caption

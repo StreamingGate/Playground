@@ -10,6 +10,7 @@ import UIKit
 import AVFoundation
 import Combine
 import Lottie
+import SkeletonView
 
 class HomeListViewController: UIViewController {
     // MARK: - Properties
@@ -26,8 +27,6 @@ class HomeListViewController: UIViewController {
     var safeBottom: CGFloat = 0
     var middle = 0
     var navVC: HomeNavigationController?
-    let animationView: AnimationView = .init(name: "PgLoading")
-    let loadingBackView = UIView()
     
     let viewModel = HomeViewModel()
     let spinner = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.medium)
@@ -66,14 +65,16 @@ class HomeListViewController: UIViewController {
         self.viewModel.$homeList.receive(on: DispatchQueue.main, options: nil)
             .sink { [weak self] list in
                 guard let self = self else { return }
-                self.animationView.stopLoading(backView: self.loadingBackView)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    self.tableView.hideSkeleton(reloadDataAfter: false, transition: .crossDissolve(0.25))
+                }
                 self.tableView.reloadData()
                 self.collectionView.reloadData()
             }.store(in: &cancellable)
         self.viewModel.$selectedCategory.receive(on: DispatchQueue.main, options: nil)
             .sink { [weak self] selected in
                 guard let self = self else { return }
-                self.animationView.setLoading(vc: self, backView: self.loadingBackView)
+//                self.animationView.setLoading(vc: self, backView: self.loadingBackView)
                 self.viewModel.loadAllList(vc: self, coordinator: self.navVC?.coordinator)
             }.store(in: &cancellable)
     }
@@ -84,6 +85,12 @@ class HomeListViewController: UIViewController {
         searchButton.setTitle("", for: .normal)
         noticeButton.setTitle("", for: .normal)
         friendButton.setTitle("", for: .normal)
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 300
+        self.tableView.isSkeletonable = true
+        self.tableView.skeletonCornerRadius = 5
+        let animation = SkeletonAnimationBuilder().makeSlidingAnimation(withDirection: .leftRight)
+        tableView.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .systemGray4, secondaryColor: .systemGray5), animation: animation, transition: .crossDissolve(0.5))
         initRefresh()
     }
     
@@ -263,5 +270,15 @@ extension HomeListViewController: UITableViewDataSource, UITableViewDelegate {
 extension HomeListViewController: TransitionDelegate {
     func showPlayer(info: GeneralVideo) {
         self.navVC?.coordinator?.showPlayer(info: info)
+    }
+}
+
+extension HomeListViewController: SkeletonTableViewDataSource {
+    func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
+        return "VideoListCell"
+    }
+    
+    func collectionSkeletonView(_ skeletonView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 2
     }
 }
