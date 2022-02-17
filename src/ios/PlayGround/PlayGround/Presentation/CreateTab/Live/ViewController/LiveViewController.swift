@@ -13,7 +13,7 @@ import Combine
 import SafariServices
 import SwiftKeychainWrapper
 
-class LiveViewController: UIViewController {
+class LiveViewController: UIViewController, SFSafariViewControllerDelegate {
     // MARK: - Properties
     let viewModel = ChatViewModel(senderRole: "STREAMER")
     private var cancellable: Set<AnyCancellable> = []
