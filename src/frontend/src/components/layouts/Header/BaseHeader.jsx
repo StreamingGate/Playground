@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import * as S from './Header.style';
 import { HeaderContext, MainLayoutContext } from '@utils/context';
@@ -20,9 +21,14 @@ import ProfileDropdown from './Dropdowns/ProfileDropdown';
 
 function BaseHeader() {
   const userProfileImage = lStorageService.getItem('profileImage');
+  const navigate = useNavigate();
 
   const { onToggle } = useContext(HeaderContext);
   const { onToggleSideNav, modalState, onToggleModal } = useContext(MainLayoutContext);
+
+  const handleLogoClick = () => {
+    navigate('/home');
+  };
 
   return (
     <>
@@ -30,7 +36,7 @@ function BaseHeader() {
         <S.HambergurIconButton onClick={onToggleSideNav}>
           <HamburgerBar />
         </S.HambergurIconButton>
-        <S.VerticalLogoIcon />
+        <S.VerticalLogoIcon onClick={handleLogoClick} />
       </S.HeaderLeftDiv>
       <SearchForm />
       <S.HeaderRightDiv>
