@@ -90,6 +90,7 @@ class LiveViewController: UIViewController {
     }
     
     func setupUIforClose() {
+        pinnedView.isHidden = true
         infoStackView.isHidden = true
         tableView.isHidden = true
         sendButton.isEnabled = false
