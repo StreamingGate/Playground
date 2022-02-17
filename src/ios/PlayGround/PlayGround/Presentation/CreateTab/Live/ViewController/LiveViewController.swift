@@ -13,7 +13,7 @@ import Combine
 import SafariServices
 import SwiftKeychainWrapper
 
-class LiveViewController: UIViewController {
+class LiveViewController: UIViewController, SFSafariViewControllerDelegate {
     // MARK: - Properties
     let viewModel = ChatViewModel(senderRole: "STREAMER")
     private var cancellable: Set<AnyCancellable> = []
@@ -39,7 +39,6 @@ class LiveViewController: UIViewController {
     @IBOutlet weak var timeBlackView: UIView!
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var participantsNumLabel: UILabel!
-    @IBOutlet weak var likeNumLabel: UILabel!
     @IBOutlet weak var sendButton: UIButton!
     @IBOutlet weak var chatTextView: UITextView!
     @IBOutlet weak var chatProfileImageView: UIImageView!
@@ -90,6 +89,7 @@ class LiveViewController: UIViewController {
     }
     
     func setupUIforClose() {
+        pinnedView.isHidden = true
         infoStackView.isHidden = true
         tableView.isHidden = true
         sendButton.isEnabled = false
@@ -118,7 +118,6 @@ class LiveViewController: UIViewController {
         liveSignLabel.font = UIFont.caption
         timeLabel.font = UIFont.caption
         participantsNumLabel.font = UIFont.caption
-        likeNumLabel.font = UIFont.caption
         pinnedImageView.image = nil
         pinnedImageView.backgroundColor = UIColor.placeHolder
         pinnedImageView.layer.cornerRadius = 15
@@ -302,21 +301,5 @@ extension LiveViewController {
             chatViewBottom.constant = 0
             self.view.layoutIfNeeded()
         }
-    }
-}
-
-extension LiveViewController: SFSafariViewControllerDelegate {
-    
-    // TODO: 방송 종료 시 웹뷰와 통신
-    func safariViewController(_ controller: SFSafariViewController, didCompleteInitialLoad didLoadSuccessfully: Bool) {
-        print("did load: \(didLoadSuccessfully)")
-    }
-    
-    func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
-        print("Did finish")
-    }
-    
-    func safariViewController(_ controller: SFSafariViewController, initialLoadDidRedirectTo URL: URL) {
-        print("redirect to :\(URL)")
     }
 }

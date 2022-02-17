@@ -248,7 +248,6 @@ class PlayViewController: UIViewController {
         friendRequestLabel.font = UIFont.Content
         guard let userInfo = UserManager.shared.userInfo else { return }
         chatProfileImageView.downloadImageFrom(link: userInfo.profileImage, contentMode: .scaleAspectFill)
-        // TODO: 내가 올린 영상일 경우, '친구 신청' 보이지 않도록
     }
     
     
@@ -616,7 +615,6 @@ class PlayViewController: UIViewController {
                 }
             }
         }
-        // TODO: uuid 생기면 추가하기
     }
     
     func setMiniPlayerAction() {
@@ -755,6 +753,7 @@ class PlayViewController: UIViewController {
                         self.setPlayViewOriginalSize()
                     } else {
                         self.setPlayViewMinimizing()
+                        self.isMinimized = false
                     }
                 } else if lastTranslation < 0 {
                     if pan.location(in: self.parent?.view).y < (height / 2) {
@@ -765,6 +764,11 @@ class PlayViewController: UIViewController {
                     }
                 } else {
                     self.setPlayViewMinimizing()
+                    if pan.location(in: self.parent?.view).y >= maxHeight + 100 {
+                        if isMinimized {
+                            coordinator?.closeMiniPlayer(vc: self)
+                        }
+                    }
                 }
             default:
                 break

@@ -418,14 +418,6 @@
                                     <constraint firstItem="VxM-Vf-Cyd" firstAttribute="centerX" secondItem="E4h-dW-MN3" secondAttribute="centerX" id="XwH-4A-Hdb"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wnA-F3-fad">
-                                <rect key="frame" x="290" y="64" width="104" height="31"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="temp button"/>
-                                <connections>
-                                    <action selector="tempButtonDidTap:" destination="RWS-wc-lxH" eventType="touchUpInside" id="9m5-AW-LxQ"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="atQ-gP-feD"/>
                         <color key="backgroundColor" red="0.26666666666666666" green="0.26666666666666666" blue="0.26666666666666666" alpha="1" colorSpace="calibratedRGB"/>
@@ -435,11 +427,9 @@
                             <constraint firstItem="gzZ-E9-VFh" firstAttribute="top" secondItem="atQ-gP-feD" secondAttribute="top" id="33k-k2-OnJ"/>
                             <constraint firstItem="fyV-UP-KBD" firstAttribute="leading" secondItem="PR3-PY-0Y3" secondAttribute="trailing" constant="5" id="3je-Lm-X0Z"/>
                             <constraint firstItem="atQ-gP-feD" firstAttribute="trailing" secondItem="gzZ-E9-VFh" secondAttribute="trailing" id="4OQ-DU-scl"/>
-                            <constraint firstItem="wnA-F3-fad" firstAttribute="top" secondItem="atQ-gP-feD" secondAttribute="top" constant="20" id="8cI-ix-ouX"/>
                             <constraint firstItem="atQ-gP-feD" firstAttribute="bottom" secondItem="ccR-s4-oMV" secondAttribute="bottom" id="Bfo-9e-s77"/>
                             <constraint firstItem="E4h-dW-MN3" firstAttribute="top" secondItem="atQ-gP-feD" secondAttribute="top" id="Btw-cM-R8O"/>
                             <constraint firstItem="Tmu-qF-ofa" firstAttribute="trailing" secondItem="gzZ-E9-VFh" secondAttribute="trailing" id="DLi-fG-vTI"/>
-                            <constraint firstItem="atQ-gP-feD" firstAttribute="trailing" secondItem="wnA-F3-fad" secondAttribute="trailing" constant="20" id="Drs-Eu-r2F"/>
                             <constraint firstItem="E4h-dW-MN3" firstAttribute="bottom" secondItem="atQ-gP-feD" secondAttribute="bottom" id="Ofd-gn-0vr"/>
                             <constraint firstItem="gzZ-E9-VFh" firstAttribute="leading" secondItem="atQ-gP-feD" secondAttribute="leading" id="WvJ-e4-vuF"/>
                             <constraint firstItem="ccR-s4-oMV" firstAttribute="top" secondItem="Cge-XW-f14" secondAttribute="bottom" constant="40" id="Wzs-Zb-nQ9"/>

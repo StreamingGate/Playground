@@ -74,7 +74,11 @@ final internal class EchoSocket : WebSocketDelegate, MessageSubscriber {
         print("websocketDisReceiveMessage " + text)
         let data: Data = text.data(using: .utf8)!
         let json: JSON = JSON.init(data)
-        if json["method"].stringValue == "producerClose" {
+        if json["method"].stringValue == "producerClose" || json["method"].stringValue == "streamUnavailable" {
+            self.notifyObservers(event: "closed", data: json)
+            return
+        }
+        if json["errorCode"] == 500 {
             self.notifyObservers(event: "closed", data: json)
             return
         }

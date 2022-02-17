@@ -175,7 +175,7 @@
                                 </constraints>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="tNz-Q2-Dtv">
-                                <rect key="frame" x="87" y="99" width="240" height="24"/>
+                                <rect key="frame" x="119.5" y="99" width="175" height="24"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xeO-9w-afJ">
                                         <rect key="frame" x="0.0" y="0.0" width="110" height="24"/>
@@ -252,33 +252,6 @@
                                             <constraint firstItem="wyX-bO-47j" firstAttribute="centerY" secondItem="eku-Fk-ZL7" secondAttribute="centerY" id="bUc-f2-zfS"/>
                                             <constraint firstItem="eku-Fk-ZL7" firstAttribute="leading" secondItem="CoR-vL-7Hn" secondAttribute="leading" id="bV0-5p-wG8"/>
                                             <constraint firstAttribute="trailing" secondItem="wyX-bO-47j" secondAttribute="trailing" id="bxy-KL-dcb"/>
-                                        </constraints>
-                                    </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fhl-aJ-Z2I">
-                                        <rect key="frame" x="190" y="0.0" width="50" height="24"/>
-                                        <subviews>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="thumbUp_fill_white" translatesAutoresizingMaskIntoConstraints="NO" id="ZYq-lp-fRn">
-                                                <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="24" id="6WT-Sz-TFT"/>
-                                                    <constraint firstAttribute="width" secondItem="ZYq-lp-fRn" secondAttribute="height" multiplier="1:1" id="9Bf-Df-ufT"/>
-                                                </constraints>
-                                            </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eUi-0O-d5r">
-                                                <rect key="frame" x="29" y="2" width="21" height="20.5"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="24" id="MZk-cn-Rrs"/>
-                                            <constraint firstAttribute="trailing" secondItem="eUi-0O-d5r" secondAttribute="trailing" id="P6C-MQ-ycF"/>
-                                            <constraint firstItem="eUi-0O-d5r" firstAttribute="centerY" secondItem="ZYq-lp-fRn" secondAttribute="centerY" id="TW4-aN-Ja7"/>
-                                            <constraint firstItem="eUi-0O-d5r" firstAttribute="leading" secondItem="ZYq-lp-fRn" secondAttribute="trailing" constant="5" id="jTz-A9-5rs"/>
-                                            <constraint firstItem="ZYq-lp-fRn" firstAttribute="centerY" secondItem="Fhl-aJ-Z2I" secondAttribute="centerY" id="sIS-pd-aTw"/>
-                                            <constraint firstItem="ZYq-lp-fRn" firstAttribute="leading" secondItem="Fhl-aJ-Z2I" secondAttribute="leading" id="uGt-0n-SdD"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -468,7 +441,6 @@
                         <outlet property="chatTextView" destination="RLl-KU-s17" id="2dW-TN-TAc"/>
                         <outlet property="chatViewBottom" destination="stA-Hy-HlT" id="CHJ-vj-9zG"/>
                         <outlet property="infoStackView" destination="tNz-Q2-Dtv" id="Ple-Xg-kwN"/>
-                        <outlet property="likeNumLabel" destination="eUi-0O-d5r" id="5Sr-yL-oTZ"/>
                         <outlet property="liveEndView" destination="w0H-ew-vNs" id="5fO-zv-IvU"/>
                         <outlet property="liveSignLabel" destination="v1C-kq-OIg" id="Vcx-Oh-ba3"/>
                         <outlet property="liveSignRedView" destination="gA7-fu-3O5" id="lZw-1D-n43"/>
@@ -500,7 +472,6 @@
         <image name="people_fill_white" width="24" height="24"/>
         <image name="send_blueCircle" width="30" height="30"/>
         <image name="square" catalog="system" width="128" height="114"/>
-        <image name="thumbUp_fill_white" width="24" height="24"/>
         <namedColor name="PGBlue">
             <color red="0.25900000333786011" green="0.52499997615814209" blue="0.96100002527236938" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

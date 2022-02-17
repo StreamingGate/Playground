@@ -75,19 +75,19 @@ extension ChatViewModel: StompClientLibDelegate {
     }
     
     func stompClientDidConnect(client: StompClientLib!) {
-        print("did connect")
+        print("did chat connect")
         ChatServiceAPI.shared.enterRoom(roomId: self.roomId)
     }
     
     func serverDidSendReceipt(client: StompClientLib!, withReceiptId receiptId: String) {
-        print("did send receipt")
+        print("did chat send receipt")
     }
     
     func serverDidSendError(client: StompClientLib!, withErrorMessage description: String, detailedErrorMessage message: String?) {
-        print("did send error: \(description)")
+        print("did chat send error: \(description)")
     }
     
     func serverDidSendPing() {
-        print("server did send ping")
+        print("chat server did send ping")
     }
 }

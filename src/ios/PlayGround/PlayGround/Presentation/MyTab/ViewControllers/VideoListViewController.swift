@@ -65,7 +65,6 @@ class VideoListViewController: UIViewController {
     }
 }
 
-// TODO: 추가
 extension VideoListViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.myList.count
