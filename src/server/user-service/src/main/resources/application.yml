@@ -1,25 +1,24 @@
 server:
-  port: 0
+  port: 50001
 
 spring:
   profiles:
     include:
       - auth
       - s3
-    active: local
   application:
     name: user-service
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     show-sql: true
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://localhost:3306/playground
+    url: jdbc:mariadb://3.19.12.178:3306/playground
     username: root
     password: test
   redis:
-    host: localhost
+    host: 3.19.12.178
     port: 6379
 
   mail:
@@ -33,8 +32,10 @@ spring:
 eureka:
   instance:
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    ip-address: 18.117.58.222
+    hostname: 18.117.58.222
   client:
     fetch-registry: true
     register-with-eureka: true
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: http://3.18.120.82:8761/eureka

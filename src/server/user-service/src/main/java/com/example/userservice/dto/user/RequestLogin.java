@@ -1,7 +1,6 @@
 package com.example.userservice.dto.user;
 
 import lombok.Data;
-
 import javax.validation.constraints.Email;
 
 @Data

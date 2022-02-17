@@ -15,6 +15,7 @@ public class ResponseDto {
     private Integer likeCnt;
     private Category category;
     private LocalDateTime createdAt;
+    private LocalDateTime lastViewedAt;
     private Integer reportCnt;
     private String thumbnail;
     private Boolean liked;

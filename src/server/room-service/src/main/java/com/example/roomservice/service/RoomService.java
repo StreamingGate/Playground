@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Slf4j
@@ -31,20 +32,23 @@ public class RoomService {
 
     @Transactional
     public ResponseDto join(Long roomId, String uuid) throws CustomRoomException {
-        Room room = roomRepository.getById(roomId);
+        Room room = roomRepository.findById(roomId).orElseThrow(() -> new CustomRoomException(ErrorCode.L001));
+        User user = userRepository.findByUuid(uuid).orElseThrow(() -> new CustomRoomException(ErrorCode.U002));
         RoomViewer roomViewer = roomViewerRepository.findByUserUuidAndRoomUuid(uuid,roomId);
         ResponseDto responseDto = mapper.map(room,ResponseDto.class);
         if (roomViewer == null) {
-            roomViewerRepository.save(roomViewer.join(roomId, uuid,false,false));
+            roomViewerRepository.save(roomViewer.join(roomId, uuid,room,user,false,false));
             responseDto.setLiked(false);
             responseDto.setDisliked(false);
         }
         else {
-            roomViewer.join(roomId,uuid,roomViewer.getLiked(),roomViewer.getDisliked());
+            roomViewer.join(roomId,uuid,room,user,roomViewer.getLiked(),roomViewer.getDisliked());
             responseDto.setLiked(roomViewer.getLiked());
             responseDto.setDisliked(roomViewer.getDisliked());
         }
+        responseDto.setHostNickname(user.getNickName());
         responseDto.setRoomId(roomId);
+        responseDto.setLastViewedAt(LocalDateTime.now());
         return Optional.of(responseDto).orElseThrow(()->new CustomRoomException(ErrorCode.L001));
     }
 
@@ -54,9 +58,10 @@ public class RoomService {
         ResponseDto responseDto = mapper.map(requestDto,ResponseDto.class);
         String uploadThumbnail = amazonS3Service.upload(requestDto.getThumbnail(),requestDto.getUuid());
         requestDto.setThumbnail(uploadThumbnail);
-        roomRepository.save(Room.create(requestDto,user));
+        Room room = Room.create(requestDto,user);
+        roomRepository.save(room);
         Long roomUuid = roomRepository.getRoomId(requestDto.getUuid());
-        roomViewerRepository.save(RoomViewer.join(roomUuid, requestDto.getHostUuid(),false,false));
+        roomViewerRepository.save(RoomViewer.join(roomUuid, requestDto.getHostUuid(),room,user,false,false));
         responseDto.setRoomId(roomRepository.getRoomId(requestDto.getUuid()));
         responseDto.setThumbnail(uploadThumbnail);
         responseDto.setLiked(false);
@@ -73,7 +78,7 @@ public class RoomService {
 
     @Transactional
     public ResponseExitDto delete(RequestExitDto requestExitDto) throws CustomRoomException {
-        Room room = roomRepository.findByIdAndHostUuid(requestExitDto.getRoomId(), requestExitDto.getHostUuid());
+        Room room = roomRepository.findByUuid(requestExitDto.getUuid());
         if (room != null) {
             roomRepository.delete(room);
             return mapper.map(room,ResponseExitDto.class);
