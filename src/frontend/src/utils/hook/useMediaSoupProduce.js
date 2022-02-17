@@ -153,7 +153,10 @@ export default function useMediaSoupProduce(stream, roomId, userId) {
       });
     }
     return () => {
-      peer?.close();
+      // console.log('~~~~~~~~~~~~~~~~~~~~~~~~~');
+      // console.log(newPeer);
+      // peer?.close();
+      // setNewPeer(null);
     };
   }, [stream]);
 

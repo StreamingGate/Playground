@@ -172,7 +172,9 @@ export default function useMediaSoupConsume(isLive, videoPlayerRef, roomId) {
       });
     }
     return () => {
-      newPeer?.close();
+      if (roomId) {
+        newPeer?.close();
+      }
     };
   }, [roomId]);
 

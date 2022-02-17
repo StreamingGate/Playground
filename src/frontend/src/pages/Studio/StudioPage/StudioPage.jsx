@@ -31,8 +31,8 @@ function StudioPage() {
 
   const handleStopStreamBtnClick = async () => {
     stopStream();
-    setIsCounterStop(true);
     await newPeer.request('closeProducer', { producerId: producer.id });
+    setIsCounterStop(true);
   };
 
   const chatInfoContext = useMemo(
