@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 import AVFoundation
 import Combine
+import Lottie
 
 class HomeListViewController: UIViewController {
     // MARK: - Properties
@@ -25,6 +26,8 @@ class HomeListViewController: UIViewController {
     var safeBottom: CGFloat = 0
     var middle = 0
     var navVC: HomeNavigationController?
+    let animationView: AnimationView = .init(name: "PgLoading")
+    let loadingBackView = UIView()
     
     let viewModel = HomeViewModel()
     let spinner = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.medium)
@@ -63,12 +66,14 @@ class HomeListViewController: UIViewController {
         self.viewModel.$homeList.receive(on: DispatchQueue.main, options: nil)
             .sink { [weak self] list in
                 guard let self = self else { return }
+                self.animationView.stopLoading(backView: self.loadingBackView)
                 self.tableView.reloadData()
                 self.collectionView.reloadData()
             }.store(in: &cancellable)
         self.viewModel.$selectedCategory.receive(on: DispatchQueue.main, options: nil)
             .sink { [weak self] selected in
                 guard let self = self else { return }
+                self.animationView.setLoading(vc: self, backView: self.loadingBackView)
                 self.viewModel.loadAllList(vc: self, coordinator: self.navVC?.coordinator)
             }.store(in: &cancellable)
     }

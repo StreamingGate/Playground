@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 import Combine
 import SwiftKeychainWrapper
+import Lottie
 
 class ChannelViewController: UIViewController {
     // MARK: - Properties
@@ -25,9 +26,13 @@ class ChannelViewController: UIViewController {
     var navVC: HomeNavigationController?
     let spinner = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.medium)
     
+    let animationView: AnimationView = .init(name: "PgLoading")
+    let loadingBackView = UIView()
+    
     // MARK: - View LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.animationView.setLoading(vc: self, backView: loadingBackView)
         videoTableView.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
         setupUI()
         bindViewModel()
@@ -78,7 +83,8 @@ class ChannelViewController: UIViewController {
             }.store(in: &cancellable)
         self.viewModel.$videoList.receive(on: DispatchQueue.main, options: nil)
             .sink { [weak self] list in
-                guard let self = self else { return }
+                guard let self = self, list != nil else { return }
+                self.animationView.stopLoading(backView: self.loadingBackView)
                 self.videoTableView.reloadData()
             }.store(in: &cancellable)
     }
@@ -112,18 +118,20 @@ class ChannelViewController: UIViewController {
 
 extension ChannelViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.viewModel.videoList.count
+        return self.viewModel.videoList?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "VideoListCell", for: indexPath) as? VideoListCell else { return UITableViewCell() }
+        guard let videoList = self.viewModel.videoList else { return cell }
         cell.setupUI(indexPath.row)
-        cell.setupVideo(info: self.viewModel.videoList[indexPath.row])
+        cell.setupVideo(info: videoList[indexPath.row])
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.navVC?.coordinator?.showPlayer(info: self.viewModel.videoList[indexPath.row])
+        guard let videoList = self.viewModel.videoList else { return }
+        self.navVC?.coordinator?.showPlayer(info: videoList[indexPath.row])
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
