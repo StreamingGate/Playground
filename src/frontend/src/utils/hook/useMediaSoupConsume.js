@@ -145,37 +145,40 @@ export default function useMediaSoupConsume(isLive, videoPlayerRef, roomId) {
 
       newPeer.on('open', () => {
         initConsume(newPeer);
+      });
 
-        newPeer.on('notification', notification => {
-          switch (notification.method) {
-            case 'producerClose': {
-              const { message } = notification.data;
-              modalService.show(AdviseModal, {
-                content: message,
-                bntContent: '메인 페이지로 이동',
-                onClick: () => navigate('/home'),
-              });
-              break;
-            }
-            case 'streamUnavailable': {
-              modalService.show(AdviseModal, {
-                content: '방송이 종료되었습니다.',
-                bntContent: '메인 페이지로 이동',
-                onClick: () => navigate('/home'),
-              });
-              break;
-            }
-            default:
-              break;
+      newPeer.on('close', () => {
+        navigate('/home');
+      });
+
+      newPeer.on('notification', notification => {
+        switch (notification.method) {
+          case 'producerClose': {
+            const { message } = notification.data;
+            modalService.show(AdviseModal, {
+              content: message,
+              bntContent: '메인 페이지로 이동',
+              onClick: () => {
+                newPeer.close();
+              },
+            });
+            break;
           }
-        });
+          case 'streamUnavailable': {
+            modalService.show(AdviseModal, {
+              content: '방송이 종료되었습니다.',
+              bntContent: '메인 페이지로 이동',
+              onClick: () => {
+                newPeer.close();
+              },
+            });
+            break;
+          }
+          default:
+            break;
+        }
       });
     }
-    return () => {
-      if (roomId) {
-        newPeer?.close();
-      }
-    };
   }, [roomId]);
 
   return { consumer, peer };
