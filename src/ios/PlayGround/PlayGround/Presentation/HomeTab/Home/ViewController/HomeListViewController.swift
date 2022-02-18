@@ -19,6 +19,7 @@ class HomeListViewController: UIViewController {
     @IBOutlet weak var noticeButton: UIButton!
     @IBOutlet weak var friendButton: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var collectionViewHeight: NSLayoutConstraint!
     private var cancellable: Set<AnyCancellable> = []
     var selectedIndex = 0
     var player = AVPlayer()
@@ -65,10 +66,10 @@ class HomeListViewController: UIViewController {
     func bindViewModel() {
         self.viewModel.$homeList.receive(on: DispatchQueue.main, options: nil)
             .sink { [weak self] list in
-                guard let self = self else { return }
-                let second = self.isChangingCategory ? 0.2 : 1
-                DispatchQueue.main.asyncAfter(deadline: .now() + second) {
+                guard let self = self, list != nil else { return }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                     self.tableView.hideSkeleton(reloadDataAfter: false, transition: .crossDissolve(0.25))
+                    self.collectionViewHeight.constant = 40
                 }
                 self.tableView.reloadData()
                 self.collectionView.reloadData()
@@ -194,20 +195,21 @@ extension HomeListViewController: UICollectionViewDataSource, UICollectionViewDe
 extension HomeListViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.homeList.count
+        return viewModel.homeList?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "VideoListCell", for: indexPath) as? VideoListCell else { return UITableViewCell() }
+        guard let homeList = self.viewModel.homeList else { return cell}
         cell.setupUI(indexPath.row)
-        if let host = viewModel.homeList[indexPath.row].hostNickname, host != "" {
-            cell.setupLive(info: viewModel.homeList[indexPath.row])
+        if let host = homeList[indexPath.row].hostNickname, host != "" {
+            cell.setupLive(info: homeList[indexPath.row])
         } else {
-            cell.setupVideo(info: viewModel.homeList[indexPath.row])
+            cell.setupVideo(info: homeList[indexPath.row])
         }
         cell.channelTapHandler = {
             self.pausePlayer()
-            self.navVC?.coordinator?.showChannel(uuid: self.viewModel.homeList[indexPath.row].hostUuid == nil ? self.viewModel.homeList[indexPath.row].uploaderUuid ?? "" : self.viewModel.homeList[indexPath.row].hostUuid ?? "")
+            self.navVC?.coordinator?.showChannel(uuid: homeList[indexPath.row].hostUuid == nil ? homeList[indexPath.row].uploaderUuid ?? "" : homeList[indexPath.row].hostUuid ?? "")
         }
         return cell
     }
@@ -220,7 +222,8 @@ extension HomeListViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.pausePlayer()
-        self.navVC?.coordinator?.showPlayer(info: viewModel.homeList[indexPath.row])
+        guard let homeList = self.viewModel.homeList else { return }
+        self.navVC?.coordinator?.showPlayer(info: homeList[indexPath.row])
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -260,7 +263,7 @@ extension HomeListViewController: UITableViewDataSource, UITableViewDelegate {
             let width = UIScreen.main.bounds.width
             let height = width / 16 * 9
             playerView.frame = CGRect(x: cell?.frame.minX ?? 0, y: cell?.frame.minY ?? 0, width: width, height: height)
-            guard let fileLink = viewModel.homeList[middleIndex].fileLink, let url = URL(string: fileLink) else { return }
+            guard let homeList = self.viewModel.homeList, let fileLink = homeList[middleIndex].fileLink, let url = URL(string: fileLink) else { return }
             let avAsset = AVURLAsset(url: url)
             let item = AVPlayerItem(asset: avAsset)
             player.replaceCurrentItem(with: item)
