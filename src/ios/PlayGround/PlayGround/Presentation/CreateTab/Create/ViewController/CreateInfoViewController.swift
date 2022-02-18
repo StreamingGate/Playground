@@ -208,7 +208,7 @@ class createInfoViewController: UIViewController {
                 }
             } else {
                 DispatchQueue.main.async {
-                    self.simpleAlert(message: "동영상 데이터를 가져오는 데 실패했습니다. 동영상을 다시 업로드해주세요")
+                    self.simpleAlert(message: "실시간 스트리밍 생성에 실패했습니다. 다시 시도해주세요")
                     self.startButton.isEnabled = true
                 }
             }
