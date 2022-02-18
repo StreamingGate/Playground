@@ -13,7 +13,7 @@ class StatusServiceAPI {
     static let shared = StatusServiceAPI()
     
     var socketClient = StompClientLib()
-    let statusServiceUrl = "ws://10.99.6.93:9999/ws/websocket"
+    let statusServiceUrl = "ws://3.37.201.189:9999/ws/websocket"
     
     func connectToSocket(manager: StatusManager) {
         guard let token = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue) else { return }
@@ -27,7 +27,7 @@ class StatusServiceAPI {
             completion(["result": "Invalid Token"])
             return
         }
-        let original = "http://10.99.6.93:9999/list?uuid=\(uuid)"
+        let original = "http://3.37.201.189:9999/list?uuid=\(uuid)"
         guard let target = original.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
             print("error encoding")
             return
@@ -42,7 +42,7 @@ class StatusServiceAPI {
         let dataTask = session.dataTask(with: request) { data, response, error in
             let successRange = 200 ..< 300
             guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode), let resultData = data else {
-                print("\(error?.localizedDescription ?? "no error") \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
+                print("--> error while loading status list \(error?.localizedDescription ?? "no error") \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
                 if let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode == 401 {
                     completion(["result": "Invalid Token"])
                     return

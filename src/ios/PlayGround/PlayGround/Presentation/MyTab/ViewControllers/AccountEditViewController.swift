@@ -15,7 +15,15 @@ class AccountEditViewController: UIViewController {
     @IBOutlet weak var nicknameLabel: UILabel!
     @IBOutlet weak var nicknameTextField: UITextField!
     var coordinator: AccountEditCoordinator?
-    
+    let imagePicker = UIImagePickerController()
+    let firstCharacterLabel = UILabel()
+    let plainProfileImageView = UIImageView()
+    var lastProfileSelectType: Int = 2
+    var imageInfo: UIImage?
+    private var cancellable: Set<AnyCancellable> = []
+    let backgroundColor = [UIColor(red: 1, green: 0.797, blue: 0.275, alpha: 1), UIColor(red: 0.335, green: 0.563, blue: 0.904, alpha: 1), UIColor(red: 0.838, green: 0.59, blue: 0.925, alpha: 1), UIColor(red: 0.929, green: 0.391, blue: 0.391, alpha: 1), UIColor(red: 0.567, green: 0.567, blue: 0.567, alpha: 1), UIColor(red: 0.578, green: 0.867, blue: 0.693, alpha: 1), UIColor(red: 0.332, green: 0.812, blue: 0.784, alpha: 1), UIColor(red: 0.946, green: 0.43, blue: 0.615, alpha: 1)]
+    var randomColor = UIColor.placeHolder
+
     // MARK: - View LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -87,8 +95,10 @@ class AccountEditViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "기본이미지로 변경", style: .default, handler: { _ in
             self.lastProfileSelectType = 1
             self.profileView.isHidden = false
+            self.randomColor = self.backgroundColor.randomElement() ?? UIColor.placeHolder
+            self.plainProfileImageView.backgroundColor = self.randomColor
             self.plainProfileImageView.layer.cornerRadius = 0
-            self.imageInfo = self.profileView.snapshotView(afterScreenUpdates: true)?.takeScreenshot()
+            self.imageInfo = self.profileView.snapshotView(afterScreenUpdates: true)?.takeScreenshot(color: self.randomColor, character: "\(UserManager.shared.userInfo?.name?.first ?? "플")")
             print("기본 이미지")
             self.plainProfileImageView.layer.cornerRadius = 50
         }))
@@ -132,7 +142,6 @@ class AccountEditViewController: UIViewController {
         } else {
             // 프로필 사진이 바뀐 케이스기 때문에 imageInfo가 있어야 함
             guard let selectedImage = self.imageInfo, var imageData = selectedImage.pngData() else { return }
-            
             // 서버에서 받을 수 있는 크기로 imageData 압축
             var quality: CGFloat = 1
             while imageData.count >= 1572864 {
@@ -142,11 +151,10 @@ class AccountEditViewController: UIViewController {
                 }
             }
             let binaryImage = imageData.base64EncodedString()
-            
             UserServiceAPI.shared.updateUserInfo(nickName: (nicknameInfo == UserManager.shared.userInfo?.nickName ? nil : nicknameInfo), profileImage: binaryImage) { result in
                 print("==> \(result)")
                 guard let userInfo = NetworkResultManager.shared.analyze(result: result, vc: self, coordinator: self.coordinator) as? UserInfo else { return }
-                UserManager.shared.userInfo = UserInfo(email: userInfo.email, profileImage: userInfo.profileImage, name: userInfo.name, nickName: userInfo.nickName ?? UserManager.shared.userInfo?.nickName)
+                UserManager.shared.userInfo = UserInfo(email: userInfo.email, profileImage: userInfo.profileImage, name: userInfo.name, nickName: userInfo.nickName ?? UserManager.shared.userInfo?.nickName, refreshToken: nil)
                 DispatchQueue.main.async {
                     self.updateButton.isEnabled = true
                     self.coordinator?.dismiss()

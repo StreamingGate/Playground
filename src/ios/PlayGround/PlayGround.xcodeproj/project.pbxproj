@@ -35,6 +35,11 @@
 		4935FD3F277BDF5F00760675 /* Chat.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4935FD3E277BDF5F00760675 /* Chat.storyboard */; };
 		4935FD42277C0E4D00760675 /* ChattingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4935FD41277C0E4D00760675 /* ChattingViewController.swift */; };
 		4935FD44277C0ED100760675 /* ChatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4935FD43277C0ED100760675 /* ChatCell.swift */; };
+		4957CBBB27ACEA8C00554967 /* Friend.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4957CBBA27ACEA8B00554967 /* Friend.storyboard */; };
+		4957CBBE27AD4B4800554967 /* UILabel+PartOfTextColorChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4957CBBD27AD4B4800554967 /* UILabel+PartOfTextColorChange.swift */; };
+		4957CBC027AD58AC00554967 /* Upload.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4957CBBF27AD58AC00554967 /* Upload.storyboard */; };
+		4957CBC227AD5A8400554967 /* UploadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4957CBC127AD5A8400554967 /* UploadViewController.swift */; };
+		4958CA7927BE9AD50060B7DF /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4958CA7827BE9AD50060B7DF /* NetworkExtension.framework */; };
 		496279D627828BB3005A2BDC /* PlayExplainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496279D527828BB3005A2BDC /* PlayExplainViewController.swift */; };
 		496279D827829516005A2BDC /* MyPageNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496279D727829516005A2BDC /* MyPageNavigationController.swift */; };
 		496279DA278297C2005A2BDC /* VideoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496279D9278297C2005A2BDC /* VideoListViewController.swift */; };
@@ -150,6 +155,12 @@
 		4935FD3E277BDF5F00760675 /* Chat.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Chat.storyboard; sourceTree = "<group>"; };
 		4935FD41277C0E4D00760675 /* ChattingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChattingViewController.swift; sourceTree = "<group>"; };
 		4935FD43277C0ED100760675 /* ChatCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCell.swift; sourceTree = "<group>"; };
+		4957CBBA27ACEA8B00554967 /* Friend.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Friend.storyboard; sourceTree = "<group>"; };
+		4957CBBD27AD4B4800554967 /* UILabel+PartOfTextColorChange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+PartOfTextColorChange.swift"; sourceTree = "<group>"; };
+		4957CBBF27AD58AC00554967 /* Upload.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Upload.storyboard; sourceTree = "<group>"; };
+		4957CBC127AD5A8400554967 /* UploadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadViewController.swift; sourceTree = "<group>"; };
+		4958CA7727BE9AD50060B7DF /* PlayGround.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PlayGround.entitlements; sourceTree = "<group>"; };
+		4958CA7827BE9AD50060B7DF /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
 		496279D527828BB3005A2BDC /* PlayExplainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayExplainViewController.swift; sourceTree = "<group>"; };
 		496279D727829516005A2BDC /* MyPageNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageNavigationController.swift; sourceTree = "<group>"; };
 		496279D9278297C2005A2BDC /* VideoListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoListViewController.swift; sourceTree = "<group>"; };
@@ -254,6 +265,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B86390ACC07320C4661BD124 /* Pods_PlayGround.framework in Frameworks */,
+				4958CA7927BE9AD50060B7DF /* NetworkExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -296,6 +308,7 @@
 				490770A02797E8D100ADD8E8 /* UserManager.swift */,
 				49D7A0AB2783ECAD001CAC60 /* AppUtility.swift */,
 				49EB20B227BA507700333A9D /* StatusManager.swift */,
+				49EB5B6327BE3B6D00E87EBF /* LoadingView.swift */,
 				49EA4E10279473AC00A038E3 /* Coordinator */,
 				49B9C9F3277AF0E5006AE134 /* Extensions */,
 			);
@@ -421,6 +434,7 @@
 		49B9C9B8277ACE9C006AE134 /* PlayGround */ = {
 			isa = PBXGroup;
 			children = (
+				4958CA7727BE9AD50060B7DF /* PlayGround.entitlements */,
 				49F2725727B232CC00E98180 /* mediasoup-ios-client-Bridging-Header.h */,
 				492C62272795377D00AE546E /* Presentation */,
 				49E72FFC27A2573800DFBCC3 /* Network */,
@@ -466,7 +480,6 @@
 			children = (
 				49C6CF9E27A3DAAD007C2895 /* MainServiceAPI.swift */,
 				49245C4627A3D5C50059DF55 /* MainDataModel.swift */,
-				49EB5B6327BE3B6D00E87EBF /* LoadingView.swift */,
 			);
 			path = MainService;
 			sourceTree = "<group>";
@@ -952,6 +965,7 @@
 		4BB6462863348B59AD0F7306 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4958CA7827BE9AD50060B7DF /* NetworkExtension.framework */,
 				C094C2C5DF13CB2E6DBF8A02 /* Pods_PlayGround.framework */,
 			);
 			name = Frameworks;
@@ -1327,6 +1341,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = PlayGround/PlayGround.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8U52U9S3AX;
@@ -1362,6 +1377,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = PlayGround/PlayGround.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8U52U9S3AX;

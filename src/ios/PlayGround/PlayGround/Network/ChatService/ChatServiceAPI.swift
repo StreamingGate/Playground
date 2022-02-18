@@ -12,7 +12,7 @@ import SwiftKeychainWrapper
 class ChatServiceAPI {
     static let shared = ChatServiceAPI()
     var socketClient = StompClientLib()
-    let chatServiceUrl = "ws://localhost:8888/ws/websocket"
+    let chatServiceUrl = "ws://3.38.16.211:8888/ws/websocket"
     
     func connectToSocket(viewModel: ChatViewModel) {
         guard let tokenInfo = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue), let url = NSURL(string: chatServiceUrl) else { return }
@@ -35,7 +35,7 @@ class ChatServiceAPI {
     }
     
     func loadInitialChat(uuid: String, completion: @escaping (([String: Any])->Void)) {
-        let original = "http://10.99.6.93:8888/chat/room/\(uuid)"
+        let original = "http://3.38.16.211:8888/chat/room/\(uuid)"
         
         guard let target = original.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
             print("error encoding")
@@ -100,7 +100,7 @@ class ChatServiceAPI {
             completion(["result": "Invalid Token"])
             return
         }
-        let url = URL(string: "http://10.99.6.93:8888/chat/room")!
+        let url = URL(string: "http://3.38.16.211:8888/chat/room")!
         var request = URLRequest(url: url)
         let postData : [String: Any] = ["uuid": roomUuid]
         let jsonData = try? JSONSerialization.data(withJSONObject: postData)
@@ -111,7 +111,7 @@ class ChatServiceAPI {
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             let successRange = 200 ..< 300
             guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode), let resultData = data else {
-                print("\(error?.localizedDescription ?? "no error") \((response as? HTTPURLResponse)?.statusCode ?? 0)")
+                print("--> error while creating chat \(error?.localizedDescription ?? "no error") \((response as? HTTPURLResponse)?.statusCode ?? 0)")
                 if let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode == 401 {
                     completion(["result": "Invalid Token"])
                     return

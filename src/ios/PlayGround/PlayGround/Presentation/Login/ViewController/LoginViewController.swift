@@ -35,6 +35,43 @@ class LoginViewController: UIViewController {
         if UserDefaults.standard.bool(forKey: "onRegister") == true, (UserDefaults.standard.string(forKey: "onRegister-Email") != nil || UserDefaults.standard.string(forKey: "onRegister-Name") != nil) {
             self.onRegister()
         }
+        
+        if UserDefaults.standard.bool(forKey: "autoLogin") == true {
+            autoLogInLabel.textColor = UIColor.PGBlue
+            autoLogInImageView.tintColor = UIColor.PGBlue
+            autoLogInImageView.image = UIImage(systemName: "checkmark.square.fill")
+            guard let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue), let token = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue), let email = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.email.rawValue) else { return }
+            self.idField.text = email
+            animationView.setAutoLoginLoading(vc: self, backView: loadingBackView)
+            UserServiceAPI.shared.autoLogin(accessToken: token, email: email, uuid: uuid) { result in
+                print("----> \(result)")
+                if result["success"] as? Int == 1, let userInfo = result["data"] as? UserInfo {
+                    // KeyChain - uuid와 accessToken 저장 (종료 후에도 유지됨)
+                    guard let token = userInfo.refreshToken else { return }
+                    KeychainWrapper.standard.set(token, forKey: KeychainWrapper.Key.accessToken.rawValue)
+                    UserManager.shared.userInfo = userInfo
+                    StatusServiceAPI.shared.getFriendInfo { result in
+                        guard let friends = result["data"] as? FriendWatchList else { return }
+                        print("--friends-->\(friends)")
+                        StatusManager.shared.friendWatchList = friends.result
+                        StatusManager.shared.connectToSocket()
+                    }
+                    DispatchQueue.main.async {
+                        self.animationView.stopLoading(backView: self.loadingBackView)
+                        self.coordinator?.showTabPage()
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        self.simpleAlert(message: "자동 로그인에 실패했습니다")
+                        self.animationView.stopLoading(backView: self.loadingBackView)
+                    }
+                }
+            }
+        } else {
+            autoLogInLabel.textColor = UIColor.lightGray
+            autoLogInImageView.tintColor = UIColor.lightGray
+            autoLogInImageView.image = UIImage(systemName: "square")
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -95,10 +132,11 @@ class LoginViewController: UIViewController {
                 // UserManager - 싱글톤으로 userInfo 저장
                 KeychainWrapper.standard.set(uuid, forKey: KeychainWrapper.Key.uuid.rawValue)
                 KeychainWrapper.standard.set(token, forKey: KeychainWrapper.Key.accessToken.rawValue)
+                KeychainWrapper.standard.set(idInfo, forKey: KeychainWrapper.Key.email.rawValue)
                 UserManager.shared.userInfo = userInfo
                 StatusServiceAPI.shared.getFriendInfo { result in
                     guard let friends = result["data"] as? FriendWatchList else { return }
-                    print("--->\(friends)")
+                    print("--friends-->\(friends)")
                     StatusManager.shared.friendWatchList = friends.result
                     StatusManager.shared.connectToSocket()
                 }
@@ -126,5 +164,19 @@ class LoginViewController: UIViewController {
     @IBAction func backTapped(_ sender: Any) {
         idField.resignFirstResponder()
         pwField.resignFirstResponder()
+    }
+    
+    @IBAction func autoLoginButtonDidTap(_ sender: Any) {
+        let isAutoLoginActivate = UserDefaults.standard.bool(forKey: "autoLogin")
+        UserDefaults.standard.set(!isAutoLoginActivate, forKey: "autoLogin")
+        if !isAutoLoginActivate {
+            autoLogInLabel.textColor = UIColor.PGBlue
+            autoLogInImageView.tintColor = UIColor.PGBlue
+            autoLogInImageView.image = UIImage(systemName: "checkmark.square.fill")
+        } else {
+            autoLogInLabel.textColor = UIColor.lightGray
+            autoLogInImageView.tintColor = UIColor.lightGray
+            autoLogInImageView.image = UIImage(systemName: "square")
+        }
     }
 }

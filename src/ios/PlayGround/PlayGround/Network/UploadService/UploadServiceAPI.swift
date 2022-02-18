@@ -11,7 +11,7 @@ import SwiftKeychainWrapper
 
 struct UploadServiceAPI {
     static let shared = UploadServiceAPI()
-    let uploadServiceUrl = "http://\(GatewayManager.shared.gatewayAddress)/upload-service"
+    let uploadServiceUrl = "http://3.39.44.188:50006"
     
     /**
      비디오 업로드하기

@@ -65,7 +65,7 @@
                                                         <constraint firstAttribute="height" constant="3" id="fzT-xv-14R"/>
                                                     </constraints>
                                                 </view>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KAf-oh-800">
+                                                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KAf-oh-800">
                                                     <rect key="frame" x="0.0" y="79" width="50" height="3"/>
                                                     <color key="backgroundColor" name="PGOrange"/>
                                                     <constraints>
@@ -351,7 +351,7 @@
                                                         <constraint firstAttribute="height" constant="3" id="qZX-k4-jW0"/>
                                                     </constraints>
                                                 </view>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="l7Y-Gq-mfO">
+                                                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="l7Y-Gq-mfO">
                                                     <rect key="frame" x="15" y="79" width="50" height="3"/>
                                                     <color key="backgroundColor" name="PGOrange"/>
                                                     <constraints>

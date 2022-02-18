@@ -75,7 +75,7 @@ struct UserServiceAPI {
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             let successRange = 200 ..< 300
-            guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, let HeaderFields = (response as? HTTPURLResponse)?.allHeaderFields, let accessToken = HeaderFields["token"], let uuid = HeaderFields["uuid"], successRange.contains(statusCode), let resultData = data else {
+            guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, let HeaderFields = (response as? HTTPURLResponse)?.allHeaderFields, let accessToken = HeaderFields["refreshToken"], let uuid = HeaderFields["uuid"], successRange.contains(statusCode), let resultData = data else {
                 print("---> error while login: \(error?.localizedDescription ?? "no error") \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
                 completion(["success" : 0])
                 return
@@ -92,6 +92,35 @@ struct UserServiceAPI {
                 }
             } else {
                 completion(["success" :0])
+            }
+        }
+        task.resume()
+    }
+    
+    func autoLogin(accessToken: String, email: String, uuid: String, completion: @escaping ([String:Any])->Void) {
+        let url = URL(string: "\(userServiceUrl)/auto")!
+        var request = URLRequest(url: url)
+        let postData : [String: Any] = ["accessToken": accessToken, "email": email, "uuid": uuid]
+        let jsonData = try? JSONSerialization.data(withJSONObject: postData)
+        request.httpMethod = "POST"
+        request.httpBody = jsonData
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            let successRange = 200 ..< 300
+            guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode), let resultData = data else {
+                print("---> error while auto login: \(error?.localizedDescription ?? "no error") \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
+                completion(["success" : 0])
+                return
+            }
+            do {
+                let decoder = JSONDecoder()
+                let response = try decoder.decode(UserInfo.self, from: resultData)
+                completion(["success" : 1, "data": response])
+            } catch let error {
+                print("---> error while login: \(error.localizedDescription)")
+                completion(["success" : 0])
+                return
             }
         }
         task.resume()

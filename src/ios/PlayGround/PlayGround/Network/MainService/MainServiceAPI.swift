@@ -34,7 +34,11 @@ struct MainServiceAPI {
         let task = session.dataTask(with: requestURL) { data, response, error in
             let successRange = 200 ..< 300
             guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode), let resultData = data else {
-                print("\(error?.localizedDescription ?? "no error") \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
+                print("--> error while loading home list: \(error?.localizedDescription ?? "no error") \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
+                if let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode == 401 {
+                    completion(["result": "Invalid Token"])
+                    return
+                }
                 completion(["result": "failed"])
                 return
             }
@@ -75,7 +79,11 @@ struct MainServiceAPI {
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             let successRange = 200 ..< 300
             guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode), let resultData = data else {
-                print("\(error?.localizedDescription ?? "no error") \((response as? HTTPURLResponse)?.statusCode ?? 0)")
+                print("--> error while tap action handled \(error?.localizedDescription ?? "no error") \((response as? HTTPURLResponse)?.statusCode ?? 0)")
+                if let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode == 401 {
+                    completion(["result": "Invalid Token"])
+                    return
+                }
                 completion(["result": "failed"])
                 return
             }
@@ -113,7 +121,11 @@ struct MainServiceAPI {
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             let successRange = 200 ..< 300
             guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode), let resultData = data else {
-                print("\(error?.localizedDescription ?? "no error") \((response as? HTTPURLResponse)?.statusCode ?? 0)")
+                print("--> error while cancel action handled \(error?.localizedDescription ?? "no error") \((response as? HTTPURLResponse)?.statusCode ?? 0)")
+                if let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode == 401 {
+                    completion(["result": "Invalid Token"])
+                    return
+                }
                 completion(["result": "failed"])
                 return
             }
@@ -147,7 +159,11 @@ struct MainServiceAPI {
         let task = session.dataTask(with: requestURL) { data, response, error in
             let successRange = 200 ..< 300
             guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode), let resultData = data else {
-                print("\(error?.localizedDescription ?? "no error") \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
+                print("--> error while loading notification \(error?.localizedDescription ?? "no error") \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
+                if let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode == 401 {
+                    completion(["result": "Invalid Token"])
+                    return
+                }
                 completion(["result": "failed"])
                 return
             }
@@ -268,7 +284,11 @@ struct MainServiceAPI {
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             let successRange = 200 ..< 300
             guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode), let resultData = data else {
-                print("\(error?.localizedDescription ?? "no error") \((response as? HTTPURLResponse)?.statusCode ?? 0)")
+                print("--> error while deleting friend \(error?.localizedDescription ?? "no error") \((response as? HTTPURLResponse)?.statusCode ?? 0)")
+                if let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode == 401 {
+                    completion(["result": "Invalid Token"])
+                    return
+                }
                 completion(["result": "failed"])
                 return
             }
@@ -302,7 +322,11 @@ struct MainServiceAPI {
         let task = session.dataTask(with: requestURL) { data, response, error in
             let successRange = 200 ..< 300
             guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode), let resultData = data else {
-                print("\(error?.localizedDescription ?? "no error") \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
+                print("--> error while loading friend request \(error?.localizedDescription ?? "no error") \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
+                if let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode == 401 {
+                    completion(["result": "Invalid Token"])
+                    return
+                }
                 completion(["result": "failed"])
                 return
             }
@@ -341,7 +365,11 @@ struct MainServiceAPI {
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             let successRange = 200 ..< 300
             guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode), let resultData = data else {
-                print("\(error?.localizedDescription ?? "no error") \((response as? HTTPURLResponse)?.statusCode ?? 0)")
+                print("--> error while accepting friend \(error?.localizedDescription ?? "no error") \((response as? HTTPURLResponse)?.statusCode ?? 0)")
+                if let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode == 401 {
+                    completion(["result": "Invalid Token"])
+                    return
+                }
                 completion(["result": "failed"])
                 return
             }
@@ -373,7 +401,11 @@ struct MainServiceAPI {
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             let successRange = 200 ..< 300
             guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode), let resultData = data else {
-                print("\(error?.localizedDescription ?? "no error") \((response as? HTTPURLResponse)?.statusCode ?? 0)")
+                print("--> error while deleting friend \(error?.localizedDescription ?? "no error") \((response as? HTTPURLResponse)?.statusCode ?? 0)")
+                if let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode == 401 {
+                    completion(["result": "Invalid Token"])
+                    return
+                }
                 completion(["result": "failed"])
                 return
             }
@@ -408,7 +440,11 @@ struct MainServiceAPI {
         let task = session.dataTask(with: requestURL) { data, response, error in
             let successRange = 200 ..< 300
             guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode), let resultData = data else {
-                print("\(error?.localizedDescription ?? "no error") \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
+                print("--> error while loading friend watch \(error?.localizedDescription ?? "no error") \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
+                if let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode == 401 {
+                    completion(["result": "Invalid Token"])
+                    return
+                }
                 completion(["result": "failed"])
                 return
             }

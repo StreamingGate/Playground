@@ -10,7 +10,7 @@ import UIKit
 import Combine
 
 class HomeViewModel {
-    @Published var homeList: [GeneralVideo] = []
+    @Published var homeList: [GeneralVideo]?
     @Published var selectedCategory = "ALL"
     var categories: [String] = []
 
@@ -31,7 +31,11 @@ class HomeViewModel {
                 // 본 카테고리의 데이터를 처음 불러온 경우, homeList 초기화
                 self.homeList = addedList
             } else {
-                self.homeList.append(contentsOf: addedList)
+                if self.homeList == nil {
+                    self.homeList = addedList
+                } else {
+                    self.homeList?.append(contentsOf: addedList)
+                }
             }
             self.isFinished = (addedList.count == 0)
             self.isLoading = false
