@@ -17,6 +17,9 @@ export default {
       justify-content: center;
     }
   `,
+  LoginIntroGif: styled.img`
+    width: 400px;
+  `,
   OverviewImageContainer: styled.div`
     @media (${queries.tabletMax}) {
       display: none;
