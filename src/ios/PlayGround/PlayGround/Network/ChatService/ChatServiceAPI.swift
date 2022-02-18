@@ -111,7 +111,7 @@ class ChatServiceAPI {
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             let successRange = 200 ..< 300
             guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode), let resultData = data else {
-                print("\(error?.localizedDescription ?? "no error") \((response as? HTTPURLResponse)?.statusCode ?? 0)")
+                print("--> error while creating chat \(error?.localizedDescription ?? "no error") \((response as? HTTPURLResponse)?.statusCode ?? 0)")
                 if let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode == 401 {
                     completion(["result": "Invalid Token"])
                     return
