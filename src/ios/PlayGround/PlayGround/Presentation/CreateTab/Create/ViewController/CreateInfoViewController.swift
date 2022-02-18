@@ -147,6 +147,10 @@ class createInfoViewController: UIViewController {
       
         titleTextView.textContainerInset = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
         explainTextView.textContainerInset = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
+        
+        guard let userinfo = UserManager.shared.userInfo else { return }
+        profileImageView.downloadImageFrom(link: userinfo.profileImage, contentMode: .scaleAspectFill)
+        accountNicknameLabel.text = userinfo.nickName
     }
     
     // MARK: - Data Binding

@@ -27,6 +27,7 @@ class NickNameInputViewController: UIViewController {
     let profileImageView = UIImageView()
     var nameInfo: String = ""
     let backgroundColor = [UIColor(red: 1, green: 0.797, blue: 0.275, alpha: 1), UIColor(red: 0.335, green: 0.563, blue: 0.904, alpha: 1), UIColor(red: 0.838, green: 0.59, blue: 0.925, alpha: 1), UIColor(red: 0.929, green: 0.391, blue: 0.391, alpha: 1), UIColor(red: 0.567, green: 0.567, blue: 0.567, alpha: 1), UIColor(red: 0.578, green: 0.867, blue: 0.693, alpha: 1), UIColor(red: 0.332, green: 0.812, blue: 0.784, alpha: 1), UIColor(red: 0.946, green: 0.43, blue: 0.615, alpha: 1)]
+    var randomColor = UIColor.placeHolder
     let animationView: AnimationView = .init(name: "PgLoading")
     let loadingBackView = UIView()
     
@@ -50,7 +51,7 @@ class NickNameInputViewController: UIViewController {
         // step3로 넘어갈 때, cornerRadius가 들어가지 않은 기본 이미지를 저장
         if profileImageView.isHidden {
             profileView.layer.cornerRadius = 0
-            let image = profileView.snapshotView(afterScreenUpdates: true)?.takeScreenshot()
+            let image = profileView.snapshotView(afterScreenUpdates: true)?.takeScreenshot(color: self.randomColor, character: "\(nameInfo.first ?? "플")")
             RegisterHelper.shared.profileImage = image
         }
     }
@@ -124,11 +125,12 @@ class NickNameInputViewController: UIViewController {
     @IBAction func defaultImageButtonDidTap(_ sender: Any) {
         profileImageView.isHidden = true
         profileView.layer.cornerRadius = 0
-        let image = profileView.snapshotView(afterScreenUpdates: true)?.takeScreenshot()
+        randomColor = backgroundColor.randomElement() ?? UIColor.placeHolder
+        let image = profileView.snapshotView(afterScreenUpdates: true)?.takeScreenshot(color: self.randomColor, character: "\(nameInfo.first ?? "플")")
         profileView.layer.cornerRadius = 50
         RegisterHelper.shared.profileImage = image
     }
-    
+
     // 다음 버튼
     @IBAction func nextButtonDidTap(_ sender: Any) {
         guard let nickNameInfo = nickNameTextField.text, nickNameInfo.isEmpty == false else { return }
