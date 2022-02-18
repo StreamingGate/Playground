@@ -1,3 +1,7 @@
+/**
+ * styled-component 글로벌 스타일을 위한 객체
+ */
+
 const fontSizes = {
   title: '1.313rem',
   subtitle: '1.125rem',

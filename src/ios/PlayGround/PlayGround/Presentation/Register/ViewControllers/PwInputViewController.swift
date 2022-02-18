@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import Lottie
 //import SwiftKeychainWrapper
 
 class PwInputViewController: UIViewController{
@@ -20,8 +21,10 @@ class PwInputViewController: UIViewController{
     @IBOutlet weak var step1View: UIView!
     @IBOutlet weak var step2View: UIView!
     @IBOutlet weak var step3View: UIView!
+    let animationView: AnimationView = .init(name: "PgLoading")
+    let loadingBackView = UIView()
     
-    // MARK: - View Life Cycle
+    // MARK: - View LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupUI()
@@ -116,6 +119,7 @@ class PwInputViewController: UIViewController{
     @IBAction func registerButtonDidTap(_ sender: Any) {
         guard let pwInfo = pwTextField.text, pwInfo.isEmpty == false, let emailInfo = RegisterHelper.shared.email, let nameInfo = RegisterHelper.shared.name, let nicknameInfo = RegisterHelper.shared.nickName, let profileImage = RegisterHelper.shared.profileImage, var imageData = profileImage.pngData() else { return }
         registerButton.isEnabled = false
+        self.animationView.setLoading(vc: self, backView: self.loadingBackView)
         var quality: CGFloat = 1
         while imageData.count >= 1572864 {
             quality -= 0.1
@@ -124,11 +128,11 @@ class PwInputViewController: UIViewController{
             }
         }
         let binaryImage = imageData.base64EncodedString()
-        
         UserServiceAPI.shared.register(email: emailInfo, name: nameInfo, nickName: nicknameInfo, password: pwInfo, profileImage: binaryImage) { userInfo in
             print("register result = \(String(describing: userInfo ?? nil))")
             if userInfo?.email == emailInfo {
                 DispatchQueue.main.async {
+                    self.animationView.stopLoading(backView: self.loadingBackView)
                     let alert = UIAlertController(title: "", message: "회원가입이 완료되었습니다", preferredStyle: .alert)
                     let action = UIAlertAction(title: "로그인 페이지로 이동", style: .default) { _ in
                         self.registerButton.isEnabled = true
@@ -139,6 +143,7 @@ class PwInputViewController: UIViewController{
                 }
             } else {
                 DispatchQueue.main.async {
+                    self.animationView.stopLoading(backView: self.loadingBackView)
                     self.registerButton.isEnabled = true
                     self.simpleAlert(message: "회원가입이 완료되지 않았습니다")
                 }

@@ -16,6 +16,11 @@ function parseSecond(seconds) {
   return { min, sec };
 }
 
+/**
+ *
+ * @returns {React.Component} 첫 번째 회원가입 폼
+ */
+
 function RegisterFormStage1({ values, errors, touched, onChange, onBlur }) {
   const { name, email, verify } = values;
   const limitTime = useRef(VERIFY_TIME);
@@ -25,6 +30,7 @@ function RegisterFormStage1({ values, errors, touched, onChange, onBlur }) {
   const [isVerify, setIsVerify] = useState(false);
   const [isVerifyBtnDisable, setVerifyBtnDisable] = useState(true);
 
+  // 인증메일 전송 성공 후 실행되는 함수
   const handleEmailSendSuccess = data => {
     if (data?.errorCode) {
       modalService.show(AdviseModal, { content: data.message });
@@ -32,6 +38,7 @@ function RegisterFormStage1({ values, errors, touched, onChange, onBlur }) {
     }
 
     modalService.show(AdviseModal, { content: '인증메일을 전송했습니다' });
+    // 인증번호 입력 인풋 렌더링
     setIsVerify(true);
   };
 
@@ -52,6 +59,7 @@ function RegisterFormStage1({ values, errors, touched, onChange, onBlur }) {
   }, [isLoading]);
 
   useEffect(() => {
+    // 인증번호 입력 인풋 렌더링 후 입력 제한 시간 10분 카운트 다운
     if (isVerify) {
       limitTime.current = VERIFY_TIME;
       setCountDown(parseSecond(limitTime.current));

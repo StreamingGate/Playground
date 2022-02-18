@@ -24,6 +24,11 @@ function LoginForm() {
     const {
       headers: { token, uuid },
     } = data;
+
+    const { nickName, profileImage } = data.data;
+
+    lStorageService.setItem('nickName', nickName);
+    lStorageService.setItem('profileImage', profileImage);
     lStorageService.setItem('token', token);
     lStorageService.setItem('uuid', uuid);
     navigate('/home');

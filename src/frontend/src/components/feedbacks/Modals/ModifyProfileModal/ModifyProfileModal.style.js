@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { Typography } from '@components/cores';
+import { Typography, WhiteCamera } from '@components/cores';
 import { Button } from '@components/buttons';
 import { Input } from '@components/forms';
 
@@ -22,10 +22,27 @@ export const UserProfileContainer = styled.div`
 `;
 
 export const UserProfile = styled.div`
+  position: relative;
   width: 80px;
   height: 80px;
   border-radius: 50%;
   background-color: #c4c4c4;
+  overflow: hidden;
+  background-color: #000000;
+  opacity: 0.8;
+`;
+
+export const ProfileImage = styled.img`
+  height: 100%;
+  object-fit: cover;
+`;
+
+export const CameraIcon = styled(WhiteCamera)`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
 `;
 
 export const InputLabel = styled(Typography)`

@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 
 import * as S from './Dropdown.style';
 import { MainLayoutContext } from '@utils/context';
-import { modalService } from '@utils/service';
+import { modalService, lStorageService } from '@utils/service';
 import { useGetFriendReqList, useGetNotiList } from '@utils/hook/query';
 
 import { AcceptFriendModal } from '@components/feedbacks/Modals';
@@ -31,12 +31,9 @@ function parseAlarm(alarm) {
 
 function AlarmDropdown() {
   const { modalState } = useContext(MainLayoutContext);
-  const { data: friendReqList, refetch: friendReqListRefetch } = useGetFriendReqList(
-    '33333333-1234-1234-123456789012'
-  );
-  const { data: notiList, refetch: notiListRefetch } = useGetNotiList(
-    '33333333-1234-1234-123456789012'
-  );
+  const userId = lStorageService.getItem('uuid');
+  const { data: friendReqList, refetch: friendReqListRefetch } = useGetFriendReqList(userId);
+  const { data: notiList, refetch: notiListRefetch } = useGetNotiList(userId);
 
   useEffect(() => {
     if (modalState.alarm) {
@@ -49,9 +46,7 @@ function AlarmDropdown() {
     e.stopPropagation();
     const { target } = e;
     if (target.tagName === 'BUTTON') {
-      modalService.show(AcceptFriendModal, {
-        myId: '33333333-1234-1234-123456789012',
-      });
+      modalService.show(AcceptFriendModal, { myId: userId });
     }
   };
 
@@ -64,7 +59,10 @@ function AlarmDropdown() {
           </S.AlarmTitle>
           <S.AlarmBody>
             <S.AcceptFriendBtnContainer>
-              <S.AcceptFriendBtn>친구 요청{friendReqList?.result.length}</S.AcceptFriendBtn>
+              <S.AcceptFriendBtn>
+                친구 요청
+                <S.AlarmCountBadge>{friendReqList?.result.length}</S.AlarmCountBadge>
+              </S.AcceptFriendBtn>
             </S.AcceptFriendBtnContainer>
             <S.AlarmList>
               {notiList?.result.map(alarm => {

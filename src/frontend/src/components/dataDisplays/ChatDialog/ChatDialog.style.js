@@ -27,6 +27,11 @@ export const ChatProfile = styled(Avatar)`
     `}
 `;
 
+export const PinText = styled(Typography)`
+  color: ${({ theme }) => theme.colors.pgBlue};
+  margin-right: 9.83px;
+`;
+
 export const TimeStamp = styled(Typography)`
   margin-right: 9.83px;
 `;

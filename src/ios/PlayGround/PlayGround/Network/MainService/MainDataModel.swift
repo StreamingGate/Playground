@@ -13,7 +13,7 @@ struct HomeList: Codable {
     let categories: [String]
     
     enum CodingKeys: String, CodingKey {
-        case liveRooms = "rooms"
+        case liveRooms
         case videos
         case categories
     }
@@ -23,20 +23,27 @@ struct GeneralVideo: Codable {
     let id: Int
     let title: String
     let hostNickname: String?
+    let hostUuid: String?
     let uploaderNickname: String?
+    let uploaderUuid: String?
     let fileLink: String?
     let thumbnail: String
     let hits: Int?
-    let category: String
-    let createdAt: String
+    let category: String? 
+    let createdAt: String?
     let streamingId: String?
     let chatRoomId: String?
+    let uuid: String?
+    let likedAt: String?
+    let lastViewedAt: String?
     
     enum CodingKeys: String, CodingKey {
         case id
         case title
         case hostNickname
+        case hostUuid
         case uploaderNickname
+        case uploaderUuid
         case fileLink
         case hits
         case thumbnail
@@ -44,6 +51,9 @@ struct GeneralVideo: Codable {
         case createdAt
         case streamingId
         case chatRoomId
+        case uuid
+        case likedAt
+        case lastViewedAt
     }
 }
 
@@ -53,14 +63,6 @@ enum Action: String {
     case Report = "REPORT"
 }
 
-struct NoticeResult: Codable {
-    let result: [Notice]
-    
-    enum CodingKeys: String, CodingKey {
-        case result
-    }
-}
-
 struct Notice: Codable {
     let notiType: String
     let content: String
@@ -68,14 +70,6 @@ struct Notice: Codable {
     enum CodingKeys: String, CodingKey {
         case notiType
         case content
-    }
-}
-
-struct FriendResult: Codable {
-    let result: [Friend]
-    
-    enum CodingKeys: String, CodingKey {
-        case result
     }
 }
 
@@ -91,17 +85,17 @@ struct Friend: Codable {
     }
 }
 
-//struct FriendRequest: Codable {
-//    let uuid: String
-//    let nickname: String
-//    let profileImage: String
-//    
-//    enum CodingKeys: String, CodingKey {
-//        case uuid
-//        case nickname
-//        case profileImage
-//    }
-//}
+struct FriendRequest: Codable {
+    let uuid: String
+    let nickname: String
+    let profileImage: String
+    
+    enum CodingKeys: String, CodingKey {
+        case uuid
+        case nickname
+        case profileImage
+    }
+}
 
 struct WatchingInfo: Codable {
     let roomId: String

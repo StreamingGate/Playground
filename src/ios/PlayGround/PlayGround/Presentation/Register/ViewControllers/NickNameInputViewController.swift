@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import Photos
+import Lottie
 
 class NickNameInputViewController: UIViewController {
     
@@ -25,8 +26,11 @@ class NickNameInputViewController: UIViewController {
     let imagePicker = UIImagePickerController()
     let profileImageView = UIImageView()
     var nameInfo: String = ""
+    let backgroundColor = [UIColor(red: 1, green: 0.797, blue: 0.275, alpha: 1), UIColor(red: 0.335, green: 0.563, blue: 0.904, alpha: 1), UIColor(red: 0.838, green: 0.59, blue: 0.925, alpha: 1), UIColor(red: 0.929, green: 0.391, blue: 0.391, alpha: 1), UIColor(red: 0.567, green: 0.567, blue: 0.567, alpha: 1), UIColor(red: 0.578, green: 0.867, blue: 0.693, alpha: 1), UIColor(red: 0.332, green: 0.812, blue: 0.784, alpha: 1), UIColor(red: 0.946, green: 0.43, blue: 0.615, alpha: 1)]
+    let animationView: AnimationView = .init(name: "PgLoading")
+    let loadingBackView = UIView()
     
-    // MARK: - View Life Cycle
+    // MARK: - View LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         self.imagePicker.sourceType = .photoLibrary
@@ -38,15 +42,17 @@ class NickNameInputViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-//        let image = profileView.snapshotView(afterScreenUpdates: true)?.takeScreenshot()
-//        RegisterHelper.shared.profileImage = image
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        profileView.layer.cornerRadius = 0
-        let image = profileView.snapshotView(afterScreenUpdates: true)?.takeScreenshot()
-        RegisterHelper.shared.profileImage = image
+        // 기본 이미지 상태 이후 아무 변경 사항이 없을 경우,
+        // step3로 넘어갈 때, cornerRadius가 들어가지 않은 기본 이미지를 저장
+        if profileImageView.isHidden {
+            profileView.layer.cornerRadius = 0
+            let image = profileView.snapshotView(afterScreenUpdates: true)?.takeScreenshot()
+            RegisterHelper.shared.profileImage = image
+        }
     }
     
     // MARK: - UI Setting
@@ -54,7 +60,7 @@ class NickNameInputViewController: UIViewController {
         step1View.layer.cornerRadius = 10
         step2View.layer.cornerRadius = 10
         step3View.layer.cornerRadius = 10
-        profileView.backgroundColor = UIColor.placeHolder
+        profileView.backgroundColor = backgroundColor.randomElement() ?? UIColor.placeHolder
         profileView.layer.cornerRadius = 50
         nextButton.layer.cornerRadius = 5
         selectButton.layer.cornerRadius = 5
@@ -126,11 +132,13 @@ class NickNameInputViewController: UIViewController {
     @IBAction func nextButtonDidTap(_ sender: Any) {
         guard let nickNameInfo = nickNameTextField.text, nickNameInfo.isEmpty == false else { return }
         nextButton.isEnabled = false
+        self.animationView.setLoading(vc: self, backView: self.loadingBackView)
         UserServiceAPI.shared.nicknameDuplicateCheck(nickname: nickNameInfo) { result in
             print("nickname check result = \(result)")
             if let nickname = result["nickName"] as? String, nickname != "failed" {
                 RegisterHelper.shared.nickName = nickname
                 DispatchQueue.main.async {
+                    self.animationView.stopLoading(backView: self.loadingBackView)
                     self.nextButton.isEnabled = true
                     guard let pwVC = UIStoryboard(name: "Register", bundle: nil).instantiateViewController(withIdentifier: "PwInputViewController") as? PwInputViewController else { return }
                     self.navigationController?.pushViewController(pwVC, animated: true)
@@ -138,6 +146,7 @@ class NickNameInputViewController: UIViewController {
             } else {
                 // 오류
                 DispatchQueue.main.async {
+                    self.animationView.stopLoading(backView: self.loadingBackView)
                     self.nickNameValidCheckLabel.isHidden = false
                     self.nickNameValidCheckLabel.text = "새 닉네임을 입력해주세요"
                     self.nickNameValidCheckLabel.textColor = UIColor.systemRed

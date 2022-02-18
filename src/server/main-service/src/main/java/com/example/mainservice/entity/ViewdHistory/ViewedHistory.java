@@ -38,6 +38,8 @@ public class ViewedHistory {
     public ViewedHistory(User user, Video video) {
         this.user = user;
         this.video = video;
+        user.getViewedHistories().add(this);
+        video.getViewedHistories().add(this);
     }
 
     /* 좋아요 실행 또는 취소 (좋아요 누를 시 싫어요 효과는 취소 된다.) */

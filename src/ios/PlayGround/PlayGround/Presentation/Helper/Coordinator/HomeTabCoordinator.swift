@@ -8,6 +8,9 @@
 import Foundation
 import UIKit
 
+/**
+ HomeNavigationConroller에서 발생하는 이동/전환을 위한 Coordinator
+ */
 class HomeTabCoordinator: Coordinator {
     var parentCoordinator: Coordinator?
     var navigation: UINavigationController
@@ -24,20 +27,12 @@ class HomeTabCoordinator: Coordinator {
             tabVC.homeContainerView.isHidden = false
             tabVC.myContainerView.isHidden = true
             if tabVC.selectedTabIndex == 0 {
+                // 이전에도 동일한 탭이었을 경우, 최상단으로 이동
                 self.navigation.popToRootViewController(animated: true)
             } else {
                 tabVC.selectedTabIndex = 0
             }
-//            tabVC.removeChildViewController()
-//            tabVC.addChild(self.navigation)
-//            tabVC.homeContainerView.addSubview((self.navigation.view)!)
-//            self.navigation.view.frame = tabVC.homeContainerView.bounds
-//            self.navigation.didMove(toParent: tabVC)
         }
-    }
-    
-    func dismissToRoot() {
-        self.parentCoordinator?.navigation.popToRootViewController(animated: true)
     }
     
     func showPlayer(info: GeneralVideo?) {
@@ -51,10 +46,11 @@ class HomeTabCoordinator: Coordinator {
         navigation.pushViewController(searchVC, animated: true)
     }
     
-    func showFriendList() {
+    func showFriendList(vc: HomeListViewController) {
         guard let popOverVC = UIStoryboard(name: "Friend", bundle: nil).instantiateViewController(withIdentifier: "FriendListViewController" ) as? FriendListViewController else { return }
         popOverVC.modalPresentationStyle = .overFullScreen
         popOverVC.modalTransitionStyle = .crossDissolve
+        popOverVC.transitionDelegate = vc
         parentCoordinator?.navigation.viewControllers.last?.present(popOverVC, animated: true, completion: nil)
     }
     
@@ -63,8 +59,9 @@ class HomeTabCoordinator: Coordinator {
         navigation.pushViewController(noticeVC, animated: true)
     }
     
-    func showChannel() {
+    func showChannel(uuid: String) {
         guard let channelVC = UIStoryboard(name: "Channel", bundle: nil).instantiateViewController(withIdentifier: "ChannelViewController") as? ChannelViewController else { return }
+        channelVC.viewModel.loadChannelInfo(uuid: uuid)
         navigation.pushViewController(channelVC, animated: true)
     }
     

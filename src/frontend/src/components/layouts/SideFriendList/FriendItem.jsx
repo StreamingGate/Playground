@@ -8,7 +8,10 @@ import { Avatar } from '@components/dataDisplays';
 function FriendItem({ isOnline, profileImgSrc, onClick, name, dataSet }) {
   return (
     <S.FriendItem onClick={onClick} data-name={dataSet}>
-      <Avatar size='xs' imgSrc={!profileImgSrc ? undefined : profileImgSrc} />
+      <S.FriendAvatarContainer>
+        <Avatar size='xs' imgSrc={!profileImgSrc ? undefined : profileImgSrc} />
+        {isOnline === true && <S.OnlineMark />}
+      </S.FriendAvatarContainer>
       <S.FriendName type='caption'>{name}</S.FriendName>
     </S.FriendItem>
   );

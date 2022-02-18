@@ -12,8 +12,7 @@ import Combine
 
 class FriendViewModel {
     @Published var friendList: [Friend] = []
-    
-    var currentFriend: Friend?
+    var currentFriend: FriendWatch?
     
     func loadFriend(vc: UIViewController, coordinator: Coordinator?) {
         guard let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else { return }

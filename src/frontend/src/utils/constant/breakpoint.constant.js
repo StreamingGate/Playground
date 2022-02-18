@@ -1,3 +1,7 @@
+/**
+ * 반응형 스크린 사이즈 지정을 위한 객체
+ */
+
 const screenSize = {
   wideLaptop: 1440,
   laptop: 1024,

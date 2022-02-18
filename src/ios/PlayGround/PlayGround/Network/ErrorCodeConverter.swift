@@ -19,26 +19,12 @@ class ErrorCodeConverter {
             return errorCode.U003
         } else if error == "U004" {
             return errorCode.U004
-        } else if error == "U005" {
-            return errorCode.U005
         } else {
-            return errorCode.F002
-        }
-    }
-    
-    func check(_ error: String) -> errorCode {
-        if error == "U001" {
-            return errorCode.U001
-        } else if error == "U002" {
-            return errorCode.U002
-        } else if error == "U003" {
-            return errorCode.U003
-        } else if error == "U004" {
-            return errorCode.U004
-        } else if error == "U005" {
             return errorCode.U005
-        } else {
+        } else if error == "F002" {
             return errorCode.F002
+        } else {
+            return errorCode.F003
         }
     }
 }
@@ -50,4 +36,5 @@ enum errorCode: String {
     case U004 = "이미 사용중인 닉네임 입니다"
     case U005 = "회원정보가 올바르지 않습니다"
     case F002 = "이미 해당 유저에게 친구 신청을 보냈습니다"
+    case F003 = "이미 친구인 유저입니다"
 }

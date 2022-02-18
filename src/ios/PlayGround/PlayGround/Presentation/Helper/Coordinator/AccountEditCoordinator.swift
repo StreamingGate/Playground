@@ -8,6 +8,9 @@
 import Foundation
 import UIKit
 
+/**
+ AccountEditViewController에서 발생하는 이동/전환을 위한 Coordinator
+ */
 class AccountEditCoordinator: Coordinator {
     var parentCoordinator: Coordinator?
     var navigation: UINavigationController

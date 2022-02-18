@@ -8,6 +8,9 @@
 import Foundation
 import UIKit
 
+/**
+ PlayViewController 에서 발생하는 이동/전환을 위한 Coordinator
+ */
 class PlayerCoordinator: Coordinator {
     var parentCoordinator: Coordinator?
     var navigation: UINavigationController
@@ -26,8 +29,38 @@ class PlayerCoordinator: Coordinator {
                 vc is PlayViewController
             }) as? PlayViewController {
                 print("exist")
+                if info?.uploaderNickname == nil && playVC.viewModel.currentInfo?.id != info?.id {
+                    UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) {
+                        mainVC.playContainerView.isHidden = true
+                        mainVC.playViewTopMargin.constant = 0
+                        mainVC.removePlayer()
+                        playVC.view.removeFromSuperview()
+                    } completion: { _ in
+                        guard let newPlayVC = UIStoryboard(name: "Play", bundle: nil).instantiateViewController(withIdentifier: "PlayViewController" ) as? PlayViewController else { return }
+                        mainVC.playContainerView.isHidden = false
+                        newPlayVC.viewModel.currentInfo = info
+                        newPlayVC.coordinator = self
+                        mainVC.addChild(newPlayVC)
+                        mainVC.playContainerView.addSubview((newPlayVC.view)!)
+                        newPlayVC.view.frame = mainVC.playContainerView.bounds
+                        newPlayVC.didMove(toParent: mainVC)
+                        newPlayVC.isMinimized = false
+                        newPlayVC.setPlayViewOriginalSize()
+                        newPlayVC.safeTop = mainVC.safeTop
+                        newPlayVC.safeBottom = mainVC.safeBottom
+                        mainVC.tabBarHeight.constant = 0
+                        mainVC.tabBarStackView.isHidden = true
+                        mainVC.tabBarSeparatorView.isHidden = true
+                        mainVC.bottomWhiteView.isHidden = true
+                    }
+                    return
+                }
                 if playVC.viewModel.currentInfo?.id != info?.id {
                     playVC.viewModel.currentInfo = info
+                }
+                if let observer = playVC.timeObserver {
+                    playVC.playView.player?.removeTimeObserver(observer)
+                    playVC.timeObserver = nil
                 }
                 playVC.isMinimized = false
                 mainVC.playViewTopMargin.constant = 0
@@ -112,14 +145,17 @@ class PlayerCoordinator: Coordinator {
     func showExplain(vc: PlayViewController) {
         guard let explainVC = UIStoryboard(name: "Play", bundle: nil).instantiateViewController(withIdentifier: "PlayExplainViewController") as? PlayExplainViewController else { return }
         explainVC.viewModel.currentInfo = vc.viewModel.currentInfo
+        explainVC.viewModel.videoInfo = vc.viewModel.videoInfo
+        explainVC.viewModel.roomInfo = vc.viewModel.roomInfo
         vc.addChild(explainVC)
         vc.explainContainerView.addSubview((explainVC.view)!)
         explainVC.view.frame = vc.explainContainerView.bounds
         explainVC.didMove(toParent: vc)
     }
     
-    func showChannel() {
+    func showChannel(uuid: String) {
         guard let channelVC = UIStoryboard(name: "Channel", bundle: nil).instantiateViewController(withIdentifier: "ChannelViewController") as? ChannelViewController else { return }
+        channelVC.viewModel.loadChannelInfo(uuid: uuid)
         navigation.pushViewController(channelVC, animated: true)
     }
     
@@ -136,9 +172,5 @@ class PlayerCoordinator: Coordinator {
                 }
             }
         }
-    }
-    
-    func dismissToRoot() {
-        self.parentCoordinator?.parentCoordinator?.navigation.popToRootViewController(animated: true)
     }
 }
