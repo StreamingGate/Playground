@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import * as S from './VideoMetaData.style';
 import { ChatInfoContext } from '@utils/context';
-import { lStorageService, modalService } from '@utils/service';
+import { lStorageService, modalService, mediaService } from '@utils/service';
 import { useVideoAction } from '@utils/hook/query';
 
 import { IconButton } from '@components/buttons';
@@ -123,6 +123,10 @@ function VideoMetaData({ videoData, playType }) {
     });
   };
 
+  const handleShareBtnClick = async () => {
+    await mediaService.copyUrl();
+  };
+
   const handleProfilClickBtn = () => {
     if (playType.current === 'video') {
       navigate(`/channel/${videoData.uploaderUuid}`);
@@ -154,7 +158,7 @@ function VideoMetaData({ videoData, playType }) {
             element={<S.ThumbDownIcon isToggle={preferToggleState.disliked} />}
             content='싫어요'
           />
-          <ActionButton element={<Share />} content='공유' />
+          <ActionButton onClick={handleShareBtnClick} element={<Share />} content='공유' />
           <ActionButton onClick={handleRoportBtnClick} element={<Report />} content='신고' />
         </S.ActionContainer>
       </S.VideoInfoContainer>
