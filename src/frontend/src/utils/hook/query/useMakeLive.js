@@ -8,14 +8,16 @@ const postMakeLive = async body => {
   return data;
 };
 
+const option = {
+  autoClose: false,
+  position: 'top-right',
+};
+
 export default function useMakeLive(handleMakeLiveSuccess) {
   return useMutation(body => postMakeLive(body), {
     onMutate: () => {
       toast.dismiss();
-      toast.info('실시간 스트리밍 시작 중...', {
-        autoClose: false,
-        position: 'top-right',
-      });
+      toast.info('실시간 스트리밍 시작 중...', option);
     },
     onSuccess: async data => {
       toast.dismiss();
@@ -24,8 +26,8 @@ export default function useMakeLive(handleMakeLiveSuccess) {
     onError: () => {
       toast.dismiss();
       toast.warn('실시간 스트리밍 생성에 실패했습니다. 다시 시도해 주세요', {
-        autoClose: false,
-        position: 'top-right',
+        ...option,
+        autoClose: 5000,
       });
     },
   });
