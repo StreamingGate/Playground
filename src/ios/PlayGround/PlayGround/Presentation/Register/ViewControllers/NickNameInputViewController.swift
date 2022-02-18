@@ -76,6 +76,7 @@ class NickNameInputViewController: UIViewController {
         profileImageView.translatesAutoresizingMaskIntoConstraints = false
         profileImageView.layer.cornerRadius = 50
         profileImageView.layer.masksToBounds = true
+        profileImageView.isHidden = true
     }
     
     // 기본 이미지 및 사진 파일을 위한 레이아웃 설정
