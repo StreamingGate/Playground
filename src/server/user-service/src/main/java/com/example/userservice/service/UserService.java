@@ -100,11 +100,11 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public String checkEmail(String email) throws CustomUserException {
-        if(!userRepository.findByEmail(email).isPresent()) {
-            String randomCode = sendEmail(email);
+    public Email checkEmail(Email email) throws CustomUserException {
+        if(!userRepository.findByEmail(email.getEmail()).isPresent()) {
+            String randomCode = sendEmail(email.getEmail());
             /* 만약 n번의 요청할시, 인증코드를 overwrite */
-            redisTemplate.opsForValue().set(randomCode,email,60*10L, TimeUnit.SECONDS);
+            redisTemplate.opsForValue().set(randomCode,email.getEmail(),60*10L, TimeUnit.SECONDS);
             return email;
         }
         throw new CustomUserException(ErrorCode.U001);
