@@ -1,3 +1,5 @@
+import { toast } from 'react-toastify';
+
 const getImagePreviewURl = image => {
   return new Promise(resolve => {
     if (image.files && image.files[0]) {
@@ -10,6 +12,18 @@ const getImagePreviewURl = image => {
       reader.readAsDataURL(image.files[0]);
     }
   });
+};
+
+const copyUrl = async () => {
+  const toastOption = { position: 'top-right', autoClose: 3000 };
+  try {
+    await navigator.clipboard.writeText(window.location.href);
+    toast.dismiss();
+    toast.success('주소가 복사되었습니다', toastOption);
+  } catch (error) {
+    toast.dismiss();
+    toast.warn('주소를 복사하지 못했습니다', toastOption);
+  }
 };
 
 const createImageFromInitials = (name, bgColor, color) => {
@@ -36,4 +50,4 @@ const createImageFromInitials = (name, bgColor, color) => {
   return canvas.toDataURL();
 };
 
-export default { getImagePreviewURl, createImageFromInitials };
+export default { getImagePreviewURl, createImageFromInitials, copyUrl };
