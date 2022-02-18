@@ -13,12 +13,14 @@ struct UserInfo: Codable {
     let profileImage: String
     let name: String?
     let nickName: String?
+    let refreshToken: String?
     
     enum CodingKeys: String, CodingKey {
         case email
         case profileImage
         case name
         case nickName
+        case refreshToken
     }
 }
 
