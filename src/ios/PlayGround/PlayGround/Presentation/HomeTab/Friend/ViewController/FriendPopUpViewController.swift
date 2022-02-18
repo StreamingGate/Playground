@@ -18,8 +18,6 @@ class FriendPopUpViewController: UIViewController {
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var popUpView: UIView!
     
-    let viewModel = FriendViewModel()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()

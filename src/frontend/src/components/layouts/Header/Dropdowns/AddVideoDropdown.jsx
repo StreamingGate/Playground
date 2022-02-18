@@ -20,6 +20,8 @@ function AddVideoDropdown() {
 
     if (button.id === 'video') {
       modalService.show(MakeStreamModal, { type: 'video' });
+    } else if (button.id === 'live') {
+      modalService.show(MakeStreamModal, { type: 'live' });
     }
   };
 

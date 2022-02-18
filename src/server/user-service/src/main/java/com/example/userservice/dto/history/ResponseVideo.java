@@ -9,16 +9,19 @@ import java.time.LocalDateTime;
 public class ResponseVideo {
     private Long id;
     private String title;
+    private String content;
     private String fileLink;
     private int hits;
     private String thumbnail;
     private String uploaderNickname;
+    private LocalDateTime createdAt;
     private LocalDateTime likedAt;
     private LocalDateTime lastViewedAt;
 
     public ResponseVideo (ViewedHistory video) {
-        this.id = video.getId();
+        this.id = video.getVideo().getId();
         this.title = video.getVideo().getTitle();
+        this.content = video.getVideo().getContent();
         this.uploaderNickname = video.getUser().getNickName();
         this.hits = video.getVideo().getHits();
         this.fileLink = video.getVideo().getMetadata().getFileLink();
@@ -30,11 +33,11 @@ public class ResponseVideo {
     public ResponseVideo (Video video) {
         this.id = video.getId();
         this.title = video.getTitle();
+        this.content = video.getContent();
         this.fileLink = video.getMetadata().getFileLink();
         this.hits = video.getHits();
         this.thumbnail = video.getThumbnail();
         this.uploaderNickname = video.getUser().getNickName();
-        this.likedAt = video.getViewedHistories().get(0).getLikedAt();
-        this.lastViewedAt = video.getViewedHistories().get(0).getLastViewedAt();
+        this.createdAt = video.getCreatedAt();
     }
 }

@@ -3,7 +3,7 @@ package com.example.uploadservice.controller;
 import com.example.uploadservice.dto.UploadRequestDto;
 import com.example.uploadservice.dto.VideoDto;
 import com.example.uploadservice.entity.Video.Video;
-import com.example.uploadservice.exceptionHandler.customexception.CustomUploadException;
+import com.example.uploadservice.exceptionhandler.customexception.CustomUploadException;
 import com.example.uploadservice.service.TranscodeService;
 import com.example.uploadservice.service.UploadService;
 import com.example.uploadservice.service.VideoService;
@@ -13,7 +13,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.Map;
 
 @Slf4j

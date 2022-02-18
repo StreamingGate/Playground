@@ -31,8 +31,9 @@ export default function useHandleFriendReq() {
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(['friends_req']);
         queryClient.invalidateQueries(['friends']);
+        queryClient.invalidateQueries(['friends_req']);
+        queryClient.invalidateQueries(['notifications']);
       },
     }
   );

@@ -6,20 +6,17 @@ import com.example.mainservice.entity.RoomViewer.RoomViewer;
 import com.example.mainservice.entity.Notification.Notification;
 import com.example.mainservice.entity.Video.Video;
 import com.example.mainservice.entity.ViewdHistory.ViewedHistory;
-import com.example.mainservice.exceptionHandler.customexception.CustomMainException;
-import com.example.mainservice.exceptionHandler.customexception.ErrorCode;
+import com.example.mainservice.exceptionhandler.customexception.CustomMainException;
+import com.example.mainservice.exceptionhandler.customexception.ErrorCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.ColumnDefault;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-@Slf4j
 @NoArgsConstructor
 @Getter
 @Entity(name = "users")
@@ -64,9 +61,6 @@ public class User {
     @Column
     private String timeZone;
 
-    @Column
-    private LocalDate lastAt;
-
     @OneToMany(mappedBy = "user")
     private List<RoomViewer> roomViewers = new LinkedList<>();
 
@@ -77,7 +71,7 @@ public class User {
     private List<ViewedHistory> viewedHistories = new LinkedList<>();
 
     @OneToMany(mappedBy = "user")
-    private List<Room> rooms = new ArrayList<>();
+    private List<Room> lives = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
     private List<Notification> notifications = new LinkedList<>();

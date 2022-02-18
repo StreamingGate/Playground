@@ -9,9 +9,8 @@ import com.example.videoservice.entity.Video.Video;
 import com.example.videoservice.entity.Video.VideoRepository;
 import com.example.videoservice.entity.ViewdHistory.ViewedHistory;
 import com.example.videoservice.entity.ViewdHistory.ViewedRepository;
-import com.example.videoservice.exceptionHandler.customexception.CustomVideoException;
-import com.example.videoservice.exceptionHandler.customexception.ErrorCode;
-
+import com.example.videoservice.exceptionhandler.customexception.CustomVideoException;
+import com.example.videoservice.exceptionhandler.customexception.ErrorCode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,9 +24,7 @@ public class VideoService {
     private final VideoRepository videoRepository;
     private final ViewedRepository viewedRepository;
 
-    /**
-     * 시청기록이 존재하면 가져오고, 없으면 새로 저장한다.(조회수 증가)
-     */
+    /* 시청기록이 존재하면 가져오고, 없으면 새로 저장함 */
     @Transactional
     public VideoResponseDto getVideo(Long videoId, String uuid) throws CustomVideoException{
         Optional<ViewedHistory> viewedHistory = viewedRepository.findByVideoIdAndUserUuid(uuid, videoId);
@@ -36,13 +33,15 @@ public class VideoService {
         if(viewedHistory.isPresent()){
             Video video = viewedHistory.get().getVideo();
             video.addHits();
+            viewedHistory.get().updateLastViewedAt();
             result = new VideoResponseDto(video, video.getMetadata().getFileLink(), viewedHistory.get());
         }
         else{
             User user = userRepository.findByUuid(uuid).orElseThrow(() -> new CustomVideoException(ErrorCode.U002));
             Video video = videoRepository.findById(videoId).orElseThrow(() -> new CustomVideoException(ErrorCode.V001));
             video.addHits();
-            ViewedHistory newViewedHistory  = new ViewedHistory(user, video);
+            ViewedHistory newViewedHistory = new ViewedHistory(user, video);
+            newViewedHistory.updateLastViewedAt();
             viewedRepository.save(newViewedHistory);
             result = new VideoResponseDto(video, video.getMetadata().getFileLink(), newViewedHistory);
         }

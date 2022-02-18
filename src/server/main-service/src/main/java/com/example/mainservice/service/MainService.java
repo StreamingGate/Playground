@@ -6,7 +6,6 @@ import com.example.mainservice.entity.Room.Room;
 import com.example.mainservice.entity.Room.RoomRepository;
 import com.example.mainservice.entity.RoomViewer.RoomViewer;
 import com.example.mainservice.entity.RoomViewer.RoomViewerRepository;
-import com.example.mainservice.entity.Notification.Notification;
 import com.example.mainservice.entity.Notification.NotificationRepository;
 import com.example.mainservice.entity.User.User;
 import com.example.mainservice.entity.User.UserRepository;
@@ -14,8 +13,8 @@ import com.example.mainservice.entity.Video.Video;
 import com.example.mainservice.entity.Video.VideoRepository;
 import com.example.mainservice.entity.ViewdHistory.ViewedHistory;
 import com.example.mainservice.entity.ViewdHistory.ViewedRepository;
-import com.example.mainservice.exceptionHandler.customexception.CustomMainException;
-import com.example.mainservice.exceptionHandler.customexception.ErrorCode;
+import com.example.mainservice.exceptionhandler.customexception.CustomMainException;
+import com.example.mainservice.exceptionhandler.customexception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -23,7 +22,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -107,7 +105,8 @@ public class MainService {
 //        return null;
 //    }
 
-    private void actionToVideo(VideoActionDto dto, boolean isCancel) throws Exception {
+    @Transactional
+    public void actionToVideo(VideoActionDto dto, boolean isCancel) throws Exception {
         ViewedHistory viewedHistory = viewedRepository.findByVideoIdAndUserUuid(dto.getUuid(), dto.getId()).orElse(null);
         User user = userRepository.findByUuid(dto.getUuid()).orElseThrow(() -> new CustomMainException(ErrorCode.U002));
         if (viewedHistory == null) { //봤지만 처음 저장하는 경우
@@ -123,21 +122,17 @@ public class MainService {
         if (dto.getAction() == VideoActionDto.ACTION.REPORT) {
             video.addReportCnt(1);
         } else if (dto.getAction() == VideoActionDto.ACTION.LIKE) {
-            if (isCancel) {
-                viewedHistory.setLiked(false);
-                video.addLikeCnt(-1);
-            } else {
-                viewedHistory.setLiked(true);
-                video.addLikeCnt(1);
-                notificationRepository.save(Notification.createLikes(user, video)); /* TODO push알림으로 수정하기 */
-            }
+            if (isCancel) viewedHistory.setLiked(false);
+            else viewedHistory.setLiked(true);
+//                notificationRepository.save(Notification.createLikes(user, video)); /* TODO push알림으로 수정하기 */
         } else if (dto.getAction() == VideoActionDto.ACTION.DISLIKE) {
             if (isCancel) viewedHistory.setDisliked(false);
             else viewedHistory.setDisliked(true);
         }
     }
 
-    private void actionToLiveRoom(VideoActionDto dto, boolean isCancel) throws Exception {
+    @Transactional
+    public void actionToLiveRoom(VideoActionDto dto, boolean isCancel) throws Exception {
         RoomViewer roomViewer = liveRoomViewerRepository.findByLiveRoomIdAndUserUuid(dto.getUuid(), dto.getId())
                 .orElse(null);
         User user = userRepository.findByUuid(dto.getUuid()).orElseThrow(() -> new CustomMainException(ErrorCode.U002));
@@ -153,17 +148,13 @@ public class MainService {
         if (dto.getAction() == VideoActionDto.ACTION.REPORT) {
             room.addReportCnt(1);
         } else if (dto.getAction() == VideoActionDto.ACTION.LIKE) {
-            if (isCancel) {
-                roomViewer.setLiked(false);
-                room.addLikeCnt(-1);
-            } else {
-                roomViewer.setLiked(true);
-                room.addLikeCnt(1);
-
-            }
+            if (isCancel) roomViewer.setLiked(false);
+            else roomViewer.setLiked(true);
+//                notificationRepository.save(Notification.createLikes(user, video)); /* TODO push알림으로 수정하기 */
         } else if (dto.getAction() == VideoActionDto.ACTION.DISLIKE) {
-            if (isCancel) roomViewer.setDisliked(false);
+            if (isCancel)  roomViewer.setDisliked(false);
             else roomViewer.setDisliked(true);
         }
     }
+
 }

@@ -48,13 +48,7 @@ class MyTabCoordinator: Coordinator {
     }
     
     func showProfile() {
-        guard let accountVC = UIStoryboard(name: "MyPage", bundle: nil).instantiateViewController(withIdentifier: "AccountInfoViewController") as? AccountInfoViewController, let tabVC = self.parentCoordinator?.navigation.viewControllers.last as? CustomTabViewController else { return }
-        for i in tabVC.children {
-            if let player = i as? PlayViewController {
-                player.coordinator?.closeMiniPlayer(vc: player)
-            }
-        }
-        tabVC.tabBarHeight.constant = 0
+        guard let accountVC = UIStoryboard(name: "MyPage", bundle: nil).instantiateViewController(withIdentifier: "AccountInfoViewController") as? AccountInfoViewController else { return }
         navigation.pushViewController(accountVC, animated: true)
     }
     
@@ -78,14 +72,7 @@ class MyTabCoordinator: Coordinator {
         self.parentCoordinator?.navigation.popToRootViewController(animated: true)
     }
     
-    func resetTabBarHeight() {
-        guard let tabVC = self.parentCoordinator?.navigation.viewControllers.last as? CustomTabViewController else { return }
-        tabVC.tabBarHeight.constant = 80
-    }
-    
     func pop() {
-        guard let tabVC = self.parentCoordinator?.navigation.viewControllers.last as? CustomTabViewController else { return }
-        tabVC.tabBarHeight.constant = 80
         self.navigation.popViewController(animated: true)
     }
 }

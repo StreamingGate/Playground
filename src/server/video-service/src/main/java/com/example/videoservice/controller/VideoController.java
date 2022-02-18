@@ -1,7 +1,7 @@
 package com.example.videoservice.controller;
 
 import com.example.videoservice.dto.VideoResponseDto;
-import com.example.videoservice.exceptionHandler.customexception.CustomVideoException;
+import com.example.videoservice.exceptionhandler.customexception.CustomVideoException;
 import com.example.videoservice.service.VideoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

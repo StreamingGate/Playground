@@ -1,8 +1,9 @@
 package com.example.uploadservice.service;
 
+import com.amazonaws.services.s3.AmazonS3;
 import com.example.uploadservice.dto.VideoDto;
-import com.example.uploadservice.exceptionHandler.customexception.CustomUploadException;
-import com.example.uploadservice.exceptionHandler.customexception.ErrorCode;
+import com.example.uploadservice.exceptionhandler.customexception.CustomUploadException;
+import com.example.uploadservice.exceptionhandler.customexception.ErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import net.bramp.ffmpeg.FFmpeg;
 import net.bramp.ffmpeg.FFmpegExecutor;
@@ -27,6 +28,7 @@ public class TranscodeService {
     private final String LOCAL_FILEPATH;
     private final String FFMPEG_PATH;
     private final String FFPROBE_PATH;
+    private final AmazonS3 amazonS3;
 
     @Autowired
     public TranscodeService(@Value("${cloud.aws.s3.image.domain}") String s3Domain,
@@ -34,13 +36,15 @@ public class TranscodeService {
                             @Value("${cloud.aws.s3.image.bucket}") String bucket,
                             @Value("${cloud.aws.s3.image.input-dir}") String inputDir,
                             @Value("${ffmpeg.path}") String ffmpegPath,
-                            @Value("${ffprobe.path}") String ffprobePath){
+                            @Value("${ffprobe.path}") String ffprobePath,
+                            AmazonS3 amazonS3) {
         this.S3_DOMAIN= s3Domain;
         this.BUCKET = bucket;
         this.INPUT_DIR = inputDir;
         this.LOCAL_FILEPATH = localFilePath;
         this.FFMPEG_PATH = ffmpegPath;
         this.FFPROBE_PATH = ffprobePath;
+        this.amazonS3 = amazonS3;
     }
 
     public void convertMp4ToTs(String videoUuid, MultipartFile multipartFileThumbnail, VideoDto videoDto) throws CustomUploadException {

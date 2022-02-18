@@ -14,9 +14,12 @@ public class VideoResponseDto {
     @JsonIgnore
     private static final String SHARE_URL = "/video-service/video/";
     // video
+    private Long id;
     private String title;
     private String content;
     private String videoUuid;
+    private String uploaderUuid;
+    private String uploaderNickname;
     private String streamingUrl;
     private String shareUrl;
     private Category category;
@@ -30,6 +33,7 @@ public class VideoResponseDto {
     private Boolean disliked;
 
     public VideoResponseDto(Video video, String streamingUrl, ViewedHistory viewedHistory){
+        this.id = video.getId();
         this.title = video.getTitle();
         this.content = video.getContent();
         this.videoUuid = video.getUuid();
@@ -39,6 +43,8 @@ public class VideoResponseDto {
         this.hits = video.getHits();
         this.likeCnt = video.getLikeCnt();
         this.uploaderProfileImage = video.getUser().getProfileImage();
+        this.uploaderNickname = video.getUser().getNickName();
+        this.uploaderUuid = video.getUser().getUuid();
         this.subscriberCnt = video.getUser().getFriends().size();
         this.liked = viewedHistory.isLiked();
         this.disliked = viewedHistory.isDisliked();

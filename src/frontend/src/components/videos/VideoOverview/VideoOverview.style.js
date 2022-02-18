@@ -24,6 +24,7 @@ export const ThumbNail = styled.img`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  object-fit: contain;
 `;
 
 export const RealTimeIcon = styled(RealTimeMark)`
@@ -71,12 +72,14 @@ export const ViedeoOverviewContainer = styled.li`
   flex-direction: ${({ direction }) => (direction === 'vertical' ? 'column' : 'row')};
   gap: 10px;
   max-width: ${({ direction }) => (direction === 'vertical' ? '450px' : 'none')};
+  cursor: pointer;
 
   ${ThumbNailContainer} {
     ${({ direction }) =>
       direction === 'horizontal' &&
       css`
-        max-width: 160px;
+        min-height: 0;
+        width: 160px;
         height: 90px;
         flex-shrink 0;
       `}

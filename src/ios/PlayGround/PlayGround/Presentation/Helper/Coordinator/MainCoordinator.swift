@@ -16,9 +16,6 @@ class MainCoordinator: NSObject, Coordinator {
     var navigation: UINavigationController
     var childCoordinators: [Coordinator] = []
 
-    var homeCoordinator: HomeTabCoordinator?
-    var myCoordinator: MyTabCoordinator?
-    
     init(parent: Coordinator?, navigation: UINavigationController) {
         self.navigation = navigation
         self.parentCoordinator = parent

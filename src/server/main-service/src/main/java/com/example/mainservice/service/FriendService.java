@@ -8,21 +8,19 @@ import com.example.mainservice.entity.Notification.Notification;
 import com.example.mainservice.entity.Notification.NotificationRepository;
 import com.example.mainservice.entity.User.User;
 import com.example.mainservice.entity.User.UserRepository;
-import com.example.mainservice.exceptionHandler.customexception.CustomMainException;
-import com.example.mainservice.exceptionHandler.customexception.ErrorCode;
+import com.example.mainservice.exceptionhandler.customexception.CustomMainException;
+import com.example.mainservice.exceptionhandler.customexception.ErrorCode;
+import com.example.mainservice.utils.HttpRequest;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Slf4j
 @RequiredArgsConstructor
 @Service
 public class FriendService {
@@ -74,6 +72,7 @@ public class FriendService {
         User user = userRepository.findByUuid(uuid).orElseThrow(() -> new CustomMainException(ErrorCode.U002));
         User target = userRepository.findByUuid(targetUuid).orElseThrow(() -> new CustomMainException(ErrorCode.U002));
         user.deleteFriend(target);
+        HttpRequest.sendDeleteFriend(FriendDto.from(user), FriendDto.from(target));
         return target.getUuid();
     }
 
@@ -102,6 +101,7 @@ public class FriendService {
 
         // User friends 에 추가
         sender.addFriend(user);
+        HttpRequest.sendAddFriend(FriendDto.from(user), FriendDto.from(sender));
         return sender.getUuid();
     }
 

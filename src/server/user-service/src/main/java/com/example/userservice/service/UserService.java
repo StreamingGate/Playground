@@ -1,6 +1,7 @@
 package com.example.userservice.service;
 
 import com.example.userservice.configure.security.Jwt;
+import com.example.userservice.dto.history.ResponseHistory;
 import com.example.userservice.dto.history.ResponseRoom;
 import com.example.userservice.dto.history.ResponseVideo;
 import com.example.userservice.dto.user.*;
@@ -31,7 +32,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -51,9 +51,9 @@ public class UserService implements UserDetailsService {
     private final JavaMailSender javaMailSender;
     private final RedisTemplate<String,Object> redisTemplate;
     private final AmazonS3Service amazonS3Service;
-    private final HistoryService historyService;
     private final Jwt jwt;
 
+    /* 이메일 인증코드 보내는 기능 */
     public String sendEmail(String address) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(address);
@@ -100,10 +100,10 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public EmailDto checkEmail(EmailDto email) throws CustomUserException {
+    public Email checkEmail(Email email) throws CustomUserException {
         if(!userRepository.findByEmail(email.getEmail()).isPresent()) {
             String randomCode = sendEmail(email.getEmail());
-            // 만약 n번의 요청할시, 인증코드를 overwrite
+            /* 만약 n번의 요청할시, 인증코드를 overwrite */
             redisTemplate.opsForValue().set(randomCode,email.getEmail(),60*10L, TimeUnit.SECONDS);
             return email;
         }
@@ -111,11 +111,11 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public PwdDto checkUser(PwdDto pwdDto) throws CustomUserException {
-        if(userRepository.findByNameAndEmail(pwdDto.getName(),pwdDto.getEmail()).isPresent()) {
-            String randomCode = sendEmail(pwdDto.getEmail());
-            redisTemplate.opsForValue().set(randomCode,pwdDto.getEmail(),60*10L, TimeUnit.SECONDS);
-            return pwdDto;
+    public Pwd checkUser(Pwd pwd) throws CustomUserException {
+        if(userRepository.findByNameAndEmail(pwd.getName(), pwd.getEmail()).isPresent()) {
+            String randomCode = sendEmail(pwd.getEmail());
+            redisTemplate.opsForValue().set(randomCode, pwd.getEmail(),60*10L, TimeUnit.SECONDS);
+            return pwd;
         }
         throw new CustomUserException(ErrorCode.U005);
     }
@@ -137,11 +137,11 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public PwdDto updatePwd(String uuid, PwdDto pwdDto) throws CustomUserException {
+    public Pwd updatePwd(String uuid, Pwd pwd) throws CustomUserException {
         User user = userRepository.findByUuid(uuid).orElseThrow(()-> new CustomUserException(ErrorCode.U002));
-        String bcryptPwd = bCryptPasswordEncoder.encode(pwdDto.getPassword());
+        String bcryptPwd = bCryptPasswordEncoder.encode(pwd.getPassword());
         user.updatePwd(bcryptPwd);
-        return pwdDto;
+        return pwd;
     }
 
     @Transactional
@@ -152,46 +152,53 @@ public class UserService implements UserDetailsService {
         return userDto;
     }
 
+    /* 실시간 스트리밍 리스트, 동영상 리스트 합쳐서 리턴 */
     @Transactional
-    public List<?> watchedHistory(String uuid, Long lastVideoId, Long lastLiveId,int size) throws CustomUserException {
+    public ResponseHistory watchedHistory(String uuid, String lastVideoViewedAt, String lastLiveViewedAt, int size) throws CustomUserException {
         if (!userRepository.findByUuid(uuid).isPresent()) throw new CustomUserException(ErrorCode.U002);
         Stream<ViewedHistory> videoStream;
         Stream<RoomViewer> liveStream;
         Pageable pageable = PageRequest.of(0, size);
+        LocalDateTime parseLastVideoViewedAt;
+        LocalDateTime parseLastLiveViewedAt;
+        if (lastVideoViewedAt.equals("null"))  parseLastVideoViewedAt = LocalDateTime.now();
+        else parseLastVideoViewedAt = LocalDateTime.parse(lastVideoViewedAt);
+        if (lastLiveViewedAt.equals("null")) parseLastLiveViewedAt = LocalDateTime.now();
+        else parseLastLiveViewedAt = LocalDateTime.parse(lastLiveViewedAt);
 
-        if(lastVideoId == -1) videoStream = viewedRepository.findByAll(uuid,pageable).getContent().stream();
-        else videoStream = viewedRepository.findByAll(uuid,lastVideoId, pageable).getContent().stream();
+        videoStream = viewedRepository.findByUuidAll(uuid,parseLastVideoViewedAt, pageable).getContent().stream();
 
-        if(lastLiveId == -1) liveStream = roomViewerRepository.findByAll(uuid, pageable).stream();
-        else liveStream = roomViewerRepository.findByAll(uuid, lastLiveId, pageable).stream();
+        liveStream = roomViewerRepository.findByUuidAll(uuid, parseLastLiveViewedAt, pageable).stream();
 
         List<ResponseVideo> videoList = videoStream.map(ResponseVideo::new)
                 .collect(Collectors.toList());
         List<ResponseRoom> roomList = liveStream.map(ResponseRoom::new)
                 .collect(Collectors.toList());
 
-        /* 두 리스트 정렬해서 합치기(Two Pointer) */
-        return historyService.watchedHistory(videoList,roomList);
+        return new ResponseHistory(videoList,roomList);
     }
     @Transactional
-    public List<?> likedHistory(String uuid, Long lastVideoId, Long lastLiveId,int size) throws CustomUserException {
+    public ResponseHistory likedHistory(String uuid, String lastVideoViewedAt, String lastLiveViewedAt,int size) throws CustomUserException {
         if (!userRepository.findByUuid(uuid).isPresent()) throw new CustomUserException(ErrorCode.U002);
         Stream<ViewedHistory> videoStream;
         Stream<RoomViewer> liveStream;
         Pageable pageable = PageRequest.of(0, size);
+        LocalDateTime parseLastVideoViewedAt;
+        LocalDateTime parseLastLiveViewedAt;
+        if (lastVideoViewedAt.equals("null"))  parseLastVideoViewedAt = LocalDateTime.now();
+        else parseLastVideoViewedAt = LocalDateTime.parse(lastVideoViewedAt);
+        if (lastLiveViewedAt.equals("null")) parseLastLiveViewedAt = LocalDateTime.now();
+        else parseLastLiveViewedAt = LocalDateTime.parse(lastLiveViewedAt);
 
-        if (lastVideoId == -1) videoStream = viewedRepository.findByLiked(uuid,pageable).getContent().stream();
-        else videoStream = viewedRepository.findByLiked(uuid,lastVideoId,pageable).getContent().stream();
+        videoStream = viewedRepository.findByLiked(uuid,parseLastVideoViewedAt,pageable).getContent().stream();
 
-        if(lastLiveId == -1) liveStream = roomViewerRepository.findByLiked(uuid,pageable).getContent().stream();
-        else liveStream = roomViewerRepository.findByLiked(uuid,lastLiveId,pageable).getContent().stream();
+        liveStream = roomViewerRepository.findByLiked(uuid,parseLastLiveViewedAt,pageable).getContent().stream();
 
         List<ResponseVideo> videoList = videoStream.map(ResponseVideo::new)
                 .collect(Collectors.toList());
         List<ResponseRoom> roomList = liveStream.map(ResponseRoom::new)
                 .collect(Collectors.toList());
-        /* 두 리스트 정렬해서 합치기(Two Pointer) */
-        return historyService.likedHistory(videoList,roomList);
+        return new ResponseHistory(videoList,roomList);
     }
 
     @Transactional
@@ -201,15 +208,39 @@ public class UserService implements UserDetailsService {
         Pageable pageable = PageRequest.of(0, size);
         if (lastVideoId == -1) videoStream = videoRepository.findAll(uuid,pageable).getContent().stream();
         else videoStream = videoRepository.findAll(uuid,lastVideoId,pageable).getContent().stream();
-        return videoStream.map(ResponseVideo::new).collect(Collectors.toList());
+        List<ResponseVideo> videoList = videoStream.map(ResponseVideo::new)
+                .collect(Collectors.toList());
+        return videoList;
     }
-
+    @Transactional
     public String refreshToken(String token, String refreshToken) throws CustomUserException {
         if(!redisTemplate.hasKey(refreshToken)) throw new CustomUserException(ErrorCode.U007);
         String userUuid = jwt.getUserUuid(token);
         if(!userRepository.findByUuid(userUuid).isPresent()) throw new CustomUserException(ErrorCode.U007);
         String newAccessToken = jwt.createToken(userUuid);
         return newAccessToken;
+    }
+
+    @Transactional
+    public ResponseUser info(String uuid) throws CustomUserException {
+        User user = userRepository.findByUuid(uuid).orElseThrow(() -> new CustomUserException(ErrorCode.U002));
+        Stream<Video> videoStream;
+        videoStream = videoRepository.findAll(uuid).stream();
+        List<ResponseVideo> videoList = videoStream.map(ResponseVideo::new)
+                .collect(Collectors.toList());
+        ResponseUser responseUser = mapper.map(user,ResponseUser.class);
+        responseUser.setUploadCnt(videoList.size());
+        responseUser.setFriendCnt(user.getFriends().size());
+        return responseUser;
+    }
+
+    @Transactional
+    public ResponseAuto autologin(RequestAuto requestAuto) throws CustomUserException {
+        User user = userRepository.findByUuid(requestAuto.getUuid()).orElseThrow(() -> new CustomUserException(ErrorCode.U002));
+        String token = jwt.createRefreshToken(user.getUuid());
+        ResponseAuto responseAuto = mapper.map(user,ResponseAuto.class);
+        responseAuto.setRefreshToken(token);
+        return responseAuto;
     }
 
     @Override

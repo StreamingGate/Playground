@@ -1,0 +1,227 @@
+{{>header}}
+<body>
+<h3>1. Redis 유저 데이터 setup (모든 서버 통틀어 최초 한번만 누르세요)</h3>
+<button type="button" onclick="initRedis()">setup</button>
+<h3>2. 로그인 하기</h3>
+
+로그인 한 uuid: <span id="login-uuid"></span>
+</br>
+</br>
+<button type="button" onClick="login(0)">유저#1 로그인 하기</button>
+<button type="button" onClick="login(1)">유저#2 로그인 하기</button>
+<button type="button" onClick="login(2)">유저#3 로그인 하기</button>
+<button type="button" onClick="login(3)">유저#4 로그인 하기</button>
+</br>
+<button type="button" onClick="logout(0)">유저#1 로그아웃 하기</button>
+<button type="button" onClick="logout(1)">유저#2 로그아웃 하기</button>
+<button type="button" onClick="logout(2)">유저#3 로그아웃 하기</button>
+<button type="button" onClick="logout(3)">유저#4 로그아웃 하기</button>
+</br>
+<h3>3. 영상 보기</h3>
+<button type="button" onClick="videoWatch(0)">일반영상#1 보기</button>
+<button type="button" onClick="videoExit(0)">일반영상#1 나가기</button>
+
+<ul id="friends-result">
+
+</ul>
+</body>
+{{>footer}}
+<!-- JavaScript -->
+<script>
+    const userData = [
+        {
+            // "name": "user1",
+            "uuid": "11111111-1234-1234-123456789012",
+            "email": "u1@email.com",
+            "password": "1234",
+            "token": ""
+        },
+        {
+            // "name": "user2",
+            "uuid": "22222222-1234-1234-123456789012",
+            "email": "u2@email.com",
+            "password": "1234",
+            "token": ""
+        },
+        {
+            // "name": "user3",
+            "uuid": "33333333-1234-1234-123456789012",
+            "email": "u3@email.com",
+            "password": "1234",
+            "token": ""
+        },
+        {
+            // "name": "user4",
+            "uuid": "44444444-1234-1234-123456789012",
+            "email": "u4@email.com",
+            "password": "1234",
+            "token": ""
+        }
+    ];
+    let globalIndex = 0;
+
+    initRedis = () => {
+        axios.get('/init-redis')
+                .then(() => {
+                    console.log("==Redis에 유저데이터 셋팅 완료.");
+                });
+    }
+
+    let sock;
+    let ws;
+    const loginUuidElem = document.querySelector("#login-uuid");
+    const friendsResultElem = document.querySelector("#friends-result");
+
+    /* 실제 client에선 리스트에 있는 정보로 영상 하나에 입장하자마자 send 하면 type, id 선택가능 */
+    videoWatch = (i) => {
+        const userUuid = userData[globalIndex].uuid;
+        const token = userData[globalIndex].token;
+        console.log('token: ' + token);
+        axios.get(`http://localhost:8000/video-service/video/${i + 1}?uuid=${userUuid}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+                .then(resp => {
+                    console.log(JSON.stringify(resp));
+                    const videoUuid = resp.data.videoUuid;
+                    console.log(`data:` + videoUuid);
+                    const data = {
+                        // uuid: userUuid,
+                        id: i + 1,
+                        type: 0,
+                        videoRoomUuid: resp.data.videoUuid,
+                        title: resp.data.title
+                    }
+                    ws.send("/app/watch/" + userUuid, {}, JSON.stringify(data));
+                });
+    }
+
+    /* 그런데 여러개의 영상을 보는 중이라면? */
+    videoExit = () => {
+        const userUuid = userData[globalIndex].uuid;
+        ws.send("/app/watch/" + userUuid, {}, JSON.stringify({}));
+    }
+
+    addFriend = (body) => {
+        let elem = document.createElement("li");
+        elem.id = `${body.uuid}`;
+        if (body.status === true)
+            elem.innerText = `${body.uuid} 로그인! (${body.title}시청 중)`;
+        else
+            elem.innerText = `${body.uuid} 로그아웃!`;
+        friendsResultElem.append(elem);
+    }
+
+    updateFriendsStatus = (body) => {
+        console.log("loginUuid: " + body.uuid);
+        const uuid = body.uuid;
+        const children = friendsResultElem.children;
+        console.log("children size:" + children);
+
+
+        if (body.addOrDelete != null && body.addOrDelete === true) {
+            console.log("친구 추가");
+            addFriend(body);
+        }else {
+            for (let i = 0; i < children.length; i++) {
+                console.log("children id:" + children[i].id);
+                if (children[i].id === uuid) {
+                    if (body.addOrDelete != null && body.addOrDelete === false){
+                        console.log("친구 삭제");
+                        children[i].innerText = `${children[i].id} (삭제된 친구)`;
+                    }
+                    else {
+                        if (body.status === true)
+                            children[i].innerText = `${children[i].id} 로그인! (${body.title}시청 중)`;
+                        else
+                            children[i].innerText = `${children[i].id} 로그아웃!`;
+                    }
+                }
+            }
+        }
+    }
+
+    // recvError = (error) => {
+    //     console.log("received error...");
+    //     alert(error);
+    // }
+    /* 친구 목록에 내 상태 publish */
+    publishLogin = (i) => {
+        const uuid = userData[i].uuid;
+        sock = new SockJS("/ws");
+        ws = Stomp.over(sock);
+
+        ws.connect({
+            token: `${userData[i].token}`
+        }, function (frame) {
+            ws.subscribe("/topic/friends/" + uuid, function (resp) {
+                updateFriendsStatus(JSON.parse(resp.body));
+            });
+            ws.subscribe("/topic/friends/update/" + uuid, function (resp) {
+                updateFriendsStatus(JSON.parse(resp.body));
+            });
+        }, function (error) {
+            alert("error " + JSON.stringify(error));
+        });
+
+        globalIndex = i; // 로그인 한 유저 기억하기 위함
+    }
+
+    createFriendList = (i) => {
+        console.log("==2.getFriends");
+        const uuid = userData[i].uuid;
+
+        axios.get('/list?uuid=' + uuid, {})
+                .then(resp => {
+                    console.log("resp.data:" + JSON.stringify(resp.data));
+                    let ar = resp.data.result;
+                    if (ar !== null) {
+                        for (let i = 0; i < ar.length; i = i + 1) {
+                            let elem = document.createElement("li");
+                            elem.id = `${ar[i].uuid}`;
+                            if (ar[i].status === true)
+                                elem.innerText = `${ar[i].uuid} 로그인! (${ar[i].title}시청 중)`;
+                            else
+                                elem.innerText = `${ar[i].uuid} 로그아웃!`;
+                            friendsResultElem.append(elem);
+                        }
+                    }
+                    publishLogin(i);
+                })
+                .catch(error => {
+                    console.log("createFriendList 에러:" + JSON.stringify(error));
+                })
+    };
+
+    /* user-service에 로그인 요청 */
+    login = (i) => {
+        console.log("==1.login");
+        const req = {
+            email: userData[i].email,
+            password: userData[i].password
+        };
+        axios.post('http://localhost:8000/user-service/login', req)
+                .then(resp => {
+                    userData[i].token = resp.headers.token;
+                    console.log("uuid:" + userData[i].uuid);
+                    console.log("token:" + userData[i].token);
+                    loginUuidElem.innerText = userData[i].uuid;
+                    createFriendList(i);
+                })
+                .catch(error => {
+                    console.log("로그인 에러:" + JSON.stringify(error));
+                });
+    };
+
+    /* stomp disconnection */
+    wsDisconnection = (i) => {
+        ws.disconnect(() => {
+        }, {"uuid": userData[i].uuid});
+        loginUuidElem.innerText = "";
+    }
+
+    logout = (i) => {
+        wsDisconnection(i);
+    }
+</script>

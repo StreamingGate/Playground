@@ -7,22 +7,17 @@
 
 import Foundation
 import UIKit
-import Combine
 
 class FriendRequestViewController: UIViewController {
     // MARK: - Properties
     @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var tableView: UITableView!
     var navVC: HomeNavigationController?
-    let viewModel = NoticeViewModel()
-    private var cancellable: Set<AnyCancellable> = []
     
     // MARK: - View LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         guard let nav = self.navigationController as? HomeNavigationController else { return }
         self.navVC = nav
-        bindViewModel()
         setupUI()
     }
     
@@ -48,7 +43,7 @@ class FriendRequestViewController: UIViewController {
 
 extension FriendRequestViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.viewModel.friendRequestList.count
+        return 40
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -64,6 +59,6 @@ extension FriendRequestViewController: UITableViewDataSource, UITableViewDelegat
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60
+        return UITableView.automaticDimension
     }
 }

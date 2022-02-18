@@ -1,7 +1,9 @@
 package com.example.roomservice.service;
 
 import com.example.roomservice.dto.RequestDto;
+import com.example.roomservice.dto.RequestExitDto;
 import com.example.roomservice.dto.ResponseDto;
+import com.example.roomservice.dto.ResponseExitDto;
 import com.example.roomservice.entity.Room.Room;
 import com.example.roomservice.entity.Room.RoomRepository;
 import com.example.roomservice.entity.RoomViewer.RoomViewer;
@@ -15,7 +17,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -31,33 +32,38 @@ public class RoomService {
 
     @Transactional
     public ResponseDto join(Long roomId, String uuid) throws CustomRoomException {
-        Room room = roomRepository.getById(roomId);
+        Room room = roomRepository.findById(roomId).orElseThrow(() -> new CustomRoomException(ErrorCode.L001));
+        User user = userRepository.findByUuid(uuid).orElseThrow(() -> new CustomRoomException(ErrorCode.U002));
         RoomViewer roomViewer = roomViewerRepository.findByUserUuidAndRoomUuid(uuid,roomId);
         ResponseDto responseDto = mapper.map(room,ResponseDto.class);
         if (roomViewer == null) {
-            roomViewerRepository.save(roomViewer.join(roomId, uuid,false,false));
+            roomViewerRepository.save(roomViewer.join(roomId, uuid,room,user,false,false));
             responseDto.setLiked(false);
             responseDto.setDisliked(false);
         }
         else {
-            roomViewer.join(roomId,uuid,roomViewer.getLiked(),roomViewer.getDisliked());
+            roomViewer.join(roomId,uuid,room,user,roomViewer.getLiked(),roomViewer.getDisliked());
             responseDto.setLiked(roomViewer.getLiked());
             responseDto.setDisliked(roomViewer.getDisliked());
         }
+        responseDto.setHostNickname(user.getNickName());
         responseDto.setRoomId(roomId);
+        responseDto.setLastViewedAt(LocalDateTime.now());
         return Optional.of(responseDto).orElseThrow(()->new CustomRoomException(ErrorCode.L001));
     }
 
     @Transactional
     public ResponseDto create(RequestDto requestDto) throws CustomRoomException {
         User user = userRepository.findByUuid(requestDto.getHostUuid()).orElseThrow(() -> new CustomRoomException(ErrorCode.U002));
-        roomRepository.save(Room.create(requestDto,user));
         ResponseDto responseDto = mapper.map(requestDto,ResponseDto.class);
-        responseDto.setThumbnail(amazonS3Service.upload(requestDto.getThumbnail(),requestDto.getUuid()));
+        String uploadThumbnail = amazonS3Service.upload(requestDto.getThumbnail(),requestDto.getUuid());
+        requestDto.setThumbnail(uploadThumbnail);
+        Room room = Room.create(requestDto,user);
+        roomRepository.save(room);
         Long roomUuid = roomRepository.getRoomId(requestDto.getUuid());
-        roomViewerRepository.save(RoomViewer.join(roomUuid, requestDto.getHostUuid(),false,false));
+        roomViewerRepository.save(RoomViewer.join(roomUuid, requestDto.getHostUuid(),room,user,false,false));
         responseDto.setRoomId(roomRepository.getRoomId(requestDto.getUuid()));
-        responseDto.setCreatedAt(roomRepository.getCreatedAt(requestDto.getTitle()));
+        responseDto.setThumbnail(uploadThumbnail);
         responseDto.setLiked(false);
         responseDto.setDisliked(false);
         return Optional.of(responseDto).orElseThrow(()-> new CustomRoomException(ErrorCode.L002));
@@ -65,9 +71,18 @@ public class RoomService {
 
     @Transactional
     public String check(String uuid) throws CustomRoomException {
-        return Optional.of(roomRepository.findByUuid(uuid).get().getUuid()).orElseThrow(() -> new CustomRoomException(ErrorCode.L002));
+        Room room = roomRepository.findByUuid(uuid);
+        if(room != null) return room.getUuid();
+        throw new CustomRoomException(ErrorCode.L002);
     }
 
-//    @Transactional
-//    public
+    @Transactional
+    public ResponseExitDto delete(RequestExitDto requestExitDto) throws CustomRoomException {
+        Room room = roomRepository.findByUuid(requestExitDto.getUuid());
+        if (room != null) {
+            roomRepository.delete(room);
+            return mapper.map(room,ResponseExitDto.class);
+        }
+        throw new CustomRoomException(ErrorCode.L001);
+    }
 }

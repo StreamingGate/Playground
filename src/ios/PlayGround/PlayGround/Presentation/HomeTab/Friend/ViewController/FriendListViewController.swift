@@ -7,7 +7,6 @@
 
 import Foundation
 import UIKit
-import Combine
 
 class FriendListViewController: UIViewController {
     // MARK: - Properties

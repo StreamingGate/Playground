@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Map;
 
@@ -47,9 +46,7 @@ public class FriendController {
         return ResponseEntity.ok(Map.of(RESPONSE_MAP_KEY, friendService.getFriendWaitList(uuid)));
     }
 
-    /**
-     * 친구 신청 받은 사람이 요청을 수락한다.
-     */
+    /* 친구 신청 받은 사람이 요청을 수락한다. */
     @PostMapping("/manage/{uuid}")
     public ResponseEntity<Map<String, String>> allowFriendRequest(@PathVariable("uuid") String uuid,
                                                                   @RequestBody Map<String, String> map) throws Exception {

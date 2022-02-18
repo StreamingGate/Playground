@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { Typography } from '@components/cores';
+import { Typography, ThumbUp, ThumbDown } from '@components/cores';
 import { Avatar } from '@components/dataDisplays';
 import { Button } from '@components/buttons';
 
@@ -36,6 +36,14 @@ export const ActionContainer = styled.div`
 export const Action = styled.div`
   display: flex;
   align-items: center;
+`;
+
+export const ThumbDownIcon = styled(ThumbDown)`
+  fill: ${({ isToggle }) => (isToggle ? '#000000' : 'none')};
+`;
+
+export const ThumbUpIcon = styled(ThumbUp)`
+  fill: ${({ isToggle }) => (isToggle ? '#000000' : 'none')};
 `;
 
 export const ActionLabel = styled(Typography)``;

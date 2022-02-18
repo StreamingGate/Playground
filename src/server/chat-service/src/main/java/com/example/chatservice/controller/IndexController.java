@@ -1,7 +1,7 @@
 package com.example.chatservice.controller;
 
 import java.util.List;
-import com.example.chatservice.model.room.Room;
+import com.example.chatservice.dto.room.Room;
 import com.example.chatservice.redis.RedisRoomService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,7 +25,7 @@ public class IndexController {
         model.addAttribute("rooms", rooms);
         return "room";
     }
-    
+
     @GetMapping("/room/enter/{roomId}")
     public String roomDetail(Model model, @PathVariable String roomId) {
         log.info("enter room....");

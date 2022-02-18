@@ -1,0 +1,134 @@
+server:
+  port: 8000
+
+#eureka:
+#  client:
+#    register-with-eureka: true
+#    fetch-registry: true
+#    service-url:
+#      defaultZone: http://localhost:8761/eureka
+
+spring:
+  application:
+    name: gateway-service
+  profiles:
+    include:
+      - auth
+  cloud:
+    gateway:
+      globalcors:
+        add-to-simple-url-handler-mapping: true
+        cors-configurations:
+          '[/**]':
+            allowedOrigins:
+              - "http://localhost:8080"
+              - "https://streaminggate.shop"
+              - "http://localhost:8888"
+              - "http://localhost:63669"
+              - "http://localhost:9999"
+              - "http://3.35.16.32:8888"
+              - "http://13.209.19.25:9999"
+            allowCredentials: true
+            allowedHeaders:
+              - x-requested-with
+              - content-length
+              - authorization
+              - content-type
+              - credential
+              - X-AUTH-TOKEN
+              - X-CSRF-TOKEN
+            allowedMethods:
+              - POST
+              - GET
+              - PUT
+              - DELETE
+      routes:
+        - id: user-service
+          uri: http://18.117.58.222:50001/
+          predicates:
+            - Path=/user-service/users
+            - Method=POST
+          filters:
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+        - id: user-service
+          uri: http://18.117.58.222:50001/
+          predicates:
+            - Path=/user-service/login
+            - Method=POST
+          filters:
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+        - id: user-service
+          uri: http://18.117.58.222:50001/
+          predicates:
+            - Path=/user-service/refresh
+            - Method=POST,GET,DELETE,PUT
+          filters:
+            - RewritePath=/user-service(?<segment>/?.*), /$\{segment}
+        - id: user-service
+          uri: http://18.117.58.222:50001/
+          predicates:
+            - Path=/user-service/email
+            - Method=POST,GET,DELETE,PUT
+          filters:
+            - RewritePath=/user-service(?<segment>/?.*), /$\{segment}
+        - id: user-service
+          uri: http://18.117.58.222:50001/
+          predicates:
+            - Path=/user-service/password
+            - Method=POST,GET,DELETE,PUT
+          filters:
+            - RewritePath=/user-service(?<segment>/?.*), /$\{segment}
+        - id: user-service
+          uri: http://18.117.58.222:50001/
+          predicates:
+            - Path=/user-service/nickname
+            - Method=POST,GET,DELETE,PUT
+          filters:
+            - RewritePath=/user-service(?<segment>/?.*), /$\{segment}
+        - id: user-service
+          uri: http://18.117.58.222:50001/
+          predicates:
+            - Path=/user-service/**
+            - Method=POST,GET,DELETE,PUT
+          filters:
+            - RewritePath=/user-service(?<segment>/?.*), /$\{segment}
+            - AuthenticationFilter
+        - id: main-service
+          uri: http://3.34.152.141:50004/
+          predicates:
+            - Path=/main-service/**
+            - Method=POST,GET,DELETE,PUT
+          filters:
+            - RewritePath=/main-service(?<segment>/?.*), /$\{segment}
+            - AuthenticationFilter
+        - id: upload-service
+          uri: http://3.39.44.188:50006/
+          predicates:
+            - Path=/upload-service/**
+            - Method=POST,GET,DELETE,PUT
+          filters:
+            - RewritePath=/upload-service(?<segment>/?.*), /$\{segment}
+            - AuthenticationFilter
+        - id: room-service
+          uri: http://18.117.58.222:50002/
+          predicates:
+            - Path=/room-service/room
+            - Method=DELETE
+          filters:
+            - RewritePath=/room-service(?<segment>/?.*), /$\{segment}
+        - id: room-service
+          uri: http://18.117.58.222:50002/
+          predicates:
+            - Path=/room-service/**
+            - Method=POST,GET,DELETE,PUT
+          filters:
+            - RewritePath=/room-service(?<segment>/?.*), /$\{segment}
+            - AuthenticationFilter
+        - id: video-service
+          uri: http://3.34.152.141:50005/
+          predicates:
+            - Path=/video-service/**
+            - Method=POST,GET,DELETE,PUT
+          filters:
+            - RewritePath=/video-service(?<segment>/?.*), /$\{segment}
+            - AuthenticationFilter

@@ -8,8 +8,6 @@
 import Foundation
 import UIKit
 import AVFoundation
-import MobileCoreServices
-import Combine
 
 class createInfoViewController: UIViewController {
     // MARK: - Properties
@@ -17,11 +15,7 @@ class createInfoViewController: UIViewController {
     @IBOutlet weak var accountNicknameLabel: UILabel!
     @IBOutlet weak var detailTitleLabel: UILabel!
     @IBOutlet weak var titleTextView: UITextView!
-    @IBOutlet weak var titlePlaceHolderLabel: UILabel!
-    @IBOutlet weak var titleCountLabel: UILabel!
     @IBOutlet weak var explainTextView: UITextView!
-    @IBOutlet weak var explainCountLabel: UILabel!
-    @IBOutlet weak var explainPlaceHolderLabel: UILabel!
     @IBOutlet weak var categoryTitleLabel: UILabel!
     @IBOutlet weak var categoryContentLabel: UILabel!
     @IBOutlet weak var categoryButton: UIButton!
@@ -40,8 +34,6 @@ class createInfoViewController: UIViewController {
     @IBOutlet weak var loadingViewTopMargin: NSLayoutConstraint!
     @IBOutlet weak var loadingViewBottomMargin: NSLayoutConstraint!
     
-    let imagePicker = UIImagePickerController()
-    var imageInfo: UIImage?
     
     let captureSession = AVCaptureSession()
     var videoDeviceInput: AVCaptureDeviceInput!
@@ -68,11 +60,6 @@ class createInfoViewController: UIViewController {
         super.viewDidLoad()
         guard let nav = self.navigationController as? CreateNavigationController else { return }
         navVC = nav
-        
-        imagePicker.delegate = self
-        imagePicker.sourceType = .photoLibrary
-        imagePicker.mediaTypes = [kUTTypeImage as String]
-        
         cameraView.session = captureSession
         sessionQueue.async {
             self.setupSession()
@@ -90,6 +77,8 @@ class createInfoViewController: UIViewController {
     // MARK: - UI Setting
     func setupUI() {
         closeButton.setTitle("", for: .normal)
+        
+        
         currentAccountLabel.font = UIFont.bottomTab
         currentAccountLabel.textColor = UIColor.background
         accountNicknameLabel.font = UIFont.Component
@@ -103,21 +92,11 @@ class createInfoViewController: UIViewController {
         titleTextView.layer.borderWidth = 1
         titleTextView.layer.cornerRadius = 10
         
-        titlePlaceHolderLabel.textColor = UIColor.placeHolder
-        titlePlaceHolderLabel.font = UIFont.caption
-        titleCountLabel.font = UIFont.caption
-        titleCountLabel.textColor = UIColor.placeHolder
-        
         explainTextView.textColor = UIColor.background
         explainTextView.font = UIFont.caption
         explainTextView.layer.borderColor = UIColor.placeHolder.cgColor
         explainTextView.layer.borderWidth = 1
         explainTextView.layer.cornerRadius = 10
-        
-        explainPlaceHolderLabel.textColor = UIColor.placeHolder
-        explainPlaceHolderLabel.font = UIFont.caption
-        explainCountLabel.font = UIFont.caption
-        explainCountLabel.textColor = UIColor.placeHolder
         
         categoryButton.layer.borderColor = UIColor.placeHolder.cgColor
         categoryButton.layer.borderWidth = 1

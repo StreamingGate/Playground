@@ -189,7 +189,6 @@ extension HomeListViewController: UICollectionViewDataSource, UICollectionViewDe
             self.tableView.scrollToRow(at: IndexPath(item: 0, section: 0), at: .top, animated: false)
         }
         self.viewModel.selectedCategory = viewModel.categories[indexPath.item]
-        
         // 카테고리 변경 시, 가장 최신 동영상부터 다시 로드
         self.viewModel.lastLiveId = -1
         self.viewModel.lastVideoId = -1
@@ -224,7 +223,9 @@ extension HomeListViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if middle == indexPath.row {
-            self.pausePlayer()
+            self.playerView.player?.pause()
+            self.playerView.player?.replaceCurrentItem(with: nil)
+            self.playerView.player = nil
         }
     }
     
@@ -245,7 +246,7 @@ extension HomeListViewController: UITableViewDataSource, UITableViewDelegate {
                 return
             }
             self.tableView.tableFooterView = createSpinnerFooter()
-            self.viewModel.loadAllList(vc: self, coordinator: self.navVC?.coordinator)
+            self.viewModel.loadAllList()
         } else {
             // 더이상 로드할 데이터가 없을 경우, spinner 멈춤
             self.spinner.stopAnimating()
@@ -258,7 +259,7 @@ extension HomeListViewController: UITableViewDataSource, UITableViewDelegate {
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         guard let parent = self.navigationController?.parent as? CustomTabViewController else { return }
         if parent.children.contains(where: { ($0 as? PlayViewController) != nil }) {
-            self.pausePlayer()
+            self.playerView.player = nil
             return
         }
         if scrollView == tableView {
@@ -275,10 +276,8 @@ extension HomeListViewController: UITableViewDataSource, UITableViewDelegate {
             let avAsset = AVURLAsset(url: url)
             let item = AVPlayerItem(asset: avAsset)
             player.replaceCurrentItem(with: item)
-            self.playerView.backgroundColor = UIColor.black
             self.playerView.player = player
             self.playerView.player?.play()
-            self.playerView.player?.isMuted = true
         }
     }
 }

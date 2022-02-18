@@ -54,6 +54,20 @@ export const FriendItem = styled.li`
   cursor: pointer;
 `;
 
+export const FriendAvatarContainer = styled.div`
+  position: relative;
+`;
+
+export const OnlineMark = styled.div`
+  width: 8px;
+  height: 8px;
+  position: absolute;
+  right: -2px;
+  bottom: 0px;
+  background-color: #509752;
+  border-radius: 50%;
+`;
+
 export const FriendModalContainer = styled.div`
   display: flex;
   position: fixed;

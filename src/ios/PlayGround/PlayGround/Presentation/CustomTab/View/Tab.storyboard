@@ -24,12 +24,6 @@
                                     <segue destination="sQH-1q-3Ux" kind="embed" id="v7H-eg-ZVT"/>
                                 </connections>
                             </containerView>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aAe-Z3-bVD">
-                                <rect key="frame" x="0.0" y="44" width="414" height="738"/>
-                                <connections>
-                                    <segue destination="PwW-0Q-pbr" kind="embed" id="yYy-wb-pt3"/>
-                                </connections>
-                            </containerView>
                             <containerView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FY6-V1-fwP">
                                 <rect key="frame" x="0.0" y="44" width="414" height="900"/>
                                 <constraints>
@@ -173,17 +167,13 @@
                             <constraint firstItem="U8U-3r-8Li" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="GOd-pN-K8D"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="5Ro-SQ-aqp" secondAttribute="bottom" id="Nxb-QE-q1V"/>
                             <constraint firstItem="U8U-3r-8Li" firstAttribute="top" secondItem="5Ro-SQ-aqp" secondAttribute="bottom" id="QfS-Br-Ob3"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="uUw-2h-5tc" secondAttribute="bottom" constant="80" id="TbD-e9-RkO"/>
                             <constraint firstItem="5Ro-SQ-aqp" firstAttribute="centerX" secondItem="vDu-zF-Fre" secondAttribute="centerX" id="Tlp-tZ-RwN"/>
-                            <constraint firstItem="aAe-Z3-bVD" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" id="U9G-er-jNb"/>
-                            <constraint firstItem="aAe-Z3-bVD" firstAttribute="centerX" secondItem="vDu-zF-Fre" secondAttribute="centerX" id="UjL-oE-jPY"/>
                             <constraint firstItem="Yiv-la-cfA" firstAttribute="leading" secondItem="5Ro-SQ-aqp" secondAttribute="leading" id="Wcf-3L-Nca"/>
                             <constraint firstItem="Yiv-la-cfA" firstAttribute="centerX" secondItem="5Ro-SQ-aqp" secondAttribute="centerX" id="Y6G-SB-8yV"/>
                             <constraint firstItem="FY6-V1-fwP" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="Ykc-GG-xWf"/>
                             <constraint firstItem="5Ro-SQ-aqp" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="ZNr-31-rB4"/>
-                            <constraint firstItem="aAe-Z3-bVD" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="bPE-8I-nXe"/>
                             <constraint firstItem="U8U-3r-8Li" firstAttribute="centerX" secondItem="vDu-zF-Fre" secondAttribute="centerX" id="bSu-cg-Do9"/>
-                            <constraint firstItem="5Ro-SQ-aqp" firstAttribute="top" secondItem="uUw-2h-5tc" secondAttribute="bottom" id="d2e-PM-Xkv"/>
-                            <constraint firstItem="5Ro-SQ-aqp" firstAttribute="top" secondItem="aAe-Z3-bVD" secondAttribute="bottom" id="lh8-Cq-xdy"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="FY6-V1-fwP" secondAttribute="bottom" id="nmO-ja-9Jl"/>
                             <constraint firstItem="uUw-2h-5tc" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="sYx-mW-j0k"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="uUw-2h-5tc" secondAttribute="trailing" id="txr-C2-VmD"/>
@@ -192,10 +182,9 @@
                     <connections>
                         <outlet property="CreateTabImageView" destination="bb3-Td-cAo" id="Gab-17-aw2"/>
                         <outlet property="bottomWhiteView" destination="U8U-3r-8Li" id="OFd-9J-GdR"/>
-                        <outlet property="homeContainerView" destination="uUw-2h-5tc" id="9p7-5R-VID"/>
+                        <outlet property="containerView" destination="uUw-2h-5tc" id="wFV-Hj-kiF"/>
                         <outlet property="homeTabImageView" destination="esQ-9X-WJt" id="Tcc-L4-bZ2"/>
                         <outlet property="homeTabLabel" destination="Wio-eV-llj" id="GVw-Fs-RKp"/>
-                        <outlet property="myContainerView" destination="aAe-Z3-bVD" id="YbL-kf-LVr"/>
                         <outlet property="myTabImageView" destination="IfB-RC-xp9" id="hhf-XI-uIp"/>
                         <outlet property="myTabLabel" destination="06y-5z-oBC" id="c0m-oz-FLy"/>
                         <outlet property="playContainerView" destination="FY6-V1-fwP" id="lCu-U8-bOj"/>
@@ -223,7 +212,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="u5g-Ft-uMj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="990" y="-382"/>
+            <point key="canvasLocation" x="990" y="40"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="Z1o-bG-uQZ">
@@ -233,7 +222,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="900"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="7Pt-uL-rXP"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NHk-XK-DMe" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

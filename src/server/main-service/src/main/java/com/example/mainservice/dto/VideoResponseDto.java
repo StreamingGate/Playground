@@ -12,6 +12,7 @@ public class VideoResponseDto {
     private Long id;
     private String title;
     private String uuid;
+    private String uploaderUuid;
     private String uploaderNickname;
     private String uploaderProfileImage;
     private String fileLink;
@@ -20,10 +21,12 @@ public class VideoResponseDto {
     private Category category;
     private LocalDateTime createdAt;
 
-    public VideoResponseDto(Video video) {//, Long viewedProgress){
+    /* TODO : viewedProgress 구현하면 추가하기 */
+    public VideoResponseDto(Video video) {
         this.id = video.getId();
         this.title = video.getTitle();
         this.uuid = video.getUuid();
+        this.uploaderUuid = video.getUser().getUuid();
         this.uploaderNickname = video.getUser().getNickName();
         this.uploaderProfileImage = video.getUser().getProfileImage();
         this.hits = video.getHits();
@@ -31,6 +34,5 @@ public class VideoResponseDto {
         this.thumbnail = video.getThumbnail();
         this.category = video.getCategory();
         this.createdAt = video.getCreatedAt();
-//        this.viewedProgress = viewedProgress;
     }
 }
