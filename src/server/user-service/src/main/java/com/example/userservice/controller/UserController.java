@@ -72,8 +72,8 @@ public class UserController {
 
     /* 이메일 인증코드 전송 */
     @PostMapping("/email")
-    public ResponseEntity<String> checkMail(@RequestBody String email) throws Exception {
-        String res = userService.checkEmail(email);
+    public ResponseEntity<Email> checkMail(@RequestBody Email email) throws Exception {
+        Email res = userService.checkEmail(email);
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
