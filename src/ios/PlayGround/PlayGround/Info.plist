@@ -13,6 +13,19 @@
 			</array>
 		</dict>
 	</array>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>dev.streaminggate.shop</key>
+			<dict>
+				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+			</dict>
+		</dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -33,15 +46,10 @@
 		</dict>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>스트리밍을 시작하기 위해서는 PlayGround에 카메라 권한을 주셔야 합니다</string>
+	<string>스트리밍을 하기 위해서는 PlayGround에 카메라 권한을 주셔야 합니다.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>프로필 사진을 설정하려면 PlayGround에서 갤러리 접근 권한을 주셔야 합니다</string>
+	<string>사진을 선택하시려면 PlayGround에 갤러리 접근 권한을 주셔야 합니다.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>소리을 설정하려면 PlayGround에서 마이크 접근 권한을 주셔야 합니다</string>
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSAllowsArbitraryLoads</key>
-		<true/>
-	</dict>
+	<string>마이크를 사용하시려면 PlayGround에 마이크 접근 권한을 주셔야 합니다.</string>
 </dict>
 </plist>

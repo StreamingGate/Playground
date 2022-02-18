@@ -345,8 +345,8 @@ class PlayViewController: UIViewController {
         self.miniBackView.addSubview(miniChannelNameLabel)
         self.miniBackView.addSubview(miniPlayPauseButton)
         self.miniBackView.addSubview(miniCloseButton)
-        let miniTitleTrailing = miniTitleLabel.trailingAnchor.constraint(equalTo: self.miniBackView.trailingAnchor, constant: -90)
-        miniTitleTrailing.priority = UILayoutPriority(250)
+        let miniTitleTrailing = miniTitleLabel.trailingAnchor.constraint(equalTo: self.miniPlayPauseButton.leadingAnchor, constant: 10)
+        miniTitleTrailing.priority = UILayoutPriority(750)
         NSLayoutConstraint.activate([
             miniBackView.leadingAnchor.constraint(equalTo: self.playView.trailingAnchor),
             miniBackView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),

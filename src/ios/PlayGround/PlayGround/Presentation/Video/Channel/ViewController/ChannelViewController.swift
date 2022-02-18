@@ -72,7 +72,6 @@ class ChannelViewController: UIViewController {
         let animation = SkeletonAnimationBuilder().makeSlidingAnimation(withDirection: .leftRight)
         videoTableView.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .systemGray4, secondaryColor: .systemGray5), animation: animation, transition: .crossDissolve(0.5))
         profileImageView.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .systemGray4, secondaryColor: .systemGray5), animation: animation, transition: .crossDissolve(0.5))
-        channelTitleLabel.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .systemGray4, secondaryColor: .systemGray5), animation: animation, transition: .crossDissolve(0.5))
     }
     
     func bindViewModel() {
@@ -97,6 +96,7 @@ class ChannelViewController: UIViewController {
                     self.friendRequestButton.isHidden = false
                     self.friendRequestLabel.isHidden = (self.viewModel.currentChannel?.uuid == uuid)
                     self.explainLabel.isHidden = false
+                    self.channelTitleLabel.isHidden = false
                 }
                 self.videoTableView.reloadData()
             }.store(in: &cancellable)

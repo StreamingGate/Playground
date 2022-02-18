@@ -56,10 +56,14 @@ class PlayerCoordinator: Coordinator {
                     return
                 }
                 if playVC.viewModel.currentInfo?.id != info?.id {
+                    playVC.animationView.setLoading(vc: playVC, backView: playVC.loadingBackView)
+                    playVC.isPlay = false
+                    playVC.didEndPlay = false
                     playVC.viewModel.currentInfo = info
                 }
                 if let observer = playVC.timeObserver {
                     playVC.playView.player?.removeTimeObserver(observer)
+                    playVC.playView.player = nil
                     playVC.timeObserver = nil
                 }
                 playVC.isMinimized = false
