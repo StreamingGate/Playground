@@ -102,7 +102,7 @@ spring:
             - RewritePath=/main-service(?<segment>/?.*), /$\{segment}
             - AuthenticationFilter
         - id: upload-service
-          uri: http://52.79.233.207:50006/
+          uri: http://3.39.44.188:50006/
           predicates:
             - Path=/upload-service/**
             - Method=POST,GET,DELETE,PUT
