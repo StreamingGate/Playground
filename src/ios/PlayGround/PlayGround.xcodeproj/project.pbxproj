@@ -313,6 +313,7 @@
 				490770A02797E8D100ADD8E8 /* UserManager.swift */,
 				49D7A0AB2783ECAD001CAC60 /* AppUtility.swift */,
 				49EB20B227BA507700333A9D /* StatusManager.swift */,
+				49EB5B6327BE3B6D00E87EBF /* LoadingView.swift */,
 				49EA4E10279473AC00A038E3 /* Coordinator */,
 				49B9C9F3277AF0E5006AE134 /* Extensions */,
 			);
@@ -494,7 +495,6 @@
 			children = (
 				49C6CF9E27A3DAAD007C2895 /* MainServiceAPI.swift */,
 				49245C4627A3D5C50059DF55 /* MainDataModel.swift */,
-				49EB5B6327BE3B6D00E87EBF /* LoadingView.swift */,
 			);
 			path = MainService;
 			sourceTree = "<group>";
