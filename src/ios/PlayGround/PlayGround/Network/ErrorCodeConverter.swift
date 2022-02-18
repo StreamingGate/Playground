@@ -39,8 +39,10 @@ class ErrorCodeConverter {
             return errorCode.U005
         } else if error == "F002" {
             return errorCode.F002
-        } else {
+        } else if error == "F003" {
             return errorCode.F003
+        } else {
+            return errorCode.defaultError
         }
     }
 }
@@ -53,4 +55,5 @@ enum errorCode: String {
     case U005 = "회원정보가 올바르지 않습니다"
     case F002 = "이미 해당 유저에게 친구 신청을 보냈습니다"
     case F003 = "이미 친구인 유저입니다"
+    case defaultError = "오류가 발생했습니다"
 }
