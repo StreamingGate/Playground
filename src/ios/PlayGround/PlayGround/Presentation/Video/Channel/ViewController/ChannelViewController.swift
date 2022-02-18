@@ -9,6 +9,8 @@ import Foundation
 import UIKit
 import Combine
 import SwiftKeychainWrapper
+import Lottie
+import SkeletonView
 
 class ChannelViewController: UIViewController {
     // MARK: - Properties
@@ -25,9 +27,13 @@ class ChannelViewController: UIViewController {
     var navVC: HomeNavigationController?
     let spinner = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.medium)
     
+//    let animationView: AnimationView = .init(name: "PgLoading")
+//    let loadingBackView = UIView()
+    
     // MARK: - View LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
+//        self.animationView.setLoading(vc: self, backView: loadingBackView)
         videoTableView.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
         setupUI()
         bindViewModel()
@@ -61,6 +67,12 @@ class ChannelViewController: UIViewController {
         friendRequestLabel.textColor = UIColor.PGOrange
         explainLabel.font = UIFont.caption
         explainLabel.textColor = UIColor.customDarkGray
+        videoTableView.isSkeletonable = true
+        videoTableView.skeletonCornerRadius = 5
+        let animation = SkeletonAnimationBuilder().makeSlidingAnimation(withDirection: .leftRight)
+        videoTableView.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .systemGray4, secondaryColor: .systemGray5), animation: animation, transition: .crossDissolve(0.5))
+        profileImageView.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .systemGray4, secondaryColor: .systemGray5), animation: animation, transition: .crossDissolve(0.5))
+        channelTitleLabel.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .systemGray4, secondaryColor: .systemGray5), animation: animation, transition: .crossDissolve(0.5))
     }
     
     func bindViewModel() {
@@ -73,12 +85,19 @@ class ChannelViewController: UIViewController {
                 self.channelNameTitleLabel.text = info.nickName
                 self.explainLabel.text = "친구 \(info.friendCnt)명 • 동영상 \(info.uploadCnt)개"
                 self.viewModel.loadVideo(vc: self, coordinator: self.navVC?.coordinator)
-                self.friendRequestLabel.isHidden = (info.uuid == uuid)
                 self.friendRequestButton.isEnabled = !(info.uuid == uuid)
             }.store(in: &cancellable)
         self.viewModel.$videoList.receive(on: DispatchQueue.main, options: nil)
             .sink { [weak self] list in
-                guard let self = self else { return }
+                guard let self = self, list != nil else { return }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    self.videoTableView.hideSkeleton(reloadDataAfter: false, transition: .crossDissolve(0.25))
+                    self.profileImageView.hideSkeleton(reloadDataAfter: false, transition: .crossDissolve(0.25))
+                    self.channelTitleLabel.hideSkeleton(reloadDataAfter: false, transition: .crossDissolve(0.25))
+                    self.friendRequestButton.isHidden = false
+                    self.friendRequestLabel.isHidden = (self.viewModel.currentChannel?.uuid == uuid)
+                    self.explainLabel.isHidden = false
+                }
                 self.videoTableView.reloadData()
             }.store(in: &cancellable)
     }
@@ -112,18 +131,20 @@ class ChannelViewController: UIViewController {
 
 extension ChannelViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.viewModel.videoList.count
+        return self.viewModel.videoList?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "VideoListCell", for: indexPath) as? VideoListCell else { return UITableViewCell() }
+        guard let videoList = self.viewModel.videoList else { return cell }
         cell.setupUI(indexPath.row)
-        cell.setupVideo(info: self.viewModel.videoList[indexPath.row])
+        cell.setupVideo(info: videoList[indexPath.row])
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.navVC?.coordinator?.showPlayer(info: self.viewModel.videoList[indexPath.row])
+        guard let videoList = self.viewModel.videoList else { return }
+        self.navVC?.coordinator?.showPlayer(info: videoList[indexPath.row])
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -142,5 +163,15 @@ extension ChannelViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
+    }
+}
+
+extension ChannelViewController: SkeletonTableViewDataSource {
+    func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
+        return "VideoListCell"
+    }
+    
+    func collectionSkeletonView(_ skeletonView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 2
     }
 }

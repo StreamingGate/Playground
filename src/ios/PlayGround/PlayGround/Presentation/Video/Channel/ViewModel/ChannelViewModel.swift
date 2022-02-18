@@ -11,7 +11,7 @@ import Combine
 
 class ChannelViewModel {
     @Published var currentChannel: ChannelInfo?
-    @Published var videoList: [GeneralVideo] = []
+    @Published var videoList: [GeneralVideo]?
     
     var isLoading = false
     var lastId = -1

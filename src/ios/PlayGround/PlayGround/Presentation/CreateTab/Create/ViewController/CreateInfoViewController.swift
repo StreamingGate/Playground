@@ -32,7 +32,6 @@ class createInfoViewController: UIViewController {
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var loadingView: UIView!
     @IBOutlet weak var loadingLabel: UILabel!
-    @IBOutlet weak var loadingCancelButton: UIButton!
     @IBOutlet weak var closeButton: UIButton!
     
     @IBOutlet weak var cameraView: CameraView!
@@ -145,12 +144,7 @@ class createInfoViewController: UIViewController {
         
         loadingLabel.font = UIFont.Tab
         loadingLabel.textColor = UIColor.white
-        
-        loadingCancelButton.backgroundColor = UIColor.white
-        loadingCancelButton.tintColor = UIColor.black
-        loadingCancelButton.titleLabel?.font = UIFont.SubTitle
-        loadingCancelButton.layer.cornerRadius = 20
-        
+      
         titleTextView.textContainerInset = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
         explainTextView.textContainerInset = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
     }
@@ -221,9 +215,6 @@ class createInfoViewController: UIViewController {
         }
     }
     
-    @IBAction func loadingCancleButtonDidTap(_ sender: Any) {
-        self.navVC?.coordinator?.dismiss()
-    }
     
     @IBAction func closeButtonDidTap(_ sender: Any) {
         self.navVC?.coordinator?.dismiss()

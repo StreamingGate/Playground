@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import Lottie
 
 class IdInputViewController: UIViewController {
     // MARK: - Properties
@@ -27,6 +28,8 @@ class IdInputViewController: UIViewController {
     @IBOutlet weak var timerLabel: UILabel!
     var timeLeft = 600
     var timer = Timer()
+    let animationView: AnimationView = .init(name: "PgLoading")
+    let loadingBackView = UIView()
     
     // MARK: - View LifeCycle
     override func viewDidLoad() {
@@ -173,10 +176,12 @@ class IdInputViewController: UIViewController {
         guard let idInfo = idTextField.text, idInfo.isEmpty == false else { return }
         sendVerifyMailButton.isEnabled = false
         idFormatCheckLabel.isHidden = true
+        animationView.setLoading(vc: self, backView: loadingBackView)
         UserServiceAPI.shared.sendEmailVerification(email: idInfo) { result in
             print("email send result = \(result)")
             if result["email"] as? String == idInfo {
                 DispatchQueue.main.async {
+                    self.animationView.stopLoading(backView: self.loadingBackView)
                     self.sendVerifyMailButton.isHidden = true
                     self.verifyNumTextField.isHidden = false
                     self.verifyNumUnderLine.isHidden = false
@@ -190,6 +195,7 @@ class IdInputViewController: UIViewController {
             } else {
                 // 오류
                 DispatchQueue.main.async {
+                    self.animationView.stopLoading(backView: self.loadingBackView)
                     self.idFormatCheckLabel.isHidden = false
                     self.idFormatCheckLabel.textColor = UIColor.systemRed
                     self.sendVerifyMailButton.isEnabled = false
@@ -207,6 +213,7 @@ class IdInputViewController: UIViewController {
     @IBAction func nextButtonDidTap(_ sender: Any) {
         guard let verifyInput = verifyNumTextField.text, verifyInput.isEmpty == false, let nameInput = nameTextField.text, nameInput.isEmpty == false, let emailInput  = idTextField.text, emailInput.isEmpty == false else { return }
         nextButton.isEnabled = false
+        animationView.setLoading(vc: self, backView: loadingBackView)
         UserServiceAPI.shared.checkVerificationCode(code: verifyInput) { result in
             print("code check result = \(result)")
             if result["email"] as? String == emailInput {
@@ -221,11 +228,13 @@ class IdInputViewController: UIViewController {
                     self.nextButton.isEnabled = true
                     guard let vc = UIStoryboard(name: "Register", bundle: nil).instantiateViewController(withIdentifier: "NickNameInputViewController") as? NickNameInputViewController else { return }
                     vc.nameInfo = nameInput
+                    self.animationView.stopLoading(backView: self.loadingBackView)
                     self.navigationController?.pushViewController(vc, animated: true)
                 }
             } else {
                 // 오류
                 DispatchQueue.main.async {
+                    self.animationView.stopLoading(backView: self.loadingBackView)
                     let converter = ErrorCodeConverter()
                     let errorType = converter.parse(result)
                     self.simpleAlert(message: errorType.rawValue)

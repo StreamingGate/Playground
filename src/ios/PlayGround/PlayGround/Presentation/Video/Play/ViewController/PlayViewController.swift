@@ -12,6 +12,7 @@ import AVFoundation
 import SwiftKeychainWrapper
 import WebRTC
 import SwiftyJSON
+import Lottie
 
 class PlayViewController: UIViewController {
     // MARK: - Properties
@@ -111,7 +112,9 @@ class PlayViewController: UIViewController {
     
     // transition handler
     var coordinator: PlayerCoordinator?
-
+    let animationView: AnimationView = .init(name: "PgLoading")
+    let loadingBackView = UIView()
+    
     let viewModel = PlayViewModel()
     
     // MARK: - View LifeCycle
@@ -212,6 +215,7 @@ class PlayViewController: UIViewController {
     
     // MARK: - UI Setting
     func setupUI() {
+        animationView.setLoading(vc: self, backView: loadingBackView)
         stretchButton.setTitle("", for: .normal)
         chatSendButton.setTitle("", for: .normal)
         profileButton.setTitle("", for: .normal)
@@ -397,6 +401,7 @@ class PlayViewController: UIViewController {
                 guard let self = self, let info = currentInfo else { return }
                 if self.viewModel.isLive == true { return }
                 StatusServiceAPI.shared.startWatchingVideo(id: self.viewModel.currentInfo?.id ?? 0, type: 0, videoRoomUuid: info.videoUuid ?? "", title: info.title)
+                self.animationView.stopLoading(backView: self.loadingBackView)
                 self.titleLabel.text = info.title
                 self.channelNicknameLabel.text = info.uploaderNickname
                 self.categoryLabel.text = "#\(self.viewModel.categoryDic[info.category] ?? "기타")"
@@ -623,6 +628,7 @@ class PlayViewController: UIViewController {
     }
     
     @objc func miniCLoseButtonDidTap() {
+        self.animationView.stopLoading(backView: self.loadingBackView)
         chatTextView.resignFirstResponder()
         coordinator?.closeMiniPlayer(vc: self)
     }
@@ -1011,7 +1017,8 @@ extension PlayViewController : RoomListener {
                 self.videoTrack = track
                 self.videoTrack?.isEnabled = true
                 self.videoTrack?.add(self.remoteVideoView)
-                DispatchQueue.main.async {                
+                DispatchQueue.main.async {
+                    self.animationView.stopLoading(backView: self.loadingBackView)
                     self.remoteVideoView.isHidden = false
                 }
             } else {

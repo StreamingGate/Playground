@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import SwiftKeychainWrapper
+import Lottie
 
 class LoginViewController: UIViewController {
     // MARK: - Properties
@@ -19,6 +20,8 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var autoLogInLabel: UILabel!
     @IBOutlet weak var autoLogInButton: UIButton!
     var coordinator: MainCoordinator?
+    let animationView: AnimationView = .init(name: "PgLoading")
+    let loadingBackView = UIView()
     
     // MARK: - View LifeCycle
     override func viewDidLoad() {
@@ -84,6 +87,7 @@ class LoginViewController: UIViewController {
         pwField.resignFirstResponder()
         guard let idInfo = idField.text, idInfo.isEmpty == false, let pwInfo = pwField.text, pwInfo.isEmpty == false else { return }
         print(TimeZone.current.identifier)
+        animationView.setLoading(vc: self, backView: loadingBackView)
         UserServiceAPI.shared.login(email: idInfo, password: pwInfo, timezone: TimeZone.current.identifier, fcmtoken: "token") { result in
             print("login result = \(result)")
             if result["success"] as? Int == 1, let uuid = result["uuid"] as? String, let token = result["accessToken"] as? String, let userInfo = result["data"] as? UserInfo {
@@ -99,11 +103,13 @@ class LoginViewController: UIViewController {
                     StatusManager.shared.connectToSocket()
                 }
                 DispatchQueue.main.async {
+                    self.animationView.stopLoading(backView: self.loadingBackView)
                     self.coordinator?.showTabPage()
                 }
             } else {
                 DispatchQueue.main.async {
                     self.simpleAlert(message: "로그인에 실패했습니다")
+                    self.animationView.stopLoading(backView: self.loadingBackView)
                 }
             }
         }

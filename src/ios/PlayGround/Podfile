@@ -13,4 +13,6 @@ target 'PlayGround' do
   pod "PromiseKit", "~> 6.8"
   pod "mediasoup_ios_client", "~> 1.3.5" 
   pod 'Alamofire'
+  pod 'lottie-ios'
+  pod 'SkeletonView'
 end

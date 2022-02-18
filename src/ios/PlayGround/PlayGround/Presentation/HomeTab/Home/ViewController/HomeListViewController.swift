@@ -9,6 +9,8 @@ import Foundation
 import UIKit
 import AVFoundation
 import Combine
+import Lottie
+import SkeletonView
 
 class HomeListViewController: UIViewController {
     // MARK: - Properties
@@ -29,6 +31,7 @@ class HomeListViewController: UIViewController {
     let viewModel = HomeViewModel()
     let spinner = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.medium)
     let categoryDic = ["ALL": "전체", "EDU": "교육", "SPORTS": "스포츠", "KPOP": "K-POP"]
+    var isChangingCategory = false
     
     // MARK: - View LifeCycle
     override func viewDidLayoutSubviews() {
@@ -63,12 +66,18 @@ class HomeListViewController: UIViewController {
         self.viewModel.$homeList.receive(on: DispatchQueue.main, options: nil)
             .sink { [weak self] list in
                 guard let self = self else { return }
+                let second = self.isChangingCategory ? 0.2 : 1
+                DispatchQueue.main.asyncAfter(deadline: .now() + second) {
+                    self.tableView.hideSkeleton(reloadDataAfter: false, transition: .crossDissolve(0.25))
+                }
                 self.tableView.reloadData()
                 self.collectionView.reloadData()
             }.store(in: &cancellable)
         self.viewModel.$selectedCategory.receive(on: DispatchQueue.main, options: nil)
             .sink { [weak self] selected in
                 guard let self = self else { return }
+                let animation = SkeletonAnimationBuilder().makeSlidingAnimation(withDirection: .leftRight)
+                self.tableView.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .systemGray4, secondaryColor: .systemGray5), animation: animation, transition: .none)
                 self.viewModel.loadAllList(vc: self, coordinator: self.navVC?.coordinator)
             }.store(in: &cancellable)
     }
@@ -79,6 +88,12 @@ class HomeListViewController: UIViewController {
         searchButton.setTitle("", for: .normal)
         noticeButton.setTitle("", for: .normal)
         friendButton.setTitle("", for: .normal)
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 300
+        self.tableView.isSkeletonable = true
+        self.tableView.skeletonCornerRadius = 5
+        let animation = SkeletonAnimationBuilder().makeSlidingAnimation(withDirection: .leftRight)
+        tableView.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .systemGray4, secondaryColor: .systemGray5), animation: animation, transition: .crossDissolve(0.5))
         initRefresh()
     }
     
@@ -109,6 +124,7 @@ class HomeListViewController: UIViewController {
         let footerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 50))
         spinner.center = footerView.center
         footerView.addSubview(spinner)
+        
         spinner.startAnimating()
         return footerView
     }
@@ -168,6 +184,7 @@ extension HomeListViewController: UICollectionViewDataSource, UICollectionViewDe
         // 카테고리 변경 시, 가장 최신 동영상부터 다시 로드
         self.viewModel.lastLiveId = -1
         self.viewModel.lastVideoId = -1
+        self.isChangingCategory = true
         
         self.collectionView.reloadData()
     }
@@ -258,5 +275,15 @@ extension HomeListViewController: UITableViewDataSource, UITableViewDelegate {
 extension HomeListViewController: TransitionDelegate {
     func showPlayer(info: GeneralVideo) {
         self.navVC?.coordinator?.showPlayer(info: info)
+    }
+}
+
+extension HomeListViewController: SkeletonTableViewDataSource {
+    func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
+        return "VideoListCell"
+    }
+    
+    func collectionSkeletonView(_ skeletonView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 2
     }
 }
