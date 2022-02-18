@@ -1,7 +1,0 @@
-playground:
-  mail:
-    username: sgssgmanager@gmail.com
-    password: ivlsrxfsgguvkndy
-
-jwts:
-  secret-key: token_secret
