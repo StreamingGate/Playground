@@ -33,6 +33,8 @@ class HomeListViewController: UIViewController {
     let spinner = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.medium)
     let categoryDic = ["ALL": "전체", "EDU": "교육", "SPORTS": "스포츠", "KPOP": "K-POP"]
     var isChangingCategory = false
+    let animationView: AnimationView = .init(name: "PgLoading")
+    let loadingBackView = UIView()
     
     // MARK: - View LifeCycle
     override func viewDidLayoutSubviews() {
@@ -71,6 +73,7 @@ class HomeListViewController: UIViewController {
                     self.tableView.hideSkeleton(reloadDataAfter: false, transition: .crossDissolve(0.25))
                     self.collectionViewHeight.constant = 40
                 }
+                self.animationView.stopLoading(backView: self.loadingBackView)
                 self.tableView.reloadData()
                 self.collectionView.reloadData()
             }.store(in: &cancellable)
@@ -115,6 +118,10 @@ class HomeListViewController: UIViewController {
         refresh.endRefreshing()
         self.viewModel.lastLiveId = -1
         self.viewModel.lastVideoId = -1
+        self.pausePlayer()
+        self.animationView.setLoading(vc: self, backView: self.loadingBackView)
+        let animation = SkeletonAnimationBuilder().makeSlidingAnimation(withDirection: .leftRight)
+        tableView.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .systemGray4, secondaryColor: .systemGray5), animation: animation, transition: .none)
         self.viewModel.loadAllList(vc: self, coordinator: self.navVC?.coordinator)
     }
     
@@ -137,6 +144,7 @@ class HomeListViewController: UIViewController {
     func pausePlayer() {
         self.playerView.player?.pause()
         self.playerView.player?.replaceCurrentItem(with: nil)
+        
         self.playerView.player = nil
     }
     
