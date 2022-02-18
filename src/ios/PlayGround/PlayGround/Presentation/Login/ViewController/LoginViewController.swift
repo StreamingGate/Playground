@@ -62,7 +62,7 @@ class LoginViewController: UIViewController {
                     }
                 } else {
                     DispatchQueue.main.async {
-                        self.simpleAlert(message: "로그인에 실패했습니다")
+                        self.simpleAlert(message: "자동 로그인에 실패했습니다")
                         self.animationView.stopLoading(backView: self.loadingBackView)
                     }
                 }
