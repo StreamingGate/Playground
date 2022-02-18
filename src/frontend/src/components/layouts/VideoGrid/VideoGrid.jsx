@@ -8,7 +8,7 @@ function VideoGrid({ className, children }) {
 
 VideoGrid.propTypes = {
   className: Proptypes.string,
-  children: Proptypes.arrayOf(Proptypes.element).isRequired,
+  children: Proptypes.any.isRequired,
 };
 
 VideoGrid.defaultProps = {
