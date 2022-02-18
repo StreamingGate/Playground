@@ -124,14 +124,15 @@ export default function useMediaSoupConsume(isLive, videoPlayerRef, roomId) {
   };
 
   const isValidRoom = async () => {
-    const { data } = axios.get(`/room-service/room?roomId=${roomId}&uuid=${userId}`);
+    console.log('hit');
+    const { data } = await axios.get(`/room-service/room?roomId=${roomId}&uuid=${userId}`);
     console.log(data);
 
     console.log(data);
   };
 
   useEffect(() => {
-    // isValidRoom();
+    isValidRoom();
   }, []);
 
   // 실시간 방송일 경우에만 시그널링 서버에 접속
@@ -179,6 +180,12 @@ export default function useMediaSoupConsume(isLive, videoPlayerRef, roomId) {
         }
       });
     }
+
+    return () => {
+      if (isLive && roomId && newPeer) {
+        newPeer.close();
+      }
+    };
   }, [roomId]);
 
   return { consumer, peer };
