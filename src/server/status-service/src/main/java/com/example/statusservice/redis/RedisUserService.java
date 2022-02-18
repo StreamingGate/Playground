@@ -5,7 +5,6 @@ import com.example.statusservice.dto.UserDto;
 import com.example.statusservice.entity.User.User;
 import com.example.statusservice.entity.User.UserRepository;
 import com.example.statusservice.exceptionhandler.customexception.CustomStatusException;
-import com.example.statusservice.exceptionhandler.customexception.ErrorCode;
 import com.example.statusservice.utils.RedisMessaging;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,15 +36,25 @@ public class RedisUserService {
     }
 
     /* 내 친구들의 상태 조회 */
-    public List<UserDto> findAll(String uuid) {
+    @Transactional
+    public List<UserDto> findAll(String uuid) throws CustomStatusException {
         UserDto userDto = opsHashUser.get(USER_LIST, uuid);
-        if (userDto == null) {
-            log.info(uuid + "해당 유저가 없습니다.");
-            throw new CustomStatusException(ErrorCode.S001, uuid + "해당 유저가 없습니다.");
-        }
         List<UserDto> result = new LinkedList<>();
-        for (String friendUuid : userDto.getFriendUuids()) {
-            result.add(opsHashUser.get(USER_LIST, friendUuid));
+
+        if (userDto == null) {
+            User user = userRepository.findByUuid(uuid).orElse(null);
+            /* redis에 없으면 mariadb에서도 확인 */
+            if(user == null) {
+                log.error("uuid: "+ uuid + " MariaDB에 해당 유저가 없습니다.");
+//            throw new CustomStatusException(ErrorCode.S001, uuid + "해당 유저가 없습니다.");
+                return result;
+            }
+            userDto = new UserDto(user);
+            opsHashUser.put(USER_LIST, uuid, userDto);
+        } else {
+            for (String friendUuid : userDto.getFriendUuids()) {
+                result.add(opsHashUser.get(USER_LIST, friendUuid));
+            }
         }
         return result;
     }
@@ -54,44 +63,46 @@ public class RedisUserService {
     @Transactional
     public void initRedis() {
         List<User> users = userRepository.findAll();
-        for(User user: users){
+        for (User user : users) {
             opsHashUser.put(USER_LIST, user.getUuid(), new UserDto(user));
         }
     }
 
     /* 영상 시청 시 친구에게 내 상태 publish */
-    public void publishWatching(String uuid, UserDto reqUserDto) throws CustomStatusException{
+    public void publishWatching(String uuid, UserDto reqUserDto) throws CustomStatusException {
         UserDto userDto = opsHashUser.get(USER_LIST, uuid);
-        if(userDto == null) {
-            log.error("publishWatching: "+S004.getMessage());
-            throw new CustomStatusException(S004);
+        if (userDto == null) {
+            log.error("publishWatching: " + S004.getMessage());
+//            throw new CustomStatusException(S004);
         }
-
-        userDto.updateVideoOrRoom(uuid, reqUserDto);
-        opsHashUser.put(USER_LIST, uuid, userDto);
-        ChannelTopic channelTopic = addTopic(uuid);
-        RedisMessaging.publish(channelTopic, userDto);
+        else {
+            userDto.updateVideoOrRoom(uuid, reqUserDto);
+            opsHashUser.put(USER_LIST, uuid, userDto);
+            ChannelTopic channelTopic = addTopic(uuid);
+            RedisMessaging.publish(channelTopic, userDto);
+        }
     }
 
     /* 로그인 또는 로그아웃 시 친구에게 내 상태 publish */
-    public void publishStatus(String uuid, Boolean status) throws CustomStatusException{
+    public void publishStatus(String uuid, Boolean status) throws CustomStatusException {
         UserDto userDto = opsHashUser.get(USER_LIST, uuid);
-        if(userDto == null) {
-            log.error("publishStatus: "+S004.getMessage());
-            throw new CustomStatusException(S004);
+        if (userDto == null) {
+            log.error("publishStatus: " + S004.getMessage());
+//            throw new CustomStatusException(S004);
         }
-
-        userDto.updateStatus(status);
-        opsHashUser.put(USER_LIST, userDto.getUuid(), userDto);
-        ChannelTopic channelTopic = addTopic(uuid);
-        RedisMessaging.publish(channelTopic, userDto);
+        else{
+            userDto.updateStatus(status);
+            opsHashUser.put(USER_LIST, userDto.getUuid(), userDto);
+            ChannelTopic channelTopic = addTopic(uuid);
+            RedisMessaging.publish(channelTopic, userDto);
+        }
     }
 
 
     /* 친구 추가(탈퇴하지 않은 회원의 요청임이 전제) */
     public void addFriend(FriendDto requestDto, FriendDto senderDto) {
         UserDto userDto = opsHashUser.get(USER_LIST, requestDto.getUuid());
-        if (userDto == null) { /* 없는 유저라면 친구가 처음 생긴 유저임 FIXME: 해당 케이스인 유저의 status 반영 안 됨 */
+        if (userDto == null) { /* 없는 유저라면 추가 FIXME: 친구가 처음 생긴 유저인 경우 해당 유저의 status 반영 안 됨 */
             userDto = new UserDto(requestDto);
             addTopic(requestDto.getUuid());
         }
@@ -103,7 +114,7 @@ public class RedisUserService {
     /* 친구 삭제(탈퇴하지 않은 회원의 요청임이 전제) */
     public void deleteFriend(FriendDto requestDto, FriendDto targetDto) {
         UserDto userDto = opsHashUser.get(USER_LIST, requestDto.getUuid());
-        if (userDto == null) { /* 없는 유저라면 친구가 처음 생긴 유저임 FIXME: 해당 케이스인 유저의 status 반영 안 됨 */
+        if (userDto == null) { /* 없는 유저라면 추가 FIXME: 친구가 처음 생긴 유저인 경우 해당 유저의 status 반영 안 됨 */
             userDto = new UserDto(requestDto);
             addTopic(requestDto.getUuid());
         }
@@ -114,15 +125,16 @@ public class RedisUserService {
 
     /**
      * 친구 추가/삭제시 나, 친구의 친구 목록 업데이트하기 위해 publish
+     *
      * @param type true (친구 추가인 경우) or false(친구 삭제인 경우)
      */
     public void publishAddOrDeleteFriend(boolean type, String uuid, String targetUuid) {
         UserDto userDto = opsHashUser.get(USER_LIST, uuid);
         UserDto targetDto = opsHashUser.get(USER_LIST, targetUuid);
-        ChannelTopic userTopic=null;
+        ChannelTopic userTopic = null;
         ChannelTopic targetTopic = null;
-        if(userDto !=null) userTopic = addTopic(uuid);
-        if(targetDto !=null) targetTopic = addTopic(targetUuid);
+        if (userDto != null) userTopic = addTopic(uuid);
+        if (targetDto != null) targetTopic = addTopic(targetUuid);
 
         userDto.updateAddOrDelete(type, targetUuid);
         targetDto.updateAddOrDelete(type, uuid);
@@ -145,16 +157,16 @@ public class RedisUserService {
     }
 
     /* 모든 유저에 대한 토픽 저장 */
-    public void addTopics(){
-        List<User> users  = userRepository.findAll();
-        for(User user: users){
+    public void addTopics() {
+        List<User> users = userRepository.findAll();
+        for (User user : users) {
             addTopic(user.getUuid());
         }
     }
 
-    public ChannelTopic addTopic(String uuid){
+    public ChannelTopic addTopic(String uuid) {
         ChannelTopic topic = topics.get(uuid);
-        if(topic == null){
+        if (topic == null) {
             topic = new ChannelTopic(uuid);
             redisMessageListener.addMessageListener(redisSubscriber, topic);
             log.info("==Add topic:" + topic);
