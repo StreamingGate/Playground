@@ -2,7 +2,9 @@ import React from 'react';
 import { ThemeProvider } from 'styled-components';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClientProvider, QueryClient } from 'react-query';
+import { ToastContainer } from 'react-toastify';
 import { ReactQueryDevtools } from 'react-query/devtools';
+import 'react-toastify/dist/ReactToastify.css';
 
 import { theme } from '@utils/constant';
 import { modalService } from '@utils/service';
@@ -26,7 +28,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <GlobalStyle />
         <NormalizeStyle />
-
+        <ToastContainer />
         <Router navigator={history}>
           <modalService.Provider>
             <Routes>

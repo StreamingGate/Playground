@@ -152,9 +152,6 @@ export default function useMediaSoupProduce(stream, roomId, userId) {
         setNewPeer(peer);
       });
     }
-    return () => {
-      peer?.close();
-    };
   }, [stream]);
 
   const replaceTrack = async () => {

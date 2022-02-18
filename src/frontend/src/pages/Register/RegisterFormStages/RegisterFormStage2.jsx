@@ -19,11 +19,7 @@ function RegisterFormStage2({ values, errors, touched, onChange, onProfileChange
   const profileInputRef = useRef(null);
 
   useEffect(() => {
-    defaultProfileImg.current = mediaService.createImageFromInitials(
-      name,
-      theme.colors.pgOrange,
-      '#ffffff'
-    );
+    defaultProfileImg.current = mediaService.createImageFromInitials(name);
     onProfileChange(defaultProfileImg.current);
   }, []);
 

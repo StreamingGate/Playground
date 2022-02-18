@@ -22,8 +22,6 @@ function MakeStreamModal({ type }) {
 
   const navigate = useNavigate();
 
-  const { mutate } = useUploadVideo();
-
   const { values, handleInputChange } = useForm({ initialValues: { title: '', content: '' } });
   const modal = modalService.useModal();
 
@@ -67,6 +65,8 @@ function MakeStreamModal({ type }) {
     setCategory(target.value);
   };
 
+  const { mutate } = useUploadVideo();
+
   const handleUploadBtnClick = () => {
     const { title, content } = values;
     const modalProps = {};
@@ -98,6 +98,7 @@ function MakeStreamModal({ type }) {
     );
 
     mutate(formData);
+    modal.hide();
   };
 
   const handleMakeLiveSuccess = async data => {

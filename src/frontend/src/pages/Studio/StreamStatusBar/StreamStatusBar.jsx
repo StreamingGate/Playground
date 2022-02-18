@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import * as S from './StreamStatusBar.style';
 import { ChatInfoContext } from '@utils/context';
 
-import { Viewers, Like } from '@components/cores';
+import { Viewers } from '@components/cores';
 
 function StreamStatusBar({ isStop }) {
   const { curUserCount } = useContext(ChatInfoContext);
@@ -38,10 +38,6 @@ function StreamStatusBar({ isStop }) {
         <Viewers />
         <S.ViewerCount type='caption'>{curUserCount}</S.ViewerCount>
       </S.ViewerCountContainer>
-      <S.LikeCountContaienr>
-        <Like />
-        <S.LikeCount type='caption'>1</S.LikeCount>
-      </S.LikeCountContaienr>
     </S.StreamStatusBarContainer>
   );
 }
