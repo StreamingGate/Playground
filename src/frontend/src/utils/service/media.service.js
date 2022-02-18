@@ -26,7 +26,18 @@ const copyUrl = async () => {
   }
 };
 
-const createImageFromInitials = (name, bgColor, color) => {
+const defaultProfileBgColors = [
+  '#FFCB46',
+  '#5690E7',
+  '#D696EC',
+  '#ED6464',
+  '#909090',
+  '#93DDB1',
+  '#55CFC8',
+  '#F16E9D',
+];
+
+const createImageFromInitials = name => {
   const size = 100;
   const firstLetter = name[0];
 
@@ -35,13 +46,15 @@ const createImageFromInitials = (name, bgColor, color) => {
   canvas.width = size;
   canvas.height = size;
 
-  context.fillStyle = bgColor;
+  const randomIdx = Math.floor(Math.random() * defaultProfileBgColors.length);
+
+  context.fillStyle = defaultProfileBgColors[randomIdx];
   context.fillRect(0, 0, size, size);
 
-  context.fillStyle = `${color}50`;
+  context.fillStyle = `#ffffff50`;
   context.fillRect(0, 0, size, size);
 
-  context.fillStyle = color;
+  context.fillStyle = '#ffffff';
   context.textBaseline = 'middle';
   context.textAlign = 'center';
   context.font = `${size / 2}px Roboto`;
