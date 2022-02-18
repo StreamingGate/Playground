@@ -26,10 +26,9 @@ public class StompHandler implements ChannelInterceptor {
     /* DISCONNET 메시지의 경우 preSend로 처리해야 헤더로 전송된 값을 처리할 수 있음 */
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) throws CustomStatusException {
-        log.info("Channel Interceptor");
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
-
-        String uuid;
+        String destination = accessor.getDestination();
+        String uuid = null, topic = null;
         switch (accessor.getCommand()) {
             case CONNECT:
                 String token = getValueFromHeader(message, "token");
@@ -39,6 +38,13 @@ public class StompHandler implements ChannelInterceptor {
                     throw new CustomStatusException(ErrorCode.S003);
                 }
                 log.info("token 인증 성공");
+                break;
+            case SUBSCRIBE:
+                topic = getSplited(destination, 3);
+                if(topic != null && !topic.equals("update")){
+                    uuid = destination.substring(destination.lastIndexOf("/") + 1);
+                    if (uuid != null) redisUserService.publishStatus(uuid, Boolean.TRUE);
+                }
                 break;
             case DISCONNECT: /* 페이지 이동, 브라우저 닫기 포함 */
                 uuid = getValueFromHeader(message, "uuid");
@@ -50,18 +56,14 @@ public class StompHandler implements ChannelInterceptor {
         return message;
     }
 
-    @Override
-    public void postSend(Message message, MessageChannel channel, boolean sent) {
-        StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
-        String destination = accessor.getDestination();
-        switch (accessor.getCommand()) {
-            case SUBSCRIBE:
-                String uuid = destination.substring(destination.lastIndexOf("/") + 1);
-                if (uuid != null) redisUserService.publishStatus(uuid, Boolean.TRUE);
-                break;
-            default:
-                break;
+    private String getSplited(String destination, int index) {
+        String[] splited = null;
+        splited = destination.split("/");
+        if(index < splited.length) {
+            String result = splited[index];
+            return result;
         }
+        return null;
     }
 
     private String getValueFromHeader(Message<?> message, String key) {
