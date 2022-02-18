@@ -21,8 +21,24 @@ class ErrorCodeConverter {
             return errorCode.U004
         } else if error == "U005" {
             return errorCode.U005
-        } else {
+        } else if error == "U006" {
+            return errorCode.U006
+        } else if error == "V001" {
+            return errorCode.V001
+        } else if error == "F001" {
+            return errorCode.F001
+        } else if error == "F002" {
             return errorCode.F002
+        } else if error == "F003" {
+            return errorCode.F003
+        } else if error == "F004" {
+            return errorCode.F004
+        } else if error == "L001" {
+            return errorCode.L001
+        } else if error == "L002" {
+            return errorCode.L002
+        } else {
+            return errorCode.defaultError
         }
     }
     
@@ -37,10 +53,22 @@ class ErrorCodeConverter {
             return errorCode.U004
         } else if error == "U005" {
             return errorCode.U005
+        } else if error == "U006" {
+            return errorCode.U006
+        } else if error == "V001" {
+            return errorCode.V001
+        } else if error == "F001" {
+            return errorCode.F001
         } else if error == "F002" {
             return errorCode.F002
         } else if error == "F003" {
             return errorCode.F003
+        } else if error == "F004" {
+            return errorCode.F004
+        } else if error == "L001" {
+            return errorCode.L001
+        } else if error == "L002" {
+            return errorCode.L002
         } else {
             return errorCode.defaultError
         }
