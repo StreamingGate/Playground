@@ -1,0 +1,30 @@
+spring.profiles.active: local
+spring:
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: root
+    password: test
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    open-in-view: false
+    show-sql: true
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+---
+spring.config.activate.on-profile: local
+server:
+  port: 8082
+spring:
+  datasource:
+    url: jdbc:mariadb://localhost:3306/playground?characterEncoding=utf8
+  sql:
+    init:
+      mode: always
+---
+spring.config.activate.on-profile: develop
+server:
+  port: 0
+spring:
+  datasource:
+    url: jdbc:mariadb://pg-mariadb:3306/playground?characterEncoding=utf8

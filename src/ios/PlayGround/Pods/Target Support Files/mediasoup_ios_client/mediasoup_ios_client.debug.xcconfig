@@ -1,0 +1,20 @@
+ALWAYS_SEARCH_USER_PATHS = NO
+CLANG_CXX_LANGUAGE_STANDARD = c++14
+CLANG_CXX_LIBRARY = libc++
+CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = NO
+CONFIGURATION_BUILD_DIR = ${PODS_CONFIGURATION_BUILD_DIR}/mediasoup_ios_client
+FRAMEWORK_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/mediasoup_ios_client/build" "${PODS_ROOT}/mediasoup_ios_client/mediasoup-client-ios/dependencies/webrtc/src/out_ios_libs"
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
+OTHER_CPLUSPLUSFLAGS = "-stdlib=libc++" "-Wall" "-Wextra" "-Wpedantic"
+OTHER_LDFLAGS = $(inherited) -framework "AVFoundation" -framework "AudioToolbox" -framework "CoreAudio" -framework "CoreMedia" -framework "CoreVideo"
+OTHER_LD_FLAGS = -all_load
+PODS_BUILD_DIR = ${BUILD_DIR}
+PODS_CONFIGURATION_BUILD_DIR = ${PODS_BUILD_DIR}/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
+PODS_ROOT = ${SRCROOT}
+PODS_TARGET_SRCROOT = ${PODS_ROOT}/mediasoup_ios_client
+PODS_XCFRAMEWORKS_BUILD_DIR = $(PODS_CONFIGURATION_BUILD_DIR)/XCFrameworkIntermediates
+PRODUCT_BUNDLE_IDENTIFIER = org.cocoapods.${PRODUCT_NAME:rfc1034identifier}
+SKIP_INSTALL = YES
+USE_HEADERMAP = NO
+USE_RECURSIVE_SCRIPT_INPUTS_IN_SCRIPT_PHASES = YES
+VALID_ARCHS = $(ARCHS_STANDARD_64_BIT)

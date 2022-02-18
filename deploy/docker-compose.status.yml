@@ -1,0 +1,12 @@
+version: "3"
+services:
+  status-service:
+    container_name: status-service
+    image: rlagksml99/status-service:latest
+    environment:
+      spring.datasource.url: jdbc:mariadb://3.19.12.178:3306/playground
+      spring.redis.host: 52.78.108.27
+      spring.redis.port: 6379
+    ports:
+      - "9999:9999"
+    restart: always

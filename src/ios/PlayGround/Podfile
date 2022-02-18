@@ -1,0 +1,18 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'PlayGround' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for PlayGround
+  pod 'SwiftKeychainWrapper'
+  pod "StompClientLib", :git => "https://github.com/Chaehui-Seo/StompClientLib"
+  pod 'Starscream', '~> 3.0.2'
+  pod 'SwiftyJSON', '~> 4.0'
+  pod "PromiseKit", "~> 6.8"
+  pod "mediasoup_ios_client", "~> 1.3.5" 
+  pod 'Alamofire'
+  pod 'lottie-ios'
+  pod 'SkeletonView'
+end

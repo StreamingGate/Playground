@@ -1,0 +1,29 @@
+server:
+  port: 50002
+
+spring:
+  profiles:
+    include:
+      - s3
+  application:
+    name: room-service
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://3.19.12.178:3306/playground
+    username: root
+    password: test
+
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    ip-address: 18.117.58.222
+    hostname: 18.117.58.222
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://3.18.120.82:8761/eureka
