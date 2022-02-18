@@ -25,6 +25,10 @@ public class RoomViewer {
     @ColumnDefault(value = "CURRENT_TIMESTAMP")
     private LocalDateTime lastViewedAt;
 
+    private Long roomUuid;
+
+    private String userUuid;
+
     @ManyToOne
     @JoinColumn(name = "users_id")
     private User user;

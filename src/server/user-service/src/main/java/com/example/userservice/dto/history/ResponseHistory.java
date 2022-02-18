@@ -14,4 +14,7 @@ public class ResponseHistory {
         this.videos = videos;
         this.rooms = rooms;
     }
+    public ResponseHistory(List<ResponseVideo> videos) {
+        this.videos = videos;
+    }
 }

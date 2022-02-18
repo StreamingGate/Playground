@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -67,6 +68,17 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<ViewedHistory> viewedHistories = new LinkedList<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "friend",
+            joinColumns = @JoinColumn(name = "users_id"),
+            inverseJoinColumns = @JoinColumn(name = "friend_id")
+    )
+    private List<User> friends = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "friends") //나를 친구로 추가한 사람들
+    private List<User> beFriend = new ArrayList<>();
 
     @Builder
     public User(String email, String uuid, String pwd, String name, String nickName, String profileImage, UserState state) {
