@@ -18,7 +18,7 @@ services:
   redis:
     container_name: redis
     hostname: redis
-    image: rlagksml99/redis:latest
+    image: redis:latest
     ports:
       - "6379:6379"
     networks:

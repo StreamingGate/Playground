@@ -43,9 +43,14 @@ public class RedisUserService {
 
         if (userDto == null) {
             User user = userRepository.findByUuid(uuid).orElse(null);
-            if(user == null) log.info(uuid + " MariaDB에 해당 유저가 없습니다.");
-            else userDto = new UserDto(user);
+            /* redis에 없으면 mariadb에서도 확인 */
+            if(user == null) {
+                log.error("uuid: "+ uuid + " MariaDB에 해당 유저가 없습니다.");
 //            throw new CustomStatusException(ErrorCode.S001, uuid + "해당 유저가 없습니다.");
+                return result;
+            }
+            userDto = new UserDto(user);
+            opsHashUser.put(USER_LIST, uuid, userDto);
         } else {
             for (String friendUuid : userDto.getFriendUuids()) {
                 result.add(opsHashUser.get(USER_LIST, friendUuid));
