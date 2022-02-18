@@ -229,4 +229,4 @@ const Provider = ({ children }) => {
   );
 };
 
-export default { Provider, useModal, create, show };
+export default { Provider, useModal, create, show, hide };

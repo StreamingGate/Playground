@@ -39,11 +39,11 @@ export const Action = styled.div`
 `;
 
 export const ThumbDownIcon = styled(ThumbDown)`
-  fill: ${({ isToggle }) => (isToggle ? '#000000' : '#ffffff')};
+  fill: ${({ isToggle }) => (isToggle ? '#000000' : 'none')};
 `;
 
 export const ThumbUpIcon = styled(ThumbUp)`
-  fill: ${({ isToggle }) => (isToggle ? '#000000' : '#ffffff')};
+  fill: ${({ isToggle }) => (isToggle ? '#000000' : 'none')};
 `;
 
 export const ActionLabel = styled(Typography)``;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import S from './LoginForm.style';
@@ -10,6 +10,7 @@ import { useLogin } from '@utils/hook/query';
 import { Typography } from '@components/cores';
 import { Button } from '@components/buttons';
 import { AdviseModal } from '@components/feedbacks/Modals';
+import { Loading } from '@components/feedbacks';
 
 const { loginPage } = placeholder;
 
@@ -34,7 +35,7 @@ function LoginForm() {
     navigate('/home');
   };
 
-  const { mutate } = useLogin(handleLoginResponse);
+  const { mutate, isLoading } = useLogin(handleLoginResponse);
 
   const handleLoginRequest = values => {
     mutate(values);
@@ -48,6 +49,7 @@ function LoginForm() {
 
   return (
     <S.Form>
+      {isLoading && <Loading />}
       <S.Logo />
       <S.InputContainer>
         <S.LoginInput

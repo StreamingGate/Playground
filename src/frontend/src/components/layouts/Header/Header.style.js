@@ -37,6 +37,7 @@ export const VerticalLogoIcon = styled(VerticalLogo)`
   width: 116px;
   height: 27px;
   min-width: 116px;
+  cursor: pointer;
 `;
 
 export const SearchContainer = styled.div`

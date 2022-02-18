@@ -6,14 +6,16 @@ import { useGetMyList } from '@utils/hook/query';
 
 import ChannelMetaData from '../ChannelMetaData/ChannelMetaData';
 import { VideoOverview } from '@components/videos';
+import { Loading } from '@components/feedbacks';
 
 function ChannelPage() {
   const { id } = useParams();
 
-  const { data } = useGetMyList('upload', id);
+  const { data, isLoading } = useGetMyList('upload', id);
 
   return (
     <S.ChannelPageContainer>
+      {isLoading && <Loading />}
       <ChannelMetaData />
       <S.ChannelVideoContainer>
         {data?.pages.map((group, i) => (
