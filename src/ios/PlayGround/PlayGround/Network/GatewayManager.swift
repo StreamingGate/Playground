@@ -11,5 +11,5 @@ import UIKit
 class GatewayManager {
     static let shared = GatewayManager()
     
-    let gatewayAddress = "localhost:8000"
+    let gatewayAddress = "3.18.120.82:8000"
 }

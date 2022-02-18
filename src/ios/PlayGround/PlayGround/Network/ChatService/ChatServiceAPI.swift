@@ -12,7 +12,7 @@ import SwiftKeychainWrapper
 class ChatServiceAPI {
     static let shared = ChatServiceAPI()
     var socketClient = StompClientLib()
-    let chatServiceUrl = "ws://localhost:8888/ws/websocket"
+    let chatServiceUrl = "ws://3.38.16.211:8888/ws/websocket"
     
     func connectToSocket(viewModel: ChatViewModel) {
         guard let tokenInfo = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue), let url = NSURL(string: chatServiceUrl) else { return }
@@ -35,7 +35,7 @@ class ChatServiceAPI {
     }
     
     func loadInitialChat(uuid: String, completion: @escaping (([String: Any])->Void)) {
-        let original = "http://10.99.6.93:8888/chat/room/\(uuid)"
+        let original = "http://3.38.16.211:8888/chat/room/\(uuid)"
         
         guard let target = original.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
             print("error encoding")
@@ -100,7 +100,7 @@ class ChatServiceAPI {
             completion(["result": "Invalid Token"])
             return
         }
-        let url = URL(string: "http://10.99.6.93:8888/chat/room")!
+        let url = URL(string: "http://3.38.16.211:8888/chat/room")!
         var request = URLRequest(url: url)
         let postData : [String: Any] = ["uuid": roomUuid]
         let jsonData = try? JSONSerialization.data(withJSONObject: postData)

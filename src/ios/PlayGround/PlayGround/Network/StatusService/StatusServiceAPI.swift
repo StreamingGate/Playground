@@ -13,7 +13,7 @@ class StatusServiceAPI {
     static let shared = StatusServiceAPI()
     
     var socketClient = StompClientLib()
-    let statusServiceUrl = "ws://10.99.6.93:9999/ws/websocket"
+    let statusServiceUrl = "ws://3.37.201.189:9999/ws/websocket"
     
     func connectToSocket(manager: StatusManager) {
         guard let token = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue) else { return }
@@ -27,7 +27,7 @@ class StatusServiceAPI {
             completion(["result": "Invalid Token"])
             return
         }
-        let original = "http://10.99.6.93:9999/list?uuid=\(uuid)"
+        let original = "http://3.37.201.189:9999/list?uuid=\(uuid)"
         guard let target = original.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
             print("error encoding")
             return
