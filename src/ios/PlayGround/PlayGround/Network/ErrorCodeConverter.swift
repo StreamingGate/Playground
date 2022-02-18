@@ -19,23 +19,7 @@ class ErrorCodeConverter {
             return errorCode.U003
         } else if error == "U004" {
             return errorCode.U004
-        } else if error == "U005" {
-            return errorCode.U005
         } else {
-            return errorCode.F002
-        }
-    }
-    
-    func check(_ error: String) -> errorCode {
-        if error == "U001" {
-            return errorCode.U001
-        } else if error == "U002" {
-            return errorCode.U002
-        } else if error == "U003" {
-            return errorCode.U003
-        } else if error == "U004" {
-            return errorCode.U004
-        } else if error == "U005" {
             return errorCode.U005
         } else if error == "F002" {
             return errorCode.F002

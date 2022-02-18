@@ -7,7 +7,6 @@
 
 import Foundation
 import UIKit
-import SwiftKeychainWrapper
 
 class PlayExplainViewController: UIViewController {
     // MARK: - Properties
@@ -20,9 +19,6 @@ class PlayExplainViewController: UIViewController {
     @IBOutlet weak var explainContentLabel: UILabel!
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var scrollView: UIScrollView!
-    @IBOutlet weak var likeButton: UIButton!
-    @IBOutlet weak var dislikeButton: UIButton!
-    @IBOutlet weak var reportButton: UIButton!
     let viewModel = PlayViewModel()
     
     // MARK: - View LifeCycle
@@ -166,6 +162,7 @@ class PlayExplainViewController: UIViewController {
     }
     
     // MARK: - Tap Action
+    
     // move to certain channel
     @IBAction func channelDidTap(_ sender: Any) {
         guard let parent = self.parent as? PlayViewController else { return }

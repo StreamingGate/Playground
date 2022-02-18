@@ -45,9 +45,19 @@ export const ChaListContainer = styled.ul`
   position: relative;
   height: calc(100% - var(--chat-room-header-height) - var(--chat-input-controller-height));
   overflow: auto;
-  padding: 20px 20px 0px 20px;
+  padding: 20px 20px 15px 20px;
   border-top: 1px solid ${({ theme }) => theme.colors.separator};
   border-bottom: 1px solid ${({ theme }) => theme.colors.separator};
+`;
+
+export const pinnedChatContainer = styled.ul`
+  position: sticky;
+  top: 0px;
+  left: 20px;
+  right: 20px;
+  padding: 10px;
+  border-radius: 3px;
+  background-color: #ffffff;
 `;
 
 export const ScrollDownBtnContainer = styled.div`
@@ -83,6 +93,17 @@ export const ChatInputContainer = styled.div`
   width: 90%;
   margin-top: 20px;
   text-align: right;
+`;
+
+export const ChatInputUnderContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const CheckBoxLabel = styled.label`
+  display: flex;
+  align-items: center;
+  gap: 5px;
 `;
 
 export const InputCharCount = styled(Typography)`

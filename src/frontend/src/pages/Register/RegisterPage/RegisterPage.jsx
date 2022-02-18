@@ -25,6 +25,11 @@ const initialInput = {
   passwordCheck: '',
 };
 
+/**
+ * 세단계의 회원가입 폼 컴포넌트를 단계별로 랜더링하는 페이지
+ *
+ * @returns {React.Component} 회원가입 페이지
+ */
 function RegisterPage() {
   const navigate = useNavigate();
 
@@ -32,12 +37,15 @@ function RegisterPage() {
   const [btnContent, setBtnContent] = useState({ ...initBtnContent });
   const [curStage, setCurState] = useState(1);
 
+  // 폼에서 요청을 보낸 다음 실행되는 함수
   const handleSubmitResponse = data => {
     if (data?.errorCode) {
       modalService.show(AdviseModal, { content: data.message });
       return;
     }
 
+    // 마지막 단계일 경우 회원가입 완료 모달을 띄우고
+    // 나머지 단계일 경우 다음 단계로 이동하는 로직
     if (curStage >= 1 && curStage < STAGE_STEP) {
       setCurState(prev => prev + 1);
     } else if (curStage >= STAGE_STEP) {
@@ -54,6 +62,7 @@ function RegisterPage() {
   const verifyNickName = useUserRegister('verify-nickname', handleSubmitResponse);
   const userRegister = useUserRegister('user-register', handleSubmitResponse);
 
+  // 회원가입 단계별 post 요청 함수
   const handleFormRequest = values => {
     const { verify, nickName } = values;
 
@@ -79,8 +88,10 @@ function RegisterPage() {
       onSubmit: handleFormRequest,
     });
 
+  // 이전 단계로 이동하는 함수
   const handleClickPrevBtn = () => {
     if (curStage > 1) {
+      // 두번째 단계에서 첫번째 단계로 이동할 경우 이메일 인증번호 초기화
       if (curStage === 2) {
         changeValue(['verify', '']);
       }

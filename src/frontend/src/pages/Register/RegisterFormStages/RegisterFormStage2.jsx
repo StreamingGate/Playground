@@ -7,6 +7,11 @@ import { mediaService } from '@utils/service';
 
 import { Typography } from '@components/cores';
 
+/**
+ *
+ * @returns {React.Component} 두 번째 회원가입 폼
+ */
+
 function RegisterFormStage2({ values, errors, touched, onChange, onProfileChange, onBlur }) {
   const { name, nickName, profileImage } = values;
 
@@ -26,11 +31,13 @@ function RegisterFormStage2({ values, errors, touched, onChange, onProfileChange
     profileInputRef.current.click();
   };
 
+  // 기본 프로필 이미지로 변경해주는 함수
   const handleResetProfileBtnClick = () => {
     profileInputRef.current.value = '';
     onProfileChange(defaultProfileImg.current);
   };
 
+  // 선택한 이미지를 data url로 변경해 미리보기 형식으로 그려주는 함수
   const handleProfileInputChange = async () => {
     const dataUrl = await mediaService.getImagePreviewURl(profileInputRef.current);
     onProfileChange(dataUrl);

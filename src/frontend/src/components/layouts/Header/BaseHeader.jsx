@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 
 import * as S from './Header.style';
 import { HeaderContext, MainLayoutContext } from '@utils/context';
+import { lStorageService } from '@utils/service';
 
 import { IconButton } from '@components/buttons';
 import {
@@ -18,6 +19,8 @@ import AlarmDropdown from './Dropdowns/AlarmDropdown';
 import ProfileDropdown from './Dropdowns/ProfileDropdown';
 
 function BaseHeader() {
+  const userProfileImage = lStorageService.getItem('profileImage');
+
   const { onToggle } = useContext(HeaderContext);
   const { onToggleSideNav, modalState, onToggleModal } = useContext(MainLayoutContext);
 
@@ -47,7 +50,7 @@ function BaseHeader() {
           <AlarmDropdown />
         </div>
         <div>
-          <S.HeaderAvatar name='profile' onClick={onToggleModal} />
+          <S.HeaderAvatar name='profile' onClick={onToggleModal} imgSrc={userProfileImage} />
           <ProfileDropdown />
         </div>
       </S.HeaderRightDiv>

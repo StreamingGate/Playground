@@ -15,10 +15,4 @@ extension UIViewController {
         alert.addAction(action)
         self.present(alert, animated: true, completion: nil)
     }
-    
-    func simpleAlertWithAction(message: String, action: UIAlertAction) {
-        let alert = UIAlertController(title: "", message: message, preferredStyle: .alert)
-        alert.addAction(action)
-        self.present(alert, animated: true, completion: nil)
-    }
 }

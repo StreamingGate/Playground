@@ -7,7 +7,6 @@
 
 import Foundation
 import UIKit
-import Combine
 
 class AccountEditViewController: UIViewController {
     // MARK: - Properties
@@ -15,26 +14,12 @@ class AccountEditViewController: UIViewController {
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var nicknameLabel: UILabel!
     @IBOutlet weak var nicknameTextField: UITextField!
-    @IBOutlet weak var profileView: UIView!
-    @IBOutlet weak var updateButton: UIButton!
-    @IBOutlet weak var nickNameCountingLabel: UILabel!
     var coordinator: AccountEditCoordinator?
-    let imagePicker = UIImagePickerController()
-    let firstCharacterLabel = UILabel()
-    let plainProfileImageView = UIImageView()
-    var lastProfileSelectType: Int = 2
-    var imageInfo: UIImage?
-    private var cancellable: Set<AnyCancellable> = []
     
     // MARK: - View LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.imagePicker.sourceType = .photoLibrary
-        self.imagePicker.allowsEditing = true
-        self.imagePicker.delegate = self
         setupUI()
-        bindData()
-        setupProfileImageLayout()
     }
     
     // MARK: - UI Setting

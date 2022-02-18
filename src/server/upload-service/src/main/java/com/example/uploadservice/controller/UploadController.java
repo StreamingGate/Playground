@@ -2,7 +2,6 @@ package com.example.uploadservice.controller;
 
 import com.example.uploadservice.dto.UploadRequestDto;
 import com.example.uploadservice.dto.VideoDto;
-import com.example.uploadservice.entity.Video.Video;
 import com.example.uploadservice.exceptionHandler.customexception.CustomUploadException;
 import com.example.uploadservice.service.TranscodeService;
 import com.example.uploadservice.service.UploadService;
@@ -11,14 +10,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/upload")
 @RestController
 public class UploadController {
 
@@ -26,7 +26,7 @@ public class UploadController {
     private final UploadService uploadService;
     private final TranscodeService transcodeService;
 
-    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(value = "/upload", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<Map<String, String>> video(@RequestPart(value = "video") MultipartFile multipartFileVideo,
                                                      @RequestPart(value = "thumbnail", required = false) MultipartFile multipartFileThumbnail,
                                                      @RequestPart(value = "data") UploadRequestDto dto) throws CustomUploadException  {

@@ -1,16 +1,26 @@
 import React, { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import * as S from './Dropdown.style';
-import { modalService } from '@utils/service';
+import { modalService, lStorageService } from '@utils/service';
 import { MainLayoutContext } from '@utils/context';
+import { useStatusSocket } from '@utils/hook';
 import { useFriendList } from '@utils/hook/query';
 
 import { Typography } from '@components/cores';
 import { DeleteFriendModal, ModifyProfileModal } from '@components/feedbacks/Modals';
 
 function ProfileDropdown() {
+  const userId = lStorageService.getItem('uuid');
+  const nickName = lStorageService.getItem('nickName');
+  const userProfileImage = lStorageService.getItem('profileImage');
+
   const { modalState } = useContext(MainLayoutContext);
-  const { data: friendList } = useFriendList('33333333-1234-1234-123456789012');
+  const { data: friendList } = useFriendList(userId);
+
+  const navigate = useNavigate();
+
+  const { stompClient } = useStatusSocket();
 
   const handleProfileModalClick = e => {
     e.stopPropagation();
@@ -24,10 +34,17 @@ function ProfileDropdown() {
       modalService.show(DeleteFriendModal, {
         friendName: nickname,
         target: uuid,
-        myId: '33333333-1234-1234-123456789012',
+        myId: userId,
       });
     } else if (buttonId === 'modifyProfile') {
-      modalService.show(ModifyProfileModal, { nickName: '이재윤' });
+      modalService.show(ModifyProfileModal, { nickName });
+    } else if (buttonId === 'logout') {
+      lStorageService.removeItem('nickName');
+      lStorageService.removeItem('profileImage');
+      lStorageService.removeItem('uuid');
+      lStorageService.removeItem('token');
+      stompClient.deactivate();
+      navigate('/login');
     }
   };
 
@@ -36,9 +53,9 @@ function ProfileDropdown() {
       {modalState.profile && (
         <S.ProfileDropdown>
           <S.UserProfileInfo>
-            <S.UserAvartar size='xl' />
+            <S.UserAvartar size='xl' imgSrc={userProfileImage} />
             <S.UserName>
-              <Typography type='content'>닉네임</Typography>
+              <Typography type='content'>{nickName}</Typography>
               <S.ModifyUserInfoBtn variant='text' id='modifyProfile'>
                 정보 수정
               </S.ModifyUserInfoBtn>

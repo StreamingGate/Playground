@@ -58,7 +58,6 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                                             HttpServletResponse response,
                                             FilterChain chain,
                                             Authentication authResult) throws IOException, ServletException {
-        Map<String,String> res = new HashMap<>();
         String userEmail = ((User)authResult.getPrincipal()).getUsername();
         UserDto userDto = userService.getUserByEmail(userEmail);
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, DELETE, PUT");

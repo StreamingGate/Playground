@@ -81,8 +81,6 @@ class PlayViewController: UIViewController {
     @IBOutlet weak var separatorView: UIView!
     @IBOutlet weak var stackView: UIStackView!
     @IBOutlet weak var explainContainerView: UIView!
-    @IBOutlet weak var friendRequestLabel: UILabel!
-    @IBOutlet weak var friendRequestButton: UIButton!
     
     // chatting
     @IBOutlet weak var chatSendButton: UIButton!
@@ -134,11 +132,6 @@ class PlayViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(playerDidFinishPlaying), name: .AVPlayerItemDidPlayToEndTime, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(audioRouteChangeListener(_:)), name: AVAudioSession.routeChangeNotification, object: nil)
         setupUI()
-        
-        // setting for mini player
-        setMiniPlayerlayout()
-        setMiniPlayerAction()
-        
         bindingData()
     }
     
@@ -304,6 +297,10 @@ class PlayViewController: UIViewController {
             guard let currentTime = self.playView.player?.currentTime() else { return }
             self.updateVideoPlayerState(currentTime: currentTime)
         })
+        
+        // setting for mini player
+        setMiniPlayerlayout()
+        setMiniPlayerAction()
     }
 
     @objc func playerDidFinishPlaying() {
@@ -525,6 +522,7 @@ class PlayViewController: UIViewController {
     }
     
     // MARK: - Button Action
+    
     @IBAction func likeButtonDidTap(_ sender: Any) {
         guard let info = viewModel.currentInfo, let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else { return }
         likeButton.isEnabled = false
@@ -665,7 +663,6 @@ class PlayViewController: UIViewController {
     }
     
     @IBAction func explainStretchButtonDidTap(_ sender: Any) {
-        chatTextView.resignFirstResponder()
         coordinator?.showExplain(vc: self)
     }
     
@@ -827,7 +824,6 @@ class PlayViewController: UIViewController {
                 let currentTime = CMTimeMakeWithSeconds(Float64(seekbar.value), preferredTimescale: Int32(NSEC_PER_SEC))
                 self.updateVideoPlayerState(currentTime: currentTime)
             case .ended:
-                self.didEndPlay = false
                 self.playControllTimer.invalidate()
                 playView.player?.seek(to: CMTimeMakeWithSeconds(Float64(seekbar.value), preferredTimescale: Int32(NSEC_PER_SEC)))
                 self.isPlay = true
@@ -843,7 +839,6 @@ class PlayViewController: UIViewController {
     }
     
     @objc func sliderTapped(gestureRecognizer: UIGestureRecognizer) {
-        self.didEndPlay = false
         let pointTapped: CGPoint = gestureRecognizer.location(in: self.view)
         let positionOfSlider: CGPoint = seekbar.frame.origin
         let widthOfSlider: CGFloat = seekbar.frame.size.width
@@ -856,12 +851,10 @@ class PlayViewController: UIViewController {
     
     // MARK: - PlayView layout change
     func setPlayViewOriginalSize() {
-        chatTextView.resignFirstResponder()
         coordinator?.setPlayViewOriginalSize(vc: self)
     }
     
     func setPlayViewMinimizing() {
-        chatTextView.resignFirstResponder()
         coordinator?.setPlayMinimizing(vc: self)
     }
 }

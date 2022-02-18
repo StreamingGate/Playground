@@ -16,7 +16,6 @@ public class VideoDto {
     private Category category;
     private String videoUuid;
     private String uploaderUuid;
-    private String thumbnailName;
     private String s3OutputPath; // folder path
     private Long size;
     private LocalDateTime videoCreatedAt;

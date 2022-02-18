@@ -7,7 +7,6 @@
 
 import Foundation
 import UIKit
-import Combine
 
 class MyPageViewController: UIViewController {
     @IBOutlet weak var recentVideoTitleLabel: UILabel!
@@ -27,7 +26,6 @@ class MyPageViewController: UIViewController {
         super.viewDidLoad()
         guard let nav = self.navigationController as? MyPageNavigationController else { return }
         self.navVC = nav
-        bindData()
         setupUI()
     }
     
@@ -35,11 +33,6 @@ class MyPageViewController: UIViewController {
         super.viewWillAppear(animated)
         self.viewModel.loadWachedList(vc: self, coordinator: navVC?.coordinator)
         AppUtility.lockOrientation(.portrait)
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        navVC?.coordinator?.resetTabBarHeight()
     }
     
     // MARK: - UI Setting

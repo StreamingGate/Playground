@@ -1,45 +1,21 @@
 import { useEffect, useState } from 'react';
 
-const constraints = {
-  audio: { echoCancellation: false },
-  video: { width: 1280, height: 720 },
-};
+let constraints = null;
+
+/**
+ * @param {Object} streamPlayerRef video dom ref
+ * @param {string} device 미디어 스트림을 재생시킬 디바이스 타입
+ * @returns
+ * stream: 로컬 미디어 스트림
+ * toggleMuteAudio: 오디오 스트림 음소거 토글 함수
+ * stopSteam: 미디어 스트림 정지 함수
+ * switchCamera: 모바일 전/후면 카메라 전환
+ */
 
 export default function useStreamMedia(streamPlayerRef, device = 'web') {
   const [stream, setStream] = useState({ videoTrack: null, audioTrack: null });
-
-  async function getMediaStream() {
-    try {
-      // iphone 접근시 constraints 동적으로 변경
-      if (device === 'mobile') {
-        constraints.video = { ...constraints.video, facingMode: 'user' };
-      }
-
-      const newStream = await navigator.mediaDevices.getUserMedia(constraints);
-      const videoDom = streamPlayerRef.current;
-
-      videoDom.srcObject = newStream;
-      videoDom.onloadedmetadata = () => {
-        videoDom.play();
-      };
-
-      setStream({
-        videoTrack: newStream.getVideoTracks()[0],
-        audioTrack: newStream.getAudioTracks()[0],
-      });
-    } catch (err) {
-      console.log(err.message);
-    }
-  }
-
-  useEffect(() => {
-    getMediaStream();
-  }, []);
-
-  const toggleMuteAudio = () => {
-    const curAudioEnable = stream.audioTrack.enabled;
-    stream.audioTrack.enabled = !curAudioEnable;
-  };
+  const [facingMode, setFacingMode] = useState('user');
+  const [pcMode, setPCMode] = useState('default');
 
   const stopStream = () => {
     const { videoTrack, audioTrack } = stream;
@@ -55,16 +31,98 @@ export default function useStreamMedia(streamPlayerRef, device = 'web') {
     setStream({ videoTrack: null, audioTrack: null });
   };
 
-  const switchCamera = () => {
-    const constraints = stream.videoTrack.getConstraints();
-    if (constraints.facingMode === 'user') {
-      constraints.facingMode = { exact: 'environment' };
-    } else {
-      constraints.facingMode = 'user';
-    }
+  const getMediaStream = async (facingMode = 'user') => {
+    try {
+      stopStream();
+      // 접속하는 디바이스가 모바일일 경우 전면 카메라로 방송시작
+      if (device === 'mobile') {
+        constraints = {
+          audio: { echoCancellation: false, channelCount: 2 },
+          video: { facingMode: `${facingMode}` },
+        };
+      } else {
+        constraints = {
+          audio: { echoCancellation: false, channelCount: 2 },
+          video: { width: 1280, height: 720 },
+        };
+      }
 
-    stream.videoTrack.applyConstraints(constraints);
+      const newStream = await navigator.mediaDevices.getUserMedia(constraints);
+      const videoDom = streamPlayerRef.current;
+
+      videoDom.srcObject = newStream;
+
+      setStream({
+        videoTrack: newStream.getVideoTracks()[0],
+        audioTrack: newStream.getAudioTracks()[0],
+      });
+    } catch (err) {
+      console.log(err.message);
+    }
   };
 
-  return { stream, toggleMuteAudio, stopStream, switchCamera };
+  const getDeviceStream = async () => {
+    try {
+      stopStream();
+      const displayStream = await navigator.mediaDevices.getDisplayMedia({
+        audio: { echoCancellation: false, channelCount: 2 },
+        video: { width: 1280, height: 720 },
+      });
+      const newStream = await navigator.mediaDevices.getUserMedia(constraints);
+
+      const videoDom = streamPlayerRef.current;
+      videoDom.srcObject = displayStream;
+
+      displayStream.getTracks()[0].onended = async () => {
+        await getMediaStream();
+        setPCMode('default');
+      };
+
+      setStream({
+        audioTrack: newStream.getAudioTracks()[0],
+        videoTrack: displayStream.getTracks()[0],
+      });
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
+  const switchPCMedia = async () => {
+    if (pcMode === 'default') {
+      await getDeviceStream();
+      setPCMode('screen');
+    } else if (pcMode === 'screen') {
+      await getMediaStream();
+      setPCMode('default');
+    }
+  };
+
+  useEffect(() => {
+    getMediaStream();
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (stream.videoTrack || stream.audioTrack) {
+        stopStream();
+      }
+    };
+  }, [stream]);
+
+  const toggleMuteAudio = () => {
+    const curAudioEnable = stream.audioTrack.enabled;
+    stream.audioTrack.enabled = !curAudioEnable;
+  };
+
+  const switchCamera = async () => {
+    if (facingMode === 'user') {
+      await getMediaStream('environment');
+      setFacingMode('environment');
+    } else {
+      setFacingMode('user');
+      await getMediaStream('user');
+    }
+  };
+
+  return { stream, toggleMuteAudio, stopStream, switchCamera, switchPCMedia };
 }

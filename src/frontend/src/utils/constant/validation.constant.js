@@ -1,5 +1,9 @@
 import * as yup from 'yup';
 
+/**
+ * 인풋 유효성 검사를 위한 yup 객체
+ */
+
 const register = [
   yup.object().shape({
     name: yup
@@ -35,13 +39,11 @@ const login = yup.object().shape({
     .string()
     .required('이메일을 입력해 주세요')
     .email('올바른 이메일 형식을 입력해 주세요'),
-  password: yup
-    .string()
-    .required('비밀번호를 입력해 주세요')
-    .matches(
-      /^(?=.*[a-z])(?=.*\d)[A-Za-z\d]{6,16}$/,
-      '영문 소문자와 숫자를 포함한 6~16자여야 합니다'
-    ),
+  password: yup.string().required('비밀번호를 입력해 주세요'),
+  // .matches(
+  //   /^(?=.*[a-z])(?=.*\d)[A-Za-z\d]{6,16}$/,
+  //   '영문 소문자와 숫자를 포함한 6~16자여야 합니다'
+  // ),
 });
 
 const modifyProfile = yup.object().shape({

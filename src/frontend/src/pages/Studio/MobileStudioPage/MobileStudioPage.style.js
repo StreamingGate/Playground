@@ -18,15 +18,17 @@ export const MobileActionContainer = styled.div`
   background-color: transparent;
 `;
 
-export const MobileStreamStopBtn = styled(Button)`
+export const MobileStreamStopBtn = styled.a`
+  padding: 8px;
+  text-decoration: none;
   font-size: ${({ theme }) => theme.fontSizes.title};
   color: #ffffff;
 `;
 
 export const SwitchCameraIcon = styled(Switch)`
-  width: 35px;
+  /* width: 35px;
   height: 35px;
-  min-width: 35px;
+  min-width: 35px; */
 `;
 
 export const MobilePlayerContainer = styled.div`

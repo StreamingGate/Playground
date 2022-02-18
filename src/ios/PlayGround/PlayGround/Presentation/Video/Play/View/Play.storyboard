@@ -254,9 +254,6 @@
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fvY-tS-1GP">
                                                         <rect key="frame" x="0.0" y="0.0" width="63.5" height="41"/>
                                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                        <connections>
-                                                            <action selector="shareButtonDidTap:" destination="zL7-Q9-x2b" eventType="touchUpInside" id="W06-2b-h2d"/>
-                                                        </connections>
                                                     </button>
                                                 </subviews>
                                                 <constraints>
@@ -391,9 +388,6 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstItem="9Ke-YZ-YXI" firstAttribute="centerY" secondItem="v1h-me-VQ0" secondAttribute="centerY" id="18Y-fk-2Tl"/>
-                                    <constraint firstItem="ud5-t4-aqi" firstAttribute="leading" secondItem="XLe-Cl-OLS" secondAttribute="leading" constant="-10" id="4f6-sm-hie"/>
-                                    <constraint firstItem="ud5-t4-aqi" firstAttribute="centerY" secondItem="XLe-Cl-OLS" secondAttribute="centerY" id="6IF-0L-Mlb"/>
-                                    <constraint firstItem="XLe-Cl-OLS" firstAttribute="centerY" secondItem="u2M-AS-nkI" secondAttribute="centerY" id="8D2-SC-uwS"/>
                                     <constraint firstItem="9Ke-YZ-YXI" firstAttribute="leading" secondItem="v1h-me-VQ0" secondAttribute="trailing" constant="5" id="Cnh-6x-VKc"/>
                                     <constraint firstItem="QEJ-ls-ayi" firstAttribute="centerY" secondItem="v1h-me-VQ0" secondAttribute="centerY" id="E0g-zl-eH3"/>
                                     <constraint firstAttribute="height" constant="50" id="FWm-HE-flz"/>
@@ -401,7 +395,6 @@
                                     <constraint firstItem="ud5-t4-aqi" firstAttribute="top" secondItem="XLe-Cl-OLS" secondAttribute="top" constant="-10" id="OFP-H5-3LV"/>
                                     <constraint firstItem="ud5-t4-aqi" firstAttribute="centerX" secondItem="XLe-Cl-OLS" secondAttribute="centerX" id="WsB-Zs-siu"/>
                                     <constraint firstItem="v1h-me-VQ0" firstAttribute="leading" secondItem="u2M-AS-nkI" secondAttribute="leading" constant="20" id="hB9-uH-omx"/>
-                                    <constraint firstAttribute="trailing" secondItem="XLe-Cl-OLS" secondAttribute="trailing" constant="20" id="iQM-YJ-J55"/>
                                     <constraint firstItem="v1h-me-VQ0" firstAttribute="centerY" secondItem="u2M-AS-nkI" secondAttribute="centerY" id="mdl-68-wV6"/>
                                     <constraint firstItem="QEJ-ls-ayi" firstAttribute="top" secondItem="v1h-me-VQ0" secondAttribute="top" constant="-5" id="okU-7J-wjm"/>
                                     <constraint firstItem="QEJ-ls-ayi" firstAttribute="trailing" secondItem="9Ke-YZ-YXI" secondAttribute="trailing" constant="10" id="tPP-4m-XvD"/>
@@ -603,8 +596,6 @@
                         <outlet property="dislikeImageView" destination="Ygn-kh-u07" id="2Ox-yh-shG"/>
                         <outlet property="explainContainerView" destination="YG8-9c-nRp" id="dwF-b8-4OO"/>
                         <outlet property="forwardImageView" destination="z4m-dy-jqD" id="f0t-I8-gu9"/>
-                        <outlet property="friendRequestButton" destination="ud5-t4-aqi" id="Ytj-Lg-kGI"/>
-                        <outlet property="friendRequestLabel" destination="XLe-Cl-OLS" id="O1X-rC-uGv"/>
                         <outlet property="likeButton" destination="LcA-ew-Zmn" id="7sy-vP-o7y"/>
                         <outlet property="likeImageView" destination="GP6-pt-tgR" id="gFo-DS-zRv"/>
                         <outlet property="likeLabel" destination="P6C-UC-Te0" id="ddN-fO-gXz"/>
@@ -769,9 +760,6 @@
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IFE-ay-TBH">
                                                                 <rect key="frame" x="0.0" y="0.0" width="63.5" height="41"/>
                                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                                <connections>
-                                                                    <action selector="likeButtonDidTap:" destination="TES-Af-Nvb" eventType="touchUpInside" id="phK-1o-OKO"/>
-                                                                </connections>
                                                             </button>
                                                         </subviews>
                                                         <constraints>
@@ -806,9 +794,6 @@
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kdt-xQ-bdC">
                                                                 <rect key="frame" x="0.0" y="0.0" width="63.5" height="41"/>
                                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                                <connections>
-                                                                    <action selector="dislikeButtonDidTap:" destination="TES-Af-Nvb" eventType="touchUpInside" id="iha-Kj-kBY"/>
-                                                                </connections>
                                                             </button>
                                                         </subviews>
                                                         <constraints>
@@ -843,9 +828,6 @@
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MlT-RW-ryI">
                                                                 <rect key="frame" x="0.0" y="0.0" width="63.5" height="41"/>
                                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                                <connections>
-                                                                    <action selector="shareButtonDidTap:" destination="TES-Af-Nvb" eventType="touchUpInside" id="Zvw-Ix-6cG"/>
-                                                                </connections>
                                                             </button>
                                                         </subviews>
                                                         <constraints>
@@ -880,9 +862,6 @@
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H7v-SL-t1J">
                                                                 <rect key="frame" x="0.0" y="0.0" width="63.5" height="41"/>
                                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                                <connections>
-                                                                    <action selector="reportButtonDidTap:" destination="TES-Af-Nvb" eventType="touchUpInside" id="Q69-ek-Ckt"/>
-                                                                </connections>
                                                             </button>
                                                         </subviews>
                                                         <constraints>
@@ -991,11 +970,8 @@
                         <outlet property="backView" destination="hJp-jf-FiM" id="STS-2P-gqT"/>
                         <outlet property="categoryLabel" destination="Kv8-g9-697" id="1pu-gC-xci"/>
                         <outlet property="channelLabel" destination="Abp-YY-sV7" id="ccd-hi-vxM"/>
-                        <outlet property="dislikeButton" destination="Kdt-xQ-bdC" id="3FF-ji-Q0x"/>
                         <outlet property="explainContentLabel" destination="hVD-4c-uzj" id="NdN-wW-fzE"/>
                         <outlet property="explainTitleLabel" destination="9Dr-7K-oWa" id="eJN-fu-LYm"/>
-                        <outlet property="likeButton" destination="IFE-ay-TBH" id="Dkj-zg-5gL"/>
-                        <outlet property="reportButton" destination="H7v-SL-t1J" id="MEI-UV-Y53"/>
                         <outlet property="scrollView" destination="Rfj-NR-cHO" id="wMv-C1-ifu"/>
                         <outlet property="thumbnailImageView" destination="sJc-IX-NnK" id="8zZ-ld-HSR"/>
                         <outlet property="videoTitleLabel" destination="iA9-In-8j8" id="9bQ-bn-F7P"/>
@@ -1050,9 +1026,6 @@
         <image name="thumbDown_empty" width="24" height="24"/>
         <image name="thumbUp_empty" width="24" height="24"/>
         <image name="xmark" catalog="system" width="128" height="113"/>
-        <namedColor name="PGOrange">
-            <color red="1" green="0.74099999666213989" blue="0.075000002980232239" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
         <namedColor name="PlaceHolder">
             <color red="0.60000002384185791" green="0.60000002384185791" blue="0.60000002384185791" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

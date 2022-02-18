@@ -6,6 +6,7 @@ import { ReactQueryDevtools } from 'react-query/devtools';
 
 import { theme } from '@utils/constant';
 import { modalService } from '@utils/service';
+import { history } from '@utils/router';
 
 import { GlobalStyle, NormalizeStyle } from '@components/styles';
 import { MainLayout } from '@components/layouts';
@@ -25,8 +26,9 @@ function App() {
       <ThemeProvider theme={theme}>
         <GlobalStyle />
         <NormalizeStyle />
-        <modalService.Provider>
-          <Router>
+
+        <Router navigator={history}>
+          <modalService.Provider>
             <Routes>
               <Route path='/' element={<Navigate to='/login' />} />
               <Route path='/login' element={<LoginPage />} />
@@ -34,14 +36,15 @@ function App() {
               <Route path='*' element={<MainLayout />}>
                 <Route path='home' element={<HomePage />} />
                 <Route path='video-play/:id' element={<VideoPlayPage />} />
+                <Route path='live-play/:id' element={<VideoPlayPage />} />
                 <Route path='channel/:id' element={<ChannelPage />} />
                 <Route path='mypage/:type' element={<MyPage />} />
-                <Route path='studio' element={<StudioPage />} />
+                <Route path='studio/:roomId' element={<StudioPage />} />
               </Route>
-              <Route path='/m/studio' element={<MobileStudioPage />} />
+              <Route path='/m/studio/:roomId/:hostId' element={<MobileStudioPage />} />
             </Routes>
-          </Router>
-        </modalService.Provider>
+          </modalService.Provider>
+        </Router>
       </ThemeProvider>
       <ReactQueryDevtools initialIsOpen={false} position='bottom-right' />
     </QueryClientProvider>
