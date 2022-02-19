@@ -74,12 +74,12 @@ function SideFriendList() {
       <S.SideFriendListContainer state={sideFriendState}>
         <S.SideFriendListHeader type='highlightCaption'>친구 목록</S.SideFriendListHeader>
         <S.FriendList>
-          {friendStatus.map(({ profileImage, nickname, status }, idx) => (
+          {friendStatus.map(({ profileImage, nickname, status, uuid }, idx) => (
             <FriendItem
               key={`${profileImage}_${nickname}`}
               dataSet='friend'
               isOnline={status}
-              profileImgSrc={profileImage}
+              userId={uuid}
               name={nickname}
               onClick={handleFriendItemClick(idx)}
             />
@@ -91,7 +91,10 @@ function SideFriendList() {
           isShow={modalState.friend}
           onClick={handleViewWithFriendBtnClick}
         >
-          <S.FriendAvatar size='lg' />
+          <S.FriendAvatar
+            size='lg'
+            imgSrc={`${process.env.REACT_APP_PROFILE_IMAGE}${friendStatus[selectedFriendIdx]?.uuid}`}
+          />
           <S.FriendModalRightDiv>
             <S.FriendModalName type='highlightCaption'>
               {friendStatus[selectedFriendIdx]?.nickname}

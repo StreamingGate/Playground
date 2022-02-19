@@ -5,11 +5,11 @@ import * as S from './SideFriendList.style';
 
 import { Avatar } from '@components/dataDisplays';
 
-function FriendItem({ isOnline, profileImgSrc, onClick, name, dataSet }) {
+function FriendItem({ isOnline, userId, onClick, name, dataSet }) {
   return (
     <S.FriendItem onClick={onClick} data-name={dataSet}>
       <S.FriendAvatarContainer>
-        <Avatar size='xs' imgSrc={!profileImgSrc ? undefined : profileImgSrc} />
+        <Avatar size='xs' imgSrc={`${process.env.REACT_APP_PROFILE_IMAGE}${userId}`} />
         {isOnline === true && <S.OnlineMark />}
       </S.FriendAvatarContainer>
       <S.FriendName type='caption'>{name}</S.FriendName>
@@ -21,7 +21,6 @@ FriendItem.propTypes = {
   isOnline: PropTypes.bool.isRequired,
   dataSet: PropTypes.string,
   name: PropTypes.string.isRequired,
-  profileImgSrc: PropTypes.string,
   onClick: PropTypes.func,
 };
 
