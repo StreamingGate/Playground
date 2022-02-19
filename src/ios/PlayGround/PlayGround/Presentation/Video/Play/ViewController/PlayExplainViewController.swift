@@ -54,12 +54,14 @@ class PlayExplainViewController: UIViewController {
         videoTitleLabel.text = info.title
         categoryLabel.text = "#\(viewModel.categoryDic[info.category ?? ""] ?? "기타")"
         thumbnailImageView.layer.cornerRadius = 33 / 2
+        thumbnailImageView.backgroundColor = UIColor.placeHolder
         if self.viewModel.isLive {
             channelLabel.text = self.viewModel.roomInfo?.hostNickname
-            thumbnailImageView.downloadImageFrom(link: "https://d8knntbqcc7jf.cloudfront.net/thumbnail/\(String(describing: self.viewModel.roomInfo?.hostUuid))", contentMode: .scaleAspectFit)
+            thumbnailImageView.downloadImageFrom(link: "https://sgs-playground.s3.us-east-2.amazonaws.com/profiles/\(String(describing: self.viewModel.roomInfo?.hostUuid))", contentMode: .scaleAspectFill)
         } else {
             channelLabel.text = self.viewModel.videoInfo?.uploaderNickname
-            thumbnailImageView.downloadImageFrom(link: self.viewModel.videoInfo?.uploaderProfileImage ?? "", contentMode: .scaleAspectFit)
+            guard let uploaderUuid = self.viewModel.videoInfo?.uploaderUuid else { return }
+            thumbnailImageView.downloadImageFrom(link: "https://sgs-playground.s3.us-east-2.amazonaws.com/profiles/\(uploaderUuid)", contentMode: .scaleAspectFill)
         }
     }
     
