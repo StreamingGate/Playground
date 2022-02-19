@@ -112,6 +112,13 @@ class ChattingViewController: UIViewController {
                     self.tableView.contentInset = UIEdgeInsets(top: 15, left: 0, bottom: 0, right: 0)
                 }
             }.store(in: &cancellable)
+        viewModel.$isValid.receive(on: DispatchQueue.main, options: nil)
+            .sink { [weak self] valid in
+                guard let self = self, let parent = self.parent as? PlayViewController else { return }
+                if !valid {
+                    parent.coordinator?.dismissToRoot()
+                }
+            }.store(in: &cancellable)
     }
     
     // MARK: - Button Action
