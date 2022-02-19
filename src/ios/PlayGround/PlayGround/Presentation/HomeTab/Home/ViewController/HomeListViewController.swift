@@ -244,10 +244,13 @@ extension HomeListViewController: UITableViewDataSource, UITableViewDelegate {
             guard !self.viewModel.isLoading else {
                 return
             }
+            self.animationView.setLoading(vc: self, backView: loadingBackView)
+            print("here")
             self.tableView.tableFooterView = createSpinnerFooter()
             self.viewModel.loadAllList(vc: self, coordinator: self.navVC?.coordinator)
         } else {
             // 더이상 로드할 데이터가 없을 경우, spinner 멈춤
+            self.animationView.stopLoading(backView: loadingBackView)
             self.spinner.stopAnimating()
         }
     }
