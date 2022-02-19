@@ -67,9 +67,12 @@ function ProfileDropdown() {
           <S.FriendListContainer>
             <S.FriendListTitle type='highlightCaption'>친구목록</S.FriendListTitle>
             <S.FriendList>
-              {friendList?.result.map(({ uuid, nickname, profileImage }) => (
+              {friendList?.result.map(({ uuid, nickname }) => (
                 <S.FriendInfo key={uuid}>
-                  <S.FriendAvatar tyep='sm' imgSrc={profileImage} />
+                  <S.FriendAvatar
+                    tyep='sm'
+                    imgSrc={`${process.env.REACT_APP_PROFILE_IMAGE}${uuid}`}
+                  />
                   <S.FriendName type='caption'>{nickname}</S.FriendName>
                   <S.FriendDeleteBtn id={`friendDelete_${uuid}_${nickname}`} variant='text'>
                     삭제
