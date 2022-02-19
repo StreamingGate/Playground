@@ -48,7 +48,7 @@ function App() {
           </modalService.Provider>
         </Router>
       </ThemeProvider>
-      <ReactQueryDevtools initialIsOpen={false} position='bottom-right' />
+      {/* <ReactQueryDevtools initialIsOpen={false} position='bottom-right' /> */}
     </QueryClientProvider>
   );
 }
