@@ -18,8 +18,6 @@ function VideoOverview({ direction, isLibrary, videoInfo, isLive }) {
     hits,
     createdAt,
     uuid,
-    hostProfileImage,
-    uploaderProfileImage,
     hostUuid,
     uploaderUuid,
   } = videoInfo;

@@ -32,7 +32,7 @@ function ChannelMetaData() {
 
   return (
     <S.ChannelMetaDataContainer>
-      <S.ChannelProfile size='xl' imgSrc={data?.profileImage} />
+      <S.ChannelProfile size='xl' imgSrc={`${process.env.REACT_APP_PROFILE_IMAGE}${id}`} />
       <S.ChannelInfo>
         <S.ChannelName type='title'>{data?.nickName}</S.ChannelName>
         <S.ChannelNumberData>

@@ -21,7 +21,7 @@ function ChannelPage() {
         {data?.pages.map((group, i) => (
           <Fragment key={i}>
             {group.map(videoInfo => (
-              <VideoOverview key={videoInfo.id} videoInfo={videoInfo} />
+              <VideoOverview key={videoInfo.id} videoInfo={{ ...videoInfo, uploaderUuid: id }} />
             ))}
           </Fragment>
         ))}
