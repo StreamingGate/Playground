@@ -13,7 +13,6 @@ import { DeleteFriendModal, ModifyProfileModal } from '@components/feedbacks/Mod
 function ProfileDropdown() {
   const userId = lStorageService.getItem('uuid');
   const nickName = lStorageService.getItem('nickName');
-  const userProfileImage = lStorageService.getItem('profileImage');
 
   const { modalState } = useContext(MainLayoutContext);
   const { data: friendList } = useFriendList(userId);
@@ -53,7 +52,7 @@ function ProfileDropdown() {
       {modalState.profile && (
         <S.ProfileDropdown>
           <S.UserProfileInfo>
-            <S.UserAvartar size='xl' imgSrc={userProfileImage} />
+            <S.UserAvartar size='xl' imgSrc={`${process.env.REACT_APP_PROFILE_IMAGE}${userId}`} />
             <S.UserName>
               <Typography type='content'>{nickName}</Typography>
               <S.ModifyUserInfoBtn variant='text' id='modifyProfile'>

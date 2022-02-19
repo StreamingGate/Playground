@@ -96,7 +96,7 @@ export const AlarmContent = styled(Typography)`
 
 export const ProfileDropdownContainer = styled.div`
   position: relative;
-  margin-left: -300px;
+  margin-left: -400px;
 `;
 
 export const ProfileDropdown = styled.div`

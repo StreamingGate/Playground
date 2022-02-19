@@ -20,7 +20,8 @@ import AlarmDropdown from './Dropdowns/AlarmDropdown';
 import ProfileDropdown from './Dropdowns/ProfileDropdown';
 
 function BaseHeader() {
-  const userProfileImage = lStorageService.getItem('profileImage');
+  const userId = lStorageService.getItem('uuid');
+
   const navigate = useNavigate();
 
   const { onToggle } = useContext(HeaderContext);
@@ -56,7 +57,11 @@ function BaseHeader() {
           <AlarmDropdown />
         </div>
         <div>
-          <S.HeaderAvatar name='profile' onClick={onToggleModal} imgSrc={userProfileImage} />
+          <S.HeaderAvatar
+            name='profile'
+            onClick={onToggleModal}
+            imgSrc={`${process.env.REACT_APP_PROFILE_IMAGE}${userId}`}
+          />
           <ProfileDropdown />
         </div>
       </S.HeaderRightDiv>

@@ -101,7 +101,11 @@ function VideoOverview({ direction, isLibrary, videoInfo, isLive }) {
           <div>
             <Avatar
               size='xs'
-              imgSrc={isLive ? hostProfileImage : uploaderProfileImage}
+              imgSrc={
+                isLive
+                  ? `${process.env.REACT_APP_PROFILE_IMAGE}${hostUuid}`
+                  : `${process.env.REACT_APP_PROFILE_IMAGE}${uploaderUuid}`
+              }
               onClick={handleProfileClick}
             />
           </div>
