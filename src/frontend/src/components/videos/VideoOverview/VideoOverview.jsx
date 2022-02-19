@@ -89,6 +89,7 @@ function VideoOverview({ direction, isLibrary, videoInfo, isLive }) {
     <S.ViedeoOverviewContainer direction={direction} onClick={handleVideoClick}>
       <S.ThumbNailContainer>
         <S.ThumbNail
+          loading='lazy'
           src={isLive ? `https://d8knntbqcc7jf.cloudfront.net/thumbnail/${uuid}` : thumbnail}
           alt='thumbnail'
         />
