@@ -77,6 +77,7 @@ public class RedisUserService {
             }
             userDto = new UserDto(user);
             opsHashUser.put(USER_LIST, uuid, userDto);
+            syncFriendWithMariaDB(userDto); /* redis 이슈 커버 */
         }
         else {
             userDto.updateVideoOrRoom(uuid, reqUserDto);
@@ -98,6 +99,7 @@ public class RedisUserService {
             }
             userDto = new UserDto(user);
             opsHashUser.put(USER_LIST, uuid, userDto);
+            syncFriendWithMariaDB(userDto); /* redis 이슈 커버 */
         }
         else{
             userDto.updateStatus(status);
@@ -149,6 +151,17 @@ public class RedisUserService {
         targetDto.updateAddOrDelete(type, uuid);
         RedisMessaging.publish(userTopic, userDto);
         RedisMessaging.publish(targetTopic, targetDto);
+    }
+
+    /* 자기 자신, 친구 데이터 까지 로드 */
+    public void syncFriendWithMariaDB(UserDto userDto){
+        for(String friendUuid: userDto.getFriendUuids()){
+            if(opsHashUser.hasKey(USER_LIST, friendUuid)== null){
+                User friend = userRepository.findByUuid(friendUuid).orElse(null);
+                UserDto friendDto = new UserDto(friend);
+                opsHashUser.put(USER_LIST, friendUuid, friendDto);
+            }
+        }
     }
 
     /* TODO 유저 탈퇴 api 생성 시 사용 */
