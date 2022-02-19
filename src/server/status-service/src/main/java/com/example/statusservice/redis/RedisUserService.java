@@ -4,7 +4,6 @@ import com.example.statusservice.dto.FriendDto;
 import com.example.statusservice.dto.UserDto;
 import com.example.statusservice.entity.User.User;
 import com.example.statusservice.entity.User.UserRepository;
-import com.example.statusservice.exceptionhandler.customexception.CustomStatusException;
 import com.example.statusservice.utils.RedisMessaging;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.PostConstruct;
 import java.util.*;
-import static com.example.statusservice.exceptionhandler.customexception.ErrorCode.S004;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -37,7 +35,7 @@ public class RedisUserService {
 
     /* 내 친구들의 상태 조회 */
     @Transactional
-    public List<UserDto> findAll(String uuid) throws CustomStatusException {
+    public List<UserDto> findAll(String uuid) {
         UserDto userDto = opsHashUser.get(USER_LIST, uuid);
         List<UserDto> result = new LinkedList<>();
 
@@ -46,7 +44,6 @@ public class RedisUserService {
             /* redis에 없으면 mariadb에서도 확인 */
             if(user == null) {
                 log.error("uuid: "+ uuid + " MariaDB에 해당 유저가 없습니다.");
-//            throw new CustomStatusException(ErrorCode.S001, uuid + "해당 유저가 없습니다.");
                 return result;
             }
             userDto = new UserDto(user);
@@ -69,11 +66,17 @@ public class RedisUserService {
     }
 
     /* 영상 시청 시 친구에게 내 상태 publish */
-    public void publishWatching(String uuid, UserDto reqUserDto) throws CustomStatusException {
+    public void publishWatching(String uuid, UserDto reqUserDto) {
         UserDto userDto = opsHashUser.get(USER_LIST, uuid);
         if (userDto == null) {
-            log.error("publishWatching: " + S004.getMessage());
-//            throw new CustomStatusException(S004);
+            User user = userRepository.findByUuid(uuid).orElse(null);
+            /* redis에 없으면 mariadb에서도 확인 */
+            if(user == null) {
+                log.error("publishWatching uuid: "+ uuid + " MariaDB에 해당 유저가 없습니다.");
+                return;
+            }
+            userDto = new UserDto(user);
+            opsHashUser.put(USER_LIST, uuid, userDto);
         }
         else {
             userDto.updateVideoOrRoom(uuid, reqUserDto);
@@ -84,11 +87,17 @@ public class RedisUserService {
     }
 
     /* 로그인 또는 로그아웃 시 친구에게 내 상태 publish */
-    public void publishStatus(String uuid, Boolean status) throws CustomStatusException {
+    public void publishStatus(String uuid, Boolean status) {
         UserDto userDto = opsHashUser.get(USER_LIST, uuid);
         if (userDto == null) {
-            log.error("publishStatus: " + S004.getMessage());
-//            throw new CustomStatusException(S004);
+            User user = userRepository.findByUuid(uuid).orElse(null);
+            /* redis에 없으면 mariadb에서도 확인 */
+            if(user == null) {
+                log.error("publishStatus uuid: "+ uuid + " MariaDB에 해당 유저가 없습니다.");
+                return;
+            }
+            userDto = new UserDto(user);
+            opsHashUser.put(USER_LIST, uuid, userDto);
         }
         else{
             userDto.updateStatus(status);

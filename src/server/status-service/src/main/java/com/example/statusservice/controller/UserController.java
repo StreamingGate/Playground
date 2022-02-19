@@ -2,7 +2,6 @@ package com.example.statusservice.controller;
 
 import com.example.statusservice.dto.PartnerDto;
 import com.example.statusservice.dto.UserDto;
-import com.example.statusservice.exceptionhandler.customexception.CustomStatusException;
 import com.example.statusservice.redis.RedisUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,14 +20,14 @@ public class UserController {
     private final RedisUserService redisUserService;
 
     @GetMapping("/list")
-    public ResponseEntity<Map<String, List<UserDto>>> getFriendsStatus(@RequestParam("uuid")String uuid) throws CustomStatusException {
+    public ResponseEntity<Map<String, List<UserDto>>> getFriendsStatus(@RequestParam("uuid")String uuid)  {
         log.info("list uuid:"+uuid);
         List<UserDto> result = redisUserService.findAll(uuid);
         return ResponseEntity.ok(Map.of(RESPONSE_MAP_KEY, result));
     }
 
     @PostMapping("/friend")
-    public ResponseEntity<Map<String,String>> addFriend(@RequestBody PartnerDto dto) throws CustomStatusException {
+    public ResponseEntity<Map<String,String>> addFriend(@RequestBody PartnerDto dto) {
         log.info("addFriend api...."+dto.getRequestDto().getUuid()+ ","+dto.getSenderOrTargetDto().getUuid());
         redisUserService.addFriend(dto.getRequestDto(), dto.getSenderOrTargetDto());
         redisUserService.addFriend(dto.getSenderOrTargetDto(), dto.getRequestDto());
@@ -38,7 +37,7 @@ public class UserController {
     }
 
     @DeleteMapping("/friend")
-    public ResponseEntity<Map<String,String>> deleteFriend(@RequestBody PartnerDto dto) throws CustomStatusException {
+    public ResponseEntity<Map<String,String>> deleteFriend(@RequestBody PartnerDto dto) {
         log.info("deleteFriend api...."+dto.getRequestDto().getUuid()+ ","+dto.getSenderOrTargetDto().getUuid());
         redisUserService.deleteFriend(dto.getRequestDto(), dto.getSenderOrTargetDto());
         redisUserService.deleteFriend(dto.getSenderOrTargetDto(), dto.getRequestDto());
@@ -49,7 +48,7 @@ public class UserController {
 
     /* TODO 유저 탈퇴 api 생성 시 사용 */
     @DeleteMapping("/user")
-    public ResponseEntity<Map<String,String>> deleteUser(@RequestParam("uuid") String uuid) throws CustomStatusException {
+    public ResponseEntity<Map<String,String>> deleteUser(@RequestParam("uuid") String uuid) {
         log.info("deleteUser api....");
         redisUserService.deleteUser(uuid);
         return ResponseEntity.ok(Map.of(RESPONSE_MAP_KEY, RESPONSE_SUCCESS));

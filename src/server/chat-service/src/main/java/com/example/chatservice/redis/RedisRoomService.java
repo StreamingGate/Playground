@@ -5,8 +5,6 @@ import com.example.chatservice.dto.chat.ChatProduce;
 import com.example.chatservice.dto.chat.SenderRole;
 import com.example.chatservice.dto.room.Room;
 import com.example.chatservice.dto.room.RoomResponseDto;
-import com.example.chatservice.exceptionhandler.customexception.CustomChatException;
-import com.example.chatservice.exceptionhandler.customexception.ErrorCode;
 import com.example.chatservice.utils.RedisMessaging;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -52,13 +50,17 @@ public class RedisRoomService {
         return new RoomResponseDto(room);
     }
 
-    public void addPinnedChat(String roomUuid, ChatProduce pinnedChat) throws CustomChatException {
-        if (!pinnedChat.getSenderRole().equals(SenderRole.STREAMER))
-            throw new CustomChatException(ErrorCode.C001, roomUuid);
+    public boolean addPinnedChat(String roomUuid, ChatProduce pinnedChat) {
+        if (!pinnedChat.getSenderRole().equals(SenderRole.STREAMER)) {
+            log.warn("유효하지 않은 권한으로 채팅 고정을 시도합니다..");
+//            throw new CustomChatException(ErrorCode.C001, roomUuid);
+            return false;
+        }
 
         Room room = opsHashRoom.get(CHAT_ROOMS, roomUuid);
         room.updatePinnedChat(new ChatConsume(pinnedChat));
         opsHashRoom.put(CHAT_ROOMS, room.getUuid(), room); // update
+        return true;
     }
 
     /* 채팅방 입장(접속자 수 증가) */
@@ -74,7 +76,7 @@ public class RedisRoomService {
     }
 
     /* 채팅방 퇴장(접속자 수 감소) */
-    public void exit(String roomUuid, String userUuid, String senderRole) throws IllegalArgumentException {
+    public void exit(String roomUuid, String userUuid, String senderRole)  {
         ChannelTopic channelTopic = getOrAddTopic(roomUuid);
         Room room = opsHashRoom.get(CHAT_ROOMS, roomUuid);
 
