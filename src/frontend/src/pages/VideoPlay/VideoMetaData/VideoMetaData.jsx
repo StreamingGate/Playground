@@ -190,11 +190,9 @@ function VideoMetaData({ videoData, playType }) {
         <S.MyProfile
           onClick={handleProfilClickBtn}
           size='md'
-          imgSrc={
-            playType.current === 'video'
-              ? videoData?.uploaderProfileImage
-              : `${process.env.REACT_APP_PROFILE_IMAGE}/${videoData?.hostUuid}`
-          }
+          imgSrc={`${process.env.REACT_APP_PROFILE_IMAGE}${
+            playType.current === 'video' ? videoData?.uploaderUuid : videoData?.hostUuid
+          }`}
         />
         <S.VideoSubInfo>
           <S.ChannelInfo>

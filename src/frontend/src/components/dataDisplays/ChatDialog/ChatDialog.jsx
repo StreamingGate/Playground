@@ -6,6 +6,7 @@ import { timeService } from '@utils/service';
 
 function ChatDialog({ chatInfo, isPinned }) {
   const { timeStamp, nickname, message, senderRole, profileImage } = chatInfo;
+
   return (
     <S.ChatDialogContainer>
       <S.ChatMetaContainer>
@@ -24,7 +25,7 @@ function ChatDialog({ chatInfo, isPinned }) {
 ChatDialog.propTypes = {
   chatInfo: PropTypes.shape({
     profileImgSrc: PropTypes.string,
-    timeStamp: PropTypes.instanceOf(Date),
+    timeStamp: PropTypes.string,
     nickname: PropTypes.string,
     message: PropTypes.string,
     senderRole: PropTypes.oneOf(['STREAMER', 'VIEWER']),

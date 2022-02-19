@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
 import * as S from './ChatRoom.style';
+import { lStorageService } from '@utils/service';
 import { ChatInfoContext } from '@utils/context';
 import { useSocket, useForm } from '@utils/hook';
 
@@ -14,6 +15,8 @@ import { ChatDialog } from '@components/dataDisplays';
 const MAX_LENGTH = 200;
 
 function ChatRoom({ senderRole, videoUuid }) {
+  const userId = lStorageService.getItem('uuid');
+
   const { setCurUserCount } = useContext(ChatInfoContext);
 
   const { roomId } = useParams();
@@ -118,7 +121,7 @@ function ChatRoom({ senderRole, videoUuid }) {
         )}
       </S.ChaListContainer>
       <S.ChatInputController>
-        <S.UserProfile />
+        <S.UserProfile imgSrc={`${process.env.REACT_APP_PROFILE_IMAGE}${userId}`} />
         <S.ChatInputContainer>
           <Input
             name='message'
