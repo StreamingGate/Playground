@@ -1,8 +1,6 @@
 package com.example.chatservice.redis;
 
 import com.example.chatservice.entity.UserRepository;
-import com.example.chatservice.exceptionhandler.customexception.CustomChatException;
-import com.example.chatservice.exceptionhandler.customexception.ErrorCode;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +23,11 @@ public class JwtService {
     /**
      * @param token
      * @return true if token is valid
-     * @throws CustomChatException
      */
-    public boolean validation(String token) throws CustomChatException{
+    public boolean validation(String token) {
         if (token != null && isTokenValid(token)) {
             String uuid = getUuid(token);
-            userRepository.findByUuid(uuid).orElseThrow(() -> new CustomChatException(ErrorCode.C003, uuid));
+            userRepository.findByUuid(uuid).orElse(null);
             return true;
         }
         return false;

@@ -1,7 +1,5 @@
 package com.example.chatservice.controller;
 
-import com.example.chatservice.exceptionhandler.customexception.CustomChatException;
-import com.example.chatservice.exceptionhandler.ErrorResponse;
 import com.example.chatservice.dto.chat.ChatProduce;
 import com.example.chatservice.dto.chat.ChatType;
 import com.example.chatservice.redis.RedisRoomService;
@@ -12,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
-import static com.example.chatservice.exceptionhandler.customexception.ErrorCode.C001;
 
 
 
@@ -30,14 +27,9 @@ public class RedisPubSubController {
 
     @MessageMapping("/chat/message/{roomId}")
     public void message(@DestinationVariable String roomId, ChatProduce chat) throws Exception{
-        try {
-            if (chat.getChatType().equals(ChatType.PINNED)) {
-                redisRoomService.addPinnedChat(roomId, chat);
-            }
-            RedisMessaging.publish(redisRoomService.getOrAddTopic(roomId), chat);
-        } catch (CustomChatException e) {
-            e.printStackTrace();
-            ClientMessaging.publish(CHAT_DESTINATION + roomId, new ErrorResponse(C001, C001.getMessage()));
+        if (chat.getChatType().equals(ChatType.PINNED)) {
+            redisRoomService.addPinnedChat(roomId, chat);
         }
+        RedisMessaging.publish(redisRoomService.getOrAddTopic(roomId), chat);
     }
 }

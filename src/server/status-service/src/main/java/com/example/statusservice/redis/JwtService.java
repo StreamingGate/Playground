@@ -1,8 +1,7 @@
 package com.example.statusservice.redis;
 
+import com.example.statusservice.entity.User.User;
 import com.example.statusservice.entity.User.UserRepository;
-import com.example.statusservice.exceptionhandler.customexception.CustomStatusException;
-import com.example.statusservice.exceptionhandler.customexception.ErrorCode;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +24,14 @@ public class JwtService {
     /**
      * @param token
      * @return true if token is valid
-     * @throws CustomStatusException
      */
-    public boolean validation(String token) throws CustomStatusException{
+    public boolean validation(String token) {
         if (token != null && isTokenValid(token)) {
             String uuid = getUuid(token);
-            userRepository.findByUuid(uuid).orElseThrow(() -> new CustomStatusException(ErrorCode.S003, uuid));
+            User user = userRepository.findByUuid(uuid).orElse(null);
+            if(user == null){
+                return false;
+            }
             return true;
         }
         return false;
