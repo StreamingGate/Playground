@@ -1,6 +1,6 @@
-package com.example.roomservice.exceptionHandler;
+package com.example.roomservice.exceptionhandler;
 
-import com.example.roomservice.exceptionHandler.customexception.CustomRoomException;
+import com.example.roomservice.exceptionhandler.customexception.CustomRoomException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

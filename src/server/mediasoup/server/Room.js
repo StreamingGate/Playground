@@ -2,6 +2,7 @@ const protoo = require("protoo-server");
 const config = require("./config");
 const axios = require('axios');
 var EventEmitter = require('events').EventEmitter;
+
 const mediaCodecs = [
   {
     kind: "audio",
@@ -40,22 +41,35 @@ class Room extends EventEmitter {
     this._mediasoupRouter = mediasoupRouter;
     this._producer = null;
     this._audioProducer = null;
+    this._producerId = null;
   }
   close() {
 
     this._closed = true;
 
-    // Close the mediasoup Router.
-    console.log("미디어 라우터 삭제전~")
+    axios.delete(`https://dev.streaminggate.shop/room-service/room`, {
+      Headers: {
+        'Content-Type' : 'application/json',
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      data: {
+        uuid: this._roomId
+      }
+    }).then((response) => {
+      console.log("룸 삭제 성공")
+    })
+
+    // mediasoup Router 닫기
+
     this._mediasoupRouter.close();
-    console.log("미디어 라우터 삭제후~")
 
-    // Close the protoo Room.
-    console.log("프로투룸삭제전~")
+
+    // protoo Room 닫기
+
     this._protooRoom.close();
-    console.log("프로투룸삭제후~")
 
-    // Emit 'close' event.
+
+    // Emit 'close' event (Map함수에 룸 삭제위해)
     this.emit('close',this._workerNum);
 
   }
@@ -147,8 +161,8 @@ class Room extends EventEmitter {
             {
               message: "방송종료하였습니다."
             })
-        this.close();
         accept();
+        this.close();
         break;
       }
       case "createWebRtcTransport": {
@@ -164,6 +178,7 @@ class Room extends EventEmitter {
           console.log("this is flag")
           const [transport, info] = await this.createWebRtcTransport();
           peer.data.consumeTransport = transport;
+
           accept(info);
         }
         break;
@@ -186,6 +201,7 @@ class Room extends EventEmitter {
             rtpParameters,
           });
           this._producer = peer.data.producer;
+          this._producerId = this._producer.id;
           accept({ id: this._producer.id });
         }
         break;
@@ -222,7 +238,7 @@ class Room extends EventEmitter {
         const rtpCapabilities = typeof request.data.rtpCapabilities === 'object'?request.data.rtpCapabilities:JSON.parse(request.data.rtpCapabilities);
         let canConsume = false;
         if (this._producer?.id) {
-          console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
           canConsume = this._mediasoupRouter.canConsume({
             producerId: this._producer.id,
             rtpCapabilities,
@@ -244,7 +260,7 @@ class Room extends EventEmitter {
                   {
                     message: "방송종료하였습니다."
                   })
-              this.close();
+              // this.close();
             });
 
             peer.data.consumer.on("producerclose",  async (id) => {
@@ -253,29 +269,7 @@ class Room extends EventEmitter {
                   {
                     message: "방송종료하였습니다."
                   })
-              this.close();
-              console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!1')
-              const producerId = this._producer.id;
-              // try {
-              //   await axios.get(`http://localhost:8000/room-service`)
-
-              //   await axios.delete(`http://localhost:8000/room-service/room`, {
-              //     Headers: {
-              //       'Content-Type' : 'application/json',
-              //       'X-Requested-With': 'XMLHttpRequest'
-              //     },
-              //     data: {
-              //       roomId: 8,
-              //       hostUuid: "46e0e6b0-55a1-4eef-a2e0-3f8089e4596d"
-              //     }
-              //   }).then((response) => {
-              //     console.log("룸 삭제 성공")
-              //   })
-              // } catch(e) {
-              //   console.log(e);
-              // }
               // this.close();
-              console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!2')
             });
 
             accept({
@@ -293,7 +287,6 @@ class Room extends EventEmitter {
         break;
       }
       case "audioConsume": {
-        // const { rtpCapabilities } = request.data;
         const rtpCapabilities = typeof request.data.rtpCapabilities === 'object' ? request.data.rtpCapabilities : JSON.parse(request.data.rtpCapabilities);
         let canConsume = false;
         if (this._audioProducer?.id) {
@@ -303,8 +296,6 @@ class Room extends EventEmitter {
             rtpCapabilities,
           });
         }
-        console.log(canConsume);
-
         try {
           if (canConsume && peer.data?.consumeTransport) {
             console.log("audioConsume");

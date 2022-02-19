@@ -28,14 +28,3 @@ spring:
     password: ${playground.mail.password}
     properties.mail.smtp.auth: true
     properties.mail.smtp.starttls.enable: true
-
-#eureka:
-#  instance:
-#    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
-#    ip-address: 18.117.58.222
-#    hostname: 18.117.58.222
-#  client:
-#    fetch-registry: true
-#    register-with-eureka: true
-#    service-url:
-#      defaultZone: http://3.18.120.82:8761/eureka
