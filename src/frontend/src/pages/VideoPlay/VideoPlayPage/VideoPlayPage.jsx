@@ -43,7 +43,12 @@ function VideoPlayPage() {
   const { data, isLoading } = useGetVideoInfo(playType.current, id, userId, handleVideoUrlLoad);
 
   // 실시간 방송일 경우(playType.current === 'live') 실시간 시청 커스텀 훅 실행
-  const { consumer } = useMediaSoupConsume(playType.current === 'live', videoPlayerRef, data?.uuid);
+  const { consumer } = useMediaSoupConsume(
+    playType.current === 'live',
+    videoPlayerRef,
+    data?.uuid,
+    id
+  );
 
   const { stompClient } = useStatusSocket();
 
