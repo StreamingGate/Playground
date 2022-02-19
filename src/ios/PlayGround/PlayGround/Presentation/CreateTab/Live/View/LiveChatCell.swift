@@ -30,5 +30,6 @@ class LiveChatCell: UITableViewCell {
         contentLabel.font = UIFont.Component
         contentLabel.text = info.message
         nicknameLabel.text = info.nickname
+        profileImageView.downloadImageFrom(link: info.profileImage, contentMode: .scaleAspectFill)
     }
 }
