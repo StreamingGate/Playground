@@ -1,5 +1,5 @@
 import React, { useState, useRef, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 import * as S from './StudioPage.style';
 import { ChatInfoContext } from '@utils/context';
@@ -13,6 +13,7 @@ import { Mike, Mute, WhiteShare } from '@components/cores';
 
 function StudioPage() {
   const streamPlayerRef = useRef(null);
+  const navigate = useNavigate();
 
   const { stream, toggleMuteAudio, stopStream, switchPCMedia } = useStreamMedia(streamPlayerRef);
   const { roomId } = useParams();
@@ -33,6 +34,7 @@ function StudioPage() {
     stopStream();
     await newPeer.request('closeProducer', { producerId: producer.id });
     setIsCounterStop(true);
+    navigate('/home');
   };
 
   const chatInfoContext = useMemo(

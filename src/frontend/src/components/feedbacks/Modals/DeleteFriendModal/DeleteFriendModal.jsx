@@ -30,7 +30,7 @@ function DeleteFriendModal({ friendName, target, myId }) {
         </S.DeleteFriendModalTitle>
         <S.DeleteFriendModalBody>
           <S.DeleteFriendInfoContainer>
-            <Avatar size='lg' />
+            <Avatar size='lg' imgSrc={`${process.env.REACT_APP_PROFILE_IMAGE}${target}`} />
             <Typography>{friendName}</Typography>
           </S.DeleteFriendInfoContainer>
           <Typography>

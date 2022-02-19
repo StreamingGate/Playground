@@ -20,7 +20,7 @@ const mediasoupClient = require('mediasoup-client');
  * consumer: 미디어 서버에서 전달받은 미디어 정보 객체
  */
 
-export default function useMediaSoupConsume(isLive, videoPlayerRef, roomId) {
+export default function useMediaSoupConsume(isLive, videoPlayerRef, roomId, id) {
   const userId = lStorageService.getItem('uuid');
 
   const [consumer, setConsumer] = useState(null);
@@ -72,8 +72,6 @@ export default function useMediaSoupConsume(isLive, videoPlayerRef, roomId) {
       rtpParameters: params.rtpParameters,
     });
 
-    // let audioConsumer;
-
     const audioParams = await peer.request('audioConsume', {
       rtpCapabilities: consumerDevice.rtpCapabilities,
     });
@@ -92,7 +90,6 @@ export default function useMediaSoupConsume(isLive, videoPlayerRef, roomId) {
     const { track } = consumer;
     const { track: audio } = audioConsumer;
 
-    // console.log(audio);
     try {
       videoPlayerRef.current.srcObject = new MediaStream([track, audio]);
     } catch (error) {
@@ -124,16 +121,17 @@ export default function useMediaSoupConsume(isLive, videoPlayerRef, roomId) {
   };
 
   const isValidRoom = async () => {
-    console.log('hit');
-    const { data } = await axios.get(`/room-service/room?roomId=${roomId}&uuid=${userId}`);
-    console.log(data);
-
-    console.log(data);
+    const result = await axios.get(`/room-service/room?roomId=${id}&uuid=${userId}`);
+    if (result?.errorCode) {
+      navigate('/home');
+    }
   };
 
   useEffect(() => {
-    isValidRoom();
-  }, []);
+    if (isLive && id) {
+      isValidRoom();
+    }
+  }, [id]);
 
   // 실시간 방송일 경우에만 시그널링 서버에 접속
   useEffect(() => {

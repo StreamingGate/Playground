@@ -13,7 +13,6 @@ import { DeleteFriendModal, ModifyProfileModal } from '@components/feedbacks/Mod
 function ProfileDropdown() {
   const userId = lStorageService.getItem('uuid');
   const nickName = lStorageService.getItem('nickName');
-  const userProfileImage = lStorageService.getItem('profileImage');
 
   const { modalState } = useContext(MainLayoutContext);
   const { data: friendList } = useFriendList(userId);
@@ -53,7 +52,7 @@ function ProfileDropdown() {
       {modalState.profile && (
         <S.ProfileDropdown>
           <S.UserProfileInfo>
-            <S.UserAvartar size='xl' imgSrc={userProfileImage} />
+            <S.UserAvartar size='xl' imgSrc={`${process.env.REACT_APP_PROFILE_IMAGE}${userId}`} />
             <S.UserName>
               <Typography type='content'>{nickName}</Typography>
               <S.ModifyUserInfoBtn variant='text' id='modifyProfile'>
@@ -68,9 +67,12 @@ function ProfileDropdown() {
           <S.FriendListContainer>
             <S.FriendListTitle type='highlightCaption'>친구목록</S.FriendListTitle>
             <S.FriendList>
-              {friendList?.result.map(({ uuid, nickname, profileImage }) => (
+              {friendList?.result.map(({ uuid, nickname }) => (
                 <S.FriendInfo key={uuid}>
-                  <S.FriendAvatar tyep='sm' imgSrc={profileImage} />
+                  <S.FriendAvatar
+                    tyep='sm'
+                    imgSrc={`${process.env.REACT_APP_PROFILE_IMAGE}${uuid}`}
+                  />
                   <S.FriendName type='caption'>{nickname}</S.FriendName>
                   <S.FriendDeleteBtn id={`friendDelete_${uuid}_${nickname}`} variant='text'>
                     삭제

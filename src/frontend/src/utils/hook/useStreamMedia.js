@@ -31,6 +31,7 @@ export default function useStreamMedia(streamPlayerRef, device = 'web') {
     setStream({ videoTrack: null, audioTrack: null });
   };
 
+  // 디바이스 미디어 스트림 접근
   const getMediaStream = async (facingMode = 'user') => {
     try {
       stopStream();
@@ -61,6 +62,7 @@ export default function useStreamMedia(streamPlayerRef, device = 'web') {
     }
   };
 
+  // 화면공유 미디어 스트림 제어
   const getDeviceStream = async () => {
     try {
       stopStream();
@@ -87,6 +89,7 @@ export default function useStreamMedia(streamPlayerRef, device = 'web') {
     }
   };
 
+  // 화면 공유, 디바이스 카메라 전환
   const switchPCMedia = async () => {
     if (pcMode === 'default') {
       await getDeviceStream();
@@ -114,6 +117,7 @@ export default function useStreamMedia(streamPlayerRef, device = 'web') {
     stream.audioTrack.enabled = !curAudioEnable;
   };
 
+  // 모바일 전/후면 카메라 전환
   const switchCamera = async () => {
     if (facingMode === 'user') {
       await getMediaStream('environment');
