@@ -8,6 +8,7 @@ import { lStorageService } from '@utils/service';
 
 import { Typography } from '@components/cores';
 import { VideoOverview } from '@components/videos';
+import { Loading } from '@components/feedbacks';
 
 function getMyPageTitle(type) {
   let title = '';
@@ -31,7 +32,10 @@ function MyPage() {
 
   const [myPageTitle, setMyPageTitle] = useState('');
 
-  const { data, fetchNextPage } = useGetMyList(type, userId);
+  const { data, fetchNextPage, isLoading, isFetching, isFetchingNextPage } = useGetMyList(
+    type,
+    userId
+  );
   const observer = useInifinitScroll(fetchNextPage, {
     root: null,
     threshold: 0,
@@ -51,6 +55,7 @@ function MyPage() {
 
   return (
     <>
+      {(isLoading || isFetching || isFetchingNextPage) && <Loading />}
       <S.HistoryPageContainer>
         <Typography>{myPageTitle}</Typography>
         <S.MyVideoContainer>
