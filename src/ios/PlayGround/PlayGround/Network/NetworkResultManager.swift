@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import SwiftKeychainWrapper
 
 class NetworkResultManager {
     static let shared = NetworkResultManager()
@@ -39,6 +40,10 @@ class NetworkResultManager {
         } else if result["result"] as? String == "Invalid Token" {
             DispatchQueue.main.async {
                 let action = UIAlertAction(title: "확인", style: .default) { _ in
+                    StatusManager.shared.disconnectToSocket()
+                    KeychainWrapper.standard.removeObject(forKey: KeychainWrapper.Key.accessToken.rawValue)
+                    KeychainWrapper.standard.removeObject(forKey: KeychainWrapper.Key.uuid.rawValue)
+                    UserManager.shared.userInfo = nil
                     coordinator?.dismissToRoot()
                 }
                 vc.simpleAlertWithAction(message: "토큰이 만료되어서\n로그인 페이지로 이동합니다", action: action)

@@ -27,13 +27,9 @@ class ChannelViewController: UIViewController {
     var navVC: HomeNavigationController?
     let spinner = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.medium)
     
-//    let animationView: AnimationView = .init(name: "PgLoading")
-//    let loadingBackView = UIView()
-    
     // MARK: - View LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
-//        self.animationView.setLoading(vc: self, backView: loadingBackView)
         videoTableView.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
         setupUI()
         bindViewModel()
@@ -137,7 +133,6 @@ extension ChannelViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "VideoListCell", for: indexPath) as? VideoListCell else { return UITableViewCell() }
         guard let videoList = self.viewModel.videoList else { return cell }
-        cell.setupUI(indexPath.row)
         cell.setupVideo(info: videoList[indexPath.row])
         return cell
     }

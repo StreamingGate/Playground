@@ -49,7 +49,6 @@ class ChatViewModel {
 
 extension ChatViewModel: StompClientLibDelegate {
     func stompClient(client: StompClientLib!, didReceiveMessageWithJSONBody jsonBody: AnyObject?, akaStringBody stringBody: String?, withHeader header: [String : String]?, withDestination destination: String) {
-        print("chat--> \(jsonBody)")
         guard let data = jsonBody as? [String: Any] else { return }
         if let chatData = DataHelper.dictionaryToObject(objectType: ChatData.self, dictionary: data) {
             print("chatData received")

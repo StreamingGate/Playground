@@ -15,7 +15,8 @@ class HorizontalVideoListCell: UICollectionViewCell {
     @IBOutlet weak var explainLabel2: UILabel!
     @IBOutlet weak var lastPositionWidth: NSLayoutConstraint!
     
-    func setupUI() {
+    override func awakeFromNib() {
+        super.awakeFromNib()
         thumbnailImageView.backgroundColor = UIColor.black
         titleLabel.font = UIFont.caption
         explainLabel1.font = UIFont.caption
@@ -30,7 +31,6 @@ class HorizontalVideoListCell: UICollectionViewCell {
     func setupLive(info: GeneralVideo) {
         titleLabel.text = info.title
         explainLabel1.text = info.hostNickname
-//        liveSign.isHidden = false
         guard let uuid = info.uuid else { return }
         explainLabel2.text = "\(String(describing: info.hits))회"
         thumbnailImageView.downloadImageFrom(link: "https://d8knntbqcc7jf.cloudfront.net/thumbnail/\(uuid)", contentMode: .scaleAspectFit)
@@ -42,7 +42,6 @@ class HorizontalVideoListCell: UICollectionViewCell {
      */
     func setupVideo(info: GeneralVideo) {
         titleLabel.text = info.title
-//        liveSign.isHidden = true
         thumbnailImageView.downloadImageFrom(link: info.thumbnail, contentMode: .scaleAspectFit)
         explainLabel2.text = "\(String(describing: info.hits ?? 0))회"
         explainLabel1.text = "\(info.uploaderNickname ?? "익명") •"
@@ -53,7 +52,6 @@ class HorizontalVideoListCell: UICollectionViewCell {
      */
     func setupUploadedVideo(info: GeneralVideo) {
         titleLabel.text = info.title
-//        liveSign.isHidden = true
         thumbnailImageView.downloadImageFrom(link: info.thumbnail, contentMode: .scaleAspectFit)
         explainLabel1.text = "\(String(describing: info.hits ?? 0))회 •"
         guard let create = info.createdAt else { return }

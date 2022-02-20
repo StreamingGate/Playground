@@ -14,7 +14,6 @@ final internal class Request : NSObject {
     
     private override init() {}
     
-    // Send getRoomRtpCapabilitiesRequest
     func sendGetRoomRtpCapabilitiesRequest(socket: EchoSocket, roomId: String) -> JSON? {
         print("REQ) getRouterRtpCapabilities")
         return Request.shared.sendSocketAckRequest(socket: socket, data: ["request" : true, "id": 123, "method": "getRouterRtpCapabilities",  "data": []] as [String : Any])

@@ -17,6 +17,15 @@ class FriendListCell: UITableViewCell {
     var deleteHandler: (()->Void)?
     
     // MARK: - UI Setting
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        friendNameLabel.font = UIFont.Content
+        profileImageView.layer.cornerRadius = 15
+        profileImageView.backgroundColor = UIColor.placeHolder
+        onlineMarkView.layer.cornerRadius = 4
+    }
+    
     /**
      사이드바에서 친구 리스트 조회
      */
@@ -24,10 +33,6 @@ class FriendListCell: UITableViewCell {
         friendNameLabel.text = info.nickname
         profileImageView.downloadImageFrom(link: info.profileImage, contentMode: .scaleAspectFill)
         deleteButton.isHidden = true
-        friendNameLabel.font = UIFont.Content
-        profileImageView.layer.cornerRadius = 15
-        profileImageView.backgroundColor = UIColor.placeHolder
-        onlineMarkView.layer.cornerRadius = 4
         onlineMarkView.isHidden = !info.status
     }
     
@@ -38,10 +43,6 @@ class FriendListCell: UITableViewCell {
         friendNameLabel.text = info.nickname
         profileImageView.downloadImageFrom(link: info.profileImage, contentMode: .scaleAspectFill)
         deleteButton.isHidden = false
-        friendNameLabel.font = UIFont.Content
-        profileImageView.layer.cornerRadius = 15
-        profileImageView.backgroundColor = UIColor.placeHolder
-        onlineMarkView.layer.cornerRadius = 4
         onlineMarkView.isHidden = false
     }
     

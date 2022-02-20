@@ -99,7 +99,6 @@ extension MyPageViewController: UICollectionViewDataSource, UICollectionViewDele
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RecentViewedCell", for: indexPath) as? RecentViewedCell else { return UICollectionViewCell() }
-        cell.setupUI()
         if self.viewModel.myList[indexPath.item].uploaderNickname == nil {
             cell.setupLive(info: self.viewModel.myList[indexPath.item])
         } else {

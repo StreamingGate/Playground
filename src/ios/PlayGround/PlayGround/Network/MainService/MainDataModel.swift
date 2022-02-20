@@ -101,18 +101,6 @@ struct Friend: Codable {
     }
 }
 
-//struct FriendRequest: Codable {
-//    let uuid: String
-//    let nickname: String
-//    let profileImage: String
-//    
-//    enum CodingKeys: String, CodingKey {
-//        case uuid
-//        case nickname
-//        case profileImage
-//    }
-//}
-
 struct WatchingInfo: Codable {
     let roomId: String
     let title: String

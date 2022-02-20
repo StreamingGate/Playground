@@ -112,20 +112,6 @@ class CustomTabViewController: UIViewController {
         coordinator?.changeTab(index: 2, tabVC: self)
     }
     
-    // 플레이어를 제외한 viewController 해제
-    func removeChildViewController(){
-        if self.children.count > 0{
-            let viewControllers:[UIViewController] = self.children
-            for i in viewControllers {
-                if (i as? PlayViewController) == nil {                
-                    i.willMove(toParent: nil)
-                    i.removeFromParent()
-                    i.view.removeFromSuperview()
-                }
-            }
-        }
-    }
-    
     // 플레이어 해제
     func removePlayer() {
         if self.children.count > 0 {

@@ -15,15 +15,19 @@ class FriendRequestCell: UITableViewCell {
     @IBOutlet weak var rejectButton: UIButton!
     var buttonHandler: ((Int)->Void)?
     
-    func updateUI(info: Friend) {
-        profileImageView.downloadImageFrom(link: info.profileImage, contentMode: .scaleAspectFill)
-        nicknameLabel.text = info.nickname
+    override func awakeFromNib() {
+        super.awakeFromNib()
         nicknameLabel.font = UIFont.Content
         acceptButton.titleLabel?.font = UIFont.Content
         rejectButton.titleLabel?.font = UIFont.Content
         acceptButton.layer.cornerRadius = 3
         rejectButton.layer.cornerRadius = 3
         profileImageView.layer.cornerRadius = 20
+    }
+    
+    func updateUI(info: Friend) {
+        profileImageView.downloadImageFrom(link: info.profileImage, contentMode: .scaleAspectFill)
+        nicknameLabel.text = info.nickname
     }
     
     @IBAction func acceptButtonDidTap(_ sender: Any) {

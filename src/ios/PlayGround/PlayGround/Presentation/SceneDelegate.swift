@@ -34,11 +34,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             print("Streamer chat disconnected")
             liveVC.viewModel.disconnectToSocket()
         }
+        StatusManager.shared.disconnectToSocket()
     }
 
     func sceneDidBecomeActive(_ scene: UIScene) {
         // Called when the scene has moved from an inactive state to an active state.
         // Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
+        StatusServiceAPI.shared.getFriendInfo { result in
+            guard let friends = result["data"] as? FriendWatchList else { return }
+            StatusManager.shared.friendWatchList = friends.result
+            StatusManager.shared.connectToSocket()
+        }
     }
 
     func sceneWillResignActive(_ scene: UIScene) {
@@ -53,6 +59,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func sceneDidEnterBackground(_ scene: UIScene) {
         print("background")
+        StatusManager.shared.disconnectToSocket()
         // Called as the scene transitions from the foreground to the background.
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.

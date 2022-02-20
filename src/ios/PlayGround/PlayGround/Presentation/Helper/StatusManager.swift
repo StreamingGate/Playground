@@ -36,7 +36,6 @@ class StatusManager {
 
 extension StatusManager: StompClientLibDelegate {
     func stompClient(client: StompClientLib!, didReceiveMessageWithJSONBody jsonBody: AnyObject?, akaStringBody stringBody: String?, withHeader header: [String : String]?, withDestination destination: String) {
-        print("did receive \(jsonBody)")
         guard let data = jsonBody as? [String: Any] else { return }
         guard let friendWatchData = DataHelper.dictionaryToObject(objectType: FriendWatch.self, dictionary: data) else {
             print("not friend list")
