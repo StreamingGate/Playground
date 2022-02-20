@@ -21,6 +21,7 @@ class ChatViewModel {
     @Published var chatList: [ChatData] = []
     @Published var userCount = 0
     @Published var pinned: ChatData?
+    @Published var isValid = true
     
     var isLive = false
     var roomId = ""
@@ -67,6 +68,8 @@ extension ChatViewModel: StompClientLibDelegate {
             }
         } else if let countData = data["userCnt"] as? Int {
             self.userCount = countData
+        } else if let error = data["errorCode"] as? String, error == "C003" {
+            self.isValid = false
         }
     }
     

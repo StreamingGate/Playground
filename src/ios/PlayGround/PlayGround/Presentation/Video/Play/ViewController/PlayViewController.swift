@@ -406,7 +406,7 @@ class PlayViewController: UIViewController {
                 self.channelNicknameLabel.text = info.uploaderNickname
                 self.categoryLabel.text = "#\(self.viewModel.categoryDic[info.category] ?? "기타")"
                 self.miniTitleLabel.text = info.title
-                self.channelProfileImageView.downloadImageFrom(link: info.uploaderProfileImage, contentMode: .scaleAspectFill)
+                self.channelProfileImageView.downloadImageFrom(link: "https://sgs-playground.s3.us-east-2.amazonaws.com/profiles/\(info.uploaderUuid)", contentMode: .scaleAspectFill)
                 self.viewLabel.text = "조회수 \(info.hits)회"
                 self.playControllView.isHidden = self.viewModel.isLive
                 self.miniPlayPauseButton.alpha = self.viewModel.isLive ? 0 : 1
@@ -424,7 +424,7 @@ class PlayViewController: UIViewController {
                 self.channelNicknameLabel.text = info.hostNickname ?? "익명"
                 self.categoryLabel.text = "#\(self.viewModel.categoryDic[info.category] ?? "기타")"
                 self.miniTitleLabel.text = info.title
-                self.channelProfileImageView.downloadImageFrom(link: "https://d8knntbqcc7jf.cloudfront.net/profiles/\(info.hostUuid)", contentMode: .scaleAspectFill)
+                self.channelProfileImageView.downloadImageFrom(link: "https://sgs-playground.s3.us-east-2.amazonaws.com/profiles/\(info.hostUuid)", contentMode: .scaleAspectFill)
 //                self.viewLabel.text = "조회수 \(info.hits)회"
                 self.playControllView.isHidden = self.viewModel.isLive
                 self.miniPlayPauseButton.alpha = self.viewModel.isLive ? 0 : 1

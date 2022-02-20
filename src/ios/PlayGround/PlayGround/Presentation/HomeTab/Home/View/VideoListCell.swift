@@ -42,9 +42,10 @@ class VideoListCell: UITableViewCell {
         titleLabel.text = info.title
         nicknameLabel.text = info.hostNickname
         liveSign.isHidden = false
-        guard let create = info.createdAt, let uuid = info.uuid, let nickname = info.hostNickname else { return }
+        guard let create = info.createdAt, let uuid = info.uuid, let hostUuid = info.hostUuid, let nickname = info.hostNickname else { return }
         nicknameLabel.text = "\(nickname) • \(create.getDateString())"
         thumbnailImageView.downloadImageFrom(link: "https://d8knntbqcc7jf.cloudfront.net/thumbnail/\(uuid)", contentMode: .scaleAspectFit)
+        profileImageView.downloadImageFrom(link: "https://d8knntbqcc7jf.cloudfront.net/profiles/\(hostUuid)", contentMode: .scaleAspectFill)
     }
     
     /**
@@ -55,8 +56,9 @@ class VideoListCell: UITableViewCell {
         titleLabel.text = info.title
         liveSign.isHidden = true
         thumbnailImageView.downloadImageFrom(link: info.thumbnail, contentMode: .scaleAspectFit)
-        guard let create = info.createdAt, let nickname = info.uploaderNickname else { return }
+        guard let create = info.createdAt, let nickname = info.uploaderNickname, let uploaderUuid = info.uploaderUuid else { return }
         nicknameLabel.text = "\(nickname) • 조회수 \(info.hits ?? 0)회 • \(create.getDateString())"
+        profileImageView.downloadImageFrom(link: "https://d8knntbqcc7jf.cloudfront.net/profiles/\(uploaderUuid)", contentMode: .scaleAspectFill)
     }
     
     @IBAction func channelProfileDidTap(_ sender: Any) {

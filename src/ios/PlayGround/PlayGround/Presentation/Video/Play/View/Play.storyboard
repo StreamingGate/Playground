@@ -444,7 +444,7 @@
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="닉네임(으)로 채팅하기" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vr5-XT-ZmG">
-                                        <rect key="frame" x="55" y="20.5" width="149" height="20.5"/>
+                                        <rect key="frame" x="65" y="20.5" width="149" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" name="PlaceHolder"/>
                                         <nil key="highlightedColor"/>
@@ -490,7 +490,7 @@
                                     <constraint firstItem="Qe2-mD-WFT" firstAttribute="width" secondItem="Qe2-mD-WFT" secondAttribute="height" multiplier="1:1" id="6T3-IO-jEU"/>
                                     <constraint firstItem="Qe2-mD-WFT" firstAttribute="leading" secondItem="SOH-HM-MYK" secondAttribute="leading" constant="20" id="7X5-nu-nrY"/>
                                     <constraint firstItem="x3j-Zy-qi6" firstAttribute="top" secondItem="bU9-fQ-yjR" secondAttribute="bottom" constant="3" id="8ho-Nr-Wec"/>
-                                    <constraint firstItem="vr5-XT-ZmG" firstAttribute="leading" secondItem="9ux-Rl-nYc" secondAttribute="leading" id="Er5-2W-Kfs"/>
+                                    <constraint firstItem="vr5-XT-ZmG" firstAttribute="leading" secondItem="9ux-Rl-nYc" secondAttribute="leading" constant="10" id="Er5-2W-Kfs"/>
                                     <constraint firstItem="bU7-JT-1nv" firstAttribute="leading" secondItem="SOH-HM-MYK" secondAttribute="leading" id="H9O-Qr-35X"/>
                                     <constraint firstItem="TGg-mc-7vl" firstAttribute="top" secondItem="SOH-HM-MYK" secondAttribute="top" constant="15" id="KYM-9f-tz6"/>
                                     <constraint firstItem="bU7-JT-1nv" firstAttribute="centerX" secondItem="SOH-HM-MYK" secondAttribute="centerX" id="XFB-I2-Fmy"/>
