@@ -12,10 +12,14 @@ class NoticeCell: UITableViewCell {
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var noticeLabel: UILabel!
     
-    func updateUI(info: Notice) {
+    override func awakeFromNib() {
+        super.awakeFromNib()
         profileImageView.layer.cornerRadius = 20
         profileImageView.backgroundColor = UIColor.placeHolder
         noticeLabel.font = UIFont.Content
+    }
+    
+    func updateUI(info: Notice) {
         noticeLabel.text = info.content
         guard let content = parse(string: info.content) else { return }
         switch info.notiType {

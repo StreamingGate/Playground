@@ -74,7 +74,6 @@ extension VideoListViewController: UICollectionViewDataSource, UICollectionViewD
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HorizontalVideoListCell", for: indexPath) as? HorizontalVideoListCell else {
             return UICollectionViewCell()
         }
-        cell.setupUI()
         if type == 2 {
             cell.setupUploadedVideo(info: viewModel.myList[indexPath.item])
             return cell

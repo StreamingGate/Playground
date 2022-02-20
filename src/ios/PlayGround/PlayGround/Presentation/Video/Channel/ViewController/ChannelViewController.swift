@@ -133,7 +133,6 @@ extension ChannelViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "VideoListCell", for: indexPath) as? VideoListCell else { return UITableViewCell() }
         guard let videoList = self.viewModel.videoList else { return cell }
-        cell.setupUI(indexPath.row)
         cell.setupVideo(info: videoList[indexPath.row])
         return cell
     }

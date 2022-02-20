@@ -22,10 +22,6 @@ class VideoListCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.profileImageView.layer.cornerRadius = 33 / 2
-    }
-    
-    func setupUI(_ index: Int) {
         titleLabel.font = UIFont.Component
         nicknameLabel.font = UIFont.caption
         nicknameLabel.textColor = UIColor.customDarkGray

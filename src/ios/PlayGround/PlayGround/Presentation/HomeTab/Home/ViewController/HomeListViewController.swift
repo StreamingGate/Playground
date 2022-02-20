@@ -116,6 +116,7 @@ class HomeListViewController: UIViewController {
      */
     @objc func updateUI(refresh: UIRefreshControl) {
         refresh.endRefreshing()
+        self.pausePlayer()
         self.viewModel.lastLiveId = -1
         self.viewModel.lastVideoId = -1
         self.pausePlayer()
@@ -143,7 +144,7 @@ class HomeListViewController: UIViewController {
     func pausePlayer() {
         self.playerView.player?.pause()
         self.playerView.player?.replaceCurrentItem(with: nil)
-        
+        self.playerView.backgroundColor = UIColor.clear
         self.playerView.player = nil
     }
     
@@ -208,7 +209,6 @@ extension HomeListViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "VideoListCell", for: indexPath) as? VideoListCell else { return UITableViewCell() }
         guard let homeList = self.viewModel.homeList else { return cell}
-        cell.setupUI(indexPath.row)
         if let host = homeList[indexPath.row].hostNickname, host != "" {
             cell.setupLive(info: homeList[indexPath.row])
         } else {

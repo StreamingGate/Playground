@@ -15,7 +15,8 @@ class RecentViewedCell: UICollectionViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var channelNicknameLabel: UILabel!
     
-    func setupUI() {
+    override func awakeFromNib() {
+        super.awakeFromNib()
         thumbnailImageView.backgroundColor = UIColor.black
         titleLabel.font = UIFont.caption
         channelNicknameLabel.font = UIFont.caption
@@ -28,7 +29,6 @@ class RecentViewedCell: UICollectionViewCell {
     func setupLive(info: GeneralVideo) {
         titleLabel.text = info.title
         channelNicknameLabel.text = "\(info.hostNickname ?? "익명")"
-//        liveSign.isHidden = false
         guard let uuid = info.uuid else { return }
         thumbnailImageView.downloadImageFrom(link: "https://d8knntbqcc7jf.cloudfront.net/thumbnail/\(uuid)", contentMode: .scaleAspectFit)
     }
@@ -38,7 +38,6 @@ class RecentViewedCell: UICollectionViewCell {
      */
     func setupVideo(info: GeneralVideo) {
         titleLabel.text = info.title
-//        liveSign.isHidden = true
         thumbnailImageView.downloadImageFrom(link: info.thumbnail, contentMode: .scaleAspectFit)
         channelNicknameLabel.text = "\(info.uploaderNickname ?? "익명")"
     }

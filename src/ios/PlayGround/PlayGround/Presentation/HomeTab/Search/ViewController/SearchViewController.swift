@@ -39,15 +39,12 @@ class SearchViewController: UIViewController {
 
 extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "VideoListCell", for: indexPath) as? VideoListCell else { return UITableViewCell() }
-        cell.setupUI(indexPath.row)
-        cell.channelTapHandler = {
-//            self.navVC?.coordinator?.showChannel(uuid: <#T##String#>)
-        }
+        cell.channelTapHandler = { }
         return cell
     }
     
