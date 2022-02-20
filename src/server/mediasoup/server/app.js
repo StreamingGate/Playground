@@ -146,7 +146,7 @@ async function CreateRoom({ roomId }) {
     })
   }
   //만약 방 인원이 230명이 넘는다면, 새로운 라우터 생성후 기존 라우터와 연결
-  else if(room && roomCnt.get(roomId) >= 1) {
+  else if(room && roomCnt.get(roomId) >= 230) {
     let roomId = `${roomId}1`;
     axios.put (`https://dev.streaminggate.shop/room-service/room`, {
       Headers: {
