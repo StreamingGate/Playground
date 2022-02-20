@@ -1,6 +1,6 @@
-package com.example.roomservice.exceptionHandler;
+package com.example.roomservice.exceptionhandler;
 
-import com.example.roomservice.exceptionHandler.customexception.ErrorCode;
+import com.example.roomservice.exceptionhandler.customexception.ErrorCode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

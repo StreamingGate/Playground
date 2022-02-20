@@ -1,6 +1,7 @@
 const protoo = require("protoo-server");
 const mediasoup = require("mediasoup");
 const https = require("http");
+const axios = require('axios');
 const express = require("express");
 const url = require("url");
 const os = require("os");
@@ -39,6 +40,7 @@ async function runHttpServer() {
 async function runMediasoupWorkers() {
   const { numWorkers } = config.mediasoup;
 
+  //CPU core 갯수에 맞게 워커 생성
   for (let i = 0; i < numWorkers; ++i) {
     const worker = await mediasoup.createWorker({
       rtcMinPort: Number(config.mediasoup.workerSettings.rtcMinPort),
@@ -64,7 +66,7 @@ async function runProtooWebSocketServer() {
   });
 
   protooWebSocketServer.on("connectionrequest", (info, accept, reject) => {
-    // The client indicates the roomId and peerId in the URL query.
+    // 스트리머 또는 시청자가 요청하는 url
     console.log("connect");
     const u = url.parse(info.request.url, true);
     const roomId = u.query["room"];
@@ -77,18 +79,11 @@ async function runProtooWebSocketServer() {
       return;
     }
 
-
     queue
         .push(async () => {
           const room = await CreateRoom({roomId});
-          // if(rooms.get(roomId) && roomCnt.get(roomId) > 320) {
-          //   room = await getOrCreateRoom({roomId});
-          // }
-          // else {
-          //   room = await CreateRoom({ roomId });
-          // }
 
-          // Accept the protoo WebSocket connection.
+          // protoo webSocket에 접속
           const protooWebSocketTransport = accept();
 
           // 일단 역할을 요청 url에 넣어둠
@@ -99,7 +94,7 @@ async function runProtooWebSocketServer() {
             consume,
             protooWebSocketTransport,
           });
-          console.log("방생성후 완료~~~~")
+
         })
         .catch((error) => {
           reject(error);
@@ -108,7 +103,7 @@ async function runProtooWebSocketServer() {
 }
 
 function getMediasoupWorker() {
-
+  // 워커에 라우터 생성할때 라우터 갯수가 가장 적은 워커 사용 로직
   let minWorker = mediasoupWorkerCnt.sort(function(a,b) {
     return a["cnt"] - b["cnt"];
   })[0];
@@ -121,45 +116,58 @@ function getMediasoupWorker() {
 
 async function CreateRoom({ roomId }) {
   let room = rooms.get(roomId);
-
-  // If the Room does not exist create a new one.
+  const [mediasoupWorker,workerNum] = getMediasoupWorker();
+  // 만약 방이 없다면 방을 새로 생성
   if (!room) {
     console.log("룸생성 시작");
-
-    const [mediasoupWorker,workerNum] = getMediasoupWorker();
+    roomCnt.set(roomId,1);
 
     try {
-      room = await Room.create({ mediasoupWorker, roomId, workerNum });
+      room = await Room.create({ mediasoupWorker, roomId, workerNum});
     } catch (error) {
       console.log(error.message);
-    }
+    };
+
     rooms.set(roomId, room);
-
-    // event emitter 상속후 가능
+    roomCnt.set(roomId,roomCnt.get(roomId)+1);
+    // 스트리머가 방 종료시 요청을 받음
     room.on("close", () => {
-      console.log("룸이 클로즈 됐습니다. 제발 여기 걸려라")
-
+      // 각 워커중에 라우터 갯수가 같은걸 찾아 지우기
       const minWorker = mediasoupWorkerCnt.find((obj) => {
         return obj["num"] === workerNum;
       });
       minWorker["cnt"]--;
+      roomCnt.set(roomId,roomCnt.get(roomId)-1);
       rooms.delete(roomId);
     });
+    // 시청자가 나가면 요청을 받음
+    room.on("consumerClose",() => {
+      roomCnt.set(roomId,roomCnt.get(roomId)-1);
+    })
+  }
+  //만약 방 인원이 230명이 넘는다면, 새로운 라우터 생성후 기존 라우터와 연결
+  else if(room && roomCnt.get(roomId) >= 1) {
+    let roomId = `${roomId}1`;
+    axios.put (`https://dev.streaminggate.shop/room-service/room`, {
+      Headers: {
+        'Content-Type' : 'application/json',
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      data: {
+        uuid: this._roomId
+      }
+    }).then((response) => {
+      console.log("룸 정보 수정 성공")
+    })
+    const producerId = room._producerId;
+    let connectRoom = await Room.create({mediasoupWorker,roomId });
+
+    await room._mediasoupRouter.pipeToRouter({producerId: producerId,router: connectRoom._mediasoupRouter});
+
+    rooms.set(roomId,connectRoom);
+
+    roomCnt.set(roomId,roomCnt.get(roomId)+1);
   }
 
   return room;
 }
-
-// async function getOrCreateRoom({roomId}) {
-//   let room = rooms.get(roomId).getLast();
-//   if(room && !room.hasPeer(peerId) && roomCnt.get(roomId) < 320) {
-//     roomCnt.set(roomId,roomCnt.get(roomId)+1);
-//     return room;
-//   }
-//   else if(room && roomCnt.get(roomId) > 320) {
-//     const mediasoupWorker = getMediasoupWorker();
-//     let connectRoom = await Room.create({room,mediasoupWorker,roomId});
-//     rooms.get(roomId).push(connectRoom);
-//     return connectRoom;
-//   }
-// }

@@ -1,4 +1,4 @@
-package com.example.roomservice.exceptionHandler.customexception;
+package com.example.roomservice.exceptionhandler.customexception;
 
 import lombok.Getter;
 

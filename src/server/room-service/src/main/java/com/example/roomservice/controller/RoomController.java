@@ -1,9 +1,6 @@
 package com.example.roomservice.controller;
 
-import com.example.roomservice.dto.RequestDto;
-import com.example.roomservice.dto.RequestExitDto;
-import com.example.roomservice.dto.ResponseDto;
-import com.example.roomservice.dto.ResponseExitDto;
+import com.example.roomservice.dto.*;
 import com.example.roomservice.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,5 +41,11 @@ public class RoomController {
     @DeleteMapping("/room")
     public ResponseEntity<ResponseExitDto> exit(@RequestBody RequestExitDto requestExitDto) throws Exception {
         return ResponseEntity.status(HttpStatus.OK).body(roomService.delete(requestExitDto));
+    }
+
+    /* 방 내용 업데이트 */
+    @PutMapping("/room")
+    public ResponseEntity<ResponseUpdate> update(@RequestBody RequestUpdate requestUpdate) throws Exception {
+        return ResponseEntity.status(HttpStatus.OK).body(roomService.update(requestUpdate));
     }
 }

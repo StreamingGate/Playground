@@ -1,17 +1,14 @@
 package com.example.roomservice.service;
 
-import com.example.roomservice.dto.RequestDto;
-import com.example.roomservice.dto.RequestExitDto;
-import com.example.roomservice.dto.ResponseDto;
-import com.example.roomservice.dto.ResponseExitDto;
+import com.example.roomservice.dto.*;
 import com.example.roomservice.entity.Room.Room;
 import com.example.roomservice.entity.Room.RoomRepository;
 import com.example.roomservice.entity.RoomViewer.RoomViewer;
 import com.example.roomservice.entity.RoomViewer.RoomViewerRepository;
 import com.example.roomservice.entity.User.User;
 import com.example.roomservice.entity.User.UserRepository;
-import com.example.roomservice.exceptionHandler.customexception.CustomRoomException;
-import com.example.roomservice.exceptionHandler.customexception.ErrorCode;
+import com.example.roomservice.exceptionhandler.customexception.CustomRoomException;
+import com.example.roomservice.exceptionhandler.customexception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -46,7 +43,7 @@ public class RoomService {
             responseDto.setLiked(roomViewer.getLiked());
             responseDto.setDisliked(roomViewer.getDisliked());
         }
-        responseDto.setHostNickname(user.getNickName());
+        responseDto.setHostNickname(room.getUser().getNickName());
         responseDto.setRoomId(roomId);
         responseDto.setLastViewedAt(LocalDateTime.now());
         return Optional.of(responseDto).orElseThrow(()->new CustomRoomException(ErrorCode.L001));
@@ -82,6 +79,16 @@ public class RoomService {
         if (room != null) {
             roomRepository.delete(room);
             return mapper.map(room,ResponseExitDto.class);
+        }
+        throw new CustomRoomException(ErrorCode.L001);
+    }
+
+    @Transactional
+    public ResponseUpdate update(RequestUpdate requestUpdate) throws CustomRoomException {
+        Room room = roomRepository.findByUuid(requestUpdate.getUuid());
+        if (room != null) {
+           room.update(requestUpdate);
+           return mapper.map(room,ResponseUpdate.class);
         }
         throw new CustomRoomException(ErrorCode.L001);
     }

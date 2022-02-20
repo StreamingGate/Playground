@@ -1,6 +1,7 @@
 package com.example.roomservice.entity.Room;
 
 import com.example.roomservice.dto.RequestDto;
+import com.example.roomservice.dto.RequestUpdate;
 import com.example.roomservice.entity.Category;
 import com.example.roomservice.entity.RoomViewer.RoomViewer;
 import com.example.roomservice.entity.User.User;
@@ -53,7 +54,7 @@ public class Room {
     private List<RoomViewer> roomViewer;
 
     @Builder
-    public Room(String uuid,String title,String content,String hostUuid,String thumbnail,Category category,User user) {
+    public Room (String uuid,String title,String content,String hostUuid,String thumbnail,Category category,User user) {
         this.uuid = uuid;
         this.title = title;
         this.content = content;
@@ -73,6 +74,10 @@ public class Room {
             .category(requestDto.getCategory())
             .user(user)
             .build();
+    }
+
+    public void update (RequestUpdate requestUpdate) {
+        this.uuid = requestUpdate.getUuid();
     }
 
 }
