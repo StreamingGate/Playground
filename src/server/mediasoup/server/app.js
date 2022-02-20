@@ -157,7 +157,7 @@ async function CreateRoom({ roomId }) {
         uuid: this._roomId
       }
     }).then((response) => {
-      console.log("룸 삭제 성공")
+      console.log("룸 정보 수정 성공")
     })
     const producerId = room._producerId;
     let connectRoom = await Room.create({mediasoupWorker,roomId });
