@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import SwiftKeychainWrapper
 
 /**
  AccountEditViewController에서 발생하는 이동/전환을 위한 Coordinator
@@ -38,6 +39,10 @@ class AccountEditCoordinator: Coordinator {
     
     func dismissToRoot() {
         presentViewController?.dismiss(animated: true, completion: {
+            StatusManager.shared.disconnectToSocket()
+            KeychainWrapper.standard.removeObject(forKey: KeychainWrapper.Key.accessToken.rawValue)
+            KeychainWrapper.standard.removeObject(forKey: KeychainWrapper.Key.uuid.rawValue)
+            UserManager.shared.userInfo = nil
             self.navigation.popToRootViewController(animated: true)
         })
     }

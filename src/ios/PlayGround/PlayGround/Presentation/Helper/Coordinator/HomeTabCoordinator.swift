@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import SwiftKeychainWrapper
 
 /**
  HomeNavigationConroller에서 발생하는 이동/전환을 위한 Coordinator
@@ -36,6 +37,10 @@ class HomeTabCoordinator: Coordinator {
     }
     
     func dismissToRoot() {
+        StatusManager.shared.disconnectToSocket()
+        KeychainWrapper.standard.removeObject(forKey: KeychainWrapper.Key.accessToken.rawValue)
+        KeychainWrapper.standard.removeObject(forKey: KeychainWrapper.Key.uuid.rawValue)
+        UserManager.shared.userInfo = nil
         self.parentCoordinator?.navigation.popToRootViewController(animated: true)
     }
     
