@@ -60,16 +60,14 @@ class Room extends EventEmitter {
     })
 
     // mediasoup Router 닫기
-
     this._mediasoupRouter.close();
 
 
     // protoo Room 닫기
-
     this._protooRoom.close();
 
 
-    // Emit 'close' event (Map함수에 룸 삭제위해)
+    // Emit 'close' event (Map함수에 룸 삭제)
     this.emit('close',this._workerNum);
 
   }

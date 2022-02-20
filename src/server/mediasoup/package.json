@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "awaitqueue": "^2.3.3",
+    "axios": "^0.26.0",
     "cors": "^2.8.5",
     "express": "^4.17.2",
     "fs": "0.0.1-security",

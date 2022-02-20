@@ -1,6 +1,7 @@
 const protoo = require("protoo-server");
 const mediasoup = require("mediasoup");
 const https = require("http");
+const axios = require('axios');
 const express = require("express");
 const url = require("url");
 const os = require("os");
@@ -146,7 +147,18 @@ async function CreateRoom({ roomId }) {
   }
   //만약 방 인원이 230명이 넘는다면, 새로운 라우터 생성후 기존 라우터와 연결
   else if(room && roomCnt.get(roomId) >= 1) {
-    let roomId = "roomIdtest";
+    let roomId = `${roomId}1`;
+    axios.put (`https://dev.streaminggate.shop/room-service/room`, {
+      Headers: {
+        'Content-Type' : 'application/json',
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      data: {
+        uuid: this._roomId
+      }
+    }).then((response) => {
+      console.log("룸 삭제 성공")
+    })
     const producerId = room._producerId;
     let connectRoom = await Room.create({mediasoupWorker,roomId });
 
