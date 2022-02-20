@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 
 const postUploadVideo = async formData => {
   const { data } = await axios.post(
-    `${process.env.REACT_APP_UPLOAD_SERVICE}/upload-service/upload`,
+    `${process.env.REACT_APP_API}/upload-service/upload`,
     formData,
     {
       headers: {

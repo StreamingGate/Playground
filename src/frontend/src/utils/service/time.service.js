@@ -15,7 +15,7 @@ const processVideoUploadTime = time => {
   } else if (diff <= 1440) {
     convertDay = `${Math.floor(diff / 60)}시간 전`;
   } else {
-    convertDay = `${diff / 1440}일 전`;
+    convertDay = `${Math.floor(diff / 1440)}일 전`;
   }
   return convertDay;
 };

@@ -55,6 +55,7 @@ export default function useStatusSocket() {
     const { body } = message;
 
     const parsedMessage = JSON.parse(body);
+
     setNewStatus(parsedMessage);
   };
 
@@ -62,13 +63,14 @@ export default function useStatusSocket() {
     const { body } = message;
 
     const parsedMessage = JSON.parse(body);
+
     setCrudStatus(parsedMessage);
   };
 
   const { data } = useGetFriendStatus(userId, () => {});
 
   useEffect(() => {
-    if (data) {
+    if (data && !stompClient) {
       const newClient = new Client();
 
       newClient.connectHeaders = { token };
