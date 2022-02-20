@@ -16,7 +16,6 @@ class ChatServiceAPI {
     
     func connectToSocket(viewModel: ChatViewModel) {
         guard let tokenInfo = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue), let url = NSURL(string: chatServiceUrl) else { return }
-//        socketClient.certificateCheckEnabled = false
         socketClient.openSocketWithURLRequest(request: NSURLRequest(url: url as URL) , delegate: viewModel, connectionHeaders: ["hear-beat": "10000,10000", "accept-version":"1.1,1.0", "token": tokenInfo])
     }
     

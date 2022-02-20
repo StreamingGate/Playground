@@ -35,7 +35,6 @@ class MyHistoryViewModel {
             }
             self.isFinished = (data.count == 0)
             self.isLoading = false
-            print("my list ---> \(self.myList)")
             // 불러온 데이터가 없을 경우, 현재 마지막 id 유지
             self.lastUploaded = data.last?.id ?? self.lastUploaded
         }
@@ -55,7 +54,6 @@ class MyHistoryViewModel {
             }
             self.isFinished = (addedList.count == 0)
             self.isLoading = false
-            print("my list ---> \(self.myList)")
             // 불러온 데이터가 없을 경우, 현재 마지막 id 유지
             self.lastLive = data.liveRooms.last?.likedAt ?? self.lastLive
             self.lastVideo = data.videos.last?.likedAt ?? self.lastVideo
@@ -75,7 +73,6 @@ class MyHistoryViewModel {
             }
             self.isFinished = (addedList.count == 0)
             self.isLoading = false
-            print("my list ---> \(self.myList.count)")
             // 불러온 데이터가 없을 경우, 현재 마지막 id 유지
             self.lastLive = data.liveRooms.last?.lastViewedAt ?? self.lastLive
             self.lastVideo = data.videos.last?.lastViewedAt ?? self.lastVideo

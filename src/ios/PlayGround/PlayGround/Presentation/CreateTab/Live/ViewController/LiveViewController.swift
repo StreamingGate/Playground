@@ -169,16 +169,13 @@ class LiveViewController: UIViewController, SFSafariViewControllerDelegate {
             .sink { [weak self] pinnedChat in
                 guard let self = self else { return }
                 if let info = pinnedChat {
-                    print("pinned")
                     self.pinnedView.isHidden = false
                     self.pinnedImageView.downloadImageFrom(link: info.profileImage, contentMode: .scaleAspectFill)
                     self.pinnedContentLabel.text = info.message
                     self.pinnedNickname.text = info.nickname
                     self.pinnedView.layoutIfNeeded()
-                    print("height: \(self.pinnedView.bounds.height)")
                     self.tableView.contentInset = UIEdgeInsets(top: self.pinnedView.bounds.height + 25, left: 0, bottom: 0, right: 0)
                 } else {
-                    print("normal")
                     self.pinnedView.isHidden = true
                     self.tableView.contentInset = UIEdgeInsets(top: 15, left: 0, bottom: 0, right: 0)
                 }

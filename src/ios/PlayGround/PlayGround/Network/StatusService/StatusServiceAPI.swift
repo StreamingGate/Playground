@@ -18,7 +18,6 @@ class StatusServiceAPI {
     func connectToSocket(manager: StatusManager) {
         guard let token = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue) else { return }
         let url = NSURL(string: self.statusServiceUrl)!
-//        socketClient.certificateCheckEnabled = false
         self.socketClient.openSocketWithURLRequest(request: NSURLRequest(url: url as URL), delegate: manager, connectionHeaders: ["token": token])
     }
     

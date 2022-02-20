@@ -13,5 +13,4 @@ protocol Coordinator: AnyObject {
     var childCoordinators: [Coordinator] { get set }
     var navigation: UINavigationController { get set }
     func dismissToRoot()
-//    func start()
 }

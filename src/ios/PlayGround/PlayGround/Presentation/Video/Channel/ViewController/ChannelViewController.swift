@@ -27,13 +27,9 @@ class ChannelViewController: UIViewController {
     var navVC: HomeNavigationController?
     let spinner = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.medium)
     
-//    let animationView: AnimationView = .init(name: "PgLoading")
-//    let loadingBackView = UIView()
-    
     // MARK: - View LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
-//        self.animationView.setLoading(vc: self, backView: loadingBackView)
         videoTableView.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
         setupUI()
         bindViewModel()

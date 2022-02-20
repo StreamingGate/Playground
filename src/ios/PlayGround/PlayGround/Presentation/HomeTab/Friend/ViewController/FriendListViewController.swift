@@ -30,7 +30,6 @@ class FriendListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         bindViewModel()
-        print("====> \(StatusManager.shared.friendWatchList)")
         setupUI()
     }
     
@@ -54,11 +53,6 @@ class FriendListViewController: UIViewController {
     
     // MARK: - Data Binding
     func bindViewModel() {
-//        self.viewModel.$friendList.receive(on: DispatchQueue.main, options: nil)
-//            .sink { [weak self] _ in
-//                guard let self = self else { return }
-//                self.friendTableView.reloadData()
-//            }.store(in: &cancellable)
         StatusManager.shared.$friendWatchList.receive(on: DispatchQueue.main, options: nil)
             .sink { [weak self] _ in
                 guard let self = self else { return }

@@ -132,7 +132,6 @@ class HomeListViewController: UIViewController {
         let footerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 50))
         spinner.center = footerView.center
         footerView.addSubview(spinner)
-        
         spinner.startAnimating()
         return footerView
     }
