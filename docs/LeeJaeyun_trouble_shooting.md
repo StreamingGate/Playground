@@ -3,7 +3,7 @@
 * 인풋 컴포넌트 유효성 검사 로직 <br/>
   https://github.com/StreamingGate/Playground/blob/develop-frontend/src/frontend/src/utils/hook/useForm.js#L23
 
-  * 문제
+  * 문제  
     인풋 제어 커스텀 훅과 `yup` 라이브러리를 이용한 유효성 검증 과정에서, 한번도 포커싱이 발생하지 않거나, 입력한적이 없는 인풋 컴포넌트도 에러 메세지가 나타나는 문제가 발생
   * 해결
     1. 인자로 넘어오는 인풋 필드 마다 `touched` 객체를 지정해 인풋 컴포넌트에 `onBlur`이벤트가 호출될 때 해당 필드의 touched 값을 `true`로 변환
@@ -12,7 +12,7 @@
 * 모바일 실시간 스트리밍 진행 화면 웹뷰 카메라 전환 <br/>
   https://github.com/StreamingGate/Playground/blob/develop-frontend/src/frontend/src/utils/hook/useStreamMedia.js#L121
 
-  * 문제
+  * 문제  
     모바일 웹뷰에서 `applyConstraints`를 이용해 전/후면 카메라 전환을 시도 했지만 `Media Stream` 이 변경되지 않는 문제가 발생
   * 해결
     1. `Media Stream`과 `Media Stream`의 설정을 `react`의 `state`로 관리해 전/후면 같은 `Media Stream`설정이 변경 될 때 마다 `useState` 함수로 `Media Stream`을 재설정해 새로운 `Media Stream`이 화면에 적용되게끔 설계
@@ -22,7 +22,7 @@
 
   https://github.com/StreamingGate/Playground/blob/develop-frontend/src/frontend/src/pages/Home/HomePage/HomePage.jsx#L31
 
-  * 문제
+  * 문제  
 
     인피니트 스크롤을 구현하기 위해 `window`에 scroll 이벤트를 등록할 경우 이벤트가 빈번히 발생하게됨. 이를 방지하기 위해서는 이벤트 `throttle`을 구현하거나 라이브러리를 사용해 잦은 이벤트 발생을 막아야 함
 
@@ -35,7 +35,7 @@
 
   https://github.com/StreamingGate/Playground/blob/develop-frontend/.github/workflows/chromatic.yml#L1
 
-  * 문제
+  * 문제  
     컴포넌트 문서화를 통해 재사용성을 높이고, 결과물에 대해 팀원들에게 피드백을 받을 방법을 고민
 
   * 해결
@@ -49,7 +49,7 @@
 * protoo-client 오픈소스 분석 <br/>
   https://github.com/versatica/protoo/blob/master/client/lib/Message.js#L108
   https://github.com/versatica/protoo/blob/master/client/lib/Message.js#L148
-  * 문제
+  * 문제  
     미디어 서버와 통신하기 위해 `protoo-client`라는 웹소켓 라이브러리를 사용하기로 했지만 iOS에는 `protoo-server`와 통신을 하기위한 별도의 client 라이브러리가 존재하지 않아 통신을 할 수 있는 방법을 고민해야 했음
   * 해결
     1. `protoo`를 깃헙 코드를 열어 확인해 보니 순수 websocket을 이용하여 docs에 정의되어 있는 메소드들이 구현되어 있음을 확인
