@@ -19,6 +19,7 @@ public class HttpRequest {
 
     private static String URL;
     private static final RestTemplate restTemplate = new RestTemplate();
+    private static final String RESPONSE_SUCCESS = "success";
 
     @Autowired
     public HttpRequest(@Value("${service.ip.status-service}")String chatService){
@@ -26,7 +27,7 @@ public class HttpRequest {
     }
 
     /* 친구 추가 chat-service에 반영 */
-    public static void sendAddFriend(FriendDto requestDto, FriendDto senderDto) {
+    public static String sendAddFriend(FriendDto requestDto, FriendDto senderDto) {
         String targetURL = URL + "/friend";
         PartnerDto partnerDto = new PartnerDto(requestDto, senderDto);
         try{
@@ -37,10 +38,11 @@ public class HttpRequest {
         } catch(RestClientException e){
             log.warn("add friend 실패:" +e.getMessage());
         }
+        return RESPONSE_SUCCESS;
     }
 
     /* 친구 삭제 chat-service에 반영 */
-    public static  void sendDeleteFriend(FriendDto requestDto, FriendDto senderDto) {
+    public static String sendDeleteFriend(FriendDto requestDto, FriendDto senderDto) {
         String targetURL = URL + "/friend";
         PartnerDto partnerDto = new PartnerDto(requestDto, senderDto);
         try{
@@ -51,5 +53,6 @@ public class HttpRequest {
         } catch(RestClientException e){
             log.warn("delete friend 실패:" +e.getMessage());
         }
+        return RESPONSE_SUCCESS;
     }
 }

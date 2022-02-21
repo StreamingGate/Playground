@@ -31,4 +31,8 @@ public class RoomResponseDto {
         this.category = room.getCategory();
         this.createdAt = room.getCreatedAt();
     }
+
+    public RoomResponseDto(Long id){
+        this.id = id;
+    }
 }

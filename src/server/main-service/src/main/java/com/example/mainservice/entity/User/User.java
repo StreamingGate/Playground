@@ -8,6 +8,7 @@ import com.example.mainservice.entity.Video.Video;
 import com.example.mainservice.entity.ViewdHistory.ViewedHistory;
 import com.example.mainservice.exceptionhandler.customexception.CustomMainException;
 import com.example.mainservice.exceptionhandler.customexception.ErrorCode;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
@@ -108,5 +109,18 @@ public class User {
         if (!friends.contains(target)) throw new CustomMainException(ErrorCode.F004);
         this.friends.remove(target);
         target.getFriends().remove(this);
+    }
+
+    @Builder
+    public User(Long id, String email, String pwd, String uuid, String name,
+                String nickName, String profileImage, UserState state){
+        this.id = id;
+        this.email = email;
+        this.pwd = pwd;
+        this.uuid = uuid;
+        this.name = name;
+        this.nickName = nickName;
+        this.profileImage = profileImage;
+        this.state = state;
     }
 }

@@ -61,6 +61,10 @@ public class Video {
         this.title = title;
     }
 
+    public Video(Long id){
+        this.id = id;
+    }
+
     public void addReportCnt(int reportCnt){
         if(reportCnt != 1 && reportCnt != -1) log.error("잘못된 신고 수가 업데이트됩니다. parameter:"+reportCnt);
         this.reportCnt+=reportCnt;
