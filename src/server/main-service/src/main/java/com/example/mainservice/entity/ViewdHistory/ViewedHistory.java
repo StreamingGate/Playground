@@ -4,6 +4,7 @@ import com.example.mainservice.entity.User.User;
 import com.example.mainservice.entity.Video.Video;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.apache.tomcat.jni.Local;
 import org.hibernate.annotations.ColumnDefault;
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -38,6 +39,13 @@ public class ViewedHistory {
     public ViewedHistory(User user, Video video) {
         this.user = user;
         this.video = video;
+    }
+
+    /* for unit test */
+    public ViewedHistory(boolean liked, boolean disliked, LocalDateTime likedAt) {
+        this.liked = liked;
+        this.disliked = disliked;
+        this.likedAt =likedAt;
     }
 
     /* 좋아요 실행 또는 취소 (좋아요 누를 시 싫어요 효과는 취소 된다.) */

@@ -2,6 +2,7 @@ package com.example.mainservice.dto;
 
 import com.example.mainservice.entity.Category;
 import com.example.mainservice.entity.Video.Video;
+import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -34,5 +35,9 @@ public class VideoResponseDto {
         this.thumbnail = video.getThumbnail();
         this.category = video.getCategory();
         this.createdAt = video.getCreatedAt();
+    }
+
+    public VideoResponseDto(Long id){
+        this.id = id;
     }
 }

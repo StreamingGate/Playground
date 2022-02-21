@@ -62,11 +62,4 @@ public class FriendController {
         String result = friendService.refuseFriendRequest(uuid, senderUuid);
         return ResponseEntity.ok(Map.of(RESPONSE_MAP_KEY, result));
     }
-
-    @GetMapping("/watch/{uuid}")
-    public ResponseEntity<Map<String, String>> getFriendWatching(@PathVariable("uuid") String uuid) throws Exception {
-        /* TODO : 접속서버 만든 후 구현하기 */
-        String result = "접속서버 만든 후 구현할 예정입니다...";
-        return ResponseEntity.ok(Map.of(RESPONSE_MAP_KEY, result));
-    }
 }
