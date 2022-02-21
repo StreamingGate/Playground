@@ -161,7 +161,7 @@ async function CreateRoom({ roomId }) {
     })
     const producerId = room._producerId;
     let connectRoom = await Room.create({mediasoupWorker,roomId });
-
+    // router 연결
     await room._mediasoupRouter.pipeToRouter({producerId: producerId,router: connectRoom._mediasoupRouter});
 
     rooms.set(roomId,connectRoom);
