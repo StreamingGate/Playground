@@ -11,14 +11,16 @@
 * 서비스 설명:
   일반 영상과 라이브에서 공통으로 사용되는 기능, 친구 기능에 대한 API를 모아둔 서비스입니다.
   친구 요청 수락/친구 삭제시 Redis에도 친구 관계 데이터에를 동기화하기 위해 <실시간 상태관리 서비스>에 친구 추가/삭제 요청을 보냅니다.
-  서비스단의 단위 테스트 코드를 작성하여 서비스 
+  내부 동작의 정확성을 정량적으로 측정하고자 컨트롤러, 서비스단의 단위 테스트 코드를 작성했습니다. 이 때 외부 자원을 필요로하지 않도록 Mock객체를 활용했습니다.
+
 * 사용 기술:
   - Java11, Spring boot 2.6, Gradle 7.3
   - Spring Data Jpa
   - MariaDB
   - Docker
-  - 단위 테스트 : Spring boot test, junit5, mockito
-  - test 커버리지 : jacoco
+  - 단위 테스트 : Spring boot test, JUnit5, Mockito
+  - test 커버리지 : Jacoco
+
 * API:
   - 일반 영상과 라이브 카테고리별 조회 (무한 스크롤)
   - 특정 유저에게 저장된 알림 리스트 조회
@@ -30,6 +32,7 @@
 * 서버 실행시 필요한 yml: 없음
 
 
+
 <업로드 서버>
 * 소스 코드 경로: https://github.com/StreamingGate/Playground/tree/develop-server/src/server/upload-service
 * 서비스 설명:
@@ -37,6 +40,7 @@
   업로드 후 서버에서 <실시간 채팅 서비스>에 채팅방 생성 요청을 보냅니다.
   업로드된 영상이 S3에 저장되면 mp4파일을 m3u8로 트랜스코딩하여 S3내 새로운 경로에 저장하고, 영상에 매칭되는 새로운 채팅방을 생성합니다.
   이 과정이 끝나면 해당 경로를 클라이언트에서 접근하여 영상을 스트리밍(HLS 방식)할 수 있습니다.
+
 * 사용 기술:
   - Java11, Spring boot 2.6, Gradle 7.3
   - Spring Data Jpa
@@ -44,6 +48,7 @@
   - FFMPEG (트랜스코딩 OSS)
   - AWS S3 (저장소)
   - Docker
+
 * API:
   - 일반 영상 업로드 (썸네일 미포함시 서버에서 자동 생성)
   - 라이브 종료 후 영상 업로드 (썸네일 미포함시 서버에서 자동 생성)
@@ -51,17 +56,21 @@
 * 서버 실행시 필요한 yml: https://github.com/StreamingGate/Playground/tree/develop-server/src/server/upload-service/Readme.md#서버-실행시-필요한-yml
 
 
+
 <비디오 서버>
 * 소스 코드 경로: https://github.com/StreamingGate/Playground/tree/develop-server/src/server/video-service
 * 서비스 설명:
   일반 영상 시청 페이지를 로드하기 위한 API 입니다.
+
 * 사용 기술:
   - Java11, Spring boot 2.6, Gradle 7.3
   - Spring Data Jpa
   - MariaDB
   - Docker
+
 * API:
   - 일반 영상 정보 조회
+
 * 서버 실행시 필요한 yml: 없음
 
 
@@ -70,19 +79,23 @@
 * 서비스 설명:
   실시간 채팅을 위한 서비스입니다.
   웹소켓 테스트를 위한 클라이언트가 포함돼있으며, Redis를 사용해 여러 대의 채팅서버를 실행시켜도 채팅방 메시지를 동기화할 수 있도록 했습니다.
+
 * 사용 기술:
   - Java11, Spring boot 2.6, Gradle 7.3
   - WebSocket, SockJS, Stomp
   - Mustache
   - Redis
   - Docker
+
 * API
   - [REST] 채팅방 하나 정보 조회
   - [REST] 채팅방 생성
   - [WebSocket] 방 입장 (Connection시 JWT 인증)
   - [WebSocket] 채팅 전송
   - [WebSocket] 방 퇴장 (스트리머가 퇴장 시 방 삭제)
+
 * 서버 실행시 필요한 yml: https://github.com/StreamingGate/Playground/tree/develop-server/src/server/chat-service/Readme.md#서버-실행시-필요한-yml
+
 
 
 <실시간 상태관리 서버>
@@ -90,6 +103,7 @@
 * 서비스 설명:
   내 친구에게 로그인 여부, 시청 중인 영상 정보를 실시간으로 공유할 수 있는 서비스입니다.
   웹소켓 테스트를 위한 클라이언트가 포함돼있으며, Redis를 사용해 여러 대의 채팅서버를 실행시켜도 채팅방 메시지를 동기화할 수 있도록 했습니다.
+
 * 사용 기술:
   - Java11, Spring boot 2.6, Gradle 7.3
   - Spring Data Jpa
@@ -97,6 +111,7 @@
   - Mustache
   - Redis
   - Docker
+
 * API
   - [REST] 내 친구 상태 목록 조회
   - [REST] 친구 추가, 삭제
@@ -104,4 +119,5 @@
   - [WebSocket] 로그아웃
   - [WebSocket] 시청 중인 영상 정보 친구 리스트에 전송
   - [WebSocket] 친구 목록 업데이트 후 업데이트되는 상대 두명에게 전송
+
 * 서버 실행시 필요한 yml: https://github.com/StreamingGate/Playground/tree/develop-server/src/server/status-service/Readme.md#서버-실행시-필요한-yml
