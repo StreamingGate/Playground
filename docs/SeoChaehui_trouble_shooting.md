@@ -22,7 +22,7 @@
 
 * 비정상적 종료 대비
     * 문제
-        온/오프라인 상태나 실시간 채팅의 경우, disconnect 시 헤더를 넣어줘야 정상적으로 disconnect가 실행됨. 만약, 비정상적인 종료(ex. 앱 강제 종료)로 헤더 없이 disconnect될 경우, 유저의 상태가 제대로 반영되지 않는 이슈 발생
+        1. 온/오프라인 상태나 실시간 채팅의 경우, disconnect 시 헤더를 넣어줘야 정상적으로 disconnect가 실행됨. 만약, 비정상적인 종료(ex. 앱 강제 종료)로 헤더 없이 disconnect될 경우, 유저의 상태가 제대로 반영되지 않는 이슈 발생
     * 해결
         1. 앱 LifeCycle이 disconnect 상태가 되었을 때, 실시간 채팅 소켓을 disconnect하도록 하여서 실시간 채팅방에서 나가도록 함
         2. 앱 LifeCycle이 background 상태가 되었을 때, 상태 관리 소켓을 disconnect하여서 유저의 상태가 오프라인으로 표시되도록 함
