@@ -15,9 +15,11 @@
     * 해결
         1. 탭바를 직접 커스텀해서 제작함
         2. 초기(v.1) 커스텀 탭바는 하나의 containerView에 각 탭에 해당하는 UINavigationController로 변경하여서 뷰를 쌓는 방식을 채택함. 이 경우, 탭바 바뀌었다가 돌아가면 이전에 쌓였던 뷰가 보존되지 않고 날라가는 이슈가 발생함. 쌓인 뷰가 유지되는 탭바의 특성을 살리고자, 각 탭에 해당하는 containerView를 만들고, 이 containerView를 보이게 하거나 뷰를 쌓고 없애는 식(v.2)으로 탭 구조를 구현함
+
 | 기본 제공 UITabBarController | 커스텀 탭바 컨트롤러 v.1 | 커스텀 탭바 컨트롤러 v.2 |
 |-------|-------|-------|
-| | | |
+| ![defaultTabBar](https://user-images.githubusercontent.com/73422344/154917864-8e2b89cb-3f63-47da-876b-e8b3d33f9f50.png) | ![customTabBar(v1)](https://user-images.githubusercontent.com/73422344/154919366-b873e8df-50d7-49e2-abef-6332ef1158ce.png) | ![customTabBar(ㅍ2)](https://user-images.githubusercontent.com/73422344/154919132-5e2730fc-765c-4077-a979-2cce9019d3a8.png) |
+
 * 비정상적 종료 대비
     * 문제
         온/오프라인 상태나 실시간 채팅의 경우, disconnect 시 헤더를 넣어줘야 정상적으로 disconnect가 실행됨. 만약, 비정상적인 종료(ex. 앱 강제 종료)로 헤더 없이 disconnect될 경우, 유저의 상태가 제대로 반영되지 않는 이슈 발생
