@@ -5,7 +5,7 @@
 
 ## 목차
 
-1) 접속 친구 온라인 여부 확인 유저스토리(서버편)
+1) 상태 관리 서버: 친구의 온라인 여부 확인하기
 2) `Utils`를 사용하는 새로운 이유
 3) 페이지네이션 성능 높이기
 
@@ -60,13 +60,13 @@ RDB에서 삭제, Redis에 반영한다.(친구 업데이트)
 이렇게 하는 이유는 보통 여러 service 단에서 많이 사용하는 기능들을 한 곳에 static으로 모아둬서 메모리 낭비를 줄이려고 하는거다.
 그런데 나는 Utils가 필요한 케이스를 하나 더 만났다.
 그건 빈 순환참조를 풀어낼 때이다.
-참고 소스 경로: 
-내 상황)
 
-StompHandler.java를 추가하려보니..
+빈 순환 참조를 풀어내도록 유틸로 만든 소스는 아래에 있다.
+- [Chat-service의 ClientMessaging.java](https://stove-developers-gitlab.sginfra.net/stove-dev-camp-2nd/streaminggate/-/blob/main/src/server/chat-service/src/main/java/com/example/chatservice/utils/ClientMessaging.java)
+- [Chat-service의 RedisMessaging.java](https://stove-developers-gitlab.sginfra.net/stove-dev-camp-2nd/streaminggate/-/blob/main/src/server/chat-service/src/main/java/com/example/chatservice/utils/RedisMessaging.java)
 
-
-
+### 문제 상황)
+StompHandler.java를 추가하려보니..      
 WebSocketConfig.java → StompHandler.java 의존성 필요 - (2)
 ```
 @Configuration
@@ -90,43 +90,30 @@ public class StompHandler implements ChannelInterceptor {
     //...
 }
 ```
+
 또한 SimpMessageSendingOperations.class는 내부적으로 DelegatingWebSocketMessageBrokerConfiguration.class - (4)에 의존한다.
-=> 즉, 의존관계가 이렇게 된다.
+=> 즉, 의존관계가 아래처럼 된다.
+
 ```
 SimpMessageSendingOperations.java→@EnableWebSocketMessageBroker 붙은 WebSocketConfig.java→StompHandler.java→ ....→SimpMessageSendingOperations.java
 ```
 
-해결 방안 고민)
-처음엔 @Configuration 파일에 빈 생성, 주입을 선언해서 의존관계를 풀어내려고 했다.
+### 해결 방안 고민)
+처음엔 @Configuration 파일에 빈 생성, 주입을 선언해서 의존관계를 풀어내려고 했다.
 
 하지만
+- WebConfig.java에선 반드시 StompHandler.java에 의존해야한다.
+- StompHandler.java 는 반드시 SimpMessageSendingOperations.class에 의존해야한다.
+- SimpMessageSendingOperations.class는 반드시 DelegatingWebSocketMessageBrokerConfiguration.class에 의존해야한다.
 
-WebConfig.java에선 반드시 StompHandler.java에 의존해야한다.
-StompHandler.java 는 반드시 SimpMessageSendingOperations.class에 의존해야한다.
-SimpMessageSendingOperations.class는 반드시 DelegatingWebSocketMessageBrokerConfiguration.class에 의존해야한다.
-이 관계 때문에 기존에 빈 순환 참조를 생성하지 않던 상태에서 StompHandler를 추가하는게 부담이 컸다.
+이 관계 때문에 기존에 빈 순환 참조를 생성하지 않던 상태에서 StompHandler를 추가하는게 부담이 컸다.  
 
+그래서.. 현재로선 갖다쓰기만하면 문제가 되는 SimpMessageSendingOperations.class를 자동 빈주입하지 않아도 되는 방법으로서 Utils로 선언하는 방법을 생각해냈다.
 
-
-그래서.. 현재로선 갖다쓰기만하면 문제가 되는 SimpMessageSendingOperations.class를 자동 빈주입하지 않아도 되는 방법으로서 Utils로 선언하는 방법을 생각해냈다.
-
-Resolved)
+### 해결)
 SimpMessageSendingOperations.class를 ClientMessaging 유틸 클래스의 필드로 선언했다.
 
-@Component
-public class ClientMessaging {
-
-private static SimpMessageSendingOperations messagingTemplate;
-
-private ClientMessaging(){}
-
-public static void publish(String destination, Object payload) {
-messagingTemplate.convertAndSend(destination, payload);
-}
-
-}
-
-=> 이렇게하니까 메모리 낭비하지 않고, 자주사용하는 기능들을 모아둘 수 있고, 빈 순환 참조를 풀어낼 수 있었다.
+**=> 이렇게하니까 메모리 낭비하지 않고, 자주사용하는 기능들을 모아둘 수 있고, 빈 순환 참조를 풀어낼 수 있었다.**
 
 ---
 ## 3) 페이지네이션 성능 높이기
@@ -171,10 +158,12 @@ ex. select * from post limit 1000000, 100;
 - 오프셋 기반 페이지네이션(Offset-based Pagination) -> 페이지 단위로 구분 
 - 커서 기반 페이지네이션(Cursor-based Pagination) -> 현재 row 순서상의 다음 row들의 n개를 응답
 
-따라서 나도 JPQL을 작성할 때 WHERE문을 사용해 INDEX를 타도록 작성했다.
 
 ### 나에게 적용
-VideoRepository.java
+따라서 나도 JPQL을 작성할 때 WHERE문을 사용해 INDEX를 타서 성능 이점을 취하도록 작성했다.
+
+[Main-Service의 VideoRepository.java](https://stove-developers-gitlab.sginfra.net/stove-dev-camp-2nd/streaminggate/-/blob/main/src/server/main-service/src/main/java/com/example/mainservice/entity/Video/VideoRepository.java)
+
 ```yaml
 @Query("SELECT v FROM Video v ORDER BY v.createdAt DESC, v.id DESC")
 Page<Video> findAll(Pageable pageable);
