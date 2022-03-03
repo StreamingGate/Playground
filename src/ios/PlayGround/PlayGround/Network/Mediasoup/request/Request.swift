@@ -55,12 +55,6 @@ final internal class Request : NSObject {
         return Request.shared.sendSocketAckRequest(socket: socket, data: data)
     }
     
-    func sendConnectWebRtcTransportRequest(socket: EchoSocket, transportId: String, dtlsParameters: String) -> JSON? {
-        print("REQ) connectWebRtcTransport")
-        let data: [String: Any] = ["request" : true, "id": 55, "method": "connectWebRtcTransport", "data": ["transportId": transportId, "dtlsParameters": dtlsParameters]]
-        return Request.shared.sendSocketAckRequest(socket: socket, data: data)
-    }
-    
     private func sendSocketAckRequest(socket: EchoSocket, data: [String: Any]) -> JSON? {
         print("socket ack request: \(data)\n")
         let semaphore: DispatchSemaphore = DispatchSemaphore.init(value: 0)
