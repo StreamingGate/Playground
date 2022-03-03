@@ -155,7 +155,6 @@ class PlayViewController: UIViewController {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         self.socket?.disconnect()
-//        self.client = nil
         StatusServiceAPI.shared.stopWatchingVideo()
         self.client?.disconneectRecvTransport()
         if let observer = timeObserver {
@@ -413,7 +412,6 @@ class PlayViewController: UIViewController {
                 self.friendRequestLabel.isHidden = (info.uploaderUuid == uuid)
                 self.friendRequestButton.isEnabled = !(info.uploaderUuid == uuid)
                 self.setPlayer(urlInfo: info.streamingUrl)
-//                self.connectChatView(roomId: info.videoUuid)
             }.store(in: &cancellable)
         self.viewModel.$roomInfo.receive(on: DispatchQueue.main, options: nil)
             .sink { [weak self] currentInfo in
@@ -425,7 +423,6 @@ class PlayViewController: UIViewController {
                 self.categoryLabel.text = "#\(self.viewModel.categoryDic[info.category] ?? "기타")"
                 self.miniTitleLabel.text = info.title
                 self.channelProfileImageView.downloadImageFrom(link: "https://sgs-playground.s3.us-east-2.amazonaws.com/profiles/\(info.hostUuid)", contentMode: .scaleAspectFill)
-//                self.viewLabel.text = "조회수 \(info.hits)회"
                 self.playControllView.isHidden = self.viewModel.isLive
                 self.miniPlayPauseButton.alpha = self.viewModel.isLive ? 0 : 1
                 self.friendRequestLabel.isHidden = (info.hostUuid == uuid)
@@ -540,7 +537,6 @@ class PlayViewController: UIViewController {
             }
         } else {
             MainServiceAPI.shared.tapButtons(videoId: info.id, type: (info.hostNickname == nil ? 0 : 1), action: Action.Like, uuid: uuid) { result in
-                print("result: \(result)")
                 DispatchQueue.main.async {
                     self.likeButton.isEnabled = true
                     if result["result"] as? String == "success" {
@@ -566,7 +562,6 @@ class PlayViewController: UIViewController {
             }
         } else {
             MainServiceAPI.shared.tapButtons(videoId: info.id, type: (info.hostNickname == nil ? 0 : 1), action: Action.Dislike, uuid: uuid) { result in
-                print("result: \(result)")
                 DispatchQueue.main.async {
                     self.dislikeButton.isEnabled = true
                     if result["result"] as? String == "success" {
@@ -588,7 +583,6 @@ class PlayViewController: UIViewController {
         guard let info = viewModel.currentInfo, let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else { return }
         reportButton.isEnabled = false
         MainServiceAPI.shared.tapButtons(videoId: info.id, type: (info.hostNickname == nil ? 0 : 1), action: Action.Report, uuid: uuid) { result in
-            print("result: \(result)")
             DispatchQueue.main.async {
                 self.reportButton.isEnabled = true
                 if result["result"] as? String == "success" {
@@ -759,7 +753,6 @@ class PlayViewController: UIViewController {
                         self.setPlayViewOriginalSize()
                     } else {
                         self.setPlayViewMinimizing()
-                        self.isMinimized = false
                     }
                 } else if lastTranslation < 0 {
                     if pan.location(in: self.parent?.view).y < (height / 2) {
