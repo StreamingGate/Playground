@@ -114,6 +114,7 @@ class PlayExplainViewController: UIViewController {
                     if result["result"] as? String == "success" {
                         self.viewModel.likeCount += 1
                         self.viewModel.isLiked = true
+                        self.viewModel.isDisliked = false
                     }
                 }
             }
@@ -138,6 +139,7 @@ class PlayExplainViewController: UIViewController {
                     self.dislikeButton.isEnabled = true
                     if result["result"] as? String == "success" {
                         self.viewModel.isDisliked = true
+                        self.viewModel.isLiked = false
                     }
                 }
             }
