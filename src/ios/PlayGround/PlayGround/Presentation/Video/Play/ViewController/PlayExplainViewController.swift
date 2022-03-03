@@ -109,12 +109,12 @@ class PlayExplainViewController: UIViewController {
             }
         } else {
             MainServiceAPI.shared.tapButtons(videoId: info.id, type: (info.hostNickname == nil ? 0 : 1), action: Action.Like, uuid: uuid) { result in
-                print("result: \(result)")
                 DispatchQueue.main.async {
                     self.likeButton.isEnabled = true
                     if result["result"] as? String == "success" {
                         self.viewModel.likeCount += 1
                         self.viewModel.isLiked = true
+                        self.viewModel.isDisliked = false
                     }
                 }
             }
@@ -135,11 +135,11 @@ class PlayExplainViewController: UIViewController {
             }
         } else {
             MainServiceAPI.shared.tapButtons(videoId: info.id, type: (info.hostNickname == nil ? 0 : 1), action: Action.Dislike, uuid: uuid) { result in
-                print("result: \(result)")
                 DispatchQueue.main.async {
                     self.dislikeButton.isEnabled = true
                     if result["result"] as? String == "success" {
                         self.viewModel.isDisliked = true
+                        self.viewModel.isLiked = false
                     }
                 }
             }
@@ -157,7 +157,6 @@ class PlayExplainViewController: UIViewController {
         guard let info = viewModel.currentInfo, let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue) else { return }
         reportButton.isEnabled = false
         MainServiceAPI.shared.tapButtons(videoId: info.id, type: (info.hostNickname == nil ? 0 : 1), action: Action.Report, uuid: uuid) { result in
-            print("result: \(result)")
             DispatchQueue.main.async {
                 self.reportButton.isEnabled = true
                 if result["result"] as? String == "success" {

@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import SwiftKeychainWrapper
 
-struct UploadServiceAPI {
+class UploadServiceAPI {
     static let shared = UploadServiceAPI()
     let uploadServiceUrl = "http://3.39.44.188:50006"
     

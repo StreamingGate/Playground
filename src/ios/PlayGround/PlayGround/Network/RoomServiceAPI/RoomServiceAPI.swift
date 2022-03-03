@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import SwiftKeychainWrapper
 
-struct RoomServiceAPI {
+class RoomServiceAPI {
     
     static let shared = RoomServiceAPI()
     let roomServiceUrl = "http://\(GatewayManager.shared.gatewayAddress)/room-service"

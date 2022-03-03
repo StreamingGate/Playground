@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import SwiftKeychainWrapper
 
-struct VideoServiceAPI {
+class VideoServiceAPI {
     static let shared = VideoServiceAPI()
     let videoServiceUrl = "http://\(GatewayManager.shared.gatewayAddress)/video-service"
     

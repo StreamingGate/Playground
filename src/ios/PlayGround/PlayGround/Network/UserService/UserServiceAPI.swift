@@ -8,7 +8,7 @@
 import Foundation
 import SwiftKeychainWrapper
 
-struct UserServiceAPI {
+class UserServiceAPI {
     static let shared = UserServiceAPI()
     let userServiceUrl = "http://\(GatewayManager.shared.gatewayAddress)/user-service"
     
