@@ -1,29 +1,29 @@
-StreamingGate
----
+# PlayGround
+## 1. 프로젝트 소개
+### PlayGround란?
+> PlayGround는 <b>실시간 스트리밍 기반의 동영상 소셜 플랫폼</b>입니다.  
+> 동영상 플랫폼인 YouTube을 기반으로 하되, 실시간성을 강조하고 친구 기능을 추가하였습니다.
 
-각 empty folder를 git에 add하기 위해 만든 `.gitkeeper`는 해당 폴더에 파일을 추가하게 되면 지워주세요
+![playgroundHeader](https://user-images.githubusercontent.com/73422344/156584362-5c364449-5b0f-45f7-8142-fdc42ff6cc7b.png) 
 
-### CRLF(Windows)/LF(Linux, MAC) 관련 git 설정하기
+### 주요 기능
+|기능|설명|사용 기술|
+|-----|------|---|
+|실시간 스트리밍|실시간 스트리밍 생성 및 시청|WebRTC - mediasoup|
+|비디오 스트리밍|동영상 업로드 및 시청|FFmpeg|
+|실시간 채팅|실시간 스트리밍과 비디오 스트리밍 시청 시 채팅 참여 가능. 스트리머의 경우, 고정 채팅 입력 가능|WebSocket, Stomp, SockJS|
+|친구|친구 관계가 맺어진 유저의 온오프라인 여부 및 시청 중인 영상 조회|WebSocket, Stomp, SockJS|
 
-`.gitattributes` 로 텍스트 파일의 속성을 설정했지만, 모든 소스파일을 검사해주지 않거나 확신이 들지 않는다면 
-아래를 로컬에서 설정해주세요
+### StreamingGate 팀원 소개
+ | 김하늬 (팀장) | 이우재 | 서채희 | 이재윤 |
+| :--------: | :--------: | :--------: | :--------: |
+| Server | Server | iOS | Front-end | 
+| <img src="https://avatars.githubusercontent.com/kimhanui" width="150">     | <img src="https://avatars.githubusercontent.com/kmswlee" width="150">      | <img src="https://avatars.githubusercontent.com/Chaehui-Seo" width="150">      | <img src="https://avatars.githubusercontent.com/ag502" width="150"> |
+| [@kimhanui](https://github.com/kimhanui) | [@kmswlee](https://github.com/kmswlee) | [@Chaehui-Seo](https://github.com/Chaehui-Seo) | [@ag502](https://github.com/ag502) |
+</br>
 
-- Windows
-```
-git config --global core.autocrlf true
-```
-
-- Linux, MAC
-```
-git config --global core.autocrlf input
-```
-
----
-# Playground
-
-# 실행화면
-## 클라이언트 (iOS)
-
+## 2. 실행화면
+### 클라이언트 (iOS)
 | 메인페이지 | 비디오 플레이어 | 친구와 영상 같이 시청하기 |
 |-------|-------|-------|
 | ![mainPage_app](https://user-images.githubusercontent.com/73422344/154894562-d020a914-b692-4a7d-8c5c-a79c0d897614.gif) | ![videoPlayer_app](https://user-images.githubusercontent.com/73422344/154895222-6398b0d1-1260-43fb-b745-a761f1548f47.gif) | ![watchWithFriend_app](https://user-images.githubusercontent.com/73422344/154895237-485cc0b4-30ff-47e9-b9b4-d3c87327840a.gif) |
@@ -37,8 +37,7 @@ git config --global core.autocrlf input
 | ![register_app](https://user-images.githubusercontent.com/73422344/154894393-91eca694-821d-4e32-9f69-12498d2a5d5c.gif) | ![myPage_app](https://user-images.githubusercontent.com/73422344/154894598-27aa733d-9ff1-401e-b4a4-c8f39e1826b3.gif) | 
 
 
-## 클라이언트 (frontend)
-
+### 클라이언트 (frontend)
 | 로그인 |
 |------|
 |![login](https://user-images.githubusercontent.com/35404137/154888253-a110a8fb-cc6f-4cc8-9cb3-43e29044b4d0.gif)|
@@ -62,34 +61,40 @@ git config --global core.autocrlf input
 | 친구와 함께 시청 |
 |------|
 |![watchWithFriend-min](https://user-images.githubusercontent.com/35404137/154889792-4fcf504f-094d-4f83-8ab3-1d23da1541d0.gif)|
+</br>
 
-# 기술 스택
-## 클라이언트 (iOS)
+## 3. 기술 스택
+### 클라이언트 (iOS)
 <img src="https://img.shields.io/badge/-Swift-F05138?&logo=Swift&logoColor=white&style=for-the-badge"> <img src="https://img.shields.io/badge/-UIkit-2396F3?style=for-the-badge"> <img src="https://img.shields.io/badge/-UIStoryboard-F8CF55?style=for-the-badge"> <img src="https://img.shields.io/badge/-WebRTC-333333?&logo=WebRTC&logoColor=white&style=for-the-badge"> <img src="https://img.shields.io/badge/-mediasoup ios client-20A6D1?style=for-the-badge"> <img src="https://img.shields.io/badge/-StompClientLib-000000?style=for-the-badge"> <img src="https://img.shields.io/badge/-StarScream-FFE200?style=for-the-badge"> <img src="https://img.shields.io/badge/-Combine-F05138?style=for-the-badge">
 
-## 클라이언트 (frontend)
+### 클라이언트 (frontend)
 <img src="https://img.shields.io/badge/-Javascript-F7DF1E?&logo=JavaScript&logoColor=white&style=for-the-badge"> <img src="https://img.shields.io/badge/-React-61DAFB?&logo=React&logoColor=white&style=for-the-badge"> <img src="https://img.shields.io/badge/-Context API-61DAFB?&logo=React&logoColor=white&style=for-the-badge"> <img src="https://img.shields.io/badge/-prop types-61DAFB?&logo=React&logoColor=white&style=for-the-badge"> <img src="https://img.shields.io/badge/-Axios-5A29E4?style=for-the-badge"> <img src="https://img.shields.io/badge/-React Qeuery-FF4154?&logo=React Query&logoColor=white&style=for-the-badge"> <img src="https://img.shields.io/badge/-React Router-CA4245?&logo=ReactRouter&logoColor=white&style=for-the-badge"> <img src="https://img.shields.io/badge/-styled component-DB7093?&logo=styled-components&logoColor=white&style=for-the-badge"> <img src="https://img.shields.io/badge/-protoo client-B74244?style=for-the-badge"> <img src="https://img.shields.io/badge/-Stomp-000000?style=for-the-badge"> <img src="https://img.shields.io/badge/-SockJS Client-000000?style=for-the-badge"> <img src="https://img.shields.io/badge/-mediasoup client-20A6D1?style=for-the-badge"> <img src="https://img.shields.io/badge/-Webpack-8DD6F9?&logo=Webpack&logoColor=white&style=for-the-badge"> <img src="https://img.shields.io/badge/-Babel-F9DC3E?&logo=Babel&logoColor=white&style=for-the-badge"> <img src="https://img.shields.io/badge/-Prettier-F7B93E?&logo=Prettier&logoColor=white&style=for-the-badge"> <img src="https://img.shields.io/badge/-ESLint-4B32C3?&logo=ESLint&logoColor=white&style=for-the-badge"> <img src="https://img.shields.io/badge/-Storybook-FF4785?&logo=Storybook&logoColor=white&style=for-the-badge"> <img src="https://img.shields.io/badge/-GitHub Actions-2088FF?&logo=GitHub Actions&logoColor=white&style=for-the-badge"> <img src="https://img.shields.io/badge/-Chromatic-FC521F?style=for-the-badge">
 
-## 디자인
+### 디자인
 <img src="https://img.shields.io/badge/-Figma-F24E1E?&logo=Figma&logoColor=white&style=for-the-badge"> 
 
-## 서버 (api)
+### 서버 (api)
 <img src="https://img.shields.io/badge/-Srping Boot-6db33f?&logo=Spring Boot&logoColor=white&style=for-the-badge"> <img src="https://img.shields.io/badge/-Spring Security-6DB33F?&logo=SpringSecurity&logoColor=white&style=for-the-badge"> <img src="https://img.shields.io/badge/-Node.js-339933?&logo=Node.js&logoColor=white&style=for-the-badge"> <img src="https://img.shields.io/badge/-Mediasoup-64BAFF?&logoColor=white&style=for-the-badge"> <img src="https://img.shields.io/badge/-WebSocket-FECC00?&logoColor=white&style=for-the-badge"> <img src="https://img.shields.io/badge/-SockJS-010101?&logoColor=white&style=for-the-badge"> <img src="https://img.shields.io/badge/-Stomp-010101?&logoColor=white&style=for-the-badge"> <img src="https://img.shields.io/badge/-MariaDB-003545?&logo=MariaDB&logoColor=white&style=for-the-badge"> <img src="https://img.shields.io/badge/-Redis-DF0000?&logo=Redis&Color=white&logoColor=white&style=for-the-badge"> <img src="https://img.shields.io/badge/-Amazon S3-569A31?&logo=AmazonS3&logoColor=white&style=for-the-badge"> <img src="https://img.shields.io/badge/-Amazon EC2-FF9900?&logoColor=white&style=for-the-badge"> <img src="https://img.shields.io/badge/-FFmpeg-007808?&logo=FFmpeg&logoColor=white&style=for-the-badge">
 
-## 서버 (infra)
+### 서버 (infra)
 * spring cloud gateway
 * Eureka service discovery
+</br>
 
-# 아키텍처
+## 4. 아키텍처
 ![image](https://user-images.githubusercontent.com/30483337/154809542-528377b5-569a-4daa-ae51-2e44d38afec6.png)
+</br>
 
-
-# ERD
+## 5. ERD
 ![erd](https://user-images.githubusercontent.com/37957608/153554203-54de8715-6d91-4230-a032-53a05abb1113.png)
+</br>
 
-# 프로젝트 실행
-## 클라이언트 (iOS)
-## 클라이언트 (frontend)
+## 6. 프로젝트 실행
+### 클라이언트 (iOS)
+1. `src/ios/PlayGround` 폴더에서 `pod install` 실행
+2. `PlayGround.xcworkspace` 파일 실행
+
+### 클라이언트 (frontend)
 
 1. `src/frontend` 폴더에서 `npm install` 실행
 2. `src/frontend` 폴더에서 `.env` 파일 생성 후 아래 내용 복사 후 붙여넣기
@@ -113,7 +118,7 @@ REACT_APP_PROFILE_IMAGE = https://sgs-playground.s3.us-east-2.amazonaws.com/prof
 3. `npm run start`로 실행
 
 
-## 서버 (docker-compose 사용)
+### 서버 (docker-compose 사용)
 **docker-compose 로 서버 실행**
 ```
 $ cd config
