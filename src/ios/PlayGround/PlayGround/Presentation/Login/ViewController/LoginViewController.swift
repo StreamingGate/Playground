@@ -44,7 +44,7 @@ class LoginViewController: UIViewController {
             self.idField.text = email
             animationView.setAutoLoginLoading(vc: self, backView: loadingBackView)
             UserServiceAPI.shared.autoLogin(accessToken: token, email: email, uuid: uuid) { result in
-                print("----> \(result)")
+                print("auto login result ----> \(result)")
                 if result["success"] as? Int == 1, let userInfo = result["data"] as? UserInfo {
                     // KeyChain - uuid와 accessToken 저장 (종료 후에도 유지됨)
                     guard let token = userInfo.refreshToken else { return }
@@ -52,7 +52,7 @@ class LoginViewController: UIViewController {
                     UserManager.shared.userInfo = userInfo
                     StatusServiceAPI.shared.getFriendInfo { result in
                         guard let friends = result["data"] as? FriendWatchList else { return }
-                        print("--friends-->\(friends)")
+                        print("friends list ---->\(friends)")
                         StatusManager.shared.friendWatchList = friends.result
                         StatusManager.shared.connectToSocket()
                     }
@@ -136,7 +136,7 @@ class LoginViewController: UIViewController {
                 UserManager.shared.userInfo = userInfo
                 StatusServiceAPI.shared.getFriendInfo { result in
                     guard let friends = result["data"] as? FriendWatchList else { return }
-                    print("--friends-->\(friends)")
+                    print("friends list ---->\(friends)")
                     StatusManager.shared.friendWatchList = friends.result
                     StatusManager.shared.connectToSocket()
                 }
