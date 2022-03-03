@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import SwiftKeychainWrapper
 
-struct MainServiceAPI {
+class MainServiceAPI {
     static let shared = MainServiceAPI()
     let mainServiceUrl = "http://\(GatewayManager.shared.gatewayAddress)/main-service"
     
