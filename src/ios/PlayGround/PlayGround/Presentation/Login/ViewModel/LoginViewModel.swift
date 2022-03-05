@@ -52,10 +52,8 @@ class LoginViewModel {
                 self.failMessage = nil
                 self.isLoginSucceed = true
             } else {
-                DispatchQueue.main.async {
-                    self.failMessage = "로그인에 실패했습니다"
-                    self.isLoginSucceed = false
-                }
+                self.failMessage = "로그인에 실패했습니다"
+                self.isLoginSucceed = false
             }
         }
     }
