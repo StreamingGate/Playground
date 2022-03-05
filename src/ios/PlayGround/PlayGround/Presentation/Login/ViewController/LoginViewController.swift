@@ -106,12 +106,9 @@ class LoginViewController: UIViewController {
             UserDefaults.standard.removeObject(forKey: "onRegister-Name")
         }
         let action2 = UIAlertAction(title: "이동", style: .default) { _ in
-            guard let registerPage = UIStoryboard(name: "Register", bundle: nil).instantiateViewController(withIdentifier: "RegisterNavigationController") as? RegisterNavigationController else { return }
-            registerPage.modalPresentationStyle = .fullScreen
-            self.present(registerPage, animated: true, completion: {
-                self.idField.text = ""
-                self.pwField.text = ""
-            })
+            self.idField.text = ""
+            self.pwField.text = ""
+            self.coordinator?.showRegisterPage()
         }
         alert.addAction(action1)
         alert.addAction(action2)
@@ -156,9 +153,7 @@ class LoginViewController: UIViewController {
     @IBAction func registerButtonDidTap(_ sender: Any) {
         idField.resignFirstResponder()
         pwField.resignFirstResponder()
-        guard let registerVC = UIStoryboard(name: "Register", bundle: nil).instantiateViewController(withIdentifier: "RegisterNavigationController") as? RegisterNavigationController else { return }
-        registerVC.modalPresentationStyle = .fullScreen
-        self.present(registerVC, animated: true, completion: nil)
+        coordinator?.showRegisterPage()
     }
     
     @IBAction func backTapped(_ sender: Any) {
