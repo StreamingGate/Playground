@@ -1057,7 +1057,6 @@ extension PlayViewController: RTCVideoViewDelegate {
 
 
 extension AVAudioSession {
-    
     static var isHeadphonesConnected: Bool {
         return sharedInstance().isHeadphonesConnected
     }
@@ -1065,7 +1064,6 @@ extension AVAudioSession {
     var isHeadphonesConnected: Bool {
         return !currentRoute.outputs.filter { $0.isHeadphones }.isEmpty
     }
-
 }
 
 extension AVAudioSessionPortDescription {
