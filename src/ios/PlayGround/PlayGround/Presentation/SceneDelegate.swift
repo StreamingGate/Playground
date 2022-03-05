@@ -30,7 +30,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             print("Streamer chat disconnected")
             liveVC.viewModel.disconnectToSocket()
         }
-        StatusManager.shared.disconnectToSocket()
     }
 
     func sceneDidBecomeActive(_ scene: UIScene) {
