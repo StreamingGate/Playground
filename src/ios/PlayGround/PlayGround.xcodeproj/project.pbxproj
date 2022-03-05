@@ -131,6 +131,7 @@
 		49F777D927AA58B800AD2D78 /* FriendRequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F777D827AA58B800AD2D78 /* FriendRequestViewController.swift */; };
 		B86390ACC07320C4661BD124 /* Pods_PlayGround.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C094C2C5DF13CB2E6DBF8A02 /* Pods_PlayGround.framework */; };
 		EFC183B527D3945700696365 /* CustomTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFC183B427D3945700696365 /* CustomTabViewModel.swift */; };
+		EFC183B827D395E600696365 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFC183B727D395E600696365 /* LoginViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -263,6 +264,7 @@
 		8A3D7763AEF5C85EA43F3126 /* Pods-PlayGround.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlayGround.debug.xcconfig"; path = "Target Support Files/Pods-PlayGround/Pods-PlayGround.debug.xcconfig"; sourceTree = "<group>"; };
 		C094C2C5DF13CB2E6DBF8A02 /* Pods_PlayGround.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PlayGround.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EFC183B427D3945700696365 /* CustomTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabViewModel.swift; sourceTree = "<group>"; };
+		EFC183B727D395E600696365 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		FD5FDC1E3E6EC365A13644FD /* Pods-PlayGround.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlayGround.release.xcconfig"; path = "Target Support Files/Pods-PlayGround/Pods-PlayGround.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -344,6 +346,7 @@
 			children = (
 				49E6734E27BD07790030C211 /* View */,
 				49E6734D27BD076F0030C211 /* ViewController */,
+				EFC183B927D39BB000696365 /* ViewModel */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -999,6 +1002,14 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		EFC183B927D39BB000696365 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				EFC183B727D395E600696365 /* LoginViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1188,6 +1199,7 @@
 				49E6168127B23ECE0092AE21 /* ActionEvent.swift in Sources */,
 				4907709F2797AC8C00ADD8E8 /* RegisterHelper.swift in Sources */,
 				49E6BE3927919C7A000E475C /* FriendPopUpViewController.swift in Sources */,
+				EFC183B827D395E600696365 /* LoginViewModel.swift in Sources */,
 				492C622C27954F9800AE546E /* UIView+takeScreenshot.swift in Sources */,
 				49E72FF527A23F8C00DFBCC3 /* ChatViewModel.swift in Sources */,
 				49E6167F27B23ECE0092AE21 /* MessageObserver.swift in Sources */,

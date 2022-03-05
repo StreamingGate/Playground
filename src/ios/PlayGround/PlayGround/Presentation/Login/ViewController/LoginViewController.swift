@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 import SwiftKeychainWrapper
 import Lottie
+import Combine
 
 class LoginViewController: UIViewController {
     // MARK: - Properties
@@ -22,6 +23,9 @@ class LoginViewController: UIViewController {
     var coordinator: MainCoordinator?
     let animationView: AnimationView = .init(name: "PgLoading")
     let loadingBackView = UIView()
+    
+    let viewModel = LoginViewModel()
+    private var cancellable: Set<AnyCancellable> = []
     
     // MARK: - View LifeCycle
     override func viewDidLoad() {
@@ -43,30 +47,7 @@ class LoginViewController: UIViewController {
             guard let uuid = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.uuid.rawValue), let token = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken.rawValue), let email = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.email.rawValue) else { return }
             self.idField.text = email
             animationView.setAutoLoginLoading(vc: self, backView: loadingBackView)
-            UserServiceAPI.shared.autoLogin(accessToken: token, email: email, uuid: uuid) { result in
-                print("auto login result ----> \(result)")
-                if result["success"] as? Int == 1, let userInfo = result["data"] as? UserInfo {
-                    // KeyChain - uuid와 accessToken 저장 (종료 후에도 유지됨)
-                    guard let token = userInfo.refreshToken else { return }
-                    KeychainWrapper.standard.set(token, forKey: KeychainWrapper.Key.accessToken.rawValue)
-                    UserManager.shared.userInfo = userInfo
-                    StatusServiceAPI.shared.getFriendInfo { result in
-                        guard let friends = result["data"] as? FriendWatchList else { return }
-                        print("friends list ---->\(friends)")
-                        StatusManager.shared.friendWatchList = friends.result
-                        StatusManager.shared.connectToSocket()
-                    }
-                    DispatchQueue.main.async {
-                        self.animationView.stopLoading(backView: self.loadingBackView)
-                        self.coordinator?.showTabPage()
-                    }
-                } else {
-                    DispatchQueue.main.async {
-                        self.simpleAlert(message: "자동 로그인에 실패했습니다")
-                        self.animationView.stopLoading(backView: self.loadingBackView)
-                    }
-                }
-            }
+            viewModel.autoLogin(token: token, email: email, uuid: uuid)
         } else {
             autoLogInLabel.textColor = UIColor.lightGray
             autoLogInImageView.tintColor = UIColor.lightGray
@@ -96,6 +77,21 @@ class LoginViewController: UIViewController {
         logInButton.layer.cornerRadius = 5
     }
     
+    func bindData() {
+        viewModel.$isLoginSucceed.receive(on: RunLoop.main)
+            .sink { [weak self] tf in
+                guard let self = self, let result = tf else { return }
+                if result {
+                    self.animationView.stopLoading(backView: self.loadingBackView)
+                    self.coordinator?.showTabPage()
+                    self.viewModel.isLoginSucceed = nil
+                } else {
+                    self.simpleAlert(message: self.viewModel.failMessage ?? "로그인에 실패했습니다")
+                    self.animationView.stopLoading(backView: self.loadingBackView)
+                }
+            }.store(in: &cancellable)
+    }
+    
     // MARK: - Move to Register page
     func onRegister() {
         let alert = UIAlertController(title: "", message: "회원가입 중이던 정보가 있습니다. 이어서 회원가입을 진행하시겠습니까?", preferredStyle: .alert)
@@ -122,32 +118,7 @@ class LoginViewController: UIViewController {
         guard let idInfo = idField.text, idInfo.isEmpty == false, let pwInfo = pwField.text, pwInfo.isEmpty == false else { return }
         print(TimeZone.current.identifier)
         animationView.setLoading(vc: self, backView: loadingBackView)
-        UserServiceAPI.shared.login(email: idInfo, password: pwInfo, timezone: TimeZone.current.identifier, fcmtoken: "token") { result in
-            print("login result = \(result)")
-            if result["success"] as? Int == 1, let uuid = result["uuid"] as? String, let token = result["accessToken"] as? String, let userInfo = result["data"] as? UserInfo {
-                // KeyChain - uuid와 accessToken 저장 (종료 후에도 유지됨)
-                // UserManager - 싱글톤으로 userInfo 저장
-                KeychainWrapper.standard.set(uuid, forKey: KeychainWrapper.Key.uuid.rawValue)
-                KeychainWrapper.standard.set(token, forKey: KeychainWrapper.Key.accessToken.rawValue)
-                KeychainWrapper.standard.set(idInfo, forKey: KeychainWrapper.Key.email.rawValue)
-                UserManager.shared.userInfo = userInfo
-                StatusServiceAPI.shared.getFriendInfo { result in
-                    guard let friends = result["data"] as? FriendWatchList else { return }
-                    print("friends list ---->\(friends)")
-                    StatusManager.shared.friendWatchList = friends.result
-                    StatusManager.shared.connectToSocket()
-                }
-                DispatchQueue.main.async {
-                    self.animationView.stopLoading(backView: self.loadingBackView)
-                    self.coordinator?.showTabPage()
-                }
-            } else {
-                DispatchQueue.main.async {
-                    self.simpleAlert(message: "로그인에 실패했습니다")
-                    self.animationView.stopLoading(backView: self.loadingBackView)
-                }
-            }
-        }
+        viewModel.login(idInfo: idInfo, pwInfo: pwInfo)
     }
     
     @IBAction func registerButtonDidTap(_ sender: Any) {
