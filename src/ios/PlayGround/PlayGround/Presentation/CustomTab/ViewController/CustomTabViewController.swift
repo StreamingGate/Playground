@@ -36,7 +36,7 @@ class CustomTabViewController: UIViewController {
     @IBOutlet weak var homeContainerView: UIView!
     @IBOutlet weak var myContainerView: UIView!
     
-    @Published var selectedTabIndex = 0
+    let viewModel = CustomTabViewModel()
     private var cancellable: Set<AnyCancellable> = []
     
     var safeTop: CGFloat = 0
@@ -54,15 +54,20 @@ class CustomTabViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        coordinator?.addSubTab(tabVC: self)
         setupUI()
         bindData()
-        coordinator?.addSubTab(tabVC: self)
-        coordinator?.changeTab(index: 0, tabVC: self)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         playViewHeight.constant = UIScreen.main.bounds.height - safeTop - safeBottom
+    }
+    
+    
+    func setupUI() {
+        homeTabLabel.font = UIFont.caption
+        myTabLabel.font = UIFont.caption
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -76,7 +81,7 @@ class CustomTabViewController: UIViewController {
     }
     
     func bindData() {
-        $selectedTabIndex.receive(on: RunLoop.main)
+        viewModel.$selectedTabIndex.receive(on: RunLoop.main)
             .sink { [weak self] index in
                 guard let self = self else { return }
                 switch index {
@@ -84,32 +89,30 @@ class CustomTabViewController: UIViewController {
                     // 홈탭
                     self.homeTabImageView.image = UIImage(named: "homeIcon_fill")
                     self.myTabImageView.image = UIImage(named: "my_empty")
+                    self.coordinator?.changeTab(index: 0, tabVC: self)
                 case 2:
                     // 마이탭
                     self.homeTabImageView.image = UIImage(named: "homeIcon_empty")
                     self.myTabImageView.image = UIImage(named: "my_fill")
+                    self.coordinator?.changeTab(index: 2, tabVC: self)
                 default:
                     // 생성 버튼
+                    self.coordinator?.changeTab(index: 1, tabVC: self)
                     break
                 }
             }.store(in: &cancellable)
     }
     
-    func setupUI() {
-        homeTabLabel.font = UIFont.caption
-        myTabLabel.font = UIFont.caption
-    }
-    
     @IBAction func homeTabDidTap(_ sender: Any) {
-        coordinator?.changeTab(index: 0, tabVC: self)
+        viewModel.selectedTabIndex = 0
     }
     
     @IBAction func createTabDidTap(_ sender: Any) {
-        coordinator?.changeTab(index: 1, tabVC: self)
+        viewModel.selectedTabIndex = 1
     }
     
     @IBAction func myTabDidTap(_ sender: Any) {
-        coordinator?.changeTab(index: 2, tabVC: self)
+        viewModel.selectedTabIndex = 2
     }
     
     // 플레이어 해제

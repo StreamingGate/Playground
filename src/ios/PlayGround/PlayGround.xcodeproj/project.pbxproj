@@ -130,6 +130,7 @@
 		49F4E3D727ACE77B002869F4 /* FriendListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F4E3D627ACE77B002869F4 /* FriendListCell.swift */; };
 		49F777D927AA58B800AD2D78 /* FriendRequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F777D827AA58B800AD2D78 /* FriendRequestViewController.swift */; };
 		B86390ACC07320C4661BD124 /* Pods_PlayGround.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C094C2C5DF13CB2E6DBF8A02 /* Pods_PlayGround.framework */; };
+		EFC183B527D3945700696365 /* CustomTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFC183B427D3945700696365 /* CustomTabViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -261,6 +262,7 @@
 		49F777D827AA58B800AD2D78 /* FriendRequestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestViewController.swift; sourceTree = "<group>"; };
 		8A3D7763AEF5C85EA43F3126 /* Pods-PlayGround.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlayGround.debug.xcconfig"; path = "Target Support Files/Pods-PlayGround/Pods-PlayGround.debug.xcconfig"; sourceTree = "<group>"; };
 		C094C2C5DF13CB2E6DBF8A02 /* Pods_PlayGround.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PlayGround.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		EFC183B427D3945700696365 /* CustomTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabViewModel.swift; sourceTree = "<group>"; };
 		FD5FDC1E3E6EC365A13644FD /* Pods-PlayGround.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlayGround.release.xcconfig"; path = "Target Support Files/Pods-PlayGround/Pods-PlayGround.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -897,6 +899,7 @@
 			children = (
 				49E6734F27BD077F0030C211 /* View */,
 				49E6735027BD07850030C211 /* ViewController */,
+				EFC183B627D395C100696365 /* ViewModel */,
 			);
 			path = CustomTab;
 			sourceTree = "<group>";
@@ -986,6 +989,14 @@
 				C094C2C5DF13CB2E6DBF8A02 /* Pods_PlayGround.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		EFC183B627D395C100696365 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				EFC183B427D3945700696365 /* CustomTabViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1168,6 +1179,7 @@
 				49B9C9BA277ACE9C006AE134 /* AppDelegate.swift in Sources */,
 				49E6BE31279100BC000E475C /* HomeNavigationController.swift in Sources */,
 				49818AC52780C63F00C0C956 /* MyPageViewController.swift in Sources */,
+				EFC183B527D3945700696365 /* CustomTabViewModel.swift in Sources */,
 				49C6CF9F27A3DAAD007C2895 /* MainServiceAPI.swift in Sources */,
 				4935FD42277C0E4D00760675 /* ChattingViewController.swift in Sources */,
 				49E72FD327A168C600DFBCC3 /* ChatServiceAPI.swift in Sources */,
