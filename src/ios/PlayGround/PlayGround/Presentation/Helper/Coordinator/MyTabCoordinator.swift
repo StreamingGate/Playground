@@ -27,11 +27,11 @@ class MyTabCoordinator: Coordinator {
             guard let tabVC = self.parentCoordinator?.navigation.viewControllers.last as? CustomTabViewController else { return }
             tabVC.myContainerView.isHidden = false
             tabVC.homeContainerView.isHidden = true
-            if tabVC.selectedTabIndex == 2 {
+            if tabVC.viewModel.selectedTabIndex == 2 {
                 // 이전에도 동일한 탭이었을 경우, 최상단으로 이동
                 self.navigation.popToRootViewController(animated: true)
             } else {
-                tabVC.selectedTabIndex = 2
+                tabVC.viewModel.selectedTabIndex = 2
             }
         }
     }

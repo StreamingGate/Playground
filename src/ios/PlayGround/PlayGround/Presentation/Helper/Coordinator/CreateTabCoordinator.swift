@@ -25,7 +25,7 @@ class CreateTabCoordinator: Coordinator {
     func start() {
         DispatchQueue.main.async {
             guard let tabVC = self.parentCoordinator?.navigation.viewControllers.last as? CustomTabViewController else { return }
-            tabVC.selectedTabIndex = 1
+            tabVC.viewModel.selectedTabIndex = 1
             self.navigation.modalPresentationStyle = .overFullScreen
             self.navigation.modalTransitionStyle = .crossDissolve
             tabVC.present(self.navigation, animated: true, completion: nil)

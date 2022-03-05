@@ -32,6 +32,13 @@ class MainCoordinator: NSObject, Coordinator {
         navigation.pushViewController(tabVC, animated: true)
     }
     
+    func showRegisterPage() {
+        guard let loginVC = self.navigation.viewControllers.last as? LoginViewController else { return }
+        guard let registerVC = UIStoryboard(name: "Register", bundle: nil).instantiateViewController(withIdentifier: "RegisterNavigationController") as? RegisterNavigationController else { return }
+        registerVC.modalPresentationStyle = .fullScreen
+        loginVC.present(registerVC, animated: true, completion: nil)
+    }
+    
     func addSubTab(tabVC: CustomTabViewController) {
         guard let homeVC = UIStoryboard(name: "Home", bundle: nil).instantiateViewController(withIdentifier: "HomeNavigationController") as? HomeNavigationController, let myVC = UIStoryboard(name: "MyPage", bundle: nil).instantiateViewController(withIdentifier: "MyPageNavigationController") as? MyPageNavigationController else { return }
         tabVC.addChild(homeVC)
