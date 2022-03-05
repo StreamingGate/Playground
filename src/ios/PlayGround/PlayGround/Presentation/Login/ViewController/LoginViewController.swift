@@ -32,7 +32,7 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
         coordinator = MainCoordinator(parent: nil, navigation: self.navigationController ?? UINavigationController())
         setupUI()
-        
+        bindData()
         // 회원가입 step1에서 비정상적인 종료가 된 경우, 해당 정보를 userDefaults에서 가져와서 회원가입 페이지로 유도
         // 비정상적인 종료 = 뒤로 가기나 닫기 등으로 종료되지 않은 모든 경우
         // step1에서 이메일 인증을 해야 하기 때문에, step2 이후에 비정상 종료는 회원가입 페이지로 유도하지 않음
